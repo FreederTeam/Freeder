@@ -1,13 +1,13 @@
 <?php
-# Feed2array
-# @author: bronco@warriordudimanche.net
-# @version 0.2.1
-# @license  free and opensource
-# @inspired by  http://milletmaxime.net/syndexport/
-# @use: $items=feed2array('http://sebsauvage.net/links/index.php?do=rss');
-# @return: returns an (array)array, or (boolean)false if an exception occurs.
-
 function feed2array($feed, $load=true, $debug=false) {
+    /* Converts a feed (RSS or ATOM) to an array
+     *
+     * Modified version, closer to the specifications and handling more elements
+     * Original version by bronco : https://github.com/broncowdd/feed2array (under "free and opensource license")
+     *
+     * $feed is either a feed content ($load=false) or a feed URI ($load=true)
+     * $debug should be set to true to display error messages.
+     */
     $flux = array('infos' => array(), 'items' => array());
     try {
         if($feed_obj = new SimpleXMLElement($feed, LIBXML_NOCDATA, $data_is_url=$load)) {
@@ -35,7 +35,7 @@ function feed2array($feed, $load=true, $debug=false) {
             $flux['infos']['type'] = $type;
             $flux['infos']['version'] = $feed_obj->attributes()->version;
 
-            if($type == "RSS") {
+            if($type == "RSS") {  // RSS feed
                 if(!empty($feed_obj->attributes()->version)){
                     $flux['infos']['version'] = (string)$feed_obj->attributes()->version;
                 }
@@ -86,7 +86,7 @@ function feed2array($feed, $load=true, $debug=false) {
                     }
                 }
             }
-            elseif($type == "ATOM") {
+            elseif($type == "ATOM") {  // ATOM feed
                 if(!empty($feed_obj->id)) {
                     $flux['infos']['id'] = (string)$feed_obj->id;
                 }
@@ -134,7 +134,7 @@ function feed2array($feed, $load=true, $debug=false) {
                             $rel = 'alternate';
                         }
 
-                        if($rel != 'enclosure') {
+                        if($rel != 'enclosure') {  // Discard enclosures in the feed element
                             $flux['info']['link'][] = array(
                                 'href'=>(string)$link['href'],
                                 'title'=>$title,
