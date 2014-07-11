@@ -1,14 +1,5 @@
-## License
+# Freeder
 
-All the source code I wrote is under a `no-alcohol beer-ware license`. All functions that I didn't write myself are under the original license and their origin is specified in the function itself.
-```
-* --------------------------------------------------------------------------------
-* "THE NO-ALCOHOL BEER-WARE LICENSE" (Revision 42):
-* Phyks (webmaster@phyks.me) wrote this file. As long as you retain this notice you
-* can do whatever you want with this stuff (and you can also do whatever you want
-* with this stuff without retaining it, but that's not cool...). If we meet some
-* day, and you think this stuff is worth it, you can buy me a <del>beer</del> soda
-* in return.
-*																		Phyks
-* ---------------------------------------------------------------------------------
-```
+Freeder is a new open-source RSS feeds reader, as announced [here](http://phyks.me/2014/07/lecteur_rss_ideal.html).
+
+It is currently a WIP, more information will come soon. In the mean time, it may be only interesting for devs.

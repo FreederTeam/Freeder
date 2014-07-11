@@ -1,0 +1,4 @@
+* If open_basedir or safe_mode, Curl will not follow redirections : https://stackoverflow.com/questions/24687145/curlopt-followlocation-and-curl-multi-and-safe-mode
+
+Notes on ATOM :
+* link is a very complete tag

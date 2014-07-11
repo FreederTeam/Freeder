@@ -1,5 +1,5 @@
 <?php
-function feed2array($feed, $load=true, $debug=false) {
+function feed2array($feed, $load=false, $debug=false) {
     /* Converts a feed (RSS or ATOM) to an array
      *
      * Modified version, closer to the specifications and handling more elements
@@ -36,68 +36,71 @@ function feed2array($feed, $load=true, $debug=false) {
             $flux['infos']['version'] = $feed_obj->attributes()->version;
 
             if($type == "RSS") {  // RSS feed
-                if(!empty($feed_obj->attributes()->version)){
+                if($feed_obj->attributes()->version){
                     $flux['infos']['version'] = (string)$feed_obj->attributes()->version;
                 }
-                if(!empty($feed_obj->channel->title)) {
+                if($feed_obj->channel->title) {
                     $flux['infos']['title'] = (string)$feed_obj->channel->title;
                 }
-                if(!empty($feed_obj->channel->link)){
-                    $flux['infos']['link'] = array(
+                if($feed_obj->channel->link) {
+                    $flux['infos']['links'][] = array(
                         'href'=>(string)$feed_obj->channel->link,
                         'rel'=>'self',
                         'title'=>''
                     );
                 }
-                if(!empty($feed_obj->channel->description)) {
+                if($feed_obj->channel->description) {
                     $flux['infos']['description'] = (string)$feed_obj->channel->description;
                 }
-                if(!empty($feed_obj->channel->language)) {
+                if($feed_obj->channel->language) {
                     $flux['infos']['language'] = (string)$feed_obj->channel->language;
                 }
-                if(!empty($feed_obj->channel->copyright)) {
+                if($feed_obj->channel->copyright) {
                     $flux['infos']['copyright'] = (string)$feed_obj->channel->copyright;
                 }
-                if(!empty($feed_obj->channel->pubDate)) {
+                if($feed_obj->channel->pubDate) {
                     $flux['infos']['pubDate'] = (string)$feed_obj->channel->pubDate;
                 }
-                if(!empty($feed_obj->channel->lastBuildDate)) {
+                if($feed_obj->channel->lastBuildDate) {
                     $flux['infos']['lastBuildDate'] = (string)$feed_obj->channel->lastBuildDaye;
                 }
-                if(!empty($feed_obj->channel->category)) {
-                    $flux['infos']['category'] = (string)$feed_obj->channel->category;
+                if($feed_obj->channel->category) {
+                    foreach($feed_obj->channel->category as $category) {
+                        $flux['infos']['categories'][] = (string)$category;
+                    }
                 }
-                if(!empty($feed_obj->channel->ttl)) {
+                if($feed_obj->channel->ttl) {
                     $flux['infos']['ttl'] = (string)$feed_obj->channel->ttl;
                 }
-                if(!empty($feed_obj->channel->image)) {
-                    $flux['infos']['image_url'] = (string)$feed_obj->channel->image->url;
-                    $flux['infos']['image_title'] = (string)$feed_obj->channel->image->title;
-                    $flux['infos']['image_link'] = (string)$feed_obj->channel->image->link;
+                if($feed_obj->channel->image) {
+                    $flux['infos']['image'] = array(
+                        'url'=>(string)$feed_obj->channel->image->url,
+                        'title'=>(string)$feed_obj->channel->image->title,
+                        'link'=>(string)$feed_obj->channel->image->link
+                    );
                 }
-                if(!empty($feed_obj->channel->skipHours)) {
+                if($feed_obj->channel->skipHours) {
                     foreach($feed_obj->channel->skipHours->children() as $hour) {
                         $flux['infos']['skipHours'] = (string)$hour;
                     }
                 }
-                if(!empty($feed_obj->channel->skipDays)) {
+                if($feed_obj->channel->skipDays) {
                     foreach($feed_obj->channel->skipDays->children() as $day) {
                         $flux['infos']['skipDays'] = (string)$day;
                     }
                 }
             }
             elseif($type == "ATOM") {  // ATOM feed
-                if(!empty($feed_obj->id)) {
+                if($feed_obj->id) {
                     $flux['infos']['id'] = (string)$feed_obj->id;
                 }
-                if(!empty($feed_obj->title)) {
+                if($feed_obj->title) {
                     $flux['infos']['title'] = (string)$feed_obj->title;
                 }
-                if(!empty($feed_obj->updated)) {
+                if($feed_obj->updated) {
                     $flux['infos']['updated'] = (string)$feed_obj->updated;
                 }
-                if(!empty($feed_obj->author)) {
-                    $flux['infos']['author'] = array();
+                if($feed_obj->author) {
                     foreach($feed_obj->author as $author) {
                         if(!empty($author['email'])) {
                             $email = (string)$author['email'];
@@ -111,15 +114,14 @@ function feed2array($feed, $load=true, $debug=false) {
                         else {
                             $uri = '';
                         }
-                        $flux['infos']['author'][] = array(
+                        $flux['infos']['authors'][] = array(
                             'name'=>(string)$author['name'],
                             'email'=>$email,
                             'uri'=>$uri
                         );
                     }
                 }
-                if(!empty($feed_obj->link)) {
-                    $flux['infos']['link'] = array();
+                if($feed_obj->link) {
                     foreach($feed_obj->link as $link) {
                         if(!empty($link['title'])) {
                             $title = (string)$link['title'];
@@ -135,7 +137,7 @@ function feed2array($feed, $load=true, $debug=false) {
                         }
 
                         if($rel != 'enclosure') {  // Discard enclosures in the feed element
-                            $flux['info']['link'][] = array(
+                            $flux['info']['links'][] = array(
                                 'href'=>(string)$link['href'],
                                 'title'=>$title,
                                 'rel'=>$rel
@@ -143,25 +145,28 @@ function feed2array($feed, $load=true, $debug=false) {
                         }
                     }
                 }
-                if(!empty($feed_obj->category)) {
-                    $flux['infos']['category'] = array();
+                if($feed_obj->category) {
                     foreach($feed->obj->category as $tag) {
                         if(!empty($tag['label'])) {
-                            $flux['infos']['category'][] = (string)$tag['label'];
+                            $flux['infos']['categories'][] = (string)$tag['label'];
                         }
                         else {
-                            $flux['infos']['category'][] = (string)$tag['term'];
+                            $flux['infos']['categories'][] = (string)$tag['term'];
                         }
                     }
                 }
-                if(!empty($feed_obj->icon)) {
-                    $flux['infos']['icon'] = (string)$feed_obj->updated;
+                if($feed_obj->icon) {
+                    $flux['infos']['image'] = array(
+                        'url'=>(string)$feed_obj->icon,
+                        'title'=>'',
+                        'link'=>''
+                    );
                 }
-                if(!empty($feed_obj->rights)) {
+                if($feed_obj->rights) {
                     $flux['infos']['copyright'] = (string)$feed_obj->rights;
                 }
-                if(!empty($feed_obj->subtitle)) {
-                    $flux['infos']['subtitle'] = (string)$feed_obj->subtitle;
+                if($feed_obj->subtitle) {
+                    $flux['infos']['description'] = (string)$feed_obj->subtitle;
                 }
             }
 
@@ -169,40 +174,44 @@ function feed2array($feed, $load=true, $debug=false) {
             foreach($items as $item) {
                 $c = count($flux['items']);
                 if($type == "RSS") {
-                    if(!empty($item->title)) {
+                    if($item->title) {
                         $flux['items'][$c]['title'] = (string)$item->title;
                     }
-                    if(!empty($item->link)) {
-                        $flux['items'][$c]['link'] = array(
+                    if($item->link) {
+                        $flux['items'][$c]['links'][] = array(
                             'href'=>(string)$item->link,
-                            'rel'=>'self',
+                            'rel'=>'alternate',
                             'title'=>''
                         );
                     }
-                    if(!empty($item->description)) {
+                    if($item->description) {
                         $flux['items'][$c]['description'] = (string)$item->description;
                     }
-                    if(!empty($item->author)) {
-                        $flux['items'][$c]['author'] = array(
+                    if($item->author) {
+                        $flux['items'][$c]['authors'] = array(
                             'name'=>'',
                             'email'=>(string)$item->author,
                             'uri'=>''
                         );
                     }
-                    if(!empty($item->category)) {
-                        $flux['items'][$c]['category'] = (string)$item->category;
+                    if($item->category) {
+                        foreach($item->category as $category) {
+                            $flux['items'][$c]['categories'][] = (string)$category;
+                        }
                     }
-                    if(!empty($item->comments)) {
+                    if($item->comments) {
                         $flux['items'][$c]['comments'] = (string)$item->comments;
                     }
-                    if(!empty($item->enclosure)) {
-                        $flux['items'][$c]['enclosure'][] = array(
-                            'url'=>(string)$item->enclosure['url'],
-                            'type'=>(string)$item->enclosure['type'],
-                            'size'=>(string)$item->enclosure['length']
-                        );
+                    if($item->enclosure) {
+                        foreach($item->enclosure as $enclosure) {
+                            $flux['items'][$c]['enclosures'][] = array(
+                                'url'=>(string)$enclosure['url'],
+                                'type'=>(string)$enclosure['type'],
+                                'size'=>(string)$enclosure['length']
+                            );
+                        }
                     }
-                    if(!empty($item->guid)) {
+                    if($item->guid) {
                         $flux['items'][$c]['guid'] = (string)$item->guid;
                         if(!empty($item->guid['isPermaLink'])) {
                             $flux['items'][$c]['guid_is_permalink'] = (bool)$item->guid['isPermaLink'];
@@ -211,21 +220,21 @@ function feed2array($feed, $load=true, $debug=false) {
                             $flux['items'][$c]['guid_is_permalink'] = true;
                         }
                     }
-                    if(!empty($item->pubDate)) {
-                        $flux['items'][$c]['pubDate'] = (string)$item->pubDate;
+                    if($item->pubDate) {
+                        $flux['items'][$c]['pubDate'] = (new DateTime((string)$item->pubDate))->format('U');
                     }
                 }
                 elseif($type == "ATOM") {
-                    if(!empty($item->id)) {
-                        $flux['items'][$c]['id'] = (string)$item->id;
+                    if($item->id) {
+                        $flux['items'][$c]['guid'] = (string)$item->id;
                     }
-                    if(!empty($item->title)) {
+                    if($item->title) {
                         $flux['items'][$c]['title'] = (string)$item->title;
                     }
-                    if(!empty($item->updated)) {
-                        $flux['items'][$c]['updated'] = (string)$item->updated;
+                    if($item->updated) {
+                        $flux['items'][$c]['updated'] = (new DateTime((string)$item->updated))->format('U');
                     }
-                    if(!empty($item->author)) {
+                    if($item->author) {
                         foreach($item->author as $author) {
                             if(!empty($author['email'])) {
                                 $email = (string)$author['email'];
@@ -239,14 +248,14 @@ function feed2array($feed, $load=true, $debug=false) {
                             else {
                                 $uri = '';
                             }
-                            $flux['items'][$c]['author'][] = array(
+                            $flux['items'][$c]['authors'][] = array(
                                 'name'=>(string)$author['name'],
                                 'email'=>$email,
                                 'uri'=>$uri
                             );
                         }
                     }
-                    if(!empty($item->link)) {
+                    if($item->link) {
                         foreach($item->link as $link) {
                             if(!empty($link['title'])) {
                                 $title = (string)$link['title'];
@@ -262,7 +271,7 @@ function feed2array($feed, $load=true, $debug=false) {
                             }
 
                             if($rel != 'enclosure') {
-                                $flux['items'][$c]['link'][] = array(
+                                $flux['items'][$c]['links'][] = array(
                                     'href'=>(string)$link['href'],
                                     'title'=>$title,
                                     'rel'=>$rel
@@ -281,7 +290,7 @@ function feed2array($feed, $load=true, $debug=false) {
                                 else {
                                     $length = '';
                                 }
-                                $flux['items'][$c]['enclosure'][] = array(
+                                $flux['items'][$c]['enclosures'][] = array(
                                     'url'=>(string)$link['href'],
                                     'type'=>$type,
                                     'size'=>$length
@@ -289,33 +298,48 @@ function feed2array($feed, $load=true, $debug=false) {
                             }
                         }
                     }
-                    if(!empty($item->summary)) {
+                    if($item->summary) {
                         $flux['items'][$c]['description'] = (string)$item->summary;
                     }
-                    if(!empty($item->category)) {
+                    if($item->category) {
                         foreach($item->category as $tag) {
                             if(!empty($tag['label'])) {
-                                $flux['items'][$c]['category'] = (string)$tag['label'];
+                                $flux['items'][$c]['categories'][] = (string)$tag['label'];
                             }
                             else {
-                                $flux['items'][$c]['category'] = (string)$tag['term'];
+                                $flux['items'][$c]['categories'][] = (string)$tag['term'];
                             }
                         }
                     }
-                    if(!empty($item->published)) {
-                        $flux['items'][$c]['date'] = (string)$item->published;
+                    if($item->published) {
+                        $flux['items'][$c]['pubDate'] = (new DateTime((string)$item->published))->format('U');
                     }
-                    if(!empty($item->rights)) {
+                    if($item->rights) {
                         $flux['items'][$c]['copyright'] = (string)$item->rights;
+                    }
+
+                    if($flux['items'][$c]['pubDate']) {
+                        // Only updated is necessary for an ATOM feed
+                        $flux['items'][$c]['pubDate'] = $flux['items'][$c]['updated'];
                     }
                 }
 
-                if(!empty($item->content)) {
+                if($item->content) {
                     $flux['items'][$c]['content'] = (string)$item->content;
                 }
                 // for the tricky <content:encoded> tag
-                if(!empty($item->children('content', true)->encoded)) {
+                if($item->children('content', true)->encoded) {
                     $flux['items'][$c]['content'] = (string)$item->children('content', true)->encoded;
+                }
+
+                // Fill description with a summary if it does not exist
+                if(!empty($flux['items'][$c]['content']) && empty($flux['items'][$c]['description'])) {
+                    $flux['items'][$c]['description'] = truncate($flux['items'][$c]['content']);
+                }
+
+                // Add authors to items
+                if(empty($flux['items'][$c]['authors']) && !empty($flux['infos']['authors'])) {
+                    $flux['items'][$c]['authors'] = $flux['infos']['authors'];
                 }
             }
             return $flux;
@@ -330,4 +354,98 @@ function feed2array($feed, $load=true, $debug=false) {
         return false;
     }
 }
-?>
+
+function truncate($text, $length = 500, $ending = '…', $exact=false, $considerHtml=true) {
+    /* Truncate at a certain length, keeping html tags intact
+     * From cakePHP textHelper framework.
+     *
+     * Original license: MIT
+     */
+	if ($considerHtml) {
+		// if the plain text is shorter than the maximum length, return the whole text
+		if (strlen(preg_replace('/<.*?>/', '', $text)) <= $length) {
+			return $text;
+		}
+		// splits all html-tags to scanable lines
+		preg_match_all('/(<.+?>)?([^<>]*)/s', $text, $lines, PREG_SET_ORDER);
+		$total_length = strlen($ending);
+		$open_tags = array();
+		$truncate = '';
+		foreach ($lines as $line_matchings) {
+			// if there is any html-tag in this line, handle it and add it (uncounted) to the output
+			if (!empty($line_matchings[1])) {
+				// if it's an "empty element" with or without xhtml-conform closing slash
+				if (preg_match('/^<(\s*.+?\/\s*|\s*(img|br|input|hr|area|base|basefont|col|frame|isindex|link|meta|param)(\s.+?)?)>$/is', $line_matchings[1])) {
+					// do nothing
+				// if tag is a closing tag
+				} else if (preg_match('/^<\s*\/([^\s]+?)\s*>$/s', $line_matchings[1], $tag_matchings)) {
+					// delete tag from $open_tags list
+					$pos = array_search($tag_matchings[1], $open_tags);
+					if ($pos !== false) {
+					unset($open_tags[$pos]);
+					}
+				// if tag is an opening tag
+				} else if (preg_match('/^<\s*([^\s>!]+).*?>$/s', $line_matchings[1], $tag_matchings)) {
+					// add tag to the beginning of $open_tags list
+					array_unshift($open_tags, strtolower($tag_matchings[1]));
+				}
+				// add html-tag to $truncate'd text
+				$truncate .= $line_matchings[1];
+			}
+			// calculate the length of the plain text part of the line; handle entities as one character
+			$content_length = strlen(preg_replace('/&[0-9a-z]{2,8};|&#[0-9]{1,7};|[0-9a-f]{1,6};/i', ' ', $line_matchings[2]));
+			if ($total_length+$content_length> $length) {
+				// the number of characters which are left
+				$left = $length - $total_length;
+				$entities_length = 0;
+				// search for html entities
+				if (preg_match_all('/&[0-9a-z]{2,8};|&#[0-9]{1,7};|[0-9a-f]{1,6};/i', $line_matchings[2], $entities, PREG_OFFSET_CAPTURE)) {
+					// calculate the real length of all entities in the legal range
+					foreach ($entities[0] as $entity) {
+						if ($entity[1]+1-$entities_length <= $left) {
+							$left--;
+							$entities_length += strlen($entity[0]);
+						} else {
+							// no more characters left
+							break;
+						}
+					}
+				}
+				$truncate .= substr($line_matchings[2], 0, $left+$entities_length);
+				// maximum lenght is reached, so get off the loop
+				break;
+			} else {
+				$truncate .= $line_matchings[2];
+				$total_length += $content_length;
+			}
+			// if the maximum length is reached, get off the loop
+			if($total_length>= $length) {
+				break;
+			}
+		}
+	} else {
+		if (strlen($text) <= $length) {
+			return $text;
+		} else {
+			$truncate = substr($text, 0, $length - strlen($ending));
+		}
+	}
+	// if the words shouldn't be cut in the middle...
+	if (!$exact) {
+		// ...search the last occurance of a space...
+		$spacepos = strrpos($truncate, ' ');
+		if (isset($spacepos)) {
+			// ...and cut the text in this position
+			$truncate = substr($truncate, 0, $spacepos);
+		}
+	}
+	// add the defined ending to the text
+	$truncate .= $ending;
+	if($considerHtml) {
+		// close all unclosed html-tags
+		foreach ($open_tags as $tag) {
+			$truncate .= '</' . $tag . '>';
+		}
+	}
+	return $truncate;
+}
