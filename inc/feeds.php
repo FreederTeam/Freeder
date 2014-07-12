@@ -59,11 +59,12 @@ function curl_downloader($urls) {
 }
 
 
-function refresh_feeds($feeds) {
+function refresh_feeds($feeds, $update_feeds_infos=false) {
     /* Refresh the specified feeds and returns an array with URLs in error
      * $feeds should be an array of ids as keys and urls as values
+     * $update_feeds_infos should be true to update the feed infos from values in the RSS / ATOM
      * */
-    global $dbh;
+    global $dbh, $config;
 
     $download = curl_downloader($feeds);
     $errors = array();
@@ -81,14 +82,16 @@ function refresh_feeds($feeds) {
     // Delete old tags which were not user added
     $dbh->query('DELETE FROM tags WHERE is_user_tag=0');
 
-    // Query to update feeds table with latest infos in the RSS / ATOM
-    $query_feeds = $dbh->prepare('UPDATE feeds SET title=:title, links=:links, description=:description, ttl=:ttl, image=:image WHERE url=:old_url');
-    $query_feeds->bindParam(':title', $feed_title);
-    $query_feeds->bindParam(':links', $feed_links);
-    $query_feeds->bindParam(':description', $feed_description);
-    $query_feeds->bindParam(':ttl', $feed_ttl, PDO::PARAM_INT);
-    $query_feeds->bindParam(':image', $image);
-    $query_feeds->bindParam(':old_url', $url);
+    if ($update_feeds_infos) {
+        // Query to update feeds table with latest infos in the RSS / ATOM
+        $query_feeds = $dbh->prepare('UPDATE feeds SET title=:title, links=:links, description=:description, ttl=:ttl, image=:image WHERE url=:old_url');
+        $query_feeds->bindParam(':title', $feed_title);
+        $query_feeds->bindParam(':links', $feed_links);
+        $query_feeds->bindParam(':description', $feed_description);
+        $query_feeds->bindParam(':ttl', $feed_ttl, PDO::PARAM_INT);
+        $query_feeds->bindParam(':image', $image);
+        $query_feeds->bindParam(':old_url', $url);
+    }
 
     // Two queries, to upsert (update OR insert) entries : create a new entry (or ignore it if already exists) and update the necessary values
     // TODO : I believe this can be optimized, however I do not have any good idea for now…
@@ -107,14 +110,16 @@ function refresh_feeds($feeds) {
     $query_entries->bindParam(':pubDate', $pubDate, PDO::PARAM_INT);
     $query_entries->bindParam(':lastUpdate', $last_update, PDO::PARAM_INT);
 
-    // Query to insert tags if not already existing
-    $query_insert_tag = $dbh->prepare('INSERT OR IGNORE INTO tags(name) VALUES(:name)');
-    $query_insert_tag->bindParam(':name', $tag_name);
+    if($config['use_tags_from_feeds'] != 0) {
+        // Query to insert tags if not already existing
+        $query_insert_tag = $dbh->prepare('INSERT OR IGNORE INTO tags(name) VALUES(:name)');
+        $query_insert_tag->bindParam(':name', $tag_name);
 
-    // Finally, query to register the tags of the article
-    $query_tags = $dbh->prepare('INSERT INTO tags_entries(tag_id, entry_id) VALUES((SELECT id FROM tags WHERE name=:name), (SELECT id FROM entries WHERE guid=:entry_guid))');
-    $query_tags->bindParam(':name', $tag_name);
-    $query_tags->bindParam(':entry_guid', $guid);
+        // Finally, query to register the tags of the article
+        $query_tags = $dbh->prepare('INSERT INTO tags_entries(tag_id, entry_id) VALUES((SELECT id FROM tags WHERE name=:name), (SELECT id FROM entries WHERE guid=:entry_guid))');
+        $query_tags->bindParam(':name', $tag_name);
+        $query_tags->bindParam(':entry_guid', $guid);
+    }
 
     foreach ($updated_feeds as $url=>$feed) {
         $i = array_search($url, $feeds);
@@ -124,13 +129,15 @@ function refresh_feeds($feeds) {
             $errors[] = $url;
         }
 
-        // Define feed params
-        $feed_title = isset($parsed['infos']['title']) ? $parsed['infos']['title'] : '';
-        $feed_links = isset($parsed['infos']['links']) ? json_encode(multiarray_filter('rel', 'self', $parsed['infos']['links'])) : '';
-        $feed_description = isset($parsed['infos']['description']) ? $parsed['infos']['description'] : '';
-        $feed_ttl = isset($parsed['infos']['ttl']) ? $parsed['infos']['ttl'] : 0;
-        $feed_image = isset($parsed['infos']['image']) ? json_encode($parsed['infos']['image']) : '';
-        $query_feeds->execute();
+        if ($update_feeds_infos) {
+            // Define feed params
+            $feed_title = isset($parsed['infos']['title']) ? $parsed['infos']['title'] : '';
+            $feed_links = isset($parsed['infos']['links']) ? json_encode(multiarray_filter('rel', 'self', $parsed['infos']['links'])) : '';
+            $feed_description = isset($parsed['infos']['description']) ? $parsed['infos']['description'] : '';
+            $feed_ttl = isset($parsed['infos']['ttl']) ? $parsed['infos']['ttl'] : 0;
+            $feed_image = isset($parsed['infos']['image']) ? json_encode($parsed['infos']['image']) : '';
+            $query_feeds->execute();
+        }
 
         // Insert / Update entries
         $items = $parsed['items'];
@@ -153,11 +160,13 @@ function refresh_feeds($feeds) {
                 continue;
             }
 
-            if (!empty($event['categories'])) {
-                foreach ($event['categories'] as $tag_name) {
-                    // Create tags if needed, get their id and add bind the articles to these tags
-                    $query_insert_tag->execute();
-                    $query_tags->execute();
+            if($config['use_tags_from_feeds'] != 0) {
+                if (!empty($event['categories'])) {
+                    foreach ($event['categories'] as $tag_name) {
+                        // Create tags if needed, get their id and add bind the articles to these tags
+                        $query_insert_tag->execute();
+                        $query_tags->execute();
+                    }
                 }
             }
         }
@@ -182,7 +191,49 @@ function add_feed($url) {
             return false;
         }
         else {
-            refresh_feeds(array($dbh->lastInsertedId()=>$url));
+            refresh_feeds(array($dbh->lastInsertedId()=>$url), true);
+            return true;
+        }
+    }
+    else {
+        return false;
+    }
+}
+
+
+function delete_feed($url) {
+    /* Remove a feed and all associated tags / entries
+     * Returns true in case of success, false otherwise
+     */
+    global $dbh;
+
+    if (filter_var($url, FILTER_VALIDATE_URL)) {
+        $query = $dbh->prepare('DELETE FROM feeds WHERE url=:url');
+        $query->execute(array(':url'=>$url));
+        return true;
+    }
+    else {
+        return false;
+    }
+}
+
+
+function edit_feed($old_url, $new_url, $new_title='') {
+    /* Edit a feed in the database and refresh it.
+     * Returns true upon success, false otherwise.
+     */
+    // TODO :  Edit more than just the URL
+    global $dbh;
+
+    if (filter_var($new_url, FILTER_VALIDATE_URL) && filter_var($old_url, FILTER_VALIDATE_URL)) {
+        $query = $dbh->prepare('UPDATE feeds SET url=:url WHERE url=:old_url');
+        $query->execute(array(':old_url'=>$old_url, 'new_url'=>$new_url));
+
+        if ($query->rowCount() == 0) {
+            return false;
+        }
+        else {
+            refresh_feeds(array($dbh->lastInsertedId()=>$new_url));
             return true;
         }
     }

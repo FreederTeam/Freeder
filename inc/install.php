@@ -82,7 +82,7 @@ function install_db() {
 
     // Create the table to store config options
     $dbh->query('CREATE TABLE IF NOT EXISTS config(
-        option TEXT,
+        option TEXT UNIQUE COLLATE NOCASE,
         value TEXT
     )');
     // Insert timezone in the config
