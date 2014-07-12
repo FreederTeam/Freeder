@@ -1,10 +1,15 @@
 <?php
 require('feed2array.inc.php');
 
+// TODO : Tags for feeds
+
 function curl_downloader($urls) {
     /* Downloads all the urls in the array $urls and returns an array with the results and the http status_codes.
      *
      * Mostly inspired by blogotext by timovn : https://github.com/timovn/blogotext/blob/master/inc/fich.php
+     *
+     *  TODO : If open_basedir or safe_mode, Curl will not follow redirections :
+     *  https://stackoverflow.com/questions/24687145/curlopt-followlocation-and-curl-multi-and-safe-mode
      */
     $chunks = array_chunk($urls, 40, true);  // Chunks of 40 urls because curl has problems with too big "multi" requests
     $results = array();
@@ -121,7 +126,7 @@ function refresh_feeds($feeds) {
 
         // Define feed params
         $feed_title = isset($parsed['infos']['title']) ? $parsed['infos']['title'] : '';
-        $feed_links = isset($parsed['infos']['links']) ? json_encode($parsed['infos']['links']) : '';
+        $feed_links = isset($parsed['infos']['links']) ? json_encode(multiarray_filter('rel', 'self', $parsed['infos']['links'])) : '';
         $feed_description = isset($parsed['infos']['description']) ? $parsed['infos']['description'] : '';
         $feed_ttl = isset($parsed['infos']['ttl']) ? $parsed['infos']['ttl'] : 0;
         $feed_image = isset($parsed['infos']['image']) ? json_encode($parsed['infos']['image']) : '';
@@ -132,11 +137,11 @@ function refresh_feeds($feeds) {
         foreach($items as $event) {
             $authors = isset($event['authors']) ? json_encode($event['authors']) : '';
             $title = isset($event['title']) ? $event['title'] : '';
-            $links = isset($event['links']) ? json_encode($event['links']) : '';
+            $links = isset($event['links']) ? json_encode(multiarray_filter('rel', 'self', $event['links'])) : '';
             $description = isset($event['description']) ? $event['description'] : '';
             $content = isset($event['content']) ? $event['content'] : '';
             $enclosures = isset($event['enclosures']) ? json_encode($event['enclosures']) : '';
-            $comments = isset($event['comments']) ? $event['comments'] : '';
+            $comments = isset($event['comments']) ? $event['comments'] : ((isset($event['links'])) ? multiarray_search('rel', 'replies', $event['links'], '') : '');
             $guid = isset($event['guid']) ? $event['guid'] : '';
             $pubDate = isset($event['pubDate']) ? $event['pubDate'] : '';
             $last_update = isset($event['updated']) ? $event['updated'] : '';

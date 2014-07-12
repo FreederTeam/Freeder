@@ -54,7 +54,6 @@ function install() {
             ttl INT DEFAULT 0,
             image TEXT
         )');
-        // TODO : skip ? language ? (not in Atom)
         // Useful indexes on feeds table
         $dbh->query('CREATE UNIQUE INDEX IF NOT EXISTS url ON feeds(url)');
 
@@ -76,13 +75,12 @@ function install() {
             is_read INTEGER DEFAULT 0,
             FOREIGN KEY(feed_id) REFERENCES feeds(id) ON DELETE CASCADE
         )');
-        // TODO : comments ? (not in Atom ?)
 
         // Create table to store tags
         $dbh->query('CREATE TABLE IF NOT EXISTS tags(
             id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
             name TEXT UNIQUE COLLATE NOCASE,
-            is_user_tag INTEGER
+            is_user_tag INTEGER DEFAULT 0
         )');
 
         // Create table to store association between tags and entries

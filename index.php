@@ -1,9 +1,4 @@
 <?php
-// TODO
-//  * Tags for feeds
-//  * Entry --guid-- => id
-//  * Delete old tags
-
 define('DATA_DIR', 'data/');
 define('DB_FILE', 'db.sqlite3');
 
