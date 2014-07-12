@@ -73,6 +73,8 @@ function install_db() {
 	$query->execute();
 
 	$dbh->query('PRAGMA foreign_keys = ON');
+
+	// Create the table to store feeds
 	$dbh->query('CREATE TABLE IF NOT EXISTS feeds(
 		id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
 		title TEXT,
@@ -82,9 +84,13 @@ function install_db() {
 		ttl INT DEFAULT 0,
 		image TEXT
 	)');
+
+	// Useful indexes on feeds table
 	$dbh->query('CREATE UNIQUE INDEX IF NOT EXISTS url ON feeds(url)');
-	// TODO : skip ? language ? (not in Atom)
+	
+	// Create table to store entries
 	$dbh->query('CREATE TABLE IF NOT EXISTS entries(
+		id INTEGER PRIMARY KEY NOT NULL,
 		feed_id INTEGER NOT NULL,
 		authors TEXT,
 		title TEXT,
@@ -93,23 +99,27 @@ function install_db() {
 		content TEXT,
 		enclosures TEXT,
 		comments TEXT,
-		guid TEXT PRIMARY KEY NOT NULL,
+		guid TEXT UNIQUE,
 		pubDate INTEGER,
 		lastUpdate INTEGER,
 		is_sticky INTEGER DEFAULT 0,
 		is_read INTEGER DEFAULT 0,
 		FOREIGN KEY(feed_id) REFERENCES feeds(id) ON DELETE CASCADE
 	)');
-	// TODO : comments ? (not in Atom ?)
+
+	// Create table to store tags
 	$dbh->query('CREATE TABLE IF NOT EXISTS tags(
 		id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-		name TEXT UNIQUE COLLATE NOCASE
+		name TEXT UNIQUE COLLATE NOCASE,
+		is_user_tag INTEGER DEFAULT 0
 	)');
+
+	// Create table to store association between tags and entries
 	$dbh->query('CREATE TABLE IF NOT EXISTS tags_entries(
 		tag_id INTEGER,
-		entry_guid TEXT,
+		entry_id INTEGER,
 		FOREIGN KEY(tag_id) REFERENCES tags(id) ON DELETE CASCADE,
-		FOREIGN KEY(entry_guid) REFERENCES entries(guid) ON DELETE CASCADE
+		FOREIGN KEY(entry_id) REFERENCES entries(id) ON DELETE CASCADE
 	)');
 	$dbh->query('CREATE TABLE IF NOT EXISTS tags_feeds(
 		tag_id INTEGER,
@@ -117,8 +127,8 @@ function install_db() {
 		FOREIGN KEY(tag_id) REFERENCES tags(id) ON DELETE CASCADE,
 		FOREIGN KEY(feed_id) REFERENCES feeds(id) ON DELETE CASCADE
 	)');
-	// TODO : Add indexes in db
 	$dbh->commit();
+	// TODO : Add indexes in db
 }
 
 

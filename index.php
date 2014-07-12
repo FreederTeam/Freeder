@@ -1,9 +1,4 @@
 <?php
-// TODO
-//  * Tags for feeds
-//  * Entry --guid-- => id
-//  * Delete old tags
-
 define('DATA_DIR', 'data/');
 
 if(!is_file(DATA_DIR.'config.php')) {
