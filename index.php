@@ -14,12 +14,12 @@ if(!is_file(DATA_DIR.DB_FILE)) {
     unlink('inc/config.php');
     header('location: index.php');
 }
-require('inc/config.php');
-$dbh = new PDO('sqlite:'.DATA_DIR.DB_FILE);
+require('inc/config.class.php');
+$GLOBALS['dbh'] = new PDO('sqlite:'.DATA_DIR.DB_FILE);
 $dbh->query('PRAGMA foreign_keys = ON');
 
-$config = load_config();
-date_default_timezone_set($config['timezone']);
+$GLOBALS['config'] = new Config();
+date_default_timezone_set($config->get('timezone'));
 require('inc/rain.tpl.class.php');
 $tpl = new RainTPL;
 require('inc/functions.php');
