@@ -15,14 +15,14 @@ function curl_downloader($urls) {
     $results = array();
     $status_codes = array();
 
-    if(ini_get('open_basedir') == '' && ini_get('safe_mode') === false) { // Disable followlocation option if this is activated, to avoid warnings
+    if (ini_get('open_basedir') == '' && ini_get('safe_mode') === false) { // Disable followlocation option if this is activated, to avoid warnings
         $follow_redirect = true;
     }
     else {
         $follow_redirect = false;
     }
 
-    foreach($chunks as $chunk) {
+    foreach ($chunks as $chunk) {
         $multihandler = curl_multi_init();
         $handlers = array();
         $total_feed_chunk = count($chunk) + count($results);
@@ -67,9 +67,9 @@ function refresh_feeds($feeds) {
 
     $download = curl_downloader($feeds);
     $errors = array();
-    foreach($download['status_codes'] as $url=>$status_code) {
+    foreach ($download['status_codes'] as $url=>$status_code) {
         // Keep the errors to return them and display them to the user
-        if($status_code != 200) {
+        if ($status_code != 200) {
             $errors[] = $url;
         }
     }
@@ -116,11 +116,11 @@ function refresh_feeds($feeds) {
     $query_tags->bindParam(':name', $tag_name);
     $query_tags->bindParam(':entry_guid', $guid);
 
-    foreach($updated_feeds as $url=>$feed) {
+    foreach ($updated_feeds as $url=>$feed) {
         $i = array_search($url, $feeds);
         // Parse feed
         $parsed = feed2array($feed);
-        if(empty($parsed) || $parsed === false) { // If an error has occurred, keep a trace of it
+        if (empty($parsed) || $parsed === false) { // If an error has occurred, keep a trace of it
             $errors[] = $url;
         }
 
@@ -134,7 +134,7 @@ function refresh_feeds($feeds) {
 
         // Insert / Update entries
         $items = $parsed['items'];
-        foreach($items as $event) {
+        foreach ($items as $event) {
             $authors = isset($event['authors']) ? json_encode($event['authors']) : '';
             $title = isset($event['title']) ? $event['title'] : '';
             $links = isset($event['links']) ? json_encode(multiarray_filter('rel', 'self', $event['links'])) : '';
@@ -148,13 +148,13 @@ function refresh_feeds($feeds) {
 
             $query_ensure_entries->execute();
             $query_entries->execute();
-            if($query_entries->rowCount() == 0) {
+            if ($query_entries->rowCount() == 0) {
                 // If no queries were added or removed (constrains not satisfied for instance), skip the tag insertion
                 continue;
             }
 
-            if(!empty($event['categories'])) {
-                foreach($event['categories'] as $tag_name) {
+            if (!empty($event['categories'])) {
+                foreach ($event['categories'] as $tag_name) {
                     // Create tags if needed, get their id and add bind the articles to these tags
                     $query_insert_tag->execute();
                     $query_tags->execute();
@@ -165,4 +165,28 @@ function refresh_feeds($feeds) {
     $dbh->commit();
 
     return $errors;
+}
+
+
+function add_feed($url) {
+    /* Add a feed in the database and refresh it.
+     * Returns true upon success, false otherwise.
+     */
+    global $dbh;
+
+    if (filter_var($url, FILTER_VALIDATE_URL)) {
+        $query = $dbh->prepare('INSERT OR IGNORE INTO feeds(url) VALUES(:url)');
+        $query->execute(array(':url'=>$url));
+
+        if ($query->rowCount() == 0) {
+            return false;
+        }
+        else {
+            refresh_feeds(array($dbh->lastInsertedId()=>$url));
+            return true;
+        }
+    }
+    else {
+        return false;
+    }
 }
