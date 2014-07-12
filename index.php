@@ -5,14 +5,15 @@
 //  * Delete old tags
 
 define('DATA_DIR', 'data/');
-define('DB_FILE', 'db.sqlite3');
 
-if(!is_file(DATA_DIR.DB_FILE)) {
+if(!is_file(DATA_DIR.'config.php')) {
     require('inc/install.inc.php');
 
     install();
     exit();
 }
+
+require(DATA_DIR.'config.php');
 
 $dbh = new PDO('sqlite:'.DATA_DIR.DB_FILE);
 $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
