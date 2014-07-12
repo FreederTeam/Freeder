@@ -12,6 +12,7 @@ $install_template =
     <form method="post" action="">
         <p><label for="login">Login: </label><input type="text" name="login" id="login"/></p>
         <p><label for="password">Password: </label><input type="password" name="password" id="password"/></p>
+        <p><label for="timezone">Timezone : </label><input type="text" name="timezone" id="timezone" value="Europe/Paris"/></p>
 
         <p><input type="submit" value="Install !"/></p>
     </form>
@@ -27,7 +28,7 @@ define('DB_FILE', 'db.sqlite3');
 ";
 
 
-/** 
+/**
  * Create data directory.
  */
 function install_data_dir() {
@@ -45,11 +46,9 @@ function install_data_dir() {
 function install_config() {
 	global $config_template;
 
-	if (!is_file(DATA_DIR.'config.php')) {
-		if (false === file_put_contents(DATA_DIR.'config.php', $config_template)) {
-			die('error: Unable to create "'.DATA_DIR.'config.php". Check the writing rights in "'.DATA_DIR.'"');
-		}
-	}
+    if (false === file_put_contents(DATA_DIR.'config.php', $config_template)) {
+        die('error: Unable to create "'.DATA_DIR.'config.php". Check the writing rights in "'.DATA_DIR.'"');
+    }
 }
 
 
@@ -59,20 +58,36 @@ function install_config() {
 function install_db() {
 	// TODO: handle errors
 	$dbh = new PDO('sqlite:'.DATA_DIR.DB_FILE);
-	$dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    $dbh->query('PRAGMA foreign_keys = ON');
 
 	$salt = uniqid(mt_rand(), true);
 	$password = sha1($salt.$_POST['password']);
 
-	$dbh->beginTransaction();
-	$dbh->query('CREATE TABLE IF NOT EXISTS users(id integer, login text, password text, salt text, admin int)');
-	$query = $dbh->prepare('INSERT INTO users(id, login, password, salt, admin) VALUES("", :login, :password, :salt, 1)');
-	$query->bindValue(':login', $_POST['login']);
-	$query->bindValue(':password', $password);
-	$query->bindValue(':salt', $salt);
-	$query->execute();
+    $dbh->beginTransaction();
 
-	$dbh->query('PRAGMA foreign_keys = ON');
+    // Create the table to handle users
+    $dbh->query('CREATE TABLE IF NOT EXISTS users(
+        id INTEGER PRIMARY KEY NOT NULL,
+        login TEXT UNIQUE,
+        password TEXT,
+        salt TEXT,
+        is_admin INT DEFAULT 0
+    )');
+	$query = $dbh->prepare('INSERT INTO users(id, login, password, salt, is_admin) VALUES("", :login, :password, :salt, 1)');
+    $query->execute(array(
+        ':login'=>$_POST['login'],
+        ':password'=>$password,
+        ':salt'=>$salt)
+    );
+
+    // Create the table to store config options
+    $dbh->query('CREATE TABLE IF NOT EXISTS config(
+        option TEXT,
+        value TEXT
+    )');
+    // Insert timezone in the config
+    $query = $dbh->prepare('INSERT INTO config(option, value) VALUES("timezone", :value)');
+    $query->execute(array(':value'=>$_POST['timezone']));
 
 	// Create the table to store feeds
 	$dbh->query('CREATE TABLE IF NOT EXISTS feeds(
@@ -87,7 +102,7 @@ function install_db() {
 
 	// Useful indexes on feeds table
 	$dbh->query('CREATE UNIQUE INDEX IF NOT EXISTS url ON feeds(url)');
-	
+
 	// Create table to store entries
 	$dbh->query('CREATE TABLE IF NOT EXISTS entries(
 		id INTEGER PRIMARY KEY NOT NULL,
@@ -138,12 +153,12 @@ function install_db() {
 function install() {
     global $install_template;
 
-    if (!empty($_POST['login']) && !empty($_POST['password'])) {
+    if (!empty($_POST['login']) && !empty($_POST['password']) && !empty($_POST['timezone'])) {
 		install_data_dir();
 
 		install_config();
-		require(DATA_DIR.'config.php');
-		
+        require(DATA_DIR.'config.php');
+
 		install_db();
 
         header('location: index.php');
