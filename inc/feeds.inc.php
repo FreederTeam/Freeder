@@ -107,7 +107,7 @@ function refresh_feeds($feeds) {
     $query_insert_tag->bindParam(':name', $tag_name);
 
     // Finally, query to register the tags of the article
-    $query_tags = $dbh->prepare('INSERT INTO tags_entries(tag_id, entry_guid) VALUES((SELECT id FROM tags WHERE name=:name), (SELECT guid FROM entries WHERE guid=:entry_guid))');
+    $query_tags = $dbh->prepare('INSERT INTO tags_entries(tag_id, entry_id) VALUES((SELECT id FROM tags WHERE name=:name), (SELECT id FROM entries WHERE guid=:entry_guid))');
     $query_tags->bindParam(':name', $tag_name);
     $query_tags->bindParam(':entry_guid', $guid);
 

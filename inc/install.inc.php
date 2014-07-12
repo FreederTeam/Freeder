@@ -88,9 +88,9 @@ function install() {
         // Create table to store association between tags and entries
         $dbh->query('CREATE TABLE IF NOT EXISTS tags_entries(
             tag_id INTEGER,
-            entry_guid TEXT,
+            entry_id INTEGER,
             FOREIGN KEY(tag_id) REFERENCES tags(id) ON DELETE CASCADE,
-            FOREIGN KEY(entry_guid) REFERENCES entries(guid) ON DELETE CASCADE
+            FOREIGN KEY(entry_id) REFERENCES entries(id) ON DELETE CASCADE
         )');
 
         // TODO : ?
