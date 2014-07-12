@@ -18,3 +18,16 @@ Installation
 
  * `php5-sqlite`
  * `php5-curl`
+
+Coding guidelines
+-----------------
+
+Just look at the actual files, and try to reproduce it (or propose to update it to enhance coding guidelines :).
+
+Please avoid commits with large number of modifications due to spaces to tabs conversions and stuff like this, as their diff is really unreadable.
+
+Related information
+-------------------
+
+* [Quick and dirty benchmark on RSS / ATOM feed parsing](http://phyks.me/2014/07/benchmark_rss.html)
+* [PHP CURL multi (French)](http://lehollandaisvolant.net/index.php?d=2014/05/20/19/21/36-php-faire-plusieurs-requetes-http-simultanees-avec-curl)
