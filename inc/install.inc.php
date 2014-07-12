@@ -44,6 +44,7 @@ function install() {
         $query->execute();
 
         $dbh->query('PRAGMA foreign_keys = ON');
+        // Create the table to store feeds
         $dbh->query('CREATE TABLE IF NOT EXISTS feeds(
             id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
             title TEXT,
@@ -53,8 +54,11 @@ function install() {
             ttl INT DEFAULT 0,
             image TEXT
         )');
-        $dbh->query('CREATE UNIQUE INDEX IF NOT EXISTS url ON feeds(url)');
         // TODO : skip ? language ? (not in Atom)
+        // Useful indexes on feeds table
+        $dbh->query('CREATE UNIQUE INDEX IF NOT EXISTS url ON feeds(url)');
+
+        // Create table to store entries
         $dbh->query('CREATE TABLE IF NOT EXISTS entries(
             feed_id INTEGER NOT NULL,
             authors TEXT,
@@ -72,25 +76,31 @@ function install() {
             FOREIGN KEY(feed_id) REFERENCES feeds(id) ON DELETE CASCADE
         )');
         // TODO : comments ? (not in Atom ?)
+
+        // Create table to store tags
         $dbh->query('CREATE TABLE IF NOT EXISTS tags(
             id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
             name TEXT UNIQUE COLLATE NOCASE,
             is_user_tag INTEGER
         )');
+
+        // Create table to store association between tags and entries
         $dbh->query('CREATE TABLE IF NOT EXISTS tags_entries(
             tag_id INTEGER,
             entry_guid TEXT,
             FOREIGN KEY(tag_id) REFERENCES tags(id) ON DELETE CASCADE,
             FOREIGN KEY(entry_guid) REFERENCES entries(guid) ON DELETE CASCADE
         )');
+
+        // TODO : ?
         $dbh->query('CREATE TABLE IF NOT EXISTS tags_feeds(
             tag_id INTEGER,
             feed_id INTEGER,
             FOREIGN KEY(tag_id) REFERENCES tags(id) ON DELETE CASCADE,
             FOREIGN KEY(feed_id) REFERENCES feeds(id) ON DELETE CASCADE
         )');
-        // TODO : Add indexes in db
         $dbh->commit();
+        // TODO : Add indexes in db
 
         header('location: index.php');
         exit();
