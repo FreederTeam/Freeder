@@ -14,8 +14,8 @@ if(!is_file(DATA_DIR.DB_FILE)) {
     exit();
 }
 
-$bdd = new PDO('sqlite:'.DATA_DIR.DB_FILE);
-$bdd->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+$dbh = new PDO('sqlite:'.DATA_DIR.DB_FILE);
+$dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
 
 // ===================================================
@@ -61,7 +61,7 @@ $feeds = array(
     3=>"https://phyks.me/rss.xml"
 );
 // Initialize db
-$query = $bdd->prepare('INSERT OR IGNORE INTO feeds(url) VALUES(:url)');
+$query = $dbh->prepare('INSERT OR IGNORE INTO feeds(url) VALUES(:url)');
 $query->bindParam(':url', $url);
 foreach($feeds as $url) {
     $query->execute();

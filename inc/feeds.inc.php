@@ -58,7 +58,7 @@ function refresh_feeds($feeds) {
     /* Refresh the specified feeds and returns an array with URLs in error
      * $feeds should be an array of ids as keys and urls as values
      * */
-    global $bdd;
+    global $dbh;
 
     $download = curl_downloader($feeds);
     $errors = array();
@@ -72,9 +72,9 @@ function refresh_feeds($feeds) {
     $updated_feeds = $download['results'];
 
     // Put everything in a transaction to make it faster
-    $bdd->beginTransaction();
+    $dbh->beginTransaction();
     // Query to update feeds table with latest infos in the RSS / ATOM
-    $query_feeds = $bdd->prepare('UPDATE feeds SET title=:title, links=:links, description=:description, ttl=:ttl, image=:image WHERE url=:old_url');
+    $query_feeds = $dbh->prepare('UPDATE feeds SET title=:title, links=:links, description=:description, ttl=:ttl, image=:image WHERE url=:old_url');
     $query_feeds->bindParam(':title', $feed_title);
     $query_feeds->bindParam(':links', $feed_links);
     $query_feeds->bindParam(':description', $feed_description);
@@ -84,10 +84,10 @@ function refresh_feeds($feeds) {
 
     // Two queries, to upsert (update OR insert) entries : create a new entry (or ignore it if already exists) and update the necessary values
     // TODO : I believe this can be optimized, however I do not have any good idea for now…
-    $query_ensure_entries = $bdd->prepare('INSERT OR IGNORE INTO entries(feed_id, guid) VALUES(:feed_id, :guid)');
+    $query_ensure_entries = $dbh->prepare('INSERT OR IGNORE INTO entries(feed_id, guid) VALUES(:feed_id, :guid)');
     $query_ensure_entries->bindParam(':guid', $guid);
     $query_ensure_entries->bindParam(':feed_id', $i, PDO::PARAM_INT);
-    $query_entries = $bdd->prepare('UPDATE entries SET authors=:authors, title=:title, links=:links, description=:description, content=:content, enclosures=:enclosures, comments=:comments, pubDate=:pubDate, lastUpdate=:lastUpdate WHERE guid=:guid');
+    $query_entries = $dbh->prepare('UPDATE entries SET authors=:authors, title=:title, links=:links, description=:description, content=:content, enclosures=:enclosures, comments=:comments, pubDate=:pubDate, lastUpdate=:lastUpdate WHERE guid=:guid');
     $query_entries->bindParam(':authors', $authors);
     $query_entries->bindParam(':title', $title);
     $query_entries->bindParam(':links', $links);
@@ -100,14 +100,14 @@ function refresh_feeds($feeds) {
     $query_entries->bindParam(':lastUpdate', $last_update, PDO::PARAM_INT);
 
     // Query to insert tags if not already existing
-    $query_insert_tag = $bdd->prepare('INSERT OR IGNORE INTO tags(name) VALUES(:name)');
+    $query_insert_tag = $dbh->prepare('INSERT OR IGNORE INTO tags(name) VALUES(:name)');
     $query_insert_tag->bindParam(':name', $tag_name);
     // Query to get the id of a tag by its name
-    $query_select_tag = $bdd->prepare('SELECT id FROM tags WHERE name=:name');
+    $query_select_tag = $dbh->prepare('SELECT id FROM tags WHERE name=:name');
     $query_select_tag->bindParam(':name', $tag_name);
 
     // Finally, query to register the tags of the article
-    $query_tags = $bdd->prepare('INSERT INTO tags_entries(tag_id, entry_guid) VALUES(:tag_id, :entry_guid)');
+    $query_tags = $dbh->prepare('INSERT INTO tags_entries(tag_id, entry_guid) VALUES(:tag_id, :entry_guid)');
     $query_tags->bindParam(':tag_id', $tag_id, PDO::PARAM_INT);
     $query_tags->bindParam(':entry_guid', $guid);
     // TODO : ^ The two previous queries might be grouped in only one query ?
@@ -166,7 +166,7 @@ function refresh_feeds($feeds) {
             }
         }
     }
-    $bdd->commit();
+    $dbh->commit();
 
     return $errors;
 }
