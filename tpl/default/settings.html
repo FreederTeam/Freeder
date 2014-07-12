@@ -1,0 +1,67 @@
+{include="_begin"}
+<div id="settings_preferences">
+    {* Script preferences *}
+    <form method="post" action="">
+        <fieldset>
+            <legend>Synchronization</legend>
+            <p>
+                <input type="radio" name="synchronization_type" value="ajax" {if="$config->get('synchronization_type') == 'ajax'"} checked="checked"{/if}/><label>Ajax</label><br/>
+                Update the feeds in the background at each page call.
+            </p>
+            <p>
+                <input type="radio" name="synchronization_type" value="cron" {if="$config->get('synchronization_type') == 'cron'"} checked="checked"{/if}/><label>Cron</label><br/>
+                Use a crontask to update the feeds regularly.
+            </p>
+        </fieldset>
+
+        <fieldset>
+            <legend>Template</legend>
+
+            <p>
+                <label for="template">Template : </label>
+                <select name="template" id="template">
+                    {loop="$templates"}
+                        <option value="{$value}">{$value}</option>
+                    {/loop}
+                </select>
+            </p>
+        </fieldset>
+
+        <fieldset>
+            <legend>Misc</legend>
+
+            <p><label for="timezone">Timezone : </label><input type="text" name="timezone" id="timezone" value="{$config->get('timezone')}"/></p>
+            <p>Tag entries from the tags in the feeds ?
+            <input type="radio" name="use_tags_from_feeds" id="use_tags_from_feeds_yes" value="1" {if="$config->get('use_tags_from_feeds') != 0"}checked="checked"{/if}/><label for=use_tags_from_feeds_yes">Yes</label>
+                <input type="radio" name="use_tags_from_feeds" id="use_tags_from_feeds_no" value="0" {if="$config->get('use_tags_from_feeds') == 0"}checked="checked"{/if}/><label for=use_tags_from_feeds_no">No</label>
+                </p>
+        </fieldset>
+
+        <p><input type="submit" value="Save"/></p>
+    </form>
+</div>
+
+<div id="settings_feeds">
+    {* Feeds management *}
+    <h2>Add a feed</h2>
+    <form method="post" action="">
+        <p><input type="text" name="feed_url" id="feed_url" placeholder="Feed URL"/></p>
+        <p><input type="submit" value="Add feed"/></p>
+    </form>
+    <h2>List of available feeds</h2>
+    <table>
+        {loop="$feeds"}
+            <tr>
+                <td>{$value['title']}</td>
+                <td>{$value['url']}</td>
+                <td>Edit</td>
+                <td>Delete</td>
+            </tr>
+        {/loop}
+    </table>
+</div>
+
+<div id="settings_import_export">
+    {* Import / Export panel *}
+</div>
+{include="_end"}

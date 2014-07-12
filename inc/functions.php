@@ -22,3 +22,30 @@ function multiarray_filter($field, $value, $array) {
     }
     return $return;
 }
+
+function startswith($haystack, $needle) {
+     $length = strlen($needle);
+     return (substr($haystack, 0, $length) === $needle);
+}
+
+function endswith($haystack, $needle) {
+    $length = strlen($needle);
+    if ($length == 0) {
+        return true;
+    }
+
+    return (substr($haystack, -$length) === $needle);
+}
+
+function list_templates() {
+    /* List all the available templates */
+    return array_map('ucfirst', array_filter(scandir(TPL_DIR), function($item) { return is_dir(TPL_DIR.$item) && !startswith($item, '.'); }));
+}
+
+function get_generation_time($start_generation_time) {
+    $round = round(microtime(true) - $start_generation_time, 2).'s';
+    if($round == '0s') {
+        $round = round((microtime(true) - $start_generation_time)*1000, 3).'ms';
+    }
+    return $round;
+}

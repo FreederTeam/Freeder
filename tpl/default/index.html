@@ -1,0 +1,14 @@
+{include="_begin"}
+
+<main>
+<p><a href="?do=update">Update !</a></p>
+<p><a href="?do=settings">Settings</a></p>
+{loop="$entries"}
+    <article>
+        <h2>{$value['title']}</h2>
+        <div>{$value['description']}</div>
+    </article>
+{/loop}
+</main>
+
+{include="_end"}

@@ -187,7 +187,7 @@ function add_feed($url) {
             return false;
         }
         else {
-            refresh_feeds(array($GLOBALS['dbh']->lastInsertedId()=>$url), true);
+            refresh_feeds(array($GLOBALS['dbh']->lastInsertId()=>$url), true);
             return true;
         }
     }
@@ -225,11 +225,18 @@ function edit_feed($old_url, $new_url, $new_title='') {
             return false;
         }
         else {
-            refresh_feeds(array($GLOBALS['dbh']->lastInsertedId()=>$new_url));
+            refresh_feeds(array($GLOBALS['dbh']->lastInsertId()=>$new_url));
             return true;
         }
     }
     else {
         return false;
     }
+}
+
+
+function get_feeds() {
+    /* TODO */
+    $query = $GLOBALS['dbh']->query('SELECT id, title, url, links, description, ttl, image FROM feeds');
+    return $query->fetchAll(PDO::FETCH_ASSOC);
 }

@@ -1,6 +1,6 @@
 <?php
 // Stuff for tests
-$feeds = array(
+$test_feeds = array(
     1=>"http://www.0x0ff.info/feed/",
     2=>"http://a3nm.net/blog/feed.xml",
     3=>"https://phyks.me/rss.xml"
@@ -46,6 +46,6 @@ $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 // Initialize db
 $query = $dbh->prepare('INSERT OR IGNORE INTO feeds(url) VALUES(:url)');
 $query->bindParam(':url', $url);
-foreach($feeds as $url) {
+foreach($test_feeds as $url) {
     $query->execute();
 }
