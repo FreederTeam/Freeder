@@ -78,3 +78,4 @@ refresh_feeds($feeds);
 var_dump(microtime(true) - $time);
 
 $tpl->draw('index');
+
