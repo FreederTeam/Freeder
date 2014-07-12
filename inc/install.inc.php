@@ -74,7 +74,8 @@ function install() {
         // TODO : comments ? (not in Atom ?)
         $dbh->query('CREATE TABLE IF NOT EXISTS tags(
             id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-            name TEXT UNIQUE COLLATE NOCASE
+            name TEXT UNIQUE COLLATE NOCASE,
+            is_user_tag INTEGER
         )');
         $dbh->query('CREATE TABLE IF NOT EXISTS tags_entries(
             tag_id INTEGER,
