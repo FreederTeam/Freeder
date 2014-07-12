@@ -51,10 +51,11 @@ switch($do) {
         break;
 
     case 'update':
-        if(DEBUG) {
-            require('inc/tests.php');
-            refresh_feeds($test_feeds);
+        $feeds_to_refresh = array();
+        foreach($feeds as $feed) {
+            $feeds_to_refresh[$feed['id']] = $feed['url'];
         }
+        refresh_feeds($feeds_to_refresh);
         header('location: index.php');
         exit();
         break;
