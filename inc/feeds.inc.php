@@ -107,7 +107,7 @@ function refresh_feeds($feeds) {
     $query_insert_tag->bindParam(':name', $tag_name);
 
     // Finally, query to register the tags of the article
-    $query_tags = $dbh->prepare('INSERT INTO tags_entries(tag_id, entry_guid) VALUES((SELECT id FROM tags WHERE name=:name), :entry_guid)');
+    $query_tags = $dbh->prepare('INSERT INTO tags_entries(tag_id, entry_guid) VALUES((SELECT id FROM tags WHERE name=:name), (SELECT guid FROM entries WHERE guid=:entry_guid))');
     $query_tags->bindParam(':name', $tag_name);
     $query_tags->bindParam(':entry_guid', $guid);
 
@@ -137,11 +137,7 @@ function refresh_feeds($feeds) {
             $content = isset($event['content']) ? $event['content'] : '';
             $enclosures = isset($event['enclosures']) ? json_encode($event['enclosures']) : '';
             $comments = isset($event['comments']) ? $event['comments'] : '';
-            if(empty($event['guid'])) {  // A guid (id in ATOM) has to be given according to the spec, if it is not the case, reject the feed
-                continue;
-                // TODO : Remove this condition if not using guid as internal identifiers for the app
-            }
-            $guid = $event['guid'];
+            $guid = isset($event['guid']) ? $event['guid'] : '';
             $pubDate = isset($event['pubDate']) ? $event['pubDate'] : '';
             $last_update = isset($event['updated']) ? $event['updated'] : '';
 

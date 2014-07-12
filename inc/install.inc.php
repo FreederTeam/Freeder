@@ -60,6 +60,7 @@ function install() {
 
         // Create table to store entries
         $dbh->query('CREATE TABLE IF NOT EXISTS entries(
+            id INTEGER PRIMARY KEY NOT NULL,
             feed_id INTEGER NOT NULL,
             authors TEXT,
             title TEXT,
@@ -68,7 +69,7 @@ function install() {
             content TEXT,
             enclosures TEXT,
             comments TEXT,
-            guid TEXT PRIMARY KEY NOT NULL,
+            guid TEXT UNIQUE,
             pubDate INTEGER,
             lastUpdate INTEGER,
             is_sticky INTEGER DEFAULT 0,
