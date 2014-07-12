@@ -1,5 +1,5 @@
 <?php
-require('feed2array.inc.php');
+require('feed2array.php');
 
 // TODO : Tags for feeds
 

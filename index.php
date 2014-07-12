@@ -2,7 +2,7 @@
 define('DATA_DIR', 'data/');
 
 if(!is_file(DATA_DIR.'config.php')) {
-    require('inc/install.inc.php');
+    require('inc/install.php');
 
     install();
     exit();
@@ -70,8 +70,8 @@ define('DEFAULT_TIMEZONE', 'Europe/Paris');  // TODO : Move it in the global con
 date_default_timezone_set(DEFAULT_TIMEZONE);
 require('inc/rain.tpl.class.php');
 $tpl = new RainTPL;
-require('inc/functions.inc.php');
-require('inc/feeds.inc.php');
+require('inc/functions.php');
+require('inc/feeds.php');
 
 $time = microtime(true);
 refresh_feeds($feeds);
