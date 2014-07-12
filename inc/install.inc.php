@@ -22,11 +22,13 @@ $install_template =
 function install() {
     global $install_template;
 
-    if(!empty($_POST['login']) && !empty($_POST['password'])) {
-        if(!is_dir(DATA_DIR)) {
-            mkdir(DATA_DIR);
-        }
+	if(!file_exists(DATA_DIR)) {
+		if(!mkdir(DATA_DIR)) {
+			exit("error: Unable to create data directory. Check the writing rights of Freeder root directory. The user who executes Freeder — www-data for instance — should be able to write in this directory. You may prefere to create the /data directory on your own and allow www-data to write only in /data instead of in the whole Freeder root.");
+		}
+	}
 
+    if(!empty($_POST['login']) && !empty($_POST['password'])) {
         $bdd = new PDO('sqlite:'.DATA_DIR.DB_FILE);
         $bdd->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
