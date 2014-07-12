@@ -5,7 +5,7 @@ function multiarray_search($field, $value, $array, $default_value) {
      */
     foreach($array as $key=>$val) {
         if($val[$field] == $value) {
-            return $array[$key];
+            return $val;
         }
     }
     return $default_value;
