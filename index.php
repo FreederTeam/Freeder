@@ -44,6 +44,11 @@ switch($do) {
                 exit('Erreur - TODO');
             }
         }
+        if(!empty($_GET['delete_feed'])) {
+            delete_feed(intval($_GET['delete_feed']));
+            header('location: index.php?do=settings');
+            exit();
+        }
         $tpl->assign('config', $config);
         $tpl->assign('templates', list_templates());
         $tpl->assign('feeds', $feeds);

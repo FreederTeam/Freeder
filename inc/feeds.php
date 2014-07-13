@@ -197,18 +197,11 @@ function add_feed($url) {
 }
 
 
-function delete_feed($url) {
+function delete_feed($id) {
     /* Remove a feed and all associated tags / entries
-     * Returns true in case of success, false otherwise
      */
-    if (filter_var($url, FILTER_VALIDATE_URL)) {
-        $query = $GLOBALS['dbh']->prepare('DELETE FROM feeds WHERE url=:url');
-        $query->execute(array(':url'=>$url));
-        return true;
-    }
-    else {
-        return false;
-    }
+    $query = $GLOBALS['dbh']->prepare('DELETE FROM feeds WHERE id=:id');
+    $query->execute(array(':id'=>$id));
 }
 
 

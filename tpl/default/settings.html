@@ -55,7 +55,7 @@
                 <td>{$value['title']}</td>
                 <td>{$value['url']}</td>
                 <td>Edit</td>
-                <td>Delete</td>
+                <td><a href="?do=settings&amp;delete_feed={$value['id']}">Delete</a></td>
             </tr>
         {/loop}
     </table>
