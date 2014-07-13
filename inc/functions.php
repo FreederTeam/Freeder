@@ -39,7 +39,18 @@ function endswith($haystack, $needle) {
 
 function list_templates() {
     /* List all the available templates */
-    return array_map('ucfirst', array_filter(scandir(TPL_DIR), function($item) { return is_dir(TPL_DIR.$item) && !startswith($item, '.'); }));
+    $paths = array_filter(scandir(TPL_DIR), function($item) { return is_dir(TPL_DIR.$item) && !startswith($item, '.'); });
+    $names = array_map('ucfirst', $paths);
+    $templates = array();
+    foreach($paths as $key=>$path) {
+        $path .= '/';
+        $templates[] = array(
+            'path'=>$path,
+            'name'=>$names[$key],
+            'current'=>$path == $GLOBALS['config']->template
+        );
+    }
+    return $templates;
 }
 
 function get_generation_time($start_generation_time) {

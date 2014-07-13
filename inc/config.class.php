@@ -20,8 +20,13 @@ class Config {
     }
 
     public function load() {
-        $config = $GLOBALS['dbh']->query('SELECT option, value FROM config');
-        $config = array_merge($this->default_config, $config->fetchall(PDO::FETCH_ASSOC));
+        $config_from_db = $GLOBALS['dbh']->query('SELECT option, value FROM config');
+        $config_from_db = $config_from_db !== FALSE ? $config_from_db->fetchall(PDO::FETCH_ASSOC) : array();
+        $config = array();
+        foreach($config_from_db as $config_option) {
+            $config[$config_option['option']] = $config_option['value'];
+        }
+        $config = array_merge($this->default_config, $config);
 
         foreach($config as $option=>$value) {
             $this->$option = $value;
@@ -35,9 +40,10 @@ class Config {
         $query_insert->bindParam(':option', $option);
         $query_update = $GLOBALS['dbh']->prepare('UPDATE config SET value=:value WHERE option=:option');
         $query_update->bindParam(':value', $value);
+        $query_update->bindParam(':option', $option);
 
-        foreach($this->config as $option=>$value) {
-            if($option == 'default_config') {
+        foreach($this as $option=>$value) {
+            if(!isset($this->default_config[$option])) {
                 continue;
             }
             $query_insert->execute();

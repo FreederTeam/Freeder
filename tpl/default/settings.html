@@ -5,23 +5,26 @@
         <fieldset>
             <legend>Synchronization</legend>
             <p>
-                <input type="radio" name="synchronization_type" value="ajax" {if="$config->synchronization_type == 'ajax'"} checked="checked"{/if}/><label>Ajax</label><br/>
+                <input type="radio" name="synchronization_type" id="synchronization_type_ajax" value="ajax" {if="$config->synchronization_type == 'ajax'"} checked="checked"{/if}/><label for="synchronization_type_ajax"> Ajax</label><br/>
                 Update the feeds in the background at each page call.
             </p>
             <p>
-                <input type="radio" name="synchronization_type" value="cron" {if="$config->synchronization_type == 'cron'"} checked="checked"{/if}/><label>Cron</label><br/>
+                <input type="radio" name="synchronization_type" id="synchronization_type_webcron" value="webcron" {if="$config->synchronization_type == 'webcron'"} checked="checked"{/if}/><label for="synchronization_type_webcron"> Webcron</label><br/>
+                Use a webcron task to update the feeds regularly.
+            </p>
+            <p>
+                <input type="radio" name="synchronization_type" id="synchronization_type_cron" value="cron" {if="$config->synchronization_type == 'cron'"} checked="checked"{/if}/><label for="synchronization_type_cron"> Cron</label><br/>
                 Use a crontask to update the feeds regularly.
             </p>
         </fieldset>
 
         <fieldset>
             <legend>Template</legend>
-
             <p>
-                <label for="template">Template : </label>
+                <label for="template">Template: </label>
                 <select name="template" id="template">
                     {loop="$templates"}
-                        <option value="{$value}">{$value}</option>
+                        <option value="{$value['path']}" {if="$value['current']"}selected="selected"{/if}>{$value['name']}</option>
                     {/loop}
                 </select>
             </p>
@@ -30,8 +33,8 @@
         <fieldset>
             <legend>Misc</legend>
 
-            <p><label for="timezone">Timezone : </label><input type="text" name="timezone" id="timezone" value="{$config->timezone}"/></p>
-            <p>Tag entries from the tags in the feeds ?
+            <p><label for="timezone">Timezone: </label><input type="text" name="timezone" id="timezone" value="{$config->timezone}"/></p>
+            <p>Tag entries from the tags in the feeds?
             <input type="radio" name="use_tags_from_feeds" id="use_tags_from_feeds_yes" value="1" {if="$config->use_tags_from_feeds != 0"}checked="checked"{/if}/><label for=use_tags_from_feeds_yes">Yes</label>
                 <input type="radio" name="use_tags_from_feeds" id="use_tags_from_feeds_no" value="0" {if="$config->use_tags_from_feeds == 0"}checked="checked"{/if}/><label for=use_tags_from_feeds_no">No</label>
                 </p>
