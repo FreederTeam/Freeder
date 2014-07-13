@@ -1,6 +1,6 @@
 <?php
 class Config {
-    private $config = array(  // This is the default config
+    private $default_config = array(  // This is the default config
         'timezone'=>'Europe/Paris',
         'use_tags_from_feeds'=>1,
         'template'=>'default/',
@@ -12,16 +12,20 @@ class Config {
     }
 
     public function get($option) {
-        return isset($this->config[$option]) ? $this->config[$option] : false;
+        return isset($this->$option) ? $this->$option : false;
     }
 
     public function set($option, $value) {
-        $this->config[$option] = $value;
+        $this->$option = $value;
     }
 
     public function load() {
         $config = $GLOBALS['dbh']->query('SELECT option, value FROM config');
-        $this->config = array_merge($this->config, $config->fetchall(PDO::FETCH_ASSOC));
+        $config = array_merge($this->default_config, $config->fetchall(PDO::FETCH_ASSOC));
+
+        foreach($config as $option=>$value) {
+            $this->$option = $value;
+        }
     }
 
     public function save() {
@@ -33,6 +37,9 @@ class Config {
         $query_update->bindParam(':value', $value);
 
         foreach($this->config as $option=>$value) {
+            if($option == 'default_config') {
+                continue;
+            }
             $query_insert->execute();
             $query_update->execute();
         }

@@ -20,9 +20,9 @@ $GLOBALS['dbh'] = new PDO('sqlite:'.DATA_DIR.DB_FILE);
 $dbh->query('PRAGMA foreign_keys = ON');
 
 $GLOBALS['config'] = new Config();
-date_default_timezone_set($config->get('timezone'));
+date_default_timezone_set($config->timezone);
 require('inc/rain.tpl.class.php');
-RainTPL::$tpl_dir = TPL_DIR.$config->get('template');
+RainTPL::$tpl_dir = TPL_DIR.$config->template;
 $tpl = new RainTPL;
 $tpl->assign('start_generation_time', microtime(true));
 require('inc/functions.php');
