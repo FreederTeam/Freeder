@@ -82,7 +82,8 @@ switch($do) {
                 $urls[] = $feed['url'];
             }
 
-            if(empty(add_feeds($urls))) {
+            $errors_refresh = add_feeds($urls);
+            if(empty($errors_refresh)) {
                 // TODO: Feed tags + restore feed title
                 header('location: index.php?do=settings');
                 exit();
