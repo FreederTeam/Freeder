@@ -64,6 +64,9 @@ function refresh_feeds($feeds, $update_feeds_infos=false) {
      * $feeds should be an array of ids as keys and urls as values
      * $update_feeds_infos should be true to update the feed infos from values in the RSS / ATOM
      * */
+    // TODO:
+    //      * Get rid of feed ids
+    //      * If no entries for a feed, it might be an error
     $download = curl_downloader($feeds);
     $errors = array();
     foreach ($download['status_codes'] as $url=>$status_code) {
@@ -175,33 +178,46 @@ function refresh_feeds($feeds, $update_feeds_infos=false) {
 }
 
 
-function add_feed($url) {
-    /* Add a feed in the database and refresh it.
-     * Returns true upon success, false otherwise.
+function add_feeds($urls) {
+    /* Add feeds in the database and refresh them.
+     * $urls is an array of urls
+     * Returns errored urls in array
      */
-    if (filter_var($url, FILTER_VALIDATE_URL)) {
-        $query = $GLOBALS['dbh']->prepare('INSERT OR IGNORE INTO feeds(url) VALUES(:url)');
-        $query->execute(array(':url'=>$url));
-
-        if ($query->rowCount() == 0) {
-            return false;
+    $errors = array();
+    $added = array();
+    $GLOBALS['dbh']->beginTransaction();
+    $query = $GLOBALS['dbh']->prepare('INSERT OR IGNORE INTO feeds(url) VALUES(:url)');
+    $query->bindParam(':url', $url);
+    foreach($urls as $url) {
+        if (filter_var($url, FILTER_VALIDATE_URL)) {
+            $query->execute();
+            $added[$GLOBALS['dbh']->lastInsertId()] = $url;
         }
         else {
-            refresh_feeds(array($GLOBALS['dbh']->lastInsertId()=>$url), true);
-            return true;
+            $errors[] = $url;
         }
     }
-    else {
-        return false;
+    $GLOBALS['dbh']->commit();
+    $errors_refresh = refresh_feeds($added, true);
+    foreach ($errors_refresh as $error) {
+        delete_feed_url($error);
     }
+    return array_merge($errors, $errors_refresh);
 }
 
 
-function delete_feed($id) {
+function delete_feed_id($id) {
     /* Remove a feed and all associated tags / entries
      */
     $query = $GLOBALS['dbh']->prepare('DELETE FROM feeds WHERE id=:id');
     $query->execute(array(':id'=>$id));
+}
+
+function delete_feed_url($url) {
+    /* Remove a feed and all associated tags / entries
+     */
+    $query = $GLOBALS['dbh']->prepare('DELETE FROM feeds WHERE url=:url');
+    $query->execute(array(':url'=>$url));
 }
 
 

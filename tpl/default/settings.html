@@ -52,19 +52,43 @@
         <p><input type="submit" value="Add feed"/></p>
     </form>
     <h2>List of available feeds</h2>
-    <table>
-        {loop="$feeds"}
-            <tr>
-                <td>{$value['title']}</td>
-                <td>{$value['url']}</td>
-                <td>Edit</td>
-                <td><a href="?do=settings&amp;delete_feed={$value['id']}">Delete</a></td>
-            </tr>
-        {/loop}
-    </table>
+    {if="count($feeds) > 0"}
+        <table>
+            {loop="$feeds"}
+                <tr>
+                    <td>{$value['title']}</td>
+                    <td>{$value['url']}</td>
+                    <td>Edit</td>
+                    <td><a href="?do=settings&amp;delete_feed={$value['id']}">Delete</a></td>
+                </tr>
+            {/loop}
+        </table>
+    {else}
+        <p>You did not add any feeds yet.</p>
+    {/if}
 </div>
 
 <div id="settings_import_export">
     {* Import / Export panel *}
+    <h2>Import an OPML file</h2>
+    <form method="post" action="" enctype="multipart/form-data">
+        <input type="hidden" name="MAX_FILE_SIZE" value="1048576" />
+        <p><label for="import">OPML file: </label><input type="file" name="import" id="import"/></p>
+        <p>
+            <input type="submit" value="Import"/>
+        </p>
+    </form>
+    <h2>Export as OPML</h2>
+    <form method="post" action="">
+        <p>
+            <label for="export">Export selected feeds (ctrl+click to select multiple):</label><br/>
+            <select name="export" id="export" multiple>
+                {loop="$feeds"}
+                    <option value="{$value['url']}">{$value['title']}</option>
+                {/loop}
+            </select>
+        </p>
+        <p><input type="submit" value="Export"/></p>
+    </form>
 </div>
 {include="_end"}

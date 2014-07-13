@@ -1,81 +1,113 @@
 <?php
-/* From FreshRSS : https://github.com/marienfressinaud/FreshRSS/ */
-// TODO : Adapt to our code
-function opml_export ($cats) {
-    $txt = '';
+/* Modified version of the functions from FreshRSS : https://github.com/marienfressinaud/FreshRSS/ */
+
+function opml_export($cats) {
+    /* Generate an OPML file to export the feeds.
+     * TODO: Adapt to our code.
+     */
+    $now = new Datetime();
+    $txt = '<?xml version="1.0" encoding="UTF-8"?>'."\n";
+    $txt .= '<opml version="2.0">'."\n";
+    $txt .= "\t".'<head>'."\n";
+    $txt .= "\t\t".'<title>Freeder</title>'."\n";
+    $txt .= "\t\t".'<dateCreated>'.$now->format(DateTime::RFC822).'</dateCreated>'."\n";
+    $txt .= "\t".'</head>'."\n";
+    $txt .= "\t".'<body>'."\n";
 
     foreach ($cats as $cat) {
-        $txt .= '<outline text="' . $cat['name'] . '">' . "\n";
+        $txt .= "\t\t".'<outline text="'.$cat['name'].'">'."\n";
 
         foreach ($cat['feeds'] as $feed) {
-            $txt .= "\t" . '<outline text="' . $feed->name () . '" type="rss" xmlUrl="' . $feed->url () . '" htmlUrl="' . $feed->website () . '" description="' . htmlspecialchars($feed->description(), ENT_COMPAT, 'UTF-8') . '" />' . "\n";
+            $txt .= "\t\t\t".'<outline text="'.$feed->name.'" type="rss" xmlUrl="'.$feed->url.'" htmlUrl="'.$feed->website.'" description="'.htmlspecialchars($feed->description, ENT_COMPAT, 'UTF-8').'" />'."\n";
         }
 
-        $txt .= '</outline>' . "\n";
+        $txt .= "\t\t".'</outline>'."\n";
     }
+    $txt .= "\t".'</body>'."\n";
+    $txt .= '</opml>';
 
     return $txt;
 }
 
-function opml_import ($xml) {
-    $xml = html_only_entity_decode($xml);	//!\ Assume UTF-8
-
-    $dom = new DOMDocument();
-    $dom->recover = true;
-    $dom->strictErrorChecking = false;
-    $dom->loadXML($xml);
-    $dom->encoding = 'UTF-8';
-
-    $opml = simplexml_import_dom($dom);
+function opml_import($xml) {
+    /* Parse an OPML file.
+     * Returns an array of feeds with url, title and associated tags.
+     */
+    // TODO: Encoding problems ?
+    $opml = simplexml_load_string($xml);
 
     if (!$opml) {
-        throw new FreshRSS_Opml_Exception ();
+        return false;
     }
-
-    $catDAO = new FreshRSS_CategoryDAO();
-    $catDAO->checkDefault();
-    $defCat = $catDAO->getDefault();
 
     $categories = array ();
     $feeds = array ();
 
     foreach ($opml->body->outline as $outline) {
-        if (!isset ($outline['xmlUrl'])) {
-            // Catégorie
-            $title = '';
+        if (!isset ($outline['xmlUrl'])) {  // Folder
+            $tag = '';
 
             if (isset ($outline['text'])) {
-                $title = (string) $outline['text'];
-            } elseif (isset ($outline['title'])) {
+                $tag = (string) $outline['text'];
+            }
+            elseif (isset ($outline['title'])) {
+                $tag = (string) $outline['title'];
+            }
+
+            if ($tag) {
+                foreach($outline->outline as $feed) {
+                    if(!isset($feed['xmlUrl'])) {
+                        continue;
+                    }
+
+                    $search = multiarray_search('url', (string) $feed['xmlUrl'], $feeds, false);
+                    if($search === FALSE) {
+                        // Feed was not yet encountered, so add it first
+                        if(isset($feed['title'])) {
+                            $feed_title = (string) $feed['title'];
+                        }
+                        elseif(isset($feed['text'])) {
+                            $feed_title = (string) $feed['text'];
+                        }
+                        else {
+                            $feed_title = '';
+                        }
+
+                        $feeds[] = array(
+                            'url'=>(string) $feed['xmlUrl'],
+                            'title'=>$feed_title,
+                            'tags'=>array()
+                        );
+                        $key = count($feeds) - 1;
+                    }
+                    else {
+                        // Else, append categories to the existing feed
+                        $key = array_search($search, $feeds);
+                    }
+                    $feeds[$key]['tags'][] = $tag;
+                }
+            }
+        }
+        else {  // This is a RSS feed without any folder
+            if(isset($outline['title'])) {
                 $title = (string) $outline['title'];
             }
-
-            if ($title) {
-                // Permet d'éviter les soucis au niveau des id :
-                // ceux-ci sont générés en fonction de la date,
-                // un flux pourrait être dans une catégorie X avec l'id Y
-                // alors qu'il existe déjà la catégorie X mais avec l'id Z
-                // Y ne sera pas ajouté et le flux non plus vu que l'id
-                // de sa catégorie n'exisera pas
-                $title = htmlspecialchars($title, ENT_COMPAT, 'UTF-8');
-                $catDAO = new FreshRSS_CategoryDAO ();
-                $cat = $catDAO->searchByName ($title);
-                if ($cat === false) {
-                    $cat = new FreshRSS_Category ($title);
-                    $values = array (
-                        'name' => $cat->name ()
-                    );
-                    $cat->_id ($catDAO->addCategory ($values));
-                }
-
-                $feeds = array_merge ($feeds, getFeedsOutline ($outline, $cat->id ()));
+            elseif(isset($outline['text'])) {
+                $title = (string) $outline['text'];
             }
-        } else {
-            // Flux rss sans catégorie, on récupère l'ajoute dans la catégorie par défaut
-            $feeds[] = getFeed ($outline, $defCat->id());
+            else {
+                $title = '';
+            }
+
+            if(multiarray_search('url', (string) $outline['xmlUrl'], $feeds, false) !== false) {
+                $feeds[] = array(
+                    'url'=>(string) $outline['xmlUrl'],
+                    'title'=>$title,
+                    'tags'=>array()
+                );
+            }
         }
     }
 
-    return array ($categories, $feeds);
+    return $feeds;
 }
-

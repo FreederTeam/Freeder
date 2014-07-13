@@ -52,7 +52,7 @@ switch($do) {
             exit();
         }
         if (!empty($_POST['feed_url'])) {
-            if(add_feed($_POST['feed_url'])) {
+            if(add_feeds(array($_POST['feed_url']))) {
                 header('location: index.php?do=settings');
                 exit();
             }
@@ -61,9 +61,37 @@ switch($do) {
             }
         }
         if (!empty($_GET['delete_feed'])) {
-            delete_feed(intval($_GET['delete_feed']));
+            delete_feed_id(intval($_GET['delete_feed']));
             header('location: index.php?do=settings');
             exit();
+        }
+        if (isset($_FILES['import'])) {
+            if ($_FILES['import']['error'] > 0) {
+                exit();  // TODO: Error during upload
+            }
+            if ($_FILES['import']['size'] > 1048576) {
+                exit();  // TODO: Error, file is too large
+            }
+            require('inc/opml.php');
+            $feeds_opml = opml_import(file_get_contents($_FILES['import']['tmp_name']));
+            if ($feeds_opml === false) {
+                exit('ok');  // TODO: Error, OPML file not valid
+            }
+            $urls = array();
+            foreach($feeds_opml as $feed) {
+                $urls[] = $feed['url'];
+            }
+
+            if(empty(add_feeds($urls))) {
+                // TODO: Feed tags + restore feed title
+                header('location: index.php?do=settings');
+                exit();
+            }
+            else {
+                // Some feeds errorred
+                // TODO
+                exit();
+            }
         }
         $tpl->assign('config', $config);
         $tpl->assign('templates', list_templates());
