@@ -100,9 +100,6 @@ function install_db() {
 		image TEXT
 	)');
 
-	// Useful indexes on feeds table
-	$dbh->query('CREATE UNIQUE INDEX IF NOT EXISTS url ON feeds(url)');
-
 	// Create table to store entries
 	$dbh->query('CREATE TABLE IF NOT EXISTS entries(
 		id INTEGER PRIMARY KEY NOT NULL,
