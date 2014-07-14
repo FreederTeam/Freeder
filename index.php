@@ -1,4 +1,5 @@
 <?php
+session_start();
 define('DATA_DIR', 'data/');
 define('TPL_DIR', 'tpl/');
 define('DEBUG', true);
@@ -7,10 +8,11 @@ if(!is_file(DATA_DIR.'config.php')) {
     require('inc/install.php');
 
     install();
-    exit();
+}
+else {
+    require(DATA_DIR.'config.php');
 }
 
-require(DATA_DIR.'config.php');
 if(!is_file(DATA_DIR.DB_FILE)) {
     unlink(DATA_DIR.'/config.php');
     header('location: index.php');
@@ -28,14 +30,30 @@ $tpl->assign('start_generation_time', microtime(true));
 require('inc/functions.php');
 require('inc/feeds.php');
 require('inc/entries.php');
+require('inc/users.php');
+
+
+if (!empty($_POST['login']) && !empty($_POST['password'])) {
+    $user = check_and_get_user($_POST['login'], $_POST['password']);
+    if ($user !== false) {
+        $_SESSION['user'] = $user;
+    }
+}
+
+if (empty($_SESSION['user']) && $config->anonymous_access == 0) {
+    $tpl->draw('connection');
+    exit();
+}
 
 $do = isset($_GET['do']) ? $_GET['do'] : '';
 
 $feeds = get_feeds();
 
+$tpl->assign('user', isset($_SESSION['user']) ? $_SESSION['user'] : false);
+
 switch($do) {
     case 'settings':
-        if (!empty($_POST['synchronization_type']) && !empty($_POST['template']) && !empty($_POST['timezone']) && isset($_POST['use_tags_from_feeds'])) {
+        if (!empty($_POST['synchronization_type']) && !empty($_POST['template']) && !empty($_POST['timezone']) && isset($_POST['use_tags_from_feeds']) && isset($_POST['anonymous_access'])) {
             $config->synchronization_type = $_POST['synchronization_type'];
             if (is_dir(TPL_DIR.$_POST['template'])) {
                 $config->template = $_POST['template'];
@@ -47,6 +65,7 @@ switch($do) {
                 $config->timezone = $_POST['timezone'];
             }
             $config->use_tags_from_feeds = (int) $_POST['use_tags_from_feeds'];
+            $config->anonymous_access = (int) $_POST['anonymous_access'];
             $config->save();
             header('location: index.php?do=settings');
             exit();
@@ -62,6 +81,11 @@ switch($do) {
         }
         if (!empty($_GET['delete_feed'])) {
             delete_feed_id(intval($_GET['delete_feed']));
+            header('location: index.php?do=settings');
+            exit();
+        }
+        if (!empty($_GET['refresh_feed'])) {
+            refresh_feeds(array(intval($_GET['refresh_feed']) => '')); // TODO
             header('location: index.php?do=settings');
             exit();
         }
@@ -98,7 +122,7 @@ switch($do) {
         $tpl->assign('templates', list_templates());
         $tpl->assign('feeds', $feeds);
         $tpl->draw('settings');
-        break;
+        exit();
 
     case 'update':
         $feeds_to_refresh = array();
@@ -108,10 +132,23 @@ switch($do) {
         refresh_feeds($feeds_to_refresh);
         header('location: index.php');
         exit();
-        break;
+
+    case 'login':
+        if(isset($_SESSION['user'])) {
+            header('location: index.php');
+        }
+        else {
+            $tpl->draw('connection');
+        }
+        exit();
+
+    case 'logout':
+        session_destroy();
+        header('location: index.php');
+        exit();
 
     default:
         $tpl->assign('entries', get_entries());
         $tpl->draw('index');
-        break;
+        exit();
 }

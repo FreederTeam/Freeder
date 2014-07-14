@@ -73,7 +73,7 @@ function install_db() {
         salt TEXT,
         is_admin INT DEFAULT 0
     )');
-	$query = $dbh->prepare('INSERT INTO users(id, login, password, salt, is_admin) VALUES("", :login, :password, :salt, 1)');
+	$query = $dbh->prepare('INSERT INTO users(login, password, salt, is_admin) VALUES(:login, :password, :salt, 1)');
     $query->execute(array(
         ':login'=>$_POST['login'],
         ':password'=>$password,
@@ -158,11 +158,13 @@ function install() {
 
 		install_db();
 
-        header('location: index.php');
-        exit();
+        $_SESSION['user'] = new stdClass;
+        $_SESSION['user']->login = $_POST['login'];
+        $_SESSION['is_admin'] = 1;
     }
     else {
         echo $install_template;
+        exit();
     }
 }
 

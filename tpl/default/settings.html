@@ -31,13 +31,22 @@
         </fieldset>
 
         <fieldset>
+            <legend>User</legend>
+            {* TODO *}
+        </fieldset>
+
+        <fieldset>
             <legend>Misc</legend>
 
             <p><label for="timezone">Timezone: </label><input type="text" name="timezone" id="timezone" value="{$config->timezone}"/></p>
             <p>Tag entries from the tags in the feeds?
-            <input type="radio" name="use_tags_from_feeds" id="use_tags_from_feeds_yes" value="1" {if="$config->use_tags_from_feeds != 0"}checked="checked"{/if}/><label for=use_tags_from_feeds_yes">Yes</label>
+                <input type="radio" name="use_tags_from_feeds" id="use_tags_from_feeds_yes" value="1" {if="$config->use_tags_from_feeds != 0"}checked="checked"{/if}/><label for=use_tags_from_feeds_yes">Yes</label>
                 <input type="radio" name="use_tags_from_feeds" id="use_tags_from_feeds_no" value="0" {if="$config->use_tags_from_feeds == 0"}checked="checked"{/if}/><label for=use_tags_from_feeds_no">No</label>
-                </p>
+            </p>
+            <p>Anonymous access ?
+                <input type="radio" name="anonymous_access" id="anonymous_access_yes" value="1" {if="$config->anonymous_access != 0"}checked="checked"{/if}/><label for="anonymous_access_yes">Yes</label>
+                <input type="radio" name="anonymous_access" id="anonymous_access_no" value="0" {if="$config->anonymous_access == 0"}checked="checked"{/if}/><label for="anonymous_access_no">No</label>
+            </p>
         </fieldset>
 
         <p><input type="submit" value="Save"/></p>
@@ -60,6 +69,7 @@
                     <td>{$value['url']}</td>
                     <td>Edit</td>
                     <td><a href="?do=settings&amp;delete_feed={$value['id']}">Delete</a></td>
+                    <td><a href="?do=settings&amp;refresh_feed={$value['id']}">Refresh</a></td>
                 </tr>
             {/loop}
         </table>

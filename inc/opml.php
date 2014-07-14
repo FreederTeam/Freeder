@@ -33,7 +33,6 @@ function opml_import($xml) {
     /* Parse an OPML file.
      * Returns an array of feeds with url, title and associated tags.
      */
-    // TODO: Encoding problems ?
     $opml = simplexml_load_string($xml);
 
     if (!$opml) {

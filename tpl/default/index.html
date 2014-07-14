@@ -3,6 +3,11 @@
 <main>
 <p><a href="?do=update">Update !</a></p>
 <p><a href="?do=settings">Settings</a></p>
+{if="$user !== false"}
+    <p><a href="?do=logout">Logout</a></p>
+{else}
+    <p><a href="?do=login">Log in</a></p>
+{/if}
 {loop="$entries"}
     <article>
         <h2>{$value['title']}</h2>

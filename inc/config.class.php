@@ -1,10 +1,12 @@
 <?php
 class Config {
+    // TODO: use stdClass ?
     private $default_config = array(  // This is the default config
         'timezone'=>'Europe/Paris',
         'use_tags_from_feeds'=>1,
         'template'=>'default/',
-        'synchronization_type'=>'cron'
+        'synchronization_type'=>'cron',
+        'anonymous_access'=>0
     );
 
     public function __construct() {
