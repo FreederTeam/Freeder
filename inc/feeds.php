@@ -94,11 +94,7 @@ function refresh_feeds($feeds, $update_feeds_infos=false) {
         $query_feeds->bindParam(':old_url', $url);
     }
 
-    // Two queries, to upsert (update OR insert) entries : create a new entry (or ignore it if already exists) and update the necessary values
-    // TODO : I believe this can be optimized, however I do not have any good idea for now…
-    $query_ensure_entries = $GLOBALS['dbh']->prepare('INSERT OR IGNORE INTO entries(feed_id, guid) VALUES(:feed_id, :guid)');
-    $query_ensure_entries->bindParam(':guid', $guid);
-    $query_ensure_entries->bindParam(':feed_id', $i, PDO::PARAM_INT);
+    // Two queries, to upsert (update OR insert) entries : update the existing entry and insert a new one if the update errorred
     $query_entries = $GLOBALS['dbh']->prepare('UPDATE entries SET authors=:authors, title=:title, links=:links, description=:description, content=:content, enclosures=:enclosures, comments=:comments, pubDate=:pubDate, lastUpdate=:lastUpdate WHERE guid=:guid');
     $query_entries->bindParam(':authors', $authors);
     $query_entries->bindParam(':title', $title);
@@ -110,6 +106,18 @@ function refresh_feeds($feeds, $update_feeds_infos=false) {
     $query_entries->bindParam(':guid', $guid);
     $query_entries->bindParam(':pubDate', $pubDate, PDO::PARAM_INT);
     $query_entries->bindParam(':lastUpdate', $last_update, PDO::PARAM_INT);
+    $query_entries_fail = $GLOBALS['dbh']->prepare('INSERT INTO entries(feed_id, authors, title, links, description, content, enclosures, comments, pubDate, lastUpdate, guid) VALUES(:feed_id, :authors, :title, :links, :description, :content, :enclosures, :comments, :pubDate, :lastUpdate, :guid)');
+    $query_entries_fail->bindParam(':feed_id', $feed_id);
+    $query_entries_fail->bindParam(':authors', $authors);
+    $query_entries_fail->bindParam(':title', $title);
+    $query_entries_fail->bindParam(':links', $links);
+    $query_entries_fail->bindParam(':description', $description);
+    $query_entries_fail->bindParam(':content', $content);
+    $query_entries_fail->bindParam(':enclosures', $enclosures);
+    $query_entries_fail->bindParam(':comments', $comments);
+    $query_entries_fail->bindParam(':guid', $guid);
+    $query_entries_fail->bindParam(':pubDate', $pubDate, PDO::PARAM_INT);
+    $query_entries_fail->bindParam(':lastUpdate', $last_update, PDO::PARAM_INT);
 
     if($GLOBALS['config']->get('use_tags_from_feeds') != 0) {
         // Query to insert tags if not already existing
@@ -125,9 +133,10 @@ function refresh_feeds($feeds, $update_feeds_infos=false) {
     foreach ($updated_feeds as $url=>$feed) {
         $i = array_search($url, $feeds);
         // Parse feed
-        $parsed = feed2array($feed);
+        $parsed = @feed2array($feed);
         if (empty($parsed) || $parsed === false) { // If an error has occurred, keep a trace of it
             $errors[] = $url;
+            continue;
         }
 
         if ($update_feeds_infos) {
@@ -149,16 +158,14 @@ function refresh_feeds($feeds, $update_feeds_infos=false) {
             $description = isset($event['description']) ? $event['description'] : '';
             $content = isset($event['content']) ? $event['content'] : '';
             $enclosures = isset($event['enclosures']) ? json_encode($event['enclosures']) : '';
-            $comments = isset($event['comments']) ? $event['comments'] : ((isset($event['links'])) ? multiarray_search('rel', 'replies', $event['links'], '') : '');
+            $comments = isset($event['comments']) ? $event['comments'] : ((isset($event['links'])) ? multiarray_search('rel', 'replies', $event['links'], array('href'=>''))['href'] : '');
             $guid = isset($event['guid']) ? $event['guid'] : '';
             $pubDate = isset($event['pubDate']) ? $event['pubDate'] : '';
             $last_update = isset($event['updated']) ? $event['updated'] : '';
 
-            $query_ensure_entries->execute();
             $query_entries->execute();
             if ($query_entries->rowCount() == 0) {
-                // If no queries were added or removed (constrains not satisfied for instance), skip the tag insertion
-                continue;
+                $query_entries_fail->execute();
             }
 
             if($GLOBALS['config']->get('use_tags_from_feeds') != 0) {
