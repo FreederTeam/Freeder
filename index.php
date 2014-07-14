@@ -53,6 +53,11 @@ $tpl->assign('user', isset($_SESSION['user']) ? $_SESSION['user'] : false);
 
 switch($do) {
     case 'settings':
+        if(!isset($_SESSION['user'])) {
+            // Prevent access to settings from unauthentified users
+            header('location: index.php');
+            exit();
+        }
         if (!empty($_POST['synchronization_type']) && !empty($_POST['template']) && !empty($_POST['timezone']) && isset($_POST['use_tags_from_feeds']) && isset($_POST['anonymous_access'])) {
             $config->synchronization_type = $_POST['synchronization_type'];
             if (is_dir(TPL_DIR.$_POST['template'])) {
@@ -124,7 +129,12 @@ switch($do) {
         $tpl->draw('settings');
         exit();
 
-    case 'update':
+    case 'refresh':
+        if(!isset($_SESSION['user'])) {
+            // Prevent refresh from unauthentified users
+            header('location: index.php');
+            exit();
+        }
         $feeds_to_refresh = array();
         foreach($feeds as $feed) {
             $feeds_to_refresh[$feed['id']] = $feed['url'];
