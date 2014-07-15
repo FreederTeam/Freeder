@@ -7,6 +7,9 @@
  *  Distributed under GNU/LGPL 3 License
  *
  *  @version 2.7.2
+ *  @file
+ *  @brief RainTPL class
+ *  @copyright LGPLv3, Federico Ulfo & the Rain Team
  */
 
 

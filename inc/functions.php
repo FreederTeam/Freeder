@@ -1,13 +1,17 @@
 <?php
-/*  Copyright (c) 2014 Freeder
- *  Released under a MIT License.
- *  See the file LICENSE at the root of this repo for copying permission.
+/** Freeder
+ *  -------
+ *  @file
+ *  @copyright Copyright (c) 2014 Freeder, MIT License, See the LICENSE file for copying permissions.
+ *  @brief Various functions, not specific and widely used.
  */
 
-function multiarray_search($field, $value, $array, $default_value) {
-	/* Search for the first item with value $value for field $field in a 2D array.
-	 * Returns the sub-array or $default_value.
-	 */
+
+/**
+ * Search for the first item with value $value for field $field in a 2D array.
+ * @return The sub-array or $default_value.
+ */
+function multiarray_search($field, $value, $array, $default_value=false) {
 	foreach($array as $key=>$val) {
 		if($val[$field] == $value) {
 			return $val;
@@ -16,9 +20,12 @@ function multiarray_search($field, $value, $array, $default_value) {
 	return $default_value;
 }
 
+
+/**
+ * Filters a 2D array returning all the entries where $field is not equal to $value.
+ * @return The filtered array.
+ */
 function multiarray_filter($field, $value, $array) {
-	/* Filters a 2D array returning all the entries where $field is not equal to $value
-	 */
 	$return = array();
 	foreach($array as $key=>$val) {
 		if($val[$field] != $value) {
@@ -28,11 +35,19 @@ function multiarray_filter($field, $value, $array) {
 	return $return;
 }
 
+
+/**
+ * Check that $haystack starts with $needle.
+ */
 function startswith($haystack, $needle) {
 	 $length = strlen($needle);
 	 return (substr($haystack, 0, $length) === $needle);
 }
 
+
+/**
+ * Check that $haystack ends with $needle.
+ */
 function endswith($haystack, $needle) {
 	$length = strlen($needle);
 	if ($length == 0) {
@@ -42,8 +57,12 @@ function endswith($haystack, $needle) {
 	return (substr($haystack, -$length) === $needle);
 }
 
+
+/**
+ * List all available templates.
+ * @return An array {path, name, current} where path is the template path, name is the template name and current is true if this is the current template, false otherwise.
+ */
 function list_templates() {
-	/* List all the available templates */
 	$paths = array_filter(scandir(TPL_DIR), function($item) { return is_dir(TPL_DIR.$item) && !startswith($item, '.'); });
 	$names = array_map('ucfirst', $paths);
 	$templates = array();
@@ -58,8 +77,14 @@ function list_templates() {
 	return $templates;
 }
 
+
+/**
+ * Get the total generation time.
+ * @param $start_generation_time is a milliseconds timestamp
+ * @return Generation time as a string, with units (seconds or milliseconds)
+ */
 function get_generation_time($start_generation_time) {
-	$round = round(microtime(true) - $start_generation_time, 2).'s';
+	$round = round(microtime(true) - (int)$start_generation_time, 2).'s';
 	if($round == '0s') {
 		$round = round((microtime(true) - $start_generation_time)*1000, 3).'ms';
 	}

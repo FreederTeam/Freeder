@@ -1,12 +1,18 @@
 <?php
-/*  Copyright (c) 2014 Freeder
- *  Released under a MIT License.
- *  See the file LICENSE at the root of this repo for copying permission.
+/** Freeder
+ *  -------
+ *  @file
+ *  @copyright Copyright (c) 2014 Freeder, MIT License, See the LICENSE file for copying permissions.
+ *  @brief Config class used to handle the config stored in database
  */
 
+
+/**
+ * Store the configuration retrieved from database.
+ */
 class Config {
 	// TODO: use stdClass ?
-	private $default_config = array(  // This is the default config
+    private $default_config = array(  /** This is the default config */
 		'timezone'=>'Europe/Paris',
 		'use_tags_from_feeds'=>1,
 		'template'=>'default/',
@@ -18,15 +24,15 @@ class Config {
 		$this->load();
 	}
 
-	public function get($option) {
+    public function get($option) {  /** You can use either Config->attribute or Config->get(attribute) */
 		return isset($this->$option) ? $this->$option : false;
 	}
 
-	public function set($option, $value) {
+	public function set($option, $value) {  /** You can use either Config->attribute=… or Config->set(attribute, value) */
 		$this->$option = $value;
 	}
 
-	public function load() {
+    public function load() {  /** Load the config from the database into this Config object */
 		$config_from_db = $GLOBALS['dbh']->query('SELECT option, value FROM config');
 		$config_from_db = $config_from_db !== FALSE ? $config_from_db->fetchall(PDO::FETCH_ASSOC) : array();
 		$config = array();
@@ -40,7 +46,7 @@ class Config {
 		}
 	}
 
-	public function save() {
+    public function save() {  /* Stores the current config in database */
 		$GLOBALS['dbh']->beginTransaction();
 		// TODO : Same thing that the comment in feeds about UPSERT
 		$query_insert = $GLOBALS['dbh']->prepare('INSERT OR IGNORE INTO config(option) VALUES(:option)');

@@ -1,18 +1,26 @@
 <?php
-/*  Copyright (c) 2014 Freeder
- *  Released under a MIT License.
- *  See the file LICENSE at the root of this repo for copying permission.
+/** Freeder
+ *  -------
+ *  @file
+ *  @copyright Copyright (c) 2014 Freeder, MIT License, See the LICENSE file for copying permissions.
+ *  @brief feed2array lib by Bronco to converts feeds to arrays
  */
 
+
+/**
+ * Converts a feed (RSS or ATOM) to an array
+ *
+ * Modified version, closer to the specifications and handling more elements
+ *
+ * @author bronco@warriordudimanche.net, modified for Freeder
+ * @version 0.2.1
+ * @copyright Original version by bronco : https://github.com/broncowdd/feed2array (under "free and opensource license")
+ *
+ * @param $feed is either a feed content ($load=false) or a feed URI ($load=true)
+ * @param $debug should be set to true to display error messages.
+ * @return returns an (array)array, or (boolean)false if an exception occurs.
+ */
 function feed2array($feed, $load=false, $debug=false) {
-	/* Converts a feed (RSS or ATOM) to an array
-	 *
-	 * Modified version, closer to the specifications and handling more elements
-	 * Original version by bronco : https://github.com/broncowdd/feed2array (under "free and opensource license")
-	 *
-	 * $feed is either a feed content ($load=false) or a feed URI ($load=true)
-	 * $debug should be set to true to display error messages.
-	 */
 	$flux = array('infos' => array(), 'items' => array());
 	try {
 		if($feed_obj = new SimpleXMLElement($feed, LIBXML_NOCDATA, $data_is_url=$load)) {
@@ -360,12 +368,13 @@ function feed2array($feed, $load=false, $debug=false) {
 	}
 }
 
+
+/**
+ * Truncate at a certain length, keeping html tags intact.
+ *
+ * @copyright From cakePHP textHelper framework. Original license: MIT
+ */
 function truncate($text, $length = 500, $ending = '…', $exact=false, $considerHtml=true) {
-	/* Truncate at a certain length, keeping html tags intact
-	 * From cakePHP textHelper framework.
-	 *
-	 * Original license: MIT
-	 */
 	if ($considerHtml) {
 		// if the plain text is shorter than the maximum length, return the whole text
 		if (strlen(preg_replace('/<.*?>/', '', $text)) <= $length) {

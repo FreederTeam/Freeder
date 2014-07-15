@@ -1,21 +1,29 @@
 <?php
-/*  Copyright (c) 2014 Freeder
- *  Released under a MIT License.
- *  See the file LICENSE at the root of this repo for copying permission.
+/** Freeder
+ *  -------
+ *  @file
+ *  @copyright Copyright (c) 2014 Freeder, MIT License, See the LICENSE file for copying permissions.
+ *  @brief Functions to handle the feeds (includes feed2array)
  */
+
 
 require('feed2array.php');
 
 // TODO : Tags for feeds
 
+
+/**
+ * Downloads all the urls in the array $urls and returns an array with the results and the http status_codes.
+ *
+ * Mostly inspired by blogotext by timovn : https://github.com/timovn/blogotext/blob/master/inc/fich.php
+ *
+ *  TODO : If open_basedir or safe_mode, Curl will not follow redirections :
+ *  https://stackoverflow.com/questions/24687145/curlopt-followlocation-and-curl-multi-and-safe-mode
+ *
+ *  @param an array $urls of URLs
+ *  @return an array {'results', 'status_code'}, results being an array of the retrieved contents, indexed by URLs, and 'status_codes' being an array of status_code when different from 200, indexed by URL.
+ */
 function curl_downloader($urls) {
-	/* Downloads all the urls in the array $urls and returns an array with the results and the http status_codes.
-	 *
-	 * Mostly inspired by blogotext by timovn : https://github.com/timovn/blogotext/blob/master/inc/fich.php
-	 *
-	 *  TODO : If open_basedir or safe_mode, Curl will not follow redirections :
-	 *  https://stackoverflow.com/questions/24687145/curlopt-followlocation-and-curl-multi-and-safe-mode
-	 */
 	$chunks = array_chunk($urls, 40, true);  // Chunks of 40 urls because curl has problems with too big "multi" requests
 	$results = array();
 	$status_codes = array();
@@ -64,14 +72,17 @@ function curl_downloader($urls) {
 }
 
 
+/**
+ * Refresh the specified feeds and returns an array with URLs in error
+ *
+ * TODO:
+ *	  * Get rid of feed ids
+ *	  * If no entries for a feed, it might be an error
+ *
+ * @param $feeds should be an array of ids as keys and urls as values
+ * @param $update_feeds_infos should be true to update the feed infos from values in the RSS / ATOM
+ */
 function refresh_feeds($feeds, $update_feeds_infos=false) {
-	/* Refresh the specified feeds and returns an array with URLs in error
-	 * $feeds should be an array of ids as keys and urls as values
-	 * $update_feeds_infos should be true to update the feed infos from values in the RSS / ATOM
-	 * */
-	// TODO:
-	//	  * Get rid of feed ids
-	//	  * If no entries for a feed, it might be an error
 	$download = curl_downloader($feeds);
 	$errors = array();
 	foreach ($download['status_codes'] as $url=>$status_code) {
@@ -190,11 +201,13 @@ function refresh_feeds($feeds, $update_feeds_infos=false) {
 }
 
 
+/**
+ * Add feeds in the database and refresh them.
+ *
+ * @param $urls is an array of urls
+ * @return errored urls in array
+ */
 function add_feeds($urls) {
-	/* Add feeds in the database and refresh them.
-	 * $urls is an array of urls
-	 * Returns errored urls in array
-	 */
 	$errors = array();
 	$added = array();
 	$GLOBALS['dbh']->beginTransaction();
@@ -218,26 +231,39 @@ function add_feeds($urls) {
 }
 
 
+/**
+ * Remove a feed and all associated tags / entries based on its id
+ *
+ * @param $id is the id of the feed to delete
+ */
 function delete_feed_id($id) {
-	/* Remove a feed and all associated tags / entries
-	 */
 	$query = $GLOBALS['dbh']->prepare('DELETE FROM feeds WHERE id=:id');
 	$query->execute(array(':id'=>$id));
 }
 
+
+/**
+ * Remove a feed and all associated tags / entries based on its url
+ *
+ * @param $url is the url of the feed to delete
+ */
 function delete_feed_url($url) {
-	/* Remove a feed and all associated tags / entries
-	 */
 	$query = $GLOBALS['dbh']->prepare('DELETE FROM feeds WHERE url=:url');
 	$query->execute(array(':url'=>$url));
 }
 
 
+/**
+ * Edit a feed in the database and refresh it.
+ *
+ * TODO :  Edit more than just the URL
+ *
+ * @param $old_url is the current URL of the feed
+ * @param $new_url is the new URL to assign to this feed
+ * @param $new_title (optionnal) is the new title of the feed
+ * @return true upon success, false otherwise.
+ */
 function edit_feed($old_url, $new_url, $new_title='') {
-	/* Edit a feed in the database and refresh it.
-	 * Returns true upon success, false otherwise.
-	 */
-	// TODO :  Edit more than just the URL
 	if (filter_var($new_url, FILTER_VALIDATE_URL) && filter_var($old_url, FILTER_VALIDATE_URL)) {
 		$query = $GLOBALS['dbh']->prepare('UPDATE feeds SET url=:url WHERE url=:old_url');
 		$query->execute(array(':old_url'=>$old_url, 'new_url'=>$new_url));
@@ -256,8 +282,12 @@ function edit_feed($old_url, $new_url, $new_title='') {
 }
 
 
+/**
+ * Returns all the available feeds.
+ *
+ * TODO
+ */
 function get_feeds() {
-	/* TODO */
 	$query = $GLOBALS['dbh']->query('SELECT id, title, url, links, description, ttl, image FROM feeds');
 	return $query->fetchAll(PDO::FETCH_ASSOC);
 }

@@ -1,7 +1,9 @@
 <?php
-/*  Copyright (c) 2014 Freeder
- *  Released under a MIT License.
- *  See the file LICENSE at the root of this repo for copying permission.
+/** Freeder
+ *  -------
+ *  @file
+ *  @copyright Copyright (c) 2014 Freeder, MIT License, See the LICENSE file for copying permissions.
+ *  @brief Functions to install the script
  */
 
 $default_timezone = @date_default_timezone_get();
@@ -35,7 +37,7 @@ define('DB_FILE', 'db.sqlite3');
 
 
 /**
- * Create a directory.
+ * Create a directory, checking writeable and the rights.
  */
 function install_dir($dir) {
 	if (!file_exists($dir)) {
@@ -100,10 +102,10 @@ function install_db() {
 	$dbh->query('CREATE TABLE IF NOT EXISTS feeds(
 		id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
 		title TEXT,
-		url TEXT UNIQUE COLLATE NOCASE,
-		links TEXT,
+		url TEXT UNIQUE COLLATE NOCASE,  -- Feed URL
+		links TEXT,  -- JSON array of links associated with the feed
 		description TEXT,
-		ttl INT DEFAULT 0,
+		ttl INT DEFAULT 0,  -- This is the ttl of the feed, 0 means that it uses the config value
 		image TEXT
 	)');
 
@@ -113,11 +115,11 @@ function install_db() {
 		feed_id INTEGER NOT NULL,
 		authors TEXT,
 		title TEXT,
-		links TEXT,
+		links TEXT,  -- JSON array of enclosed links
 		description TEXT,
 		content TEXT,
-		enclosures TEXT,
-		comments TEXT,
+		enclosures TEXT,  -- JSON array of links to enclosures
+		comments TEXT,  -- Link to comments
 		guid TEXT UNIQUE,
 		pubDate INTEGER,
 		lastUpdate INTEGER,

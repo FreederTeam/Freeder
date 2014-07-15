@@ -1,12 +1,20 @@
 <?php
-/* Modified version of the functions from FreshRSS : https://github.com/marienfressinaud/FreshRSS/
- * This file is distributed under AGPL license: https://www.gnu.org/licenses/agpl-3.0.html
+/** Freeder
+ *  -------
+ *  @file
+ *  @copyright Copyright (c) 2014 Freeder, MIT License, See the LICENSE file for copying permissions.
+ *  @brief Functions to handle the OPML files
  */
 
+
+/**
+ * Generate an OPML file to export the feeds.
+ *
+ * TODO: Adapt to our code.
+ *
+ * @copyright Licensed under AGPL. Heavily based on a function from FreshRSS, licensed under AGPL
+ */
 function opml_export($cats) {
-	/* Generate an OPML file to export the feeds.
-	 * TODO: Adapt to our code.
-	 */
 	$now = new Datetime();
 	$txt = '<?xml version="1.0" encoding="UTF-8"?>'."\n";
 	$txt .= '<opml version="2.0">'."\n";
@@ -31,10 +39,14 @@ function opml_export($cats) {
 	return $txt;
 }
 
+
+/**
+ * Parse an OPML file.
+ *
+ * @return An array of associative array for each feed with URL, title and associated tags.
+ * @copyright Licensed under AGPL. Heavily based on a function from FreshRSS, licensed under AGPL
+ */
 function opml_import($xml) {
-	/* Parse an OPML file.
-	 * Returns an array of feeds with url, title and associated tags.
-	 */
 	$opml = simplexml_load_string($xml);
 
 	if (!$opml) {
