@@ -10,18 +10,18 @@ $install_template =
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="fr">
 <head>
-    <meta charset="utf-8"/>
+	<meta charset="utf-8"/>
 </head>
 <body>
-    <h1>Installation</h1>
+	<h1>Installation</h1>
 
-    <form method="post" action="">
-        <p><label for="login">Login: </label><input type="text" name="login" id="login"/></p>
-        <p><label for="password">Password: </label><input type="password" name="password" id="password"/></p>
-        <p><label for="timezone">Timezone : </label><input type="text" name="timezone" id="timezone" value="'.$default_timezone.'"/></p>
+	<form method="post" action="">
+		<p><label for="login">Login: </label><input type="text" name="login" id="login"/></p>
+		<p><label for="password">Password: </label><input type="password" name="password" id="password"/></p>
+		<p><label for="timezone">Timezone : </label><input type="text" name="timezone" id="timezone" value="'.$default_timezone.'"/></p>
 
-        <p><input type="submit" value="Install !"/></p>
-    </form>
+		<p><input type="submit" value="Install !"/></p>
+	</form>
 </body>
 </html>
 ';
@@ -52,9 +52,9 @@ function install_data_dir() {
 function install_config() {
 	global $config_template;
 
-    if (false === file_put_contents(DATA_DIR.'config.php', $config_template)) {
-        die('error: Unable to create "'.DATA_DIR.'config.php". Check the writing rights in "'.DATA_DIR.'"');
-    }
+	if (false === file_put_contents(DATA_DIR.'config.php', $config_template)) {
+		die('error: Unable to create "'.DATA_DIR.'config.php". Check the writing rights in "'.DATA_DIR.'"');
+	}
 }
 
 
@@ -64,36 +64,36 @@ function install_config() {
 function install_db() {
 	// TODO: handle errors
 	$dbh = new PDO('sqlite:'.DATA_DIR.DB_FILE);
-    $dbh->query('PRAGMA foreign_keys = ON');
+	$dbh->query('PRAGMA foreign_keys = ON');
 
 	$salt = uniqid(mt_rand(), true);
 	$password = sha1($salt.$_POST['password']);
 
-    $dbh->beginTransaction();
+	$dbh->beginTransaction();
 
-    // Create the table to handle users
-    $dbh->query('CREATE TABLE IF NOT EXISTS users(
-        id INTEGER PRIMARY KEY NOT NULL,
-        login TEXT UNIQUE,
-        password TEXT,
-        salt TEXT,
-        is_admin INT DEFAULT 0
-    )');
+	// Create the table to handle users
+	$dbh->query('CREATE TABLE IF NOT EXISTS users(
+		id INTEGER PRIMARY KEY NOT NULL,
+		login TEXT UNIQUE,
+		password TEXT,
+		salt TEXT,
+		is_admin INT DEFAULT 0
+	)');
 	$query = $dbh->prepare('INSERT INTO users(login, password, salt, is_admin) VALUES(:login, :password, :salt, 1)');
-    $query->execute(array(
-        ':login'=>$_POST['login'],
-        ':password'=>$password,
-        ':salt'=>$salt)
-    );
+	$query->execute(array(
+		':login'=>$_POST['login'],
+		':password'=>$password,
+		':salt'=>$salt)
+	);
 
-    // Create the table to store config options
-    $dbh->query('CREATE TABLE IF NOT EXISTS config(
-        option TEXT UNIQUE COLLATE NOCASE,
-        value TEXT
-    )');
-    // Insert timezone in the config
-    $query = $dbh->prepare('INSERT INTO config(option, value) VALUES("timezone", :value)');
-    $query->execute(array(':value'=>$_POST['timezone']));
+	// Create the table to store config options
+	$dbh->query('CREATE TABLE IF NOT EXISTS config(
+		option TEXT UNIQUE COLLATE NOCASE,
+		value TEXT
+	)');
+	// Insert timezone in the config
+	$query = $dbh->prepare('INSERT INTO config(option, value) VALUES("timezone", :value)');
+	$query->execute(array(':value'=>$_POST['timezone']));
 
 	// Create the table to store feeds
 	$dbh->query('CREATE TABLE IF NOT EXISTS feeds(
@@ -154,23 +154,23 @@ function install_db() {
  * Proceed to Freeder installation.
  */
 function install() {
-    global $install_template;
+	global $install_template;
 
-    if (!empty($_POST['login']) && !empty($_POST['password']) && !empty($_POST['timezone'])) {
+	if (!empty($_POST['login']) && !empty($_POST['password']) && !empty($_POST['timezone'])) {
 		install_data_dir();
 
 		install_config();
-        require(DATA_DIR.'config.php');
+		require(DATA_DIR.'config.php');
 
 		install_db();
 
-        $_SESSION['user'] = new stdClass;
-        $_SESSION['user']->login = $_POST['login'];
-        $_SESSION['is_admin'] = 1;
-    }
-    else {
-        echo $install_template;
-        exit();
-    }
+		$_SESSION['user'] = new stdClass;
+		$_SESSION['user']->login = $_POST['login'];
+		$_SESSION['is_admin'] = 1;
+	}
+	else {
+		echo $install_template;
+		exit();
+	}
 }
 

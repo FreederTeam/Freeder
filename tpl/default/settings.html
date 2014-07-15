@@ -1,104 +1,104 @@
 {include="_begin"}
 <div id="settings_preferences">
-    {* Script preferences *}
-    <form method="post" action="">
-        <fieldset>
-            <legend>Synchronization</legend>
-            <p>
-                <input type="radio" name="synchronization_type" id="synchronization_type_ajax" value="ajax" {if="$config->synchronization_type == 'ajax'"} checked="checked"{/if}/><label for="synchronization_type_ajax"> Ajax</label><br/>
-                Update the feeds in the background at each page call.
-            </p>
-            <p>
-                <input type="radio" name="synchronization_type" id="synchronization_type_webcron" value="webcron" {if="$config->synchronization_type == 'webcron'"} checked="checked"{/if}/><label for="synchronization_type_webcron"> Webcron</label><br/>
-                Use a webcron task to update the feeds regularly.
-            </p>
-            <p>
-                <input type="radio" name="synchronization_type" id="synchronization_type_cron" value="cron" {if="$config->synchronization_type == 'cron'"} checked="checked"{/if}/><label for="synchronization_type_cron"> Cron</label><br/>
-                Use a crontask to update the feeds regularly.
-            </p>
-        </fieldset>
+	{* Script preferences *}
+	<form method="post" action="">
+		<fieldset>
+			<legend>Synchronization</legend>
+			<p>
+				<input type="radio" name="synchronization_type" id="synchronization_type_ajax" value="ajax" {if="$config->synchronization_type == 'ajax'"} checked="checked"{/if}/><label for="synchronization_type_ajax"> Ajax</label><br/>
+				Update the feeds in the background at each page call.
+			</p>
+			<p>
+				<input type="radio" name="synchronization_type" id="synchronization_type_webcron" value="webcron" {if="$config->synchronization_type == 'webcron'"} checked="checked"{/if}/><label for="synchronization_type_webcron"> Webcron</label><br/>
+				Use a webcron task to update the feeds regularly.
+			</p>
+			<p>
+				<input type="radio" name="synchronization_type" id="synchronization_type_cron" value="cron" {if="$config->synchronization_type == 'cron'"} checked="checked"{/if}/><label for="synchronization_type_cron"> Cron</label><br/>
+				Use a crontask to update the feeds regularly.
+			</p>
+		</fieldset>
 
-        <fieldset>
-            <legend>Template</legend>
-            <p>
-                <label for="template">Template: </label>
-                <select name="template" id="template">
-                    {loop="$templates"}
-                        <option value="{$value['path']}" {if="$value['current']"}selected="selected"{/if}>{$value['name']}</option>
-                    {/loop}
-                </select>
-            </p>
-        </fieldset>
+		<fieldset>
+			<legend>Template</legend>
+			<p>
+				<label for="template">Template: </label>
+				<select name="template" id="template">
+					{loop="$templates"}
+						<option value="{$value['path']}" {if="$value['current']"}selected="selected"{/if}>{$value['name']}</option>
+					{/loop}
+				</select>
+			</p>
+		</fieldset>
 
-        <fieldset>
-            <legend>User</legend>
-            {* TODO *}
-        </fieldset>
+		<fieldset>
+			<legend>User</legend>
+			{* TODO *}
+		</fieldset>
 
-        <fieldset>
-            <legend>Misc</legend>
+		<fieldset>
+			<legend>Misc</legend>
 
-            <p><label for="timezone">Timezone: </label><input type="text" name="timezone" id="timezone" value="{$config->timezone}"/></p>
-            <p>Tag entries from the tags in the feeds?
-                <input type="radio" name="use_tags_from_feeds" id="use_tags_from_feeds_yes" value="1" {if="$config->use_tags_from_feeds != 0"}checked="checked"{/if}/><label for=use_tags_from_feeds_yes">Yes</label>
-                <input type="radio" name="use_tags_from_feeds" id="use_tags_from_feeds_no" value="0" {if="$config->use_tags_from_feeds == 0"}checked="checked"{/if}/><label for=use_tags_from_feeds_no">No</label>
-            </p>
-            <p>Anonymous access ?
-                <input type="radio" name="anonymous_access" id="anonymous_access_yes" value="1" {if="$config->anonymous_access != 0"}checked="checked"{/if}/><label for="anonymous_access_yes">Yes</label>
-                <input type="radio" name="anonymous_access" id="anonymous_access_no" value="0" {if="$config->anonymous_access == 0"}checked="checked"{/if}/><label for="anonymous_access_no">No</label>
-            </p>
-        </fieldset>
+			<p><label for="timezone">Timezone: </label><input type="text" name="timezone" id="timezone" value="{$config->timezone}"/></p>
+			<p>Tag entries from the tags in the feeds?
+				<input type="radio" name="use_tags_from_feeds" id="use_tags_from_feeds_yes" value="1" {if="$config->use_tags_from_feeds != 0"}checked="checked"{/if}/><label for=use_tags_from_feeds_yes">Yes</label>
+				<input type="radio" name="use_tags_from_feeds" id="use_tags_from_feeds_no" value="0" {if="$config->use_tags_from_feeds == 0"}checked="checked"{/if}/><label for=use_tags_from_feeds_no">No</label>
+			</p>
+			<p>Anonymous access ?
+				<input type="radio" name="anonymous_access" id="anonymous_access_yes" value="1" {if="$config->anonymous_access != 0"}checked="checked"{/if}/><label for="anonymous_access_yes">Yes</label>
+				<input type="radio" name="anonymous_access" id="anonymous_access_no" value="0" {if="$config->anonymous_access == 0"}checked="checked"{/if}/><label for="anonymous_access_no">No</label>
+			</p>
+		</fieldset>
 
-        <p><input type="submit" value="Save"/></p>
-    </form>
+		<p><input type="submit" value="Save"/></p>
+	</form>
 </div>
 
 <div id="settings_feeds">
-    {* Feeds management *}
-    <h2>Add a feed</h2>
-    <form method="post" action="">
-        <p><input type="text" name="feed_url" id="feed_url" placeholder="Feed URL"/></p>
-        <p><input type="submit" value="Add feed"/></p>
-    </form>
-    <h2>List of available feeds</h2>
-    {if="count($feeds) > 0"}
-        <table>
-            {loop="$feeds"}
-                <tr>
-                    <td>{$value['title']}</td>
-                    <td>{$value['url']}</td>
-                    <td>Edit</td>
-                    <td><a href="?do=settings&amp;delete_feed={$value['id']}">Delete</a></td>
-                    <td><a href="?do=settings&amp;refresh_feed={$value['id']}">Refresh</a></td>
-                </tr>
-            {/loop}
-        </table>
-    {else}
-        <p>You did not add any feeds yet.</p>
-    {/if}
+	{* Feeds management *}
+	<h2>Add a feed</h2>
+	<form method="post" action="">
+		<p><input type="text" name="feed_url" id="feed_url" placeholder="Feed URL"/></p>
+		<p><input type="submit" value="Add feed"/></p>
+	</form>
+	<h2>List of available feeds</h2>
+	{if="count($feeds) > 0"}
+		<table>
+			{loop="$feeds"}
+				<tr>
+					<td>{$value['title']}</td>
+					<td>{$value['url']}</td>
+					<td>Edit</td>
+					<td><a href="?do=settings&amp;delete_feed={$value['id']}">Delete</a></td>
+					<td><a href="?do=settings&amp;refresh_feed={$value['id']}">Refresh</a></td>
+				</tr>
+			{/loop}
+		</table>
+	{else}
+		<p>You did not add any feeds yet.</p>
+	{/if}
 </div>
 
 <div id="settings_import_export">
-    {* Import / Export panel *}
-    <h2>Import an OPML file</h2>
-    <form method="post" action="" enctype="multipart/form-data">
-        <input type="hidden" name="MAX_FILE_SIZE" value="1048576" />
-        <p><label for="import">OPML file: </label><input type="file" name="import" id="import"/></p>
-        <p>
-            <input type="submit" value="Import"/>
-        </p>
-    </form>
-    <h2>Export as OPML</h2>
-    <form method="post" action="">
-        <p>
-            <label for="export">Export selected feeds (ctrl+click to select multiple):</label><br/>
-            <select name="export" id="export" multiple>
-                {loop="$feeds"}
-                    <option value="{$value['url']}">{$value['title']}</option>
-                {/loop}
-            </select>
-        </p>
-        <p><input type="submit" value="Export"/></p>
-    </form>
+	{* Import / Export panel *}
+	<h2>Import an OPML file</h2>
+	<form method="post" action="" enctype="multipart/form-data">
+		<input type="hidden" name="MAX_FILE_SIZE" value="1048576" />
+		<p><label for="import">OPML file: </label><input type="file" name="import" id="import"/></p>
+		<p>
+			<input type="submit" value="Import"/>
+		</p>
+	</form>
+	<h2>Export as OPML</h2>
+	<form method="post" action="">
+		<p>
+			<label for="export">Export selected feeds (ctrl+click to select multiple):</label><br/>
+			<select name="export" id="export" multiple>
+				{loop="$feeds"}
+					<option value="{$value['url']}">{$value['title']}</option>
+				{/loop}
+			</select>
+		</p>
+		<p><input type="submit" value="Export"/></p>
+	</form>
 </div>
 {include="_end"}
