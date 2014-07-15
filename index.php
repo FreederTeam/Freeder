@@ -1,4 +1,9 @@
 <?php
+/*  Copyright (c) 2014 Freeder
+ *  Released under a MIT License.
+ *  See the file LICENSE at the root of this repo for copying permission.
+ */
+
 session_start();
 define('DATA_DIR', 'data/');
 define('TPL_DIR', 'tpl/');

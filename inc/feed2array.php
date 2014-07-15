@@ -1,4 +1,9 @@
 <?php
+/*  Copyright (c) 2014 Freeder
+ *  Released under a MIT License.
+ *  See the file LICENSE at the root of this repo for copying permission.
+ */
+
 function feed2array($feed, $load=false, $debug=false) {
     /* Converts a feed (RSS or ATOM) to an array
      *

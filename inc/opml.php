@@ -1,5 +1,7 @@
 <?php
-/* Modified version of the functions from FreshRSS : https://github.com/marienfressinaud/FreshRSS/ */
+/* Modified version of the functions from FreshRSS : https://github.com/marienfressinaud/FreshRSS/
+ * This file is distributed under AGPL license: https://www.gnu.org/licenses/agpl-3.0.html
+ */
 
 function opml_export($cats) {
     /* Generate an OPML file to export the feeds.

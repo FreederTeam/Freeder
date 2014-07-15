@@ -1,4 +1,9 @@
 <?php
+/*  Copyright (c) 2014 Freeder
+ *  Released under a MIT License.
+ *  See the file LICENSE at the root of this repo for copying permission.
+ */
+
 function multiarray_search($field, $value, $array, $default_value) {
     /* Search for the first item with value $value for field $field in a 2D array.
      * Returns the sub-array or $default_value.

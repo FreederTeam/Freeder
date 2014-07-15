@@ -1,4 +1,8 @@
 <?php
+/*  Copyright (c) 2014 Freeder
+ *  Released under a MIT License.
+ *  See the file LICENSE at the root of this repo for copying permission.
+ */
 
 function check_and_get_user($login, $pass) {
     $query = $GLOBALS['dbh']->prepare('SELECT id, password, salt, is_admin FROM users WHERE login=:login');

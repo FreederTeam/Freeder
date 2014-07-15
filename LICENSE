@@ -1,44 +1,10 @@
-Freeder
-=======
-
-Freeder is a new open-source RSS feeds reader, as announced [here](http://phyks.me/2014/07/lecteur_rss_ideal.html).
-
-
-Disclaimer
-----------
-
-It is currently a WIP, more information will come soon. In the mean time, it may be only interesting for devs.
-
-_Note :_ There are some TODOs in the files. If you are a developper and want to give a hand, this is what you should look for :)
-
-Installation
-------------
-
-### Dependencies
-
- * `php5-sqlite`
- * `php5-curl`
-
-Coding guidelines
------------------
-
-All PR are welcome. Just look at the actual files, and try to reproduce it (or propose to update it to enhance coding guidelines :).
-
-Please avoid commits with large number of modifications due to spaces to tabs conversions and stuff like this, as their diff is really unreadable.
-
-
-License
--------
-
 These licenses apply unless something else is specified in the file. All scripts should contain a license indication. If not, feel free to ask us. Please note that files where it is difficult to state such a license note (especially image files) are distributed under the same terms.
 
-For more detailed license info, please refer to LICENSE file.
+If you ever reuse any code from Freeder, please let us know. You do not have to, but we would really enjoy knowing what you used it for :)
 
-_Note:_ If you ever reuse any code from Freeder, please let us know. You do not have to, but we would really enjoy knowing what you used it for :)
-
-### Base code
+## Base code
 The base code of Freeder is released under the MIT license :
-```
+
 Copyright (c) 2014 Freeder
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -58,17 +24,10 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
-```
 
 
-### Template
+## Template
 The template (files under `tpl/default/`) is licensed under a specific license, it is under Creative Commons CC BYSA.
 
 **TODO:** Add more license info on CC.
 
-
-Related information
--------------------
-
-* [Quick and dirty benchmark on RSS / ATOM feed parsing](http://phyks.me/2014/07/benchmark_rss.html)
-* [PHP CURL multi (French)](http://lehollandaisvolant.net/index.php?d=2014/05/20/19/21/36-php-faire-plusieurs-requetes-http-simultanees-avec-curl)
