@@ -38,7 +38,7 @@
 
 * Flux avec authentification
     * Certains flux sont accesibles uniquement avec une authentification GET, .htaccess ou POST (typiquement, certains RSS d'une instance OwnCloud)
-    * Si le flux nécessite une authentification GET, elle est déjà dans l'adresse : `URL_DU_FLUX?login=…&pass=….
+    * Si le flux nécessite une authentification GET, elle est déjà dans l'adresse : `URL_DU_FLUX?login=…&pass=…`.
     * Si le flux nécessite une authentification par `.htaccess`, cf https://github.com/ldleman/Leed/issues/376
     * Si le flux nécessite une authentification POST, **TODO**
 
