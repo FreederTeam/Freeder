@@ -37,7 +37,10 @@
 	* Je sais pas bien comment c'est dans freshRSS, mais en gros une page où tu dis « Afficher les articles des tags truc et muche non lus dans l'ordre anti-chronologique » par exemple
 
 * Flux avec authentification
-    * Certains flux sont accesibles uniquement avec une authentification GET / htaccess ou POST (typiquement, certains RSS d'une instance OwnCloud)
+    * Certains flux sont accesibles uniquement avec une authentification GET, .htaccess ou POST (typiquement, certains RSS d'une instance OwnCloud)
+    * Si le flux nécessite une authentification GET, elle est déjà dans l'adresse : `URL_DU_FLUX?login=…&pass=….
+    * Si le flux nécessite une authentification par `.htaccess`, cf https://github.com/ldleman/Leed/issues/376
+    * Si le flux nécessite une authentification POST, **TODO**
 
 * Privacy
     * Bloquer les redirections / trackers
