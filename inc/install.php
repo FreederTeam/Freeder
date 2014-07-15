@@ -1,4 +1,5 @@
 <?php
+$default_timezone = @date_default_timezone_get();
 $install_template =
 '
 <!DOCTYPE html>
@@ -12,7 +13,7 @@ $install_template =
     <form method="post" action="">
         <p><label for="login">Login: </label><input type="text" name="login" id="login"/></p>
         <p><label for="password">Password: </label><input type="password" name="password" id="password"/></p>
-        <p><label for="timezone">Timezone : </label><input type="text" name="timezone" id="timezone" value="Europe/Paris"/></p>
+        <p><label for="timezone">Timezone : </label><input type="text" name="timezone" id="timezone" value="'.$default_timezone.'"/></p>
 
         <p><input type="submit" value="Install !"/></p>
     </form>
