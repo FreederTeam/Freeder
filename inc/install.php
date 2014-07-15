@@ -35,12 +35,13 @@ define('DB_FILE', 'db.sqlite3');
 
 
 /**
- * Create data directory.
+ * Create a directory.
  */
-function install_data_dir() {
-	if (!file_exists(DATA_DIR)) {
-		if (!mkdir(DATA_DIR) || !is_writable(DATA_DIR)) {
-			die('error: Unable to create or write in data directory. Check the writing rights of Freeder root directory. The user who executes Freeder — www-data for instance — should be able to write in this directory. You may prefere to create the /data directory on your own and allow www-data to write only in /data instead of in the whole Freeder root.');
+function install_dir($dir) {
+	if (!file_exists($dir)) {
+		if (!mkdir($dir) || !is_writable($dir)) {
+            $current_user = get_current_user();
+			exit('error: Unable to create or write in data directory. Check the writing rights of Freeder root directory. The user who executes Freeder — '.$current_user.' — should be able to write in this directory. You may prefere to create the /data directory on your own and allow '.$current_user.' to write only in /data instead of in the whole Freeder root.');
 		}
 	}
 }
@@ -53,7 +54,7 @@ function install_config() {
 	global $config_template;
 
 	if (false === file_put_contents(DATA_DIR.'config.php', $config_template)) {
-		die('error: Unable to create "'.DATA_DIR.'config.php". Check the writing rights in "'.DATA_DIR.'"');
+		exit('error: Unable to create "'.DATA_DIR.'config.php". Check the writing rights in "'.DATA_DIR.'"');
 	}
 }
 
@@ -157,7 +158,8 @@ function install() {
 	global $install_template;
 
 	if (!empty($_POST['login']) && !empty($_POST['password']) && !empty($_POST['timezone'])) {
-		install_data_dir();
+		install_dir(DATA_DIR);
+		install_dir('tmp');
 
 		install_config();
 		require(DATA_DIR.'config.php');
