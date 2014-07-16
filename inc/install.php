@@ -127,28 +127,30 @@ function install_db() {
 		guid TEXT UNIQUE,
 		pubDate INTEGER,
 		lastUpdate INTEGER,
-		is_sticky INTEGER DEFAULT 0,
-		is_read INTEGER DEFAULT 0,
+        added_time INTEGER,  -- timestamp of the import / last refresh in db
 		FOREIGN KEY(feed_id) REFERENCES feeds(id) ON DELETE CASCADE
 	)');
 
 	// Create table to store tags
 	$dbh->query('CREATE TABLE IF NOT EXISTS tags(
 		id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-		name TEXT UNIQUE COLLATE NOCASE,
-		is_user_tag INTEGER DEFAULT 0
+		name TEXT UNIQUE COLLATE NOCASE
 	)');
 
 	// Create table to store association between tags and entries
 	$dbh->query('CREATE TABLE IF NOT EXISTS tags_entries(
 		tag_id INTEGER,
 		entry_id INTEGER,
+        auto_added_tag INTEGER,
+        UNIQUE (tag_id, feed_id),
 		FOREIGN KEY(tag_id) REFERENCES tags(id) ON DELETE CASCADE,
 		FOREIGN KEY(entry_id) REFERENCES entries(id) ON DELETE CASCADE
 	)');
 	$dbh->query('CREATE TABLE IF NOT EXISTS tags_feeds(
 		tag_id INTEGER,
 		feed_id INTEGER,
+        auto_added_tag INTEGER,
+        UNIQUE (tag_id, feed_id),
 		FOREIGN KEY(tag_id) REFERENCES tags(id) ON DELETE CASCADE,
 		FOREIGN KEY(feed_id) REFERENCES feeds(id) ON DELETE CASCADE
 	)');
