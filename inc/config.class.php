@@ -40,7 +40,7 @@ class Config {
 		foreach($config_from_db as $config_option) {
 			$config[$config_option['option']] = $config_option['value'];
 		}
-		$config = array_merge($this->default_config, $config);
+		$config = array_merge(self::$default_config, $config);
 
 		foreach($config as $option=>$value) {
 			$this->$option = $value;
