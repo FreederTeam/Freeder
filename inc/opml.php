@@ -10,9 +10,8 @@
 /**
  * Generate an OPML file to export the feeds.
  *
- * TODO: Adapt to our code.
- *
  * @copyright Licensed under AGPL. Heavily based on a function from FreshRSS, licensed under AGPL
+ * @todo Adapt to our code
  */
 function opml_export($cats) {
 	$now = new Datetime();

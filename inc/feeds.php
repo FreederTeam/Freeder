@@ -4,12 +4,11 @@
  *  @file
  *  @copyright Copyright (c) 2014 Freeder, MIT License, See the LICENSE file for copying permissions.
  *  @brief Functions to handle the feeds (includes feed2array)
+ *  @todo Tags for feeds
  */
-
 
 require('feed2array.php');
 
-// TODO : Tags for feeds
 
 
 /**
@@ -17,10 +16,10 @@ require('feed2array.php');
  *
  * Mostly inspired by blogotext by timovn : https://github.com/timovn/blogotext/blob/master/inc/fich.php
  *
- *  TODO : If open_basedir or safe_mode, Curl will not follow redirections :
+ *  @todo If open_basedir or safe_mode, Curl will not follow redirections :
  *  https://stackoverflow.com/questions/24687145/curlopt-followlocation-and-curl-multi-and-safe-mode
  *
- *  @param an array $urls of URLs
+ *  @param an array $urls of associative arrays {'url', 'post'} for each URL. 'post' is a JSON array of data to send _via_ POST.
  *  @return an array {'results', 'status_code'}, results being an array of the retrieved contents, indexed by URLs, and 'status_codes' being an array of status_code when different from 200, indexed by URL.
  */
 function curl_downloader($urls) {
@@ -40,8 +39,9 @@ function curl_downloader($urls) {
 		$handlers = array();
 		$total_feed_chunk = count($chunk) + count($results);
 
-		foreach ($chunk as $i=>$url) {
+        foreach ($chunk as $i=>$url_array) {
 			set_time_limit(20); // Reset max execution time
+            $url = $url_array['url'];
 			$handlers[$i] = curl_init($url);
 			curl_setopt_array($handlers[$i], array(
 				CURLOPT_RETURNTRANSFER => TRUE,
@@ -51,6 +51,11 @@ function curl_downloader($urls) {
 				CURLOPT_MAXREDIRS => 5,
 				CURLOPT_USERAGENT => $_SERVER['HTTP_USER_AGENT'],  // Add a user agent to prevent problems with some feeds
 			));
+            if (!empty($url_array['post'])) {
+                curl_setopt($handlers[$i], CURLOPT_POST, true);
+                curl_setopt($handlers[$i], CURLOPT_POSTFIELDS, json_decode($url_array['post'], true));
+            }
+
 			curl_multi_add_handle($multihandler, $handlers[$i]);
 		}
 
@@ -59,7 +64,8 @@ function curl_downloader($urls) {
 			curl_multi_select($multihandler);
 		} while ($active > 0);
 
-		foreach ($chunk as $i=>$url) {
+        foreach ($chunk as $i=>$url_array) {
+            $url = $url_array['url'];
 			$results[$url] = curl_multi_getcontent($handlers[$i]);
 			$status_codes[$url] = curl_getinfo($handlers[$i], CURLINFO_HTTP_CODE);
 			curl_multi_remove_handle($multihandler, $handlers[$i]);
@@ -75,11 +81,11 @@ function curl_downloader($urls) {
 /**
  * Refresh the specified feeds and returns an array with URLs in error
  *
- * TODO:
+ * @todo
  *	  * Get rid of feed ids
  *	  * If no entries for a feed, it might be an error
  *
- * @param $feeds should be an array of ids as keys and urls as values
+ * @param $feeds should be an array of ids as keys and associative arrays ('url', 'post'} as values. post is a JSON array of post parameters to send with the URL.
  * @param $update_feeds_infos should be true to update the feed infos from values in the RSS / ATOM
  */
 function refresh_feeds($feeds, $update_feeds_infos=false) {
@@ -149,7 +155,7 @@ function refresh_feeds($feeds, $update_feeds_infos=false) {
 	}
 
 	foreach ($updated_feeds as $url=>$feed) {
-		$feed_id = array_search($url, $feeds);
+		$feed_id = array_search(multiarray_search('url', $url, $feeds, array()), $feeds);
 		// Parse feed
 		$parsed = @feed2array($feed);
 		if (empty($parsed) || $parsed === false) { // If an error has occurred, keep a trace of it
@@ -206,7 +212,7 @@ function refresh_feeds($feeds, $update_feeds_infos=false) {
 /**
  * Add feeds in the database and refresh them.
  *
- * @param $urls is an array of urls
+ * @param $urls is an array of associative arrays {url, post} for each url. Post is a JSON array of POST data to send
  * @return errored urls in array
  */
 function add_feeds($urls) {
@@ -215,12 +221,15 @@ function add_feeds($urls) {
 	$errors = array();
 	$added = array();
 	$dbh->beginTransaction();
-	$query = $dbh->prepare('INSERT OR IGNORE INTO feeds(url) VALUES(:url)');
+	$query = $dbh->prepare('INSERT OR IGNORE INTO feeds(url, post) VALUES(:url, :post)');
 	$query->bindParam(':url', $url);
-	foreach($urls as $url) {
+	$query->bindParam(':post', $post);
+    foreach($urls as $url_array) {
+        $url = $url_array['url'];
+        $post = $url_array['post'];
 		if (filter_var($url, FILTER_VALIDATE_URL)) {
 			$query->execute();
-			$added[$dbh->lastInsertId()] = $url;
+			$added[$dbh->lastInsertId()] = array('url'=>$url, 'post'=>$post);
 		}
 		else {
 			$errors[] = $url;
@@ -264,12 +273,11 @@ function delete_feed_url($url) {
 /**
  * Edit a feed in the database and refresh it.
  *
- * TODO :  Edit more than just the URL
- *
  * @param $old_url is the current URL of the feed
  * @param $new_url is the new URL to assign to this feed
  * @param $new_title (optionnal) is the new title of the feed
  * @return true upon success, false otherwise.
+ * @todo  Edit more than just the URL
  */
 function edit_feed($old_url, $new_url, $new_title='') {
     global $dbh;
@@ -295,10 +303,10 @@ function edit_feed($old_url, $new_url, $new_title='') {
 /**
  * Returns all the available feeds.
  *
- * TODO
+ * @todo This function
  */
 function get_feeds() {
     global $dbh;
-	$query = $dbh->query('SELECT id, title, url, links, description, ttl, image FROM feeds');
+	$query = $dbh->query('SELECT id, title, url, links, description, ttl, image, post FROM feeds');
 	return $query->fetchAll(PDO::FETCH_ASSOC);
 }
