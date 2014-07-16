@@ -103,6 +103,7 @@ for (a ; b ; c) {
    and some even says it leads to better perfs.
  * Use underscore\_case for vars and functions, use [PascalCase](https://en.wikipedia.org/wiki/PascalCase) for classes, unless this element refers to some well established, standardized name (such as `pubDate` in the RSS specification).
  * **Never** leave traling spaces.
+ * Use doxygen parsable docstrings in your functions comments
 
 
 File organisation
