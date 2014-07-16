@@ -81,7 +81,7 @@ switch($do) {
 			exit();
 		}
 		if (!empty($_POST['feed_url'])) {
-			if(add_feeds(array($_POST['feed_url']))) {
+			if(empty(add_feeds(array($_POST['feed_url'])))) {
 				header('location: index.php?do=settings');
 				exit();
 			}
