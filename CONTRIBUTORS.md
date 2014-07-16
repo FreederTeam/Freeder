@@ -151,7 +151,7 @@ Installation
 ------------
 
 To know whether it has been set up or not, Freeder fetch `data/config.php`. It
-considers that the existence of that file means that Freeder is instaled.
+considers that the existence of that file means that Freeder is installed.
 
 
 Database organisation
