@@ -141,6 +141,11 @@ function refresh_feeds($feeds) {
 		$query_insert_tag = $dbh->prepare('INSERT OR IGNORE INTO tags(name) VALUES(:name)');
 		$query_insert_tag->bindParam(':name', $tag_name);
 
+		// Register the tags of the feed
+		$query_feeds_tags = $dbh->prepare('INSERT INTO tags_feeds(tag_id, feed_id, auto_added_tag) VALUES((SELECT id FROM tags WHERE name=:name), :feed_id, 1)');
+		$query_feeds_tags->bindParam(':name', $tag_name);
+		$query_feeds_tags->bindParam(':feed_id', $feed_id);
+
 		// Finally, query to register the tags of the entry
 		$query_tags = $dbh->prepare('INSERT INTO tags_entries(tag_id, entry_id, auto_added_tag) VALUES((SELECT id FROM tags WHERE name=:name), (SELECT id FROM entries WHERE guid=:entry_guid), 1)');
 		$query_tags->bindParam(':name', $tag_name);
@@ -166,7 +171,16 @@ function refresh_feeds($feeds) {
 		$feed_image = isset($parsed['infos']['image']) ? json_encode($parsed['infos']['image']) : '';
 		$query_feeds->execute();
 
-		// TODO : Feeds tags
+		// Feeds tags
+		if($config->use_tags_from_feeds != 0) {
+			if (!empty($parsed['infos']['categories'])) {
+				foreach ($parsed['infos']['categories'] as $tag_name) {
+					// Create tags if needed, get their id and add bind the articles to these tags
+					$query_insert_tag->execute();
+					$query_feeds_tags->execute();
+				}
+			}
+		}
 
 		// Insert / Update entries
 		$items = $parsed['items'];
@@ -188,7 +202,6 @@ function refresh_feeds($feeds) {
 			}
 
 			if($config->use_tags_from_feeds != 0) {
-				// TODO
 				if (!empty($event['categories'])) {
 					foreach ($event['categories'] as $tag_name) {
 						// Create tags if needed, get their id and add bind the articles to these tags
@@ -201,7 +214,7 @@ function refresh_feeds($feeds) {
 	}
 	$dbh->commit();
 
-	// TODO : Remove old feeds
+	// TODO : Remove old entries
 
 	return $errors;
 }
@@ -227,7 +240,7 @@ function add_feeds($urls) {
 		$post = $url_array['post'];
 		if (filter_var($url, FILTER_VALIDATE_URL)) {
 			$query->execute();
-			$added[$dbh->lastInsertId()] = array('url'=>$url, 'post'=>$post);
+			$added[] = array('id'=>$dbh->lastInsertId(), 'url'=>$url, 'post'=>$post);
 		}
 		else {
 			$errors[] = $url;
