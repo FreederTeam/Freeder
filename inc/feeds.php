@@ -149,7 +149,7 @@ function refresh_feeds($feeds, $update_feeds_infos=false) {
 	}
 
 	foreach ($updated_feeds as $url=>$feed) {
-		$i = array_search($url, $feeds);
+		$feed_id = array_search($url, $feeds);
 		// Parse feed
 		$parsed = @feed2array($feed);
 		if (empty($parsed) || $parsed === false) { // If an error has occurred, keep a trace of it
@@ -181,7 +181,7 @@ function refresh_feeds($feeds, $update_feeds_infos=false) {
 			$pubDate = isset($event['pubDate']) ? $event['pubDate'] : '';
 			$last_update = isset($event['updated']) ? $event['updated'] : '';
 
-			$query_entries->execute();
+            $query_entries->execute();
 			if ($query_entries->rowCount() == 0) {
 				$query_entries_fail->execute();
 			}
