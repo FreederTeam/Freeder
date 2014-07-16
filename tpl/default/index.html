@@ -1,19 +1,17 @@
 {include="_begin"}
 
 <main>
-<p><a href="?do=refresh">Update !</a></p>
-<p><a href="?do=settings">Settings</a></p>
-{if="$user !== false"}
-	<p><a href="?do=logout">Logout</a></p>
-{else}
+{if="$user == false"}
 	<p><a href="?do=login">Log in</a></p>
+{else}
+	
+	{loop="$entries"}
+		<article>
+			<h1>{$value['title']}</h1>
+			<div>{$value['description']}</div>
+		</article>
+	{/loop}
 {/if}
-{loop="$entries"}
-	<article>
-		<h2>{$value['title']}</h2>
-		<div>{$value['description']}</div>
-	</article>
-{/loop}
 </main>
 
 {include="_end"}
