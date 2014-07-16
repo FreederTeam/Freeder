@@ -19,17 +19,12 @@ Installation
  * `php5-sqlite`
  * `php5-curl`
 
-Coding guidelines
------------------
 
-All PR are welcome. Just look at the actual files, and try to reproduce it (or propose to update it to enhance coding guidelines :).
+Contributing
+------------
 
-Here are the major things:
-* Use tabs for indentation, no PR with spaces will be accepted.
-* Use underscore\_case for vars and functions, use [PascalCase](https://en.wikipedia.org/wiki/PascalCase) for classes, unless this element refers to some well established, standardized name (such as `pubDate` in the RSS specification).
-* Do not leave trailing whitespaces.
-
-Please avoid commits with large number of modifications due to spaces to tabs conversions and stuff like this, as their diff is really unreadable.
+If you want to contribute — or if you are just curious — you should have a look
+at the [CONTRIBUTORS.md](https://github.com/Phyks/Freeder/blob/master/CONTRIBUTORS.md) file.
 
 
 License
