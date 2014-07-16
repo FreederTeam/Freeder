@@ -35,14 +35,24 @@
 			{* TODO *}
 		</fieldset>
 
-		<fieldset>
-			<legend>Misc</legend>
+        <fieldset>
+            <legend>Entries</legend>
 
-			<p><label for="timezone">Timezone: </label><input type="text" name="timezone" id="timezone" value="{$config->timezone}"/></p>
 			<p>Tag entries from the tags in the feeds?
 				<input type="radio" name="use_tags_from_feeds" id="use_tags_from_feeds_yes" value="1" {if="$config->use_tags_from_feeds != 0"}checked="checked"{/if}/><label for=use_tags_from_feeds_yes">Yes</label>
 				<input type="radio" name="use_tags_from_feeds" id="use_tags_from_feeds_no" value="0" {if="$config->use_tags_from_feeds == 0"}checked="checked"{/if}/><label for=use_tags_from_feeds_no">No</label>
 			</p>
+
+            <p>
+                <label for="entries_to_keep">Number of entries to keep per feed (0 to keep all entries):</label>
+                <input type="number" name="entries_to_keep" id="entries_to_keep"/>
+            </p>
+        </fieldset>
+
+		<fieldset>
+			<legend>Misc</legend>
+
+			<p><label for="timezone">Timezone: </label><input type="text" name="timezone" id="timezone" value="{$config->timezone}"/></p>
 			<p>Anonymous access ?
 				<input type="radio" name="anonymous_access" id="anonymous_access_yes" value="1" {if="$config->anonymous_access != 0"}checked="checked"{/if}/><label for="anonymous_access_yes">Yes</label>
 				<input type="radio" name="anonymous_access" id="anonymous_access_no" value="0" {if="$config->anonymous_access == 0"}checked="checked"{/if}/><label for="anonymous_access_no">No</label>

@@ -63,7 +63,7 @@ switch($do) {
 			header('location: index.php');
 			exit();
 		}
-		if (!empty($_POST['synchronization_type']) && !empty($_POST['template']) && !empty($_POST['timezone']) && isset($_POST['use_tags_from_feeds']) && isset($_POST['anonymous_access'])) {
+		if (!empty($_POST['synchronization_type']) && !empty($_POST['template']) && !empty($_POST['timezone']) && isset($_POST['use_tags_from_feeds']) && isset($_POST['anonymous_access']) && isset($_POST['entries_to_keep'])) {
 			$config->synchronization_type = $_POST['synchronization_type'];
 			if (is_dir(TPL_DIR.$_POST['template'])) {
 				$config->template = $_POST['template'];
@@ -76,6 +76,7 @@ switch($do) {
 			}
 			$config->use_tags_from_feeds = (int) $_POST['use_tags_from_feeds'];
 			$config->anonymous_access = (int) $_POST['anonymous_access'];
+			$config->entries_to_keep = (int) $_POST['entries_to_keep'];
 			$config->save();
 			header('location: index.php?do=settings');
 			exit();

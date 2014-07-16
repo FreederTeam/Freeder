@@ -18,7 +18,8 @@ class Config {
 		'use_tags_from_feeds'=>1,
 		'template'=>'default/',
 		'synchronization_type'=>'cron',
-		'anonymous_access'=>0
+        'anonymous_access'=>0,
+        'entries_to_keep'=>50  // Number of entries to keep, set to 0 if you want to keep all of them
 	);
 
 	public function __construct() {
