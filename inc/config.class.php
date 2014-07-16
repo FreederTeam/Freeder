@@ -12,7 +12,7 @@
  */
 class Config {
 	// TODO: use stdClass ?
-    private $default_config = array(  /** This is the default config */
+    private static $default_config = array(  /** This is the default config */
 		'timezone'=>'Europe/Paris',
 		'use_tags_from_feeds'=>1,
 		'template'=>'default/',
