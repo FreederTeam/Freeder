@@ -63,6 +63,8 @@ function endswith($haystack, $needle) {
  * @return An array {path, name, current} where path is the template path, name is the template name and current is true if this is the current template, false otherwise.
  */
 function list_templates() {
+    global $config;
+
 	$paths = array_filter(scandir(TPL_DIR), function($item) { return is_dir(TPL_DIR.$item) && !startswith($item, '.'); });
 	$names = array_map('ucfirst', $paths);
 	$templates = array();
@@ -71,7 +73,7 @@ function list_templates() {
 		$templates[] = array(
 			'path'=>$path,
 			'name'=>$names[$key],
-			'current'=>$path == $GLOBALS['config']->template
+			'current'=>$path == $config->template
 		);
 	}
 	return $templates;

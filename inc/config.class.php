@@ -33,7 +33,8 @@ class Config {
 	}
 
     public function load() {  /** Load the config from the database into this Config object */
-		$config_from_db = $GLOBALS['dbh']->query('SELECT option, value FROM config');
+        global $dbh;
+		$config_from_db = $dbh->query('SELECT option, value FROM config');
 		$config_from_db = $config_from_db !== FALSE ? $config_from_db->fetchall(PDO::FETCH_ASSOC) : array();
 		$config = array();
 		foreach($config_from_db as $config_option) {
@@ -47,11 +48,12 @@ class Config {
 	}
 
     public function save() {  /* Stores the current config in database */
-		$GLOBALS['dbh']->beginTransaction();
+        global $dbh;
+		$dbh->beginTransaction();
 		// TODO : Same thing that the comment in feeds about UPSERT
-		$query_insert = $GLOBALS['dbh']->prepare('INSERT OR IGNORE INTO config(option) VALUES(:option)');
+		$query_insert = $dbh->prepare('INSERT OR IGNORE INTO config(option) VALUES(:option)');
 		$query_insert->bindParam(':option', $option);
-		$query_update = $GLOBALS['dbh']->prepare('UPDATE config SET value=:value WHERE option=:option');
+		$query_update = $dbh->prepare('UPDATE config SET value=:value WHERE option=:option');
 		$query_update->bindParam(':value', $value);
 		$query_update->bindParam(':option', $option);
 
@@ -62,6 +64,6 @@ class Config {
 			$query_insert->execute();
 			$query_update->execute();
 		}
-		$GLOBALS['dbh']->commit();
+		$dbh->commit();
 	}
 }

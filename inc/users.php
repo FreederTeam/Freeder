@@ -14,7 +14,9 @@
  * @return A stdClass with attributes login and is_admin otherwise.
  */
 function check_and_get_user($login, $pass) {
-	$query = $GLOBALS['dbh']->prepare('SELECT id, password, salt, is_admin FROM users WHERE login=:login');
+    global $dbh;
+
+	$query = $dbh->prepare('SELECT id, password, salt, is_admin FROM users WHERE login=:login');
 	$query->execute(array(':login'=>$login));
 	$user_db = $query->fetch(PDO::FETCH_ASSOC);
 

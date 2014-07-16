@@ -23,10 +23,10 @@ if(!is_file(DATA_DIR.DB_FILE)) {
 	header('location: index.php');
 }
 require('inc/config.class.php');
-$GLOBALS['dbh'] = new PDO('sqlite:'.DATA_DIR.DB_FILE);
+$dbh = new PDO('sqlite:'.DATA_DIR.DB_FILE);
 $dbh->query('PRAGMA foreign_keys = ON');
 
-$GLOBALS['config'] = new Config();
+$config = new Config();
 date_default_timezone_set($config->timezone);
 require('inc/rain.tpl.class.php');
 RainTPL::$tpl_dir = TPL_DIR.$config->template;

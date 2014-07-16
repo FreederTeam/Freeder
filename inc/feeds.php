@@ -83,6 +83,8 @@ function curl_downloader($urls) {
  * @param $update_feeds_infos should be true to update the feed infos from values in the RSS / ATOM
  */
 function refresh_feeds($feeds, $update_feeds_infos=false) {
+    global $dbh, $config;
+
 	$download = curl_downloader($feeds);
 	$errors = array();
 	foreach ($download['status_codes'] as $url=>$status_code) {
@@ -95,13 +97,13 @@ function refresh_feeds($feeds, $update_feeds_infos=false) {
 	$updated_feeds = $download['results'];
 
 	// Put everything in a transaction to make it faster
-	$GLOBALS['dbh']->beginTransaction();
+	$dbh->beginTransaction();
 	// Delete old tags which were not user added
-	$GLOBALS['dbh']->query('DELETE FROM tags WHERE is_user_tag=0');
+	$dbh->query('DELETE FROM tags WHERE is_user_tag=0');
 
 	if ($update_feeds_infos) {
 		// Query to update feeds table with latest infos in the RSS / ATOM
-		$query_feeds = $GLOBALS['dbh']->prepare('UPDATE feeds SET title=:title, links=:links, description=:description, ttl=:ttl, image=:image WHERE url=:old_url');
+		$query_feeds = $dbh->prepare('UPDATE feeds SET title=:title, links=:links, description=:description, ttl=:ttl, image=:image WHERE url=:old_url');
 		$query_feeds->bindParam(':title', $feed_title);
 		$query_feeds->bindParam(':links', $feed_links);
 		$query_feeds->bindParam(':description', $feed_description);
@@ -111,7 +113,7 @@ function refresh_feeds($feeds, $update_feeds_infos=false) {
 	}
 
 	// Two queries, to upsert (update OR insert) entries : update the existing entry and insert a new one if the update errorred
-	$query_entries = $GLOBALS['dbh']->prepare('UPDATE entries SET authors=:authors, title=:title, links=:links, description=:description, content=:content, enclosures=:enclosures, comments=:comments, pubDate=:pubDate, lastUpdate=:lastUpdate WHERE guid=:guid');
+	$query_entries = $dbh->prepare('UPDATE entries SET authors=:authors, title=:title, links=:links, description=:description, content=:content, enclosures=:enclosures, comments=:comments, pubDate=:pubDate, lastUpdate=:lastUpdate WHERE guid=:guid');
 	$query_entries->bindParam(':authors', $authors);
 	$query_entries->bindParam(':title', $title);
 	$query_entries->bindParam(':links', $links);
@@ -122,7 +124,7 @@ function refresh_feeds($feeds, $update_feeds_infos=false) {
 	$query_entries->bindParam(':guid', $guid);
 	$query_entries->bindParam(':pubDate', $pubDate, PDO::PARAM_INT);
 	$query_entries->bindParam(':lastUpdate', $last_update, PDO::PARAM_INT);
-	$query_entries_fail = $GLOBALS['dbh']->prepare('INSERT INTO entries(feed_id, authors, title, links, description, content, enclosures, comments, pubDate, lastUpdate, guid) VALUES(:feed_id, :authors, :title, :links, :description, :content, :enclosures, :comments, :pubDate, :lastUpdate, :guid)');
+	$query_entries_fail = $dbh->prepare('INSERT INTO entries(feed_id, authors, title, links, description, content, enclosures, comments, pubDate, lastUpdate, guid) VALUES(:feed_id, :authors, :title, :links, :description, :content, :enclosures, :comments, :pubDate, :lastUpdate, :guid)');
 	$query_entries_fail->bindParam(':feed_id', $feed_id);
 	$query_entries_fail->bindParam(':authors', $authors);
 	$query_entries_fail->bindParam(':title', $title);
@@ -135,13 +137,13 @@ function refresh_feeds($feeds, $update_feeds_infos=false) {
 	$query_entries_fail->bindParam(':pubDate', $pubDate, PDO::PARAM_INT);
 	$query_entries_fail->bindParam(':lastUpdate', $last_update, PDO::PARAM_INT);
 
-	if($GLOBALS['config']->get('use_tags_from_feeds') != 0) {
+	if($config->get('use_tags_from_feeds') != 0) {
 		// Query to insert tags if not already existing
-		$query_insert_tag = $GLOBALS['dbh']->prepare('INSERT OR IGNORE INTO tags(name) VALUES(:name)');
+		$query_insert_tag = $dbh->prepare('INSERT OR IGNORE INTO tags(name) VALUES(:name)');
 		$query_insert_tag->bindParam(':name', $tag_name);
 
 		// Finally, query to register the tags of the article
-		$query_tags = $GLOBALS['dbh']->prepare('INSERT INTO tags_entries(tag_id, entry_id) VALUES((SELECT id FROM tags WHERE name=:name), (SELECT id FROM entries WHERE guid=:entry_guid))');
+		$query_tags = $dbh->prepare('INSERT INTO tags_entries(tag_id, entry_id) VALUES((SELECT id FROM tags WHERE name=:name), (SELECT id FROM entries WHERE guid=:entry_guid))');
 		$query_tags->bindParam(':name', $tag_name);
 		$query_tags->bindParam(':entry_guid', $guid);
 	}
@@ -184,7 +186,7 @@ function refresh_feeds($feeds, $update_feeds_infos=false) {
 				$query_entries_fail->execute();
 			}
 
-			if($GLOBALS['config']->get('use_tags_from_feeds') != 0) {
+			if($config->get('use_tags_from_feeds') != 0) {
 				if (!empty($event['categories'])) {
 					foreach ($event['categories'] as $tag_name) {
 						// Create tags if needed, get their id and add bind the articles to these tags
@@ -195,7 +197,7 @@ function refresh_feeds($feeds, $update_feeds_infos=false) {
 			}
 		}
 	}
-	$GLOBALS['dbh']->commit();
+	$dbh->commit();
 
 	return $errors;
 }
@@ -208,21 +210,23 @@ function refresh_feeds($feeds, $update_feeds_infos=false) {
  * @return errored urls in array
  */
 function add_feeds($urls) {
+    global $dbh;
+
 	$errors = array();
 	$added = array();
-	$GLOBALS['dbh']->beginTransaction();
-	$query = $GLOBALS['dbh']->prepare('INSERT OR IGNORE INTO feeds(url) VALUES(:url)');
+	$dbh->beginTransaction();
+	$query = $dbh->prepare('INSERT OR IGNORE INTO feeds(url) VALUES(:url)');
 	$query->bindParam(':url', $url);
 	foreach($urls as $url) {
 		if (filter_var($url, FILTER_VALIDATE_URL)) {
 			$query->execute();
-			$added[$GLOBALS['dbh']->lastInsertId()] = $url;
+			$added[$dbh->lastInsertId()] = $url;
 		}
 		else {
 			$errors[] = $url;
 		}
 	}
-	$GLOBALS['dbh']->commit();
+	$dbh->commit();
 	$errors_refresh = refresh_feeds($added, true);
 	foreach ($errors_refresh as $error) {
 		delete_feed_url($error);
@@ -237,7 +241,9 @@ function add_feeds($urls) {
  * @param $id is the id of the feed to delete
  */
 function delete_feed_id($id) {
-	$query = $GLOBALS['dbh']->prepare('DELETE FROM feeds WHERE id=:id');
+    global $dbh;
+
+	$query = $dbh->prepare('DELETE FROM feeds WHERE id=:id');
 	$query->execute(array(':id'=>$id));
 }
 
@@ -248,7 +254,9 @@ function delete_feed_id($id) {
  * @param $url is the url of the feed to delete
  */
 function delete_feed_url($url) {
-	$query = $GLOBALS['dbh']->prepare('DELETE FROM feeds WHERE url=:url');
+    global $dbh;
+
+	$query = $dbh->prepare('DELETE FROM feeds WHERE url=:url');
 	$query->execute(array(':url'=>$url));
 }
 
@@ -264,15 +272,17 @@ function delete_feed_url($url) {
  * @return true upon success, false otherwise.
  */
 function edit_feed($old_url, $new_url, $new_title='') {
+    global $dbh;
+
 	if (filter_var($new_url, FILTER_VALIDATE_URL) && filter_var($old_url, FILTER_VALIDATE_URL)) {
-		$query = $GLOBALS['dbh']->prepare('UPDATE feeds SET url=:url WHERE url=:old_url');
+		$query = $dbh->prepare('UPDATE feeds SET url=:url WHERE url=:old_url');
 		$query->execute(array(':old_url'=>$old_url, 'new_url'=>$new_url));
 
 		if ($query->rowCount() == 0) {
 			return false;
 		}
 		else {
-			refresh_feeds(array($GLOBALS['dbh']->lastInsertId()=>$new_url));
+			refresh_feeds(array($dbh->lastInsertId()=>$new_url));
 			return true;
 		}
 	}
@@ -288,6 +298,7 @@ function edit_feed($old_url, $new_url, $new_title='') {
  * TODO
  */
 function get_feeds() {
-	$query = $GLOBALS['dbh']->query('SELECT id, title, url, links, description, ttl, image FROM feeds');
+    global $dbh;
+	$query = $dbh->query('SELECT id, title, url, links, description, ttl, image FROM feeds');
 	return $query->fetchAll(PDO::FETCH_ASSOC);
 }
