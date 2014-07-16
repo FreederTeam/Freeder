@@ -12,7 +12,7 @@
  * @return Array of associative arrays for each entry.
  */
 function get_entries() {
-    global $dbh;
+	global $dbh;
 
 	$query = $dbh->query('SELECT id, feed_id, authors, title, links, description, content, enclosures, comments, guid, pubDate, lastUpdate, added_time FROM entries ORDER BY pubDate DESC');
 	$entries = $query->fetchall(PDO::FETCH_ASSOC);

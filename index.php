@@ -81,12 +81,12 @@ switch($do) {
 			exit();
 		}
 		if (!empty($_POST['feed_url']) && isset($_POST['feed_post'])) {
-            if (is_array(json_decode($_POST['feed_post'], true))) {
-                $post = $_POST['feed_post'];
-            }
-            else {
-                $post = '';
-            }
+			if (is_array(json_decode($_POST['feed_post'], true))) {
+				$post = $_POST['feed_post'];
+			}
+			else {
+				$post = '';
+			}
 			if(empty(add_feeds(array(array('url'=>$_POST['feed_url'], 'post'=>$post))))) {
 				header('location: index.php?do=settings');
 				exit();

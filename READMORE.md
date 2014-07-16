@@ -9,12 +9,12 @@
 * Bô
 
 * Hyper user friendly, drag and drop et ça marche
-    * Pas d'installation compliquée
-    * _checkbox_ “voir les options avancées” pour être redirigé sur la page de conf après l'installation
-    * Choix du thème à l'installation, packaging facile
+	* Pas d'installation compliquée
+	* _checkbox_ “voir les options avancées” pour être redirigé sur la page de conf après l'installation
+	* Choix du thème à l'installation, packaging facile
 
 * Multi utilisateur
-    *  pratique pour une famille pour ne pas avoir N instances différentes + partage du cache
+	*  pratique pour une famille pour ne pas avoir N instances différentes + partage du cache
 
 * i18n
 
@@ -22,7 +22,7 @@
 
 * Les thèmes ne doivent pas être dépendants du système actuel
 	* Il faudrait des guidelines sur les balises / classes de base pour que les plugins soient indépendants des thèmes (un peu comme reveal.js par exemple)
-        * Impose d'avoir un bon choix sémantique dans le thème de base, pour ne pas imposer des contraintes ridicules. Après, il n'y a aucune règle à respecter, mais si les règles sont respectées, les plugins seront très facilement compatibles _out of the box_.
+		* Impose d'avoir un bon choix sémantique dans le thème de base, pour ne pas imposer des contraintes ridicules. Après, il n'y a aucune règle à respecter, mais si les règles sont respectées, les plugins seront très facilement compatibles _out of the box_.
 	* Si un fichier PHP (disons `template.inc.php`) est présent dans le dossier du thème, il est inclus. Ça permet de définir simplement quelques fonctions _customs_ pour améliorer l'affichage du thème, et d'avoir un _plugin-like_ directement dans le thème.
 
 * Modes titres / réduits / complets
@@ -37,29 +37,29 @@
 	* Je sais pas bien comment c'est dans freshRSS, mais en gros une page où tu dis « Afficher les articles des tags truc et muche non lus dans l'ordre anti-chronologique » par exemple
 
 * Flux avec authentification
-    * Certains flux sont accesibles uniquement avec une authentification GET, .htaccess ou POST (typiquement, certains RSS d'une instance OwnCloud)
-    * Si le flux nécessite une authentification GET, elle est déjà dans l'adresse : `URL_DU_FLUX?login=…&pass=…`.
-    * Si le flux nécessite une authentification par `.htaccess`, cf https://github.com/ldleman/Leed/issues/376
-    * Si le flux nécessite une authentification POST, **TODO**
+	* Certains flux sont accesibles uniquement avec une authentification GET, .htaccess ou POST (typiquement, certains RSS d'une instance OwnCloud)
+	* Si le flux nécessite une authentification GET, elle est déjà dans l'adresse : `URL_DU_FLUX?login=…&pass=…`.
+	* Si le flux nécessite une authentification par `.htaccess`, cf https://github.com/ldleman/Leed/issues/376
+	* Si le flux nécessite une authentification POST, **TODO**
 
 * Privacy
-    * Bloquer les redirections / trackers
-    * Feedburner est spécialiste
+	* Bloquer les redirections / trackers
+	* Feedburner est spécialiste
 
 * Favicons des flux
 
 * Logs clair, visible dans l'interface
-    * Pour chaque utilisateur, affichage des logs qui le concerne
-    * Logs de : connexions / synchronisation / flux en erreur
-    * Cf message de je ne sais plus quel script qui dit “Le flux XXX n'a pas eu de nouveaux événements depuis ***, il peut y avoir un problème”.
+	* Pour chaque utilisateur, affichage des logs qui le concerne
+	* Logs de : connexions / synchronisation / flux en erreur
+	* Cf message de je ne sais plus quel script qui dit “Le flux XXX n'a pas eu de nouveaux événements depuis ***, il peut y avoir un problème”.
 
 * <del>Possibilité de rafraîchir uniquement un flux / une catégorie</del>
-    * Possible avec le code actuel
-    * TODO : Interface
+	* Possible avec le code actuel
+	* TODO : Interface
 
 * Bonne documentation
-    * Bonne doc en ligne
-    * Site bô pour présenter Freeder
+	* Bonne doc en ligne
+	* Site bô pour présenter Freeder
 
 * Une bonne version française, sans fautes et avec les accords !
 
@@ -88,14 +88,14 @@
 * Ordonner comme on veut par drag and drop and so
 
 * De vrais thèmes et plugins supportés
-    * Intégration de base des principaux thèmes et plugins, qui sont sûrs d'être compatibles.
+	* Intégration de base des principaux thèmes et plugins, qui sont sûrs d'être compatibles.
 	* Commencer par juste une liste de ce qui est officiellement dispo et fonctionnel qui fasse un minimum autorité pour les utilisateurs.
 
 * De l'AJAX tout partout pour que les compteurs se décrémentent etc
 
 * <del>Vue anonyme</del>
-    * Une option à activer, rien d'obligatoire
-    * Done
+	* Une option à activer, rien d'obligatoire
+	* Done
 
 * Et le social de RSSv3 (poke Elie)
 
@@ -123,7 +123,7 @@
 Ce ne sont pas forcément des plugins en tant que tels, mais des composants annexes, qui seront sûrement intégrés au noyau dur. Juste qu'ils ne sont pas prioritaires et facilement intégrables par la communauté.
 
 * Intégration de rss-bridge pour compléter les flux tronqués
-    * https://github.com/sebsauvage/rss-bridge
+	* https://github.com/sebsauvage/rss-bridge
 
 * Possibilité d'annoter le texte pendant qu'on le lit, pour les réactions à chaud ou corrections de typo
 	* joli ça comme idée ! Comment soumettre les typos à l'auteur ?
@@ -159,8 +159,8 @@ Ce ne sont pas forcément des plugins en tant que tels, mais des composants anne
 ## Du côté technique
 * <del>XSLT est notre ami : http://php.net/manual/fr/function.xslt-process.php
 * ; http://bob.developpez.com/phpxslt/</del>
-    * Pas dispo de base dans Debian… Dommage =(
-    * Idem chez les mutus
+	* Pas dispo de base dans Debian… Dommage =(
+	* Idem chez les mutus
 * Toutes les librairies etc doivent fonctionner de base chez la plupart des hébergeurs mutualisés
 * PHP, pour que ce soit installable facilement et dans un maximum d'endroits
 * feed2array https://github.com/broncowdd/feed2array
