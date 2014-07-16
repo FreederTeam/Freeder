@@ -80,8 +80,14 @@ switch($do) {
 			header('location: index.php?do=settings');
 			exit();
 		}
-		if (!empty($_POST['feed_url'])) {
-			if(empty(add_feeds(array($_POST['feed_url'])))) {
+		if (!empty($_POST['feed_url']) && isset($_POST['feed_post'])) {
+            if (is_array(json_decode($_POST['feed_post'], true))) {
+                $post = $_POST['feed_post'];
+            }
+            else {
+                $post = '';
+            }
+			if(empty(add_feeds(array(array('url'=>$_POST['feed_url'], 'post'=>$post))))) {
 				header('location: index.php?do=settings');
 				exit();
 			}
@@ -113,7 +119,7 @@ switch($do) {
 			}
 			$urls = array();
 			foreach($feeds_opml as $feed) {
-				$urls[] = $feed['url'];
+				$urls[] = array('url'=>$feed['url'], 'post'=>'');
 			}
 
 			$errors_refresh = add_feeds($urls);
@@ -142,7 +148,7 @@ switch($do) {
 		}
 		$feeds_to_refresh = array();
 		foreach($feeds as $feed) {
-			$feeds_to_refresh[$feed['id']] = $feed['url'];
+			$feeds_to_refresh[$feed['id']] = array('url'=>$feed['url'], 'post'=>$feed['post']);
 		}
 		refresh_feeds($feeds_to_refresh);
 		header('location: index.php');

@@ -63,9 +63,12 @@ function install_config() {
 
 /**
  * Initialize database.
+ *
+ * @todo
+ *      * handle errors
+ *      * add indexes in db ?
  */
 function install_db() {
-	// TODO: handle errors
 	$dbh = new PDO('sqlite:'.DATA_DIR.DB_FILE);
 	$dbh->query('PRAGMA foreign_keys = ON');
 
@@ -106,7 +109,8 @@ function install_db() {
 		links TEXT,  -- JSON array of links associated with the feed
 		description TEXT,
 		ttl INT DEFAULT 0,  -- This is the ttl of the feed, 0 means that it uses the config value
-		image TEXT
+        image TEXT,
+        post TEXT
 	)');
 
 	// Create table to store entries
@@ -149,7 +153,6 @@ function install_db() {
 		FOREIGN KEY(feed_id) REFERENCES feeds(id) ON DELETE CASCADE
 	)');
 	$dbh->commit();
-	// TODO : Add indexes in db
 }
 
 

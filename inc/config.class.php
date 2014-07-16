@@ -9,9 +9,10 @@
 
 /**
  * Store the configuration retrieved from database.
+ *
+ * @todo Use stdClass ?
  */
 class Config {
-	// TODO: use stdClass ?
     private static $default_config = array(  /** This is the default config */
 		'timezone'=>'Europe/Paris',
 		'use_tags_from_feeds'=>1,
@@ -47,10 +48,9 @@ class Config {
 		}
 	}
 
-    public function save() {  /* Stores the current config in database */
+    public function save() {  /** Stores the current config in database */
         global $dbh;
 		$dbh->beginTransaction();
-		// TODO : Same thing that the comment in feeds about UPSERT
 		$query_insert = $dbh->prepare('INSERT OR IGNORE INTO config(option) VALUES(:option)');
 		$query_insert->bindParam(':option', $option);
 		$query_update = $dbh->prepare('UPDATE config SET value=:value WHERE option=:option');
