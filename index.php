@@ -87,7 +87,8 @@ switch($do) {
 			else {
 				$post = '';
 			}
-			if(empty(add_feeds(array(array('url'=>$_POST['feed_url'], 'post'=>$post))))) {
+			$add_errors = add_feeds(array(array('url'=>$_POST['feed_url'], 'post'=>$post)));
+			if(empty($add_errors)) {
 				header('location: index.php?do=settings');
 				exit();
 			}
