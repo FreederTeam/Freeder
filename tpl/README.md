@@ -27,5 +27,3 @@ Your page content
 ```
 
 You content will be placed at DOM position `/html/body/main`.
-
-

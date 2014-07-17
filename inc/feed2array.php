@@ -335,6 +335,11 @@ function feed2array($feed, $load=false, $debug=false) {
 						// Only updated is necessary for an ATOM feed
 						$flux['items'][$c]['pubDate'] = $flux['items'][$c]['updated'];
 					}
+
+					// Only updated is mandatory in ATOM spec
+					if (empty($flux['items'][$c]['pubDate'])) {
+						$flux['items'][$c]['pubDate'] = $flux['items'][$c]['updated'];
+					}
 				}
 
 				if($item->content) {

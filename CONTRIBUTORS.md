@@ -21,14 +21,14 @@ points we dicussed about.
 We did not want to include any Non Commercial clause in our license because:
 
   1. This attempt to license freeness since people are not really free to do
-     whatever they want with the code.
+	 whatever they want with the code.
   2. If there is a commercial use of our software, we will get more feedback
-     since more people will deal with it.
+	 since more people will deal with it.
   3. If the commercial application adds some simple features, it could give us
-     improvment ideas.
+	 improvment ideas.
   4. If the commercial application adds a big feature that we can afford to
-     implement by ourselves, well: that's their job! We would be glad to see
-     that they used our software as basis and done something big from it.
+	 implement by ourselves, well: that's their job! We would be glad to see
+	 that they used our software as basis and done something big from it.
 
 ### Beerware
 

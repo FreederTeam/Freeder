@@ -14,7 +14,7 @@
  * @return A stdClass with attributes login and is_admin otherwise.
  */
 function check_and_get_user($login, $pass) {
-    global $dbh;
+	global $dbh;
 
 	$query = $dbh->prepare('SELECT id, password, salt, is_admin FROM users WHERE login=:login');
 	$query->execute(array(':login'=>$login));

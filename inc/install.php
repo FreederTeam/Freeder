@@ -42,7 +42,7 @@ define('DB_FILE', 'db.sqlite3');
 function install_dir($dir) {
 	if (!file_exists($dir)) {
 		if (!mkdir($dir) || !is_writable($dir)) {
-            $current_user = get_current_user();
+			$current_user = get_current_user();
 			exit('error: Unable to create or write in data directory. Check the writing rights of Freeder root directory. The user who executes Freeder — '.$current_user.' — should be able to write in this directory. You may prefere to create the /data directory on your own and allow '.$current_user.' to write only in /data instead of in the whole Freeder root.');
 		}
 	}
@@ -65,8 +65,8 @@ function install_config() {
  * Initialize database.
  *
  * @todo
- *      * handle errors
- *      * add indexes in db ?
+ *	  * handle errors
+ *	  * add indexes in db ?
  */
 function install_db() {
 	$dbh = new PDO('sqlite:'.DATA_DIR.DB_FILE);
@@ -105,12 +105,14 @@ function install_db() {
 	$dbh->query('CREATE TABLE IF NOT EXISTS feeds(
 		id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
 		title TEXT,
+		has_user_title INTEGER DEFAULT 0,  -- To specify wether the user edited the title manually or not
 		url TEXT UNIQUE COLLATE NOCASE,  -- Feed URL
 		links TEXT,  -- JSON array of links associated with the feed
 		description TEXT,
 		ttl INT DEFAULT 0,  -- This is the ttl of the feed, 0 means that it uses the config value
-        image TEXT,
-        post TEXT
+		has_user_ttl INT DEFAULT 0,  -- To specify wether the user edited the TTL manually or not
+		image TEXT,
+		post TEXT
 	)');
 
 	// Create table to store entries
@@ -127,28 +129,29 @@ function install_db() {
 		guid TEXT UNIQUE,
 		pubDate INTEGER,
 		lastUpdate INTEGER,
-		is_sticky INTEGER DEFAULT 0,
-		is_read INTEGER DEFAULT 0,
 		FOREIGN KEY(feed_id) REFERENCES feeds(id) ON DELETE CASCADE
 	)');
 
 	// Create table to store tags
 	$dbh->query('CREATE TABLE IF NOT EXISTS tags(
 		id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-		name TEXT UNIQUE COLLATE NOCASE,
-		is_user_tag INTEGER DEFAULT 0
+		name TEXT UNIQUE COLLATE NOCASE
 	)');
 
 	// Create table to store association between tags and entries
 	$dbh->query('CREATE TABLE IF NOT EXISTS tags_entries(
 		tag_id INTEGER,
 		entry_id INTEGER,
+		auto_added_tag INTEGER DEFAULT 0,
+		UNIQUE (tag_id, entry_id),
 		FOREIGN KEY(tag_id) REFERENCES tags(id) ON DELETE CASCADE,
 		FOREIGN KEY(entry_id) REFERENCES entries(id) ON DELETE CASCADE
 	)');
 	$dbh->query('CREATE TABLE IF NOT EXISTS tags_feeds(
 		tag_id INTEGER,
 		feed_id INTEGER,
+		auto_added_tag INTEGER,
+		UNIQUE (tag_id, feed_id),
 		FOREIGN KEY(tag_id) REFERENCES tags(id) ON DELETE CASCADE,
 		FOREIGN KEY(feed_id) REFERENCES feeds(id) ON DELETE CASCADE
 	)');
@@ -167,7 +170,7 @@ function install() {
 		install_dir('tmp');
 
 		install_config();
-		require(DATA_DIR.'config.php');
+		require_once(DATA_DIR.'config.php');
 
 		install_db();
 

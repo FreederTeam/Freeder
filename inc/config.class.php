@@ -13,7 +13,7 @@
  * @todo Use stdClass ?
  */
 class Config {
-    private static $default_config = array(  /** This is the default config */
+	private static $default_config = array(  /** This is the default config */
 		'timezone'=>'Europe/Paris',
 		'use_tags_from_feeds'=>1,
 		'template'=>'default/',
@@ -26,7 +26,7 @@ class Config {
 		$this->load();
 	}
 
-    public function get($option) {  /** You can use either Config->attribute or Config->get(attribute) */
+	public function get($option) {  /** You can use either Config->attribute or Config->get(attribute) */
 		return isset($this->$option) ? $this->$option : false;
 	}
 
@@ -34,8 +34,8 @@ class Config {
 		$this->$option = $value;
 	}
 
-    public function load() {  /** Load the config from the database into this Config object */
-        global $dbh;
+	public function load() {  /** Load the config from the database into this Config object */
+		global $dbh;
 		$config_from_db = $dbh->query('SELECT option, value FROM config');
 		$config_from_db = $config_from_db !== FALSE ? $config_from_db->fetchall(PDO::FETCH_ASSOC) : array();
 		$config = array();
@@ -49,8 +49,8 @@ class Config {
 		}
 	}
 
-    public function save() {  /** Stores the current config in database */
-        global $dbh;
+	public function save() {  /** Stores the current config in database */
+		global $dbh;
 		$dbh->beginTransaction();
 		$query_insert = $dbh->prepare('INSERT OR IGNORE INTO config(option) VALUES(:option)');
 		$query_insert->bindParam(':option', $option);
