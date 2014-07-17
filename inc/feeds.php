@@ -6,7 +6,9 @@
  *  @brief Functions to handle the feeds (includes feed2array)
  */
 
-require('feed2array.php');
+require_once('feed2array.php');
+require_once('tags.php');
+require_once('entries.php');
 
 
 /**
@@ -100,10 +102,10 @@ function refresh_feeds($feeds) {
 	// Put everything in a transaction to make it faster
 	$dbh->beginTransaction();
 	// Delete old tags which were not user added
-	$dbh->query('DELETE FROM tags WHERE auto_added_tag=1');
+	delete_auto_added_tags();
 
 	// Query to update feeds table with latest infos in the RSS / ATOM
-	$query_feeds = $dbh->prepare('UPDATE feeds SET title=(CASE WHEN has_user_title=1 then :title else title), links=:links, description=:description, ttl=:ttl, image=:image WHERE url=:old_url');
+	$query_feeds = $dbh->prepare('UPDATE feeds SET title=(CASE WHEN has_user_title=1 THEN title ELSE :title END), links=:links, description=:description, ttl=(CASE WHEN has_user_ttl=1 THEN ttl ELSE :ttl END), image=:image WHERE url=:old_url');
 	$query_feeds->bindParam(':title', $feed_title);
 	$query_feeds->bindParam(':links', $feed_links);
 	$query_feeds->bindParam(':description', $feed_description);
@@ -112,7 +114,7 @@ function refresh_feeds($feeds) {
 	$query_feeds->bindParam(':old_url', $url);
 
 	// Two queries, to upsert (update OR insert) entries : update the existing entry and insert a new one if the update errorred
-	$query_entries = $dbh->prepare('UPDATE entries SET authors=:authors, title=:title, links=:links, description=:description, content=:content, enclosures=:enclosures, comments=:comments, pubDate=:pubDate, lastUpdate=:lastUpdate, added_time=strftime("%s", "now") WHERE guid=:guid');
+	$query_entries = $dbh->prepare('UPDATE entries SET authors=:authors, title=:title, links=:links, description=:description, content=:content, enclosures=:enclosures, comments=:comments, pubDate=:pubDate, lastUpdate=:lastUpdate WHERE guid=:guid');
 	$query_entries->bindParam(':authors', $authors);
 	$query_entries->bindParam(':title', $title);
 	$query_entries->bindParam(':links', $links);
@@ -123,7 +125,7 @@ function refresh_feeds($feeds) {
 	$query_entries->bindParam(':guid', $guid);
 	$query_entries->bindParam(':pubDate', $pubDate, PDO::PARAM_INT);
 	$query_entries->bindParam(':lastUpdate', $last_update, PDO::PARAM_INT);
-	$query_entries_fail = $dbh->prepare('INSERT INTO entries(feed_id, authors, title, links, description, content, enclosures, comments, pubDate, lastUpdate, guid, added_time) VALUES(:feed_id, :authors, :title, :links, :description, :content, :enclosures, :comments, :pubDate, :lastUpdate, :guid, strftime("%s", "now"))');
+	$query_entries_fail = $dbh->prepare('INSERT INTO entries(feed_id, authors, title, links, description, content, enclosures, comments, pubDate, lastUpdate, guid) VALUES(:feed_id, :authors, :title, :links, :description, :content, :enclosures, :comments, :pubDate, :lastUpdate, :guid)');
 	$query_entries_fail->bindParam(':feed_id', $feed_id);
 	$query_entries_fail->bindParam(':authors', $authors);
 	$query_entries_fail->bindParam(':title', $title);
@@ -212,9 +214,10 @@ function refresh_feeds($feeds) {
 			}
 		}
 	}
-	$dbh->commit();
-
 	// TODO : Remove old entries
+	delete_old_entries();
+
+	$dbh->commit();
 
 	return $errors;
 }

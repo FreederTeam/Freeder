@@ -102,7 +102,6 @@ function install_db() {
 	$query->execute(array(':value'=>$_POST['timezone']));
 
 	// Create the table to store feeds
-	// TODO : Add user_ttl
 	$dbh->query('CREATE TABLE IF NOT EXISTS feeds(
 		id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
 		title TEXT,
@@ -111,6 +110,7 @@ function install_db() {
 		links TEXT,  -- JSON array of links associated with the feed
 		description TEXT,
 		ttl INT DEFAULT 0,  -- This is the ttl of the feed, 0 means that it uses the config value
+		has_user_ttl INT DEFAULT 0,  -- To specify wether the user edited the TTL manually or not
 		image TEXT,
 		post TEXT
 	)');
@@ -129,7 +129,6 @@ function install_db() {
 		guid TEXT UNIQUE,
 		pubDate INTEGER,
 		lastUpdate INTEGER,
-		added_time INTEGER,  -- timestamp of the import / last refresh in db
 		FOREIGN KEY(feed_id) REFERENCES feeds(id) ON DELETE CASCADE
 	)');
 
@@ -144,7 +143,7 @@ function install_db() {
 		tag_id INTEGER,
 		entry_id INTEGER,
 		auto_added_tag INTEGER DEFAULT 0,
-		UNIQUE (tag_id, feed_id),
+		UNIQUE (tag_id, entry_id),
 		FOREIGN KEY(tag_id) REFERENCES tags(id) ON DELETE CASCADE,
 		FOREIGN KEY(entry_id) REFERENCES entries(id) ON DELETE CASCADE
 	)');
@@ -171,7 +170,7 @@ function install() {
 		install_dir('tmp');
 
 		install_config();
-		require(DATA_DIR.'config.php');
+		require_once(DATA_DIR.'config.php');
 
 		install_db();
 

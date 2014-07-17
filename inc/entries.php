@@ -14,7 +14,15 @@
 function get_entries() {
 	global $dbh;
 
-	$query = $dbh->query('SELECT id, feed_id, authors, title, links, description, content, enclosures, comments, guid, pubDate, lastUpdate, added_time FROM entries ORDER BY pubDate DESC');
+	$query = $dbh->query('SELECT id, feed_id, authors, title, links, description, content, enclosures, comments, guid, pubDate, lastUpdate FROM entries ORDER BY pubDate DESC');
 	$entries = $query->fetchall(PDO::FETCH_ASSOC);
 	return $entries;
+}
+
+
+/**
+ * Delete the old entries as specified in the config
+ * @todo This function
+ */
+function delete_old_entries() {
 }

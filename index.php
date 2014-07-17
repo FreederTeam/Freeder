@@ -10,32 +10,32 @@ define('TPL_DIR', 'tpl/');
 define('DEBUG', true);
 
 if(!is_file(DATA_DIR.'config.php')) {
-	require('inc/install.php');
+	require_once('inc/install.php');
 
 	install();
 }
 else {
-	require(DATA_DIR.'config.php');
+	require_once(DATA_DIR.'config.php');
 }
 
 if(!is_file(DATA_DIR.DB_FILE)) {
 	unlink(DATA_DIR.'/config.php');
 	header('location: index.php');
 }
-require('inc/config.class.php');
+require_once('inc/config.class.php');
 $dbh = new PDO('sqlite:'.DATA_DIR.DB_FILE);
 $dbh->query('PRAGMA foreign_keys = ON');
 
 $config = new Config();
 date_default_timezone_set($config->timezone);
-require('inc/rain.tpl.class.php');
+require_once('inc/rain.tpl.class.php');
 RainTPL::$tpl_dir = TPL_DIR.$config->template;
 $tpl = new RainTPL;
 $tpl->assign('start_generation_time', microtime(true));
-require('inc/functions.php');
-require('inc/feeds.php');
-require('inc/entries.php');
-require('inc/users.php');
+require_once('inc/functions.php');
+require_once('inc/feeds.php');
+require_once('inc/entries.php');
+require_once('inc/users.php');
 
 
 if (!empty($_POST['login']) && !empty($_POST['password'])) {
@@ -112,7 +112,7 @@ switch($do) {
 			if ($_FILES['import']['size'] > 1048576) {
 				exit();  // TODO: Error, file is too large
 			}
-			require('inc/opml.php');
+			require_once('inc/opml.php');
 			$feeds_opml = opml_import(file_get_contents($_FILES['import']['tmp_name']));
 			if ($feeds_opml === false) {
 				exit('ok');  // TODO: Error, OPML file not valid
