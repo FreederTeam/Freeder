@@ -92,3 +92,14 @@ function get_generation_time($start_generation_time) {
 	}
 	return $round;
 }
+
+/**
+ * Exit if unauthentified user.
+ */
+function require_auth() {
+	if(!isset($_SESSION['user'])) {
+		header('location: index.php');
+		exit();
+	}
+}
+

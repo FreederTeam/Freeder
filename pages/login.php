@@ -6,6 +6,10 @@
 
 require_once('inc/init.php');
 
-$tpl->assign('entries', get_entries());
-$tpl->draw('index');
+if(isset($_SESSION['user'])) {
+	header('location: index.php');
+}
+else {
+	$tpl->draw('login');
+}
 
