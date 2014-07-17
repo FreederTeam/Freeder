@@ -103,7 +103,8 @@ for (a ; b ; c) {
    and some even says it leads to better perfs.
  * Use underscore\_case for vars and functions, use [PascalCase](https://en.wikipedia.org/wiki/PascalCase) for classes, unless this element refers to some well established, standardized name (such as `pubDate` in the RSS specification).
  * **Never** leave traling spaces.
- * Use doxygen parsable docstrings in your functions comments
+ * Use doxygen parsable docstrings in your functions comments.
+ * When a comment applies to a full block and not only the next (few) line(s), put it before the block, not inside it.
 
 
 File organisation
@@ -160,7 +161,12 @@ Database organisation
 TODO
 
 
+Misc
+----
 
+If you want to add some tips but you don't know where it should be, put it here. If many items of that list are about the same topic, please take time to add a new section for it!
+
+ * Use `die` for erronous situations that way not happend in a usual flow. It whould never be raised for a basic use of Freeder but could help developpers and code hackers to debug.
 
 
 
