@@ -94,7 +94,7 @@ switch($do) {
 				exit();
 			}
 			else {
-				exit('Erreur - TODO');
+				exit('An error occurred when adding the feed (maybe Freeder was unable to refresh it or it was not a valid URL).');
 			}
 		}
 		if (!empty($_GET['delete_feed'])) {
@@ -109,15 +109,15 @@ switch($do) {
 		}
 		if (isset($_FILES['import'])) {
 			if ($_FILES['import']['error'] > 0) {
-				exit();  // TODO: Error during upload
+				exit('Unable to upload the OPML file.');
 			}
 			if ($_FILES['import']['size'] > 1048576) {
-				exit();  // TODO: Error, file is too large
+				exit('Imported OPML file is too large.');
 			}
 			require_once('inc/opml.php');
 			$feeds_opml = opml_import(file_get_contents($_FILES['import']['tmp_name']));
 			if ($feeds_opml === false) {
-				exit('ok');  // TODO: Error, OPML file not valid
+				exit('Could not get feeds from the OPML file.');
 			}
 			$errors_refresh = add_feeds($feeds_opml);
 			if(empty($errors_refresh)) {
@@ -126,7 +126,9 @@ switch($do) {
 			}
 			else {
 				// Some feeds errorred
-				exit();  // TODO
+				echo "The following feeds had errors when refreshing them:<br/>";
+				var_dump($errors_refresh);
+				exit();
 			}
 		}
 		$tpl->assign('config', $config);

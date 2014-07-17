@@ -29,18 +29,19 @@
 
 * Pas dépendant du serveur web (nginx / apache and co)
 
-* Flux privés / publics => à résumé
+* Flux privés / publics => à résumer
 	* Est-ce utile de se donner ce mal ? Réel besoin ou pas ?
 	* Perso, j'aime bien cette idée :)
 	* J'aime voir ça suivant l'idée de vues dont tu parles dans ton article : tu coches ce qui doit apparaître sur la vue publique et ce qui apparît sur ta page d'accueil, etc. En fait les vues devraient remplacer les dossiers.
 	* Les vues, à la freshRSS ?
 	* Je sais pas bien comment c'est dans freshRSS, mais en gros une page où tu dis « Afficher les articles des tags truc et muche non lus dans l'ordre anti-chronologique » par exemple
 
-* Flux avec authentification
+* <del>Flux avec authentification</del>
 	* Certains flux sont accesibles uniquement avec une authentification GET, .htaccess ou POST (typiquement, certains RSS d'une instance OwnCloud)
 	* Si le flux nécessite une authentification GET, elle est déjà dans l'adresse : `URL_DU_FLUX?login=…&pass=…`.
 	* Si le flux nécessite une authentification par `.htaccess`, cf https://github.com/ldleman/Leed/issues/376
-	* Si le flux nécessite une authentification POST, **TODO**
+	* Si le flux nécessite une authentification POST, done
+	* **Done**
 
 * Privacy
 	* Bloquer les redirections / trackers
@@ -99,7 +100,17 @@
 
 * Et le social de RSSv3 (poke Elie)
 
-## Tags => à reprendre
+## Tags
+
+Tags systèmes (`_trucmuche`) réservés à la gestion en interne (`is_sticky` pour les favoris, `is_read` pour les articles lus).
+
+Tags utilisateurs.
+
+Tags automatiquement récupérés des flux RSS.
+
+
+
+Historique:
 
 * Favoris ? => vraiment utile ce machin ? non, mais des tags peut-être ? « À lire plus tard » et tout (et s/Lu/Archiver) pas mal, à voir car ça rejoint les dossiers aussi je crois mais vu que t'en veux plus… => s/dossiers/tags oui ^^
 	* Le système de tag peut améliorer les favoris en effet, mais peut être pas remplacer er même temps les dossiers…
@@ -137,7 +148,7 @@ Ce ne sont pas forcément des plugins en tant que tels, mais des composants anne
 * Priorité des flux https://github.com/ldleman/Leed/issues/75
 	* Se gère par un système de tags/vues aussi non ? Par contre si on utilise ce concept à chaque fois va falloir bien l'implémenter et réfléchir à sa souplesse, et surtout fournir une bonne conf par défaut. Un bon logiciel devrait toujours avoir une bonne conf par défaut (genre un bon thème+1)
 
-* Une licence décente
+* <del>Une licence décente</del>
 
 
 ## Abandonné
