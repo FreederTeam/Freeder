@@ -18,3 +18,4 @@ foreach($feeds as $feed) {
 refresh_feeds($feeds_to_refresh);
 
 header('location: index.php');
+

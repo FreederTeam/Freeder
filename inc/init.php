@@ -46,6 +46,9 @@ require_once('inc/rain.tpl.class.php');
 RainTPL::$tpl_dir = TPL_DIR.$config->template;
 $tpl = new RainTPL;
 $tpl->assign('start_generation_time', microtime(true));
+
+
+// Include utils
 require_once('inc/functions.php');
 require_once('inc/feeds.php');
 require_once('inc/entries.php');
@@ -64,7 +67,7 @@ $tpl->assign('user', isset($_SESSION['user']) ? $_SESSION['user'] : false);
 
 // Require connection if no anonymous view has been set
 if (empty($_SESSION['user']) && $config->anonymous_access == 0) {
-	$tpl->draw('connection');
+	$tpl->draw('login');
 	exit();
 }
 
