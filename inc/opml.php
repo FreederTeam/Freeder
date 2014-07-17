@@ -10,7 +10,7 @@
 /**
  * Generate an OPML file to export the feeds.
  *
- * @copyright Licensed under AGPL. Heavily based on a function from FreshRSS, licensed under AGPL
+ * @copyright Heavily based on a function from FreshRSS.
  * @todo Adapt to our code
  */
 function opml_export($cats) {
@@ -43,7 +43,7 @@ function opml_export($cats) {
  * Parse an OPML file.
  *
  * @return An array of associative array for each feed with URL, title and associated tags.
- * @copyright Licensed under AGPL. Heavily based on a function from FreshRSS, licensed under AGPL
+ * @copyright Heavily based on a function from FreshRSS.
  */
 function opml_import($xml) {
 	$opml = simplexml_load_string($xml);
@@ -88,7 +88,8 @@ function opml_import($xml) {
 						$feeds[] = array(
 							'url'=>(string) $feed['xmlUrl'],
 							'title'=>$feed_title,
-							'tags'=>array()
+							'tags'=>array(),
+							'post'=>''
 						);
 						$key = count($feeds) - 1;
 					}
@@ -115,7 +116,8 @@ function opml_import($xml) {
 				$feeds[] = array(
 					'url'=>(string) $outline['xmlUrl'],
 					'title'=>$title,
-					'tags'=>array()
+					'tags'=>array(),
+					'post'=>''
 				);
 			}
 		}

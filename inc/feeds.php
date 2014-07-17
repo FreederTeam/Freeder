@@ -235,15 +235,33 @@ function add_feeds($urls) {
 	$errors = array();
 	$added = array();
 	$dbh->beginTransaction();
-	$query = $dbh->prepare('INSERT OR IGNORE INTO feeds(url, post) VALUES(:url, :post)');
+	$query = $dbh->prepare('INSERT OR IGNORE INTO feeds(url, title, has_user_title, post) VALUES(:url, :title, CASE WHEN :title="" THEN 0 ELSE 1 END, :post)');
 	$query->bindParam(':url', $url);
+	$query->bindParam(':title', $title);
 	$query->bindParam(':post', $post);
 	foreach($urls as $url_array) {
 		$url = $url_array['url'];
-		$post = $url_array['post'];
+		if (isset($url_array['post'])) {
+			$post = $url_array['post'];
+		}
+		else {
+			$post = '';
+		}
+		if (isset($url_array['title'])) {
+			$title = $url_array['title'];
+		}
+		else {
+			$title = '';
+		}
+		if (isset($url_array['tags'])) {
+			$tags = $url_array['tags'];
+		}
+		else {
+			$tags = array();
+		}
 		if (filter_var($url, FILTER_VALIDATE_URL)) {
 			$query->execute();
-			$added[] = array('id'=>$dbh->lastInsertId(), 'url'=>$url, 'post'=>$post);
+			$added[] = array('id'=>$dbh->lastInsertId(), 'url'=>$url, 'post'=>$post, 'tags'=>$tags);
 		}
 		else {
 			$errors[] = $url;
@@ -254,6 +272,30 @@ function add_feeds($urls) {
 	foreach ($errors_refresh as $error) {
 		delete_feed_url($error);
 	}
+
+	// Add feeds tags
+	$dbh->beginTransaction();
+	$query_insert_tag = $dbh->prepare('INSERT OR IGNORE INTO tags(name) VALUES(:name)');
+	$query_insert_tag->bindParam(':name', $tag_name);
+
+	// Register the tags of the feed
+	$query_tags = $dbh->prepare('INSERT INTO tags_feeds(tag_id, feed_id, auto_added_tag) VALUES((SELECT id FROM tags WHERE name=:name), :feed_id, 0)');
+	$query_tags->bindParam(':name', $tag_name);
+	$query_tags->bindParam(':feed_id', $feed_id);
+
+	foreach($added as $url_array) {
+		if(in_array($url_array['url'], $errors_refresh)) {
+			continue;
+		}
+
+		$feed_id = $url_array['id'];
+		foreach($url_array['tags'] as $tag_name) {
+			$query_insert_tag->execute();
+			$query_tags->execute();
+		}
+	}
+	$dbh->commit();
+
 	return array_merge($errors, $errors_refresh);
 }
 

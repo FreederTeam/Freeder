@@ -119,21 +119,14 @@ switch($do) {
 			if ($feeds_opml === false) {
 				exit('ok');  // TODO: Error, OPML file not valid
 			}
-			$urls = array();
-			foreach($feeds_opml as $feed) {
-				$urls[] = array('url'=>$feed['url'], 'post'=>'');
-			}
-
-			$errors_refresh = add_feeds($urls);
+			$errors_refresh = add_feeds($feeds_opml);
 			if(empty($errors_refresh)) {
-				// TODO: Feed tags + restore feed title
 				header('location: index.php?do=settings');
 				exit();
 			}
 			else {
 				// Some feeds errorred
-				// TODO
-				exit();
+				exit();  // TODO
 			}
 		}
 		$tpl->assign('config', $config);
