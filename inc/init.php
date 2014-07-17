@@ -10,24 +10,35 @@ define('TPL_DIR', 'tpl/');
 define('DEBUG', true);
 
 
-// Check installation
-if(!is_file(DATA_DIR.'config.php') || !is_file(DATA_DIR.DB_FILE)) {
+// Check config installation
+if(!is_file(DATA_DIR.'config.php')) {
 	require_once('inc/install.php');
 
 	install();
 }
 
 
-// Load config
+// Load constant config
 require_once(DATA_DIR.'config.php');
-require_once('inc/config.class.php');
-$config = new Config();
-date_default_timezone_set($config->timezone);
+
+
+// Check database installation
+if(!is_file(DATA_DIR.DB_FILE)) {
+	require_once('inc/install.php');
+
+	install();
+}
 
 
 // Initialize database handler
 $dbh = new PDO('sqlite:'.DATA_DIR.DB_FILE);
 $dbh->query('PRAGMA foreign_keys = ON');
+
+
+// Load config from database
+require_once('inc/config.class.php');
+$config = new Config();
+date_default_timezone_set($config->timezone);
 
 
 // Load Rain TPL
