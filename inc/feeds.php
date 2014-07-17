@@ -6,9 +6,10 @@
  *  @brief Functions to handle the feeds (includes feed2array)
  */
 
-require_once('feed2array.php');
-require_once('tags.php');
 require_once('entries.php');
+require_once('feed2array.php');
+require_once('functions.php');
+require_once('tags.php');
 
 
 /**
@@ -83,6 +84,7 @@ function curl_downloader($urls) {
  *
  * @param $feeds should be an array of associative arrays ('id', 'url', 'post'} as values. post is a JSON array of post parameters to send with the URL.
  * @param $update_feeds_infos should be true to update the feed infos from values in the RSS / ATOM
+ * @todo assert(false)
  */
 function refresh_feeds($feeds) {
 	global $dbh, $config;
@@ -155,7 +157,12 @@ function refresh_feeds($feeds) {
 	}
 
 	foreach ($updated_feeds as $url=>$feed) {
-		$feed_id = multiarray_search('url', $url, $feeds, array())['id'];
+		$feed_id = multiarray_search('url', $url, $feeds, array());
+		if (empty($feed_id)) {
+			assert(false); // TODO
+			exit();
+		}
+		$feed_id = $feed_id['id'];
 		// Parse feed
 		$parsed = @feed2array($feed);
 

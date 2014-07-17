@@ -6,6 +6,8 @@
  *  @brief Functions to handle the OPML files
  */
 
+require_once('functions.php');
+
 
 /**
  * Generate an OPML file to export the feeds.
