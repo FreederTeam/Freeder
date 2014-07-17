@@ -137,6 +137,8 @@ function install_db() {
 		id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
 		name TEXT UNIQUE COLLATE NOCASE
 	)');
+	$dbh->query('INSERT INTO tags(name) VALUES("_sticky")');
+	$dbh->query('INSERT INTO tags(name) VALUES("_read")');
 
 	// Create table to store association between tags and entries
 	$dbh->query('CREATE TABLE IF NOT EXISTS tags_entries(
