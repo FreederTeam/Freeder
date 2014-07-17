@@ -139,6 +139,8 @@ function install_db() {
 	)');
 	$dbh->query('INSERT INTO tags(name) VALUES("_sticky")');
 	$dbh->query('INSERT INTO tags(name) VALUES("_read")');
+	$dbh->query('INSERT INTO tags(name) VALUES("_private")');
+	$dbh->query('INSERT INTO tags(name) VALUES("_no_home")');
 
 	// Create table to store association between tags and entries
 	$dbh->query('CREATE TABLE IF NOT EXISTS tags_entries(
