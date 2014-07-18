@@ -1,0 +1,42 @@
+/*
+ * Style for User-Interaction parts : buttons, forms, etc.
+ */
+
+/* == Buttons */
+	.btn {
+		height:35px;
+		line-height:35px;
+		padding:0 8px;
+		border:0 none;
+		border-radius:2px;
+		text-align:center;
+		font-weight:bold;
+	}
+	.square {
+		width:35px;
+	}
+	.red {
+		color:#FFF;
+		background:#D14836;
+	}
+		.red:hover,
+		.red:active {
+			background:#C03927;
+		}
+	.grey {
+		color:#444;
+		background:#DCDCDC;
+	}
+		.grey:hover,
+		.grey:active {
+			background:#BCBCBC;
+		}
+	.blue {
+		color:#FFF;
+		background:#15C;
+	}
+	.green {
+		color:#FFF;
+		background:#4EAD48;
+	}
+/* == Form */

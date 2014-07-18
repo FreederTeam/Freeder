@@ -1,0 +1,74 @@
+/*
+ * Base style : reset, global colors and co
+ */
+
+/*base*/
+	html {
+		font-size:62.5%;
+	}
+	body {
+		font-family:arial,sans-serif;
+		font-size:1.4em;
+		line-height:1.5;
+		color:#222;
+		background-color:#F1F1F1;
+	}
+	p,
+	ul,
+	ol,
+	dl,
+	blockquote,
+	pre,
+	td,
+	th,
+	textarea,
+	caption,
+	details,
+	figure {
+		margin:.75em 0 0;
+	}
+	fieldset {
+		border: 1px solid #E5E5E5;
+	}
+	ul,
+	ol {
+		padding-left:0;
+		list-style:none;
+	}
+	/*Titles*/
+	h1 {
+		margin:.8077em 0 0;
+		font-size:2em;
+		line-height:1.7em;
+	}
+	h2 {
+		margin:.875em 0 0;
+		font-size:1.8em;
+		line-height:1.5em;
+	}
+	h3 {
+		margin:.9545em 0 0;
+		font-size:1.5em;
+		line-height:1.3em;
+	}
+	h4 {
+		margin:1.05em 0 0;
+		font-size:1.3em;
+		line-height:1.2em;
+	}
+	h5 {
+		margin:1.1667em 0 0;
+		font-size:1.2em;
+		line-height:1.1em;
+	}
+	h6 {
+		margin:1.3125em 0 0;
+		font-size:1em;
+		line-height:1.1em;
+	}
+	a:link,
+	a:visited {
+		text-decoration:none;
+		color:#15C;
+	}
+
