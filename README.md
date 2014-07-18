@@ -24,7 +24,7 @@ Contributing
 ------------
 
 If you want to contribute — or if you are just curious — you should have a look
-at the [CONTRIBUTORS.md](https://github.com/Phyks/Freeder/blob/master/CONTRIBUTORS.md) file.
+at the [CONTRIBUTORS](https://github.com/Phyks/Freeder/wiki/CONTRIBUTORS) wiki page.
 
 
 License
