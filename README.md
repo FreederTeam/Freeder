@@ -19,6 +19,7 @@ Installation
 Freeder git repo is available at `https://github.com/FreederTeam/Freeder.git`. To clone it, follow these instructions:
 
  * `git clone https://github.com/FreederTeam/Freeder.git`
+ * `cd Freeder`
  * `git submodules init`
  * `git submodules update`
 
