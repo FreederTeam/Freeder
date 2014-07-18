@@ -4,7 +4,8 @@
 
 /*base*/
 	html {
-		font-size:62.5%;
+		//font-size:62.5%;
+		font-size:75%;
 	}
 	body {
 		font-family:arial,sans-serif;
@@ -71,4 +72,13 @@
 		text-decoration:none;
 		color:#15C;
 	}
-
+	/*Animate this !*/
+	input,
+	button
+	{
+		-webkit-transition: all .2s ease;
+		-moz-transition: all .2s ease;
+		-ms-transition: all .2s ease;
+		-o-transition: all .2s ease;
+		transition: all .2s ease;
+	}

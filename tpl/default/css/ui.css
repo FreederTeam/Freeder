@@ -40,3 +40,6 @@
 		background:#4EAD48;
 	}
 /* == Form */
+	input {
+		padding:.5rem;
+	}
