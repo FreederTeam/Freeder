@@ -12,10 +12,37 @@
  * @return Array of associative arrays for each entry.
  */
 function get_entries() {
-	global $dbh;
+	global $dbh, $config;
 
 	$query = $dbh->query('SELECT id, feed_id, authors, title, links, description, content, enclosures, comments, guid, pubDate, lastUpdate FROM entries ORDER BY pubDate DESC');
-	$entries = $query->fetchall(PDO::FETCH_ASSOC);
+	$fetched_entries = $query->fetchall(PDO::FETCH_ASSOC);
+
+	$entries = array();
+	foreach ($fetched_entries as $entry) {
+		switch($config->display_entries) {
+			case 'content':
+				if (!empty($entry['content'])) {
+					$entry['displayed_content'] = $entry['content'];
+				}
+				else {
+					$entry['displayed_content'] = $entry['description'];
+				}
+				break;
+
+			case 'description':
+				$entry['displayed_content'] = $entry['description'];
+				break;
+
+			case 'title':
+				$entry['displayed_content'] = '';
+				break;
+
+			default:
+				$entry['displayed_content'] = $entry['description'];
+				break;
+		}
+		$entries[] = $entry;
+	}
 	return $entries;
 }
 

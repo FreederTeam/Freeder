@@ -19,7 +19,8 @@ class Config {
 		'template'=>'default/',
 		'synchronization_type'=>'cron',
         'anonymous_access'=>0,
-        'entries_to_keep'=>50  // Number of entries to keep, set to 0 if you want to keep all of them
+		'entries_to_keep'=>50,  // Number of entries to keep, set to 0 if you want to keep all of them
+		'display_entries'=>'description'
 	);
 
 	public function __construct() {
@@ -59,7 +60,7 @@ class Config {
 		$query_update->bindParam(':option', $option);
 
 		foreach($this as $option=>$value) {
-			if(!isset($this->default_config[$option])) {
+			if(!isset(self::$default_config[$option])) {
 				continue;
 			}
 			$query_insert->execute();

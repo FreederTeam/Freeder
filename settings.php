@@ -36,7 +36,12 @@ if (!empty($_POST['synchronization_type']) && !empty($_POST['template']) && !emp
 	$config->use_tags_from_feeds = (int) $_POST['use_tags_from_feeds'];
 	$config->anonymous_access = (int) $_POST['anonymous_access'];
 	$config->entries_to_keep = (int) $_POST['entries_to_keep'];
-	$config->display_entries = $_POST['display_entries'];
+	if ($_POST['display_entries'] == 'content' || $_POST['display_entries'] == 'description' || $_POST['display_entries'] == 'title') {
+		$config->display_entries = $_POST['display_entries'];
+	}
+	else {
+		die('Error: Invalid `display_entries` configuration option.');
+	}
 	$config->save();
 	header('location: settings.php');
 	exit();
