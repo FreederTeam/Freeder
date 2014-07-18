@@ -11,7 +11,7 @@ require_once('inc/init.php');
 require_auth();
 
 // Handle posted info for settings
-if (!empty($_POST['synchronization_type']) && !empty($_POST['template']) && !empty($_POST['timezone']) && isset($_POST['use_tags_from_feeds']) && isset($_POST['anonymous_access']) && isset($_POST['entries_to_keep'])) {
+if (!empty($_POST['synchronization_type']) && !empty($_POST['template']) && !empty($_POST['timezone']) && isset($_POST['use_tags_from_feeds']) && isset($_POST['anonymous_access']) && isset($_POST['entries_to_keep']) && !empty($_POST['display_entries'])) {
 	$config->synchronization_type = $_POST['synchronization_type'];
 
 	// Template
@@ -36,6 +36,7 @@ if (!empty($_POST['synchronization_type']) && !empty($_POST['template']) && !emp
 	$config->use_tags_from_feeds = (int) $_POST['use_tags_from_feeds'];
 	$config->anonymous_access = (int) $_POST['anonymous_access'];
 	$config->entries_to_keep = (int) $_POST['entries_to_keep'];
+	$config->display_entries = $_POST['display_entries'];
 	$config->save();
 	header('location: settings.php');
 	exit();
