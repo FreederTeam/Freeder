@@ -1,0 +1,7 @@
+/*
+ * Styles specific to the login page
+ */
+
+#login label {
+	display:none;
+}
