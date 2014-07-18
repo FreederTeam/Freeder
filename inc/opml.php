@@ -20,7 +20,7 @@ function opml_export($cats) {
 	$txt = '<?xml version="1.0" encoding="UTF-8"?>'."\n";
 	$txt .= '<opml version="2.0">'."\n";
 	$txt .= "\t".'<head>'."\n";
-	$txt .= "\t\t".'<title>Freeder</title>'."\n";
+	$txt .= "\t\t".'<title>Export of Freeder feeds</title>'."\n";
 	$txt .= "\t\t".'<dateCreated>'.$now->format(DateTime::RFC822).'</dateCreated>'."\n";
 	$txt .= "\t".'</head>'."\n";
 	$txt .= "\t".'<body>'."\n";
