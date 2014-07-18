@@ -16,9 +16,9 @@ Installation
 
 ### Cloning this repository
 
-Freeder git repo is available at `https://github.com/Phyks/Freeder.git`. To clone it, follow these instructions:
+Freeder git repo is available at `https://github.com/FreederTeam/Freeder.git`. To clone it, follow these instructions:
 
- * `git clone https://github.com/Phyks/Freeder.git`
+ * `git clone https://github.com/FreederTeam/Freeder.git`
  * `git submodules init`
  * `git submodules update`
 
@@ -43,7 +43,7 @@ Contributing
 ------------
 
 If you want to contribute — or if you are just curious — you should have a look
-at the [CONTRIBUTORS.md](https://github.com/Phyks/Freeder/wiki/CONTRIBUTORS) wiki page.
+at the [CONTRIBUTORS.md](https://github.com/FreederTeam/Freeder/wiki/CONTRIBUTORS) wiki page.
 
 
 License
