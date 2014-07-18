@@ -1,0 +1,10 @@
+/*
+ * Styles for the articles (the html tag <article>)
+ */
+
+main article {
+	border: 1px solid #E5E5E5;
+	border-radius: 2px;
+	background-color: #FFF;
+	padding:1rem;
+}

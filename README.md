@@ -14,17 +14,36 @@ _Note :_ There are some TODOs in the files. If you are a developper and want to 
 Installation
 ------------
 
+### Cloning this repository
+
+Freeder git repo is available at `https://github.com/FreederTeam/Freeder.git`. To clone it, follow these instructions:
+
+ * `git clone https://github.com/FreederTeam/Freeder.git`
+ * `git submodules init`
+ * `git submodules update`
+
+Note that we use git submodules only to include the wiki inside the project for now, so you can ignore the last two commands if you don't need it. It is actually useful to be able to access the wiki pages while not connected to the Internet.
+
 ### Dependencies
 
  * `php5-sqlite`
  * `php5-curl`
 
+### Installation
+
+Assuming that Freeder php files are run by the user `www-data`, make sure `www-data` is able to write in `data/` and `tmp/`.
+
+Then just load the index page and it will automatically install Freeder if it's the first time you run it.
+
+### Reinstallation
+
+If you want to reinit your Freeder installation, you just have to clean up the `data/` directory.
 
 Contributing
 ------------
 
 If you want to contribute — or if you are just curious — you should have a look
-at the [CONTRIBUTORS](https://github.com/Phyks/Freeder/wiki/CONTRIBUTORS) wiki page.
+at the [CONTRIBUTORS.md](https://github.com/FreederTeam/Freeder/wiki/CONTRIBUTORS) wiki page.
 
 
 License

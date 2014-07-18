@@ -1,0 +1,30 @@
+/*
+ * Layout styles. The way elements are placed, not their colors, borders, typos, etc.
+ */
+
+/* == Main */
+	/* flex */
+	#flex {
+		display:flex;
+	}
+	aside {
+		flex: 0 1 300px;
+	}
+	main {
+		flex: 3 1 0;
+	}
+	/*space around elements*/
+	#flex > * {
+		margin:1rem;
+	}
+	main article:first-child {
+		margin-top:0;
+	}
+	main article {
+		margin: 2rem 0;
+	}
+
+/* == Tools */
+	.clear {
+		clear:both;
+	}
