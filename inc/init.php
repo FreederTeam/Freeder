@@ -66,9 +66,9 @@ $tpl->assign('user', isset($_SESSION['user']) ? $_SESSION['user'] : false);
 
 
 // Require connection if no anonymous view has been set
-$tpl->assign('require_login', empty($_SESSION['user']) && $config->anonymous_access == 0);
-
-
-
+if (empty($_SESSION['user']) && $config->anonymous_access == 0) {
+	$tpl->draw('login');
+	exit();
+}
 
 
