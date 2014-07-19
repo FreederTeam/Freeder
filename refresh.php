@@ -5,7 +5,6 @@
  */
 
 require_once('inc/init.php');
-require_once('inc/functions.php');
 require_once('inc/feeds.php');
 
 require_auth();

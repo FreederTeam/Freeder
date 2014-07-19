@@ -10,6 +10,9 @@
  *  $config Configuration object
  *  $tpl Rain TPL handler
  *  $dbh Database handler
+ *
+ * This file automatically includes `functions.php` which is required by
+ * template generation of almost every page.
  */
 
 session_start();
@@ -55,9 +58,10 @@ RainTPL::$tpl_dir = TPL_DIR.$config->template;
 $tpl = new RainTPL;
 $tpl->assign('start_generation_time', microtime(true));
 
+// `functions.php` must be included in each page for templates.
+require_once('inc/functions.php');
 
 require_once('inc/users.php');
-
 // Log user in
 if (!empty($_POST['login']) && !empty($_POST['password'])) {
 	$user = check_and_get_user($_POST['login'], $_POST['password']);
