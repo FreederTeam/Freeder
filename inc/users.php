@@ -44,6 +44,7 @@ function log_user_in() {
 		if ($user !== false) {
 			$_SESSION['user'] = $user;
 		}
+		header('location: index.php');
 	}
 }
 
