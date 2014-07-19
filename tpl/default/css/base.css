@@ -5,7 +5,7 @@
 /*base*/
 	html {
 		//font-size:62.5%;
-		font-size:75%;
+		font-size:70%;
 	}
 	body {
 		font-family:arial,sans-serif;
@@ -13,6 +13,7 @@
 		line-height:1.5;
 		color:#222;
 		background-color:#F1F1F1;
+
 	}
 	p,
 	ul,
@@ -36,7 +37,8 @@
 		padding-left:0;
 		list-style:none;
 	}
-	/*Titles*/
+
+/*Titles*/
 	h1 {
 		margin:.8077em 0 0;
 		font-size:2em;
@@ -67,12 +69,22 @@
 		font-size:1em;
 		line-height:1.1em;
 	}
+/*links*/
 	a:link,
 	a:visited {
 		text-decoration:none;
 		color:#15C;
 	}
-	/*Animate this !*/
+/*Rounded*/
+	button,
+	input[type="submit"],
+	input[type="text"],
+	input[type="password"]
+	{
+		border-radius:2px;
+	}
+
+/*Animate this !*/
 	input,
 	button
 	{
