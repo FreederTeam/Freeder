@@ -75,6 +75,7 @@ function install_db() {
 	$salt = uniqid(mt_rand(), true);
 	$password = sha1($salt.$_POST['password']);
 
+	$dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 	$dbh->beginTransaction();
 
 	// Create the table to handle users
@@ -142,10 +143,6 @@ function install_db() {
 	$dbh->query('INSERT INTO tags(name) VALUES("_private")');
 	$dbh->query('INSERT INTO tags(name) VALUES("_no_home")');
 
-	for ($i = 0 ; $i < 100 ; ++$i) {
-		$dbh->query('INSERT INTO tags(name) VALUES("' . md5($i) . '")');
-	}
-
 	// Create table to store association between tags and entries
 	$dbh->query('CREATE TABLE IF NOT EXISTS tags_entries(
 		tag_id INTEGER,
@@ -170,9 +167,6 @@ function install_db() {
 		title TEXT
 	)');
 
-	for ($i = 0 ; $i < 100 ; ++$i) {
-		$dbh->query('INSERT INTO views(title) VALUES("' . md5('a'.$i) . '")');
-	}
 
 	// Create the table to relation between tags and views
 	$dbh->query('CREATE TABLE IF NOT EXISTS tags_views(
@@ -184,22 +178,47 @@ function install_db() {
 		FOREIGN KEY(view_id) REFERENCES views(id) ON DELETE CASCADE
 	)');
 
-	for ($i = 0 ; $i < 100 ; ++$i) {
-		for ($j = 0 ; $j < 100 ; ++$j) {
-			$dbh->query('INSERT INTO tags_views(tag_id, view_id, relation) VALUES('.$i.', '.$j.', '.rand(0,1).')');
+	$size = 200;
+
+	for ($i = 0 ; $i < $size ; ++$i) {
+		$dbh->query('INSERT INTO tags(name) VALUES("' . md5($i) . '")');
+	}
+
+	for ($i = 0 ; $i < $size ; ++$i) {
+		$dbh->query('INSERT INTO views(id, title) VALUES(' . $i . ', "' . md5('a'.$i) . '")');
+	}
+	
+
+	for ($i = 0 ; $i < $size ; ++$i) {
+		for ($j = 0 ; $j < $size ; ++$j) {
+			$dbh->query('INSERT INTO tags_views(tag_id, view_id, relation) VALUES('.($i+1).', '.$j.', '.min(rand(0,10), 1).')');
+		}
+	}
+
+	$dbh->query('INSERT INTO feeds(id) VALUES(0)');
+
+	for ($i = 0 ; $i < $size ; ++$i) {
+		$dbh->query('INSERT INTO entries(feed_id) VALUES(0)');
+	}
+	//var_dump($dbh->query('SELECT COUNT(*) FROM entries')->fetchAll(PDO::FETCH_ASSOC));
+
+	for ($i = 0 ; $i < $size ; ++$i) {
+		for ($j = 0 ; $j < $size ; ++$j) {
+			if (rand(0, 1) == 0) {
+				$dbh->query('INSERT INTO tags_entries(tag_id, entry_id) VALUES('.($i+1).', '.($j+1).')');
+			}
 		}
 	}
 
 	$dbh->commit();
 
 	$start_generation_time = microtime(true);
-	$dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-	$query = $dbh->query('SELECT id, title, url, links, description, ttl, image, post
-		FROM feeds
+	$query = $dbh->query('SELECT COUNT(*)
+		FROM entries
 		WHERE
-			(SELECT COUNT(*) FROM tags, tags_views WHERE tag_id = tags.id AND view_id = 0 AND relation = 1) > 0
+			(SELECT COUNT(*) FROM tags, tags_entries te, tags_views tv WHERE te.tag_id = tags.id AND tv.tag_id = tags.id AND entries.id = entry_id AND view_id = 0 AND relation = 1) > 0
 			AND
-			(SELECT COUNT(*) FROM tags, tags_views WHERE tag_id = tags.id AND view_id = 0 AND relation = 0) = 0
+			(SELECT COUNT(*) FROM tags, tags_entries te, tags_views tv WHERE te.tag_id = tags.id AND tv.tag_id = tags.id AND entries.id = entry_id AND view_id = 0 AND relation = 0) = 0
 	');
 	var_dump($query->fetchAll(PDO::FETCH_ASSOC));
 
