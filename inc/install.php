@@ -159,7 +159,74 @@ function install_db() {
 		FOREIGN KEY(tag_id) REFERENCES tags(id) ON DELETE CASCADE,
 		FOREIGN KEY(feed_id) REFERENCES feeds(id) ON DELETE CASCADE
 	)');
+
+	// Create the table to store views
+	$dbh->query('CREATE TABLE IF NOT EXISTS views(
+		id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+		title TEXT
+	)');
+
+	$dbh->query('INSERT INTO views(id, title) VALUES
+		(0, "test0"),
+		(1, "test1"),
+		(2, "test2"),
+		(3, "test3")
+	');
+
+	// Create the table to relation between tags and views
+	$dbh->query('CREATE TABLE IF NOT EXISTS tags_views(
+		tag_id INTEGER,
+		view_id INTEGER,
+		relation INTEGER, -- Flag: 0 = without, 1=with
+		UNIQUE (tag_id, view_id),
+		FOREIGN KEY(tag_id) REFERENCES tags(id) ON DELETE CASCADE,
+		FOREIGN KEY(view_id) REFERENCES views(id) ON DELETE CASCADE
+	)');
+
+	$dbh->query('INSERT INTO tags_views(tag_id, view_id, relation) VALUES
+		(0, 0, 0),
+		(0, 1, 1),
+		(0, 2, 1),
+		(0, 3, 0),
+
+		(1, 0, 1),
+		(1, 1, 1),
+		(1, 2, 1),
+		(1, 3, 0),
+
+		(2, 0, 0),
+		(2, 1, 0),
+		(2, 2, 0),
+		(2, 3, 1),
+
+
+		(3, 0, 1),
+		(3, 1, 1),
+		(3, 2, 0),
+		(3, 3, 0),
+	');
+
+
+
 	$dbh->commit();
+
+	$t = microtime(true)
+
+	$query = $dbh->query('SELECT
+		id, title, url, links, description, ttl, image, post
+		FROM feeds
+		WHERE
+			(SELECT COUNT(*) FROM tags, tags_views WHERE tag_id = tags.id, view_id = 0, relation = 1) > 0
+			AND
+			(SELECT COUNT(*) FROM tags, tags_views WHERE tag_id = tags.id, view_id = 0, relation = 0) = 0
+	');
+	print_t ($query->fetchAll(PDO::FETCH_ASSOC));
+
+	$round = round(microtime(true) - (int)$start_generation_time, 2).'s';
+	if($round == '0s') {
+		$round = round((microtime(true) - $start_generation_time)*1000, 3).'ms';
+	}
+	echo ("Time: " . $round);
 }
 
 
