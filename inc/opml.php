@@ -15,7 +15,18 @@ require_once('functions.php');
  * @copyright Heavily based on a function from FreshRSS.
  * @todo Adapt to our code
  */
-function opml_export($cats) {
+function opml_export($feeds) {
+	$tags = array();
+	foreach ($feeds as $key=>$feed) {
+		if (empty($feed['tags'])) {
+			$tags['untagged'][] = $key;
+			continue;
+		}
+		foreach ($feed['tags'] as $tag) {
+			$tags[$tag][] = $key;
+		}
+	}
+
 	$now = new Datetime();
 	$txt = '<?xml version="1.0" encoding="UTF-8"?>'."\n";
 	$txt .= '<opml version="2.0">'."\n";
@@ -25,15 +36,20 @@ function opml_export($cats) {
 	$txt .= "\t".'</head>'."\n";
 	$txt .= "\t".'<body>'."\n";
 
-	foreach ($cats as $cat) {
-		$txt .= "\t\t".'<outline text="'.$cat['name'].'">'."\n";
+	foreach ($tags as $tag=>$id_feeds) {
+		$txt .= "\t\t".'<outline text="'.$tag.'">'."\n";
 
-		foreach ($cat['feeds'] as $feed) {
-			$txt .= "\t\t\t".'<outline text="'.$feed->name.'" type="rss" xmlUrl="'.$feed->url.'" htmlUrl="'.$feed->website.'" description="'.htmlspecialchars($feed->description, ENT_COMPAT, 'UTF-8').'" />'."\n";
+		foreach ($id_feeds as $id_feed) {
+			$website = multiarray_search('rel', 'alternate', $feeds[$id_feed]['links'], '');
+			if (!empty($website)) {
+				$website = 'htmlUrl="'.htmlspecialchars($website['href'], ENT_COMPAT, 'UTF-8').'"';
+			}
+			$txt .= "\t\t\t".'<outline text="'.htmlspecialchars($feeds[$id_feed]['title'], ENT_COMPAT, 'UTF-8').'" type="rss" xmlUrl="'.htmlspecialchars($feeds[$id_feed]['url'], ENT_COMPAT, 'UTF-8').'" '.$website.' description="'.htmlspecialchars($feeds[$id_feed]['description'], ENT_COMPAT, 'UTF-8').'" />'."\n";
 		}
 
 		$txt .= "\t\t".'</outline>'."\n";
 	}
+
 	$txt .= "\t".'</body>'."\n";
 	$txt .= '</opml>';
 

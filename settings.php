@@ -85,18 +85,31 @@ if (!empty($_GET['refresh_feed'])) {
 	exit();
 }
 
+// Handle OPML export
+if (isset($_POST['export'])) {
+	$feeds = array();
+	foreach($_POST['export'] as $feed_id) {
+		$feeds[] = get_feed($feed_id);
+	}
+	require_once('inc/opml.php');
+	$now = new DateTime();
+	header('Content-disposition: attachment; filename="freeder_export_'.$now->format('d-m-Y_H-i').'.xml"');
+	header('Content-type: "text/xml"; charset="utf8"');
+	exit(opml_export($feeds));
+}
+
 // Handle OPML import
 if (isset($_FILES['import'])) {
 	if ($_FILES['import']['error'] > 0) {
-		exit();  // TODO: Error during upload
+		exit('The OPML file could not be imported.');
 	}
 	if ($_FILES['import']['size'] > 1048576) {
-		exit();  // TODO: Error, file is too large
+		exit('The OPML file is too large.');
 	}
 	require_once('inc/opml.php');
 	$feeds_opml = opml_import(file_get_contents($_FILES['import']['tmp_name']));
 	if ($feeds_opml === false) {
-		exit('ok');  // TODO: Error, OPML file not valid
+		exit('An error occurred during the OPML import. Maybe you did not upload a valid OPML file ?');
 	}
 	$errors_refresh = add_feeds($feeds_opml);
 	if(empty($errors_refresh)) {
@@ -105,7 +118,9 @@ if (isset($_FILES['import'])) {
 	}
 	else {
 		// Some feeds errorred
-		exit();  // TODO
+		echo 'Some of the imported feeds encountered errors during refresh. The following feeds were NOT imported:';
+		var_dump($errors_refresh);
+		exit();
 	}
 }
 

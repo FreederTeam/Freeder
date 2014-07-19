@@ -326,3 +326,31 @@ function get_feeds() {
 	$query = $dbh->query('SELECT id, title, url, links, description, ttl, image, post FROM feeds');
 	return $query->fetchAll(PDO::FETCH_ASSOC);
 }
+
+
+/**
+ * Return a feed based on its id
+ */
+function get_feed($id) {
+	global $dbh;
+	$query = $dbh->prepare('SELECT id, title, url, links, description, ttl, image, post FROM feeds WHERE id=:id');
+	$query->bindValue(':id', $id, PDO::PARAM_INT);
+	$query->execute();
+	$feed = $query->fetch(PDO::FETCH_ASSOC);
+
+	$feed['links'] = json_decode($feed['links']);
+	$feed['image'] = json_decode($feed['image']);
+	$feed['post'] = json_decode($feed['post']);
+	$feed['tags'] = array();
+
+	$query = $dbh->prepare('SELECT tags.id, tags.name FROM tags INNER JOIN tags_feeds ON tags_feeds.tag_id=tags.id WHERE tags_feeds.feed_id=:id');
+	$query->bindValue(':id', $id, PDO::PARAM_INT);
+	$query->execute();
+	$tags = $query->fetchAll(PDO::FETCH_ASSOC);
+
+	foreach($tags as $tag_id=>$tag) {
+		$feed['tags'][$tag_id] = $tag;
+	}
+
+	return $feed;
+}
