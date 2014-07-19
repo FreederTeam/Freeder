@@ -2,25 +2,48 @@
  * Style for User-Interaction parts : buttons, forms, etc.
  */
 
+/* == Reset */
 /* == Buttons */
+	/*Remember that if the .btn class is added to a non-standard button element, aria role is needed*/
+	button,
+	input[type="submit"],
 	.btn {
 		height:35px;
 		line-height:35px;
-		padding:0 8px;
-		border:0 none;
-		border-radius:2px;
+		border: 0 none;
+		padding:0 1rem;
+		margin:.5rem;
 		text-align:center;
 		font-weight:bold;
+		cursor:pointer;
+		-webkit-box-shadow: 0 0 2px 0 rgba(0,0,0,0.5);
+		box-shadow: 0 0 2px 0 rgba(0,0,0,0.5);
+
+		/*by default, red buttons*/
+		color:#FFF;
+		background:#D14836;
+
 	}
-	.square {
-		width:35px;
-	}
+		button:hover,
+		button:active,
+		button:focus,
+		input[type="submit"]:hover,
+		input[type="submit"]:active,
+		input[type="submit"]:focus,
+		.btn:hover,
+		.btn:active,
+		.btn:focus {
+			-webkit-box-shadow: 0 0 4px 0 rgba(0,0,0,0.7);
+			box-shadow: 0 0 4px 0 rgba(0,0,0,0.7);
+		}
+	/*this class is useless if the defauls buttons are red*/
 	.red {
 		color:#FFF;
 		background:#D14836;
 	}
 		.red:hover,
-		.red:active {
+		.red:active,
+		.red:focus {
 			background:#C03927;
 		}
 	.grey {
@@ -28,18 +51,46 @@
 		background:#DCDCDC;
 	}
 		.grey:hover,
-		.grey:active {
+		.grey:active,
+		.grey:focus {
 			background:#BCBCBC;
 		}
 	.blue {
 		color:#FFF;
 		background:#15C;
 	}
+		.blue:hover,
+		.blue:active,
+		.blue:focus {
+
+		}
 	.green {
 		color:#FFF;
 		background:#4EAD48;
 	}
+		.green:hover,
+		.green:active,
+		.green:focus {
+
+		}
+
 /* == Form */
-	input {
+
+	input[type="submit"],
+	input[type="text"],
+	input[type="password"]
+	{
+		border: 0 none;
+		margin:.5rem;
+	}
+
+	input[type="text"],
+	input[type="password"] {
 		padding:.5rem;
 	}
+	input[type="text"]:focus,
+	input[type="password"]:focus {
+		background-color:#ECECEC;
+		box-shadow:inset 0 0 3px 0px rgba(0,0,0,0.8), 0 0 3px 0 #FFF;
+	}
+
