@@ -350,6 +350,15 @@ function feed2array($feed, $load=false, $debug=false) {
 					$flux['items'][$c]['content'] = (string)$item->children('content', true)->encoded;
 				}
 
+				// For the feedburner origLink tag
+				if($item->children('feedburner', true)->origLink) {
+					$flux['items'][$c]['links'][] = array(
+						'url'=>(string)$item->children('feedburner', true)->origLink,
+						'title'=>'',
+						'rel'=>'origLink'
+					);
+				}
+
 				// Fill description with a summary if it does not exist
 				if(!empty($flux['items'][$c]['content']) && empty($flux['items'][$c]['description'])) {
 					$flux['items'][$c]['description'] = truncate($flux['items'][$c]['content']);

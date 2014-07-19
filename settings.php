@@ -65,7 +65,7 @@ if (!empty($_POST['feed_url']) && isset($_POST['feed_post'])) {
 		exit();
 	}
 	else {
-		exit('Erreur - TODO');
+		exit('Error encountered when adding feed.');
 	}
 }
 
