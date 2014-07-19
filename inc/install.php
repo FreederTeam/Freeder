@@ -137,8 +137,8 @@ function install_db() {
 		id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
 		name TEXT UNIQUE COLLATE NOCASE
 	)');
-	$dbh->query('INSERT INTO tags(name) VALUES("_sticky")');
 	$dbh->query('INSERT INTO tags(name) VALUES("_read")');
+	$dbh->query('INSERT INTO tags(name) VALUES("_sticky")');
 	$dbh->query('INSERT INTO tags(name) VALUES("_private")');
 	$dbh->query('INSERT INTO tags(name) VALUES("_no_home")');
 
