@@ -4,6 +4,17 @@
  *	See the file LICENSE at the root of this repo for copying permission.
  */
 
+/**
+ * This include file defines the following variables that you can reuse in
+ * your code after including it:
+ *  $config Configuration object
+ *  $tpl Rain TPL handler
+ *  $dbh Database handler
+ *
+ * This file automatically includes `functions.php` which is required by
+ * template generation of almost every page.
+ */
+
 session_start();
 define('DATA_DIR', 'data/');
 define('TPL_DIR', 'tpl/');
@@ -47,28 +58,13 @@ RainTPL::$tpl_dir = TPL_DIR.$config->template;
 $tpl = new RainTPL;
 $tpl->assign('start_generation_time', microtime(true));
 
-
-// Include utils
+// `functions.php` must be included in each page for templates.
 require_once('inc/functions.php');
-require_once('inc/feeds.php');
-require_once('inc/entries.php');
+
+// Manage users
 require_once('inc/users.php');
-
-
-// Log user in
-if (!empty($_POST['login']) && !empty($_POST['password'])) {
-	$user = check_and_get_user($_POST['login'], $_POST['password']);
-	if ($user !== false) {
-		$_SESSION['user'] = $user;
-	}
-}
+log_user_in();
 $tpl->assign('user', isset($_SESSION['user']) ? $_SESSION['user'] : false);
-
-
-// Require connection if no anonymous view has been set
-if (empty($_SESSION['user']) && $config->anonymous_access == 0) {
-	$tpl->draw('login');
-	exit();
-}
+check_anonymous_view();
 
 

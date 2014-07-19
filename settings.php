@@ -7,6 +7,8 @@
 // TODO: Modularize me!
 
 require_once('inc/init.php');
+require_once('inc/feeds.php');
+require_once('inc/entries.php');
 
 require_auth();
 
