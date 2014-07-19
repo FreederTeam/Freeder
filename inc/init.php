@@ -61,21 +61,10 @@ $tpl->assign('start_generation_time', microtime(true));
 // `functions.php` must be included in each page for templates.
 require_once('inc/functions.php');
 
+// Manage users
 require_once('inc/users.php');
-// Log user in
-if (!empty($_POST['login']) && !empty($_POST['password'])) {
-	$user = check_and_get_user($_POST['login'], $_POST['password']);
-	if ($user !== false) {
-		$_SESSION['user'] = $user;
-	}
-}
+log_user_in();
 $tpl->assign('user', isset($_SESSION['user']) ? $_SESSION['user'] : false);
-
-
-// Require connection if no anonymous view has been set
-if (empty($_SESSION['user']) && $config->anonymous_access == 0) {
-	$tpl->draw('login');
-	exit();
-}
+check_anonymous_view();
 
 

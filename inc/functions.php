@@ -95,17 +95,6 @@ function get_generation_time($start_generation_time) {
 
 
 /**
- * Exit if unauthentified user.
- */
-function require_auth() {
-	if(!isset($_SESSION['user'])) {
-		header('location: index.php');
-		exit();
-	}
-}
-
-
-/**
  * Downloads all the urls in the array $urls and returns an array with the results and the http status_codes.
  *
  * Mostly inspired by blogotext by timovn : https://github.com/timovn/blogotext/blob/master/inc/fich.php
