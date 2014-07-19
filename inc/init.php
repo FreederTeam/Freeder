@@ -4,6 +4,14 @@
  *	See the file LICENSE at the root of this repo for copying permission.
  */
 
+/**
+ * This include file defines the following variables that you can reuse in
+ * your code after including it:
+ *  $config Configuration object
+ *  $tpl Rain TPL handler
+ *  $dbh Database handler
+ */
+
 session_start();
 define('DATA_DIR', 'data/');
 define('TPL_DIR', 'tpl/');
@@ -48,12 +56,7 @@ $tpl = new RainTPL;
 $tpl->assign('start_generation_time', microtime(true));
 
 
-// Include utils
-require_once('inc/functions.php');
-require_once('inc/feeds.php');
-require_once('inc/entries.php');
 require_once('inc/users.php');
-
 
 // Log user in
 if (!empty($_POST['login']) && !empty($_POST['password'])) {

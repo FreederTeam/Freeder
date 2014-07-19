@@ -5,6 +5,7 @@
  */
 
 require_once('inc/init.php');
+require_once('inc/entries.php');
 
 $tpl->assign('entries', get_entries());
 $tpl->draw('index');
