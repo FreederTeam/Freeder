@@ -59,6 +59,17 @@ function endswith($haystack, $needle) {
 
 
 /**
+ * Replace only the first occurrence of $needle in $haystack by $replace.
+ */
+function str_replace_first($needle, $replace, $haystack) {
+	$pos = strpos($haystack, $needle);
+	if ($pos !== false) {
+		$newstring = substr_replace($haystack, $replace, $pos, strlen($needle));
+	}
+}
+
+
+/**
  * List all available templates.
  * @return An array {path, name, current} where path is the template path, name is the template name and current is true if this is the current template, false otherwise.
  */

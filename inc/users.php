@@ -53,7 +53,7 @@ function log_user_in() {
  * Draw the login template and then exit.
  */
 function check_anonymous_view() {
-	global $tpl;
+	global $tpl, $config;
 
 	if (empty($_SESSION['user']) && $config->anonymous_access == 0) {
 		$tpl->draw('login');
