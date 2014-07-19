@@ -210,23 +210,25 @@ function install_db() {
 
 	$dbh->commit();
 
-	$t = microtime(true)
-
-	$query = $dbh->query('SELECT
-		id, title, url, links, description, ttl, image, post
+	$start_generation_time = microtime(true);
+	$dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+	$query = $dbh->query('SELECT id, title, url, links, description, ttl, image, post
 		FROM feeds
 		WHERE
-			(SELECT COUNT(*) FROM tags, tags_views WHERE tag_id = tags.id, view_id = 0, relation = 1) > 0
+			(SELECT COUNT(*) FROM tags, tags_views WHERE tag_id = tags.id AND view_id = 0 AND relation = 1) > 0
 			AND
-			(SELECT COUNT(*) FROM tags, tags_views WHERE tag_id = tags.id, view_id = 0, relation = 0) = 0
+			(SELECT COUNT(*) FROM tags, tags_views WHERE tag_id = tags.id AND view_id = 0 AND relation = 0) = 0
 	');
-	print_t ($query->fetchAll(PDO::FETCH_ASSOC));
+	echo("test\n");
+	var_dump($query);
+	//print_r ($query->fetchAll(PDO::FETCH_ASSOC));
 
 	$round = round(microtime(true) - (int)$start_generation_time, 2).'s';
 	if($round == '0s') {
 		$round = round((microtime(true) - $start_generation_time)*1000, 3).'ms';
 	}
 	echo ("Time: " . $round);
+	exit();
 }
 
 
