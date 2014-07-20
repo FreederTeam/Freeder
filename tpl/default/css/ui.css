@@ -2,7 +2,6 @@
  * Style for User-Interaction parts : buttons, forms, etc.
  */
 
-/* == Reset */
 /* == Buttons */
 	/*Remember that if the .btn class is added to a non-standard button element, aria role is needed*/
 	button,
@@ -145,4 +144,14 @@
 	input.switch:checked ~ label:after
 	{
 		margin-left: 2em;
+	}
+
+/* == tags */
+	.tag {
+	}
+	.tag .tagLink {
+		
+	}
+	.tag .tagDel {
+		
 	}
