@@ -2,7 +2,6 @@
  * Style for User-Interaction parts : buttons, forms, etc.
  */
 
-/* == Reset */
 /* == Buttons */
 	/*Remember that if the .btn class is added to a non-standard button element, aria role is needed*/
 	button,
@@ -83,10 +82,11 @@
 		border: 0 none;
 		margin:.5rem;
 	}
-
 	input[type="text"],
 	input[type="password"] {
 		padding:.5rem;
+		background-color:#fff;
+		color:#333;
 	}
 	input[type="text"]:focus,
 	input[type="password"]:focus {
@@ -94,3 +94,80 @@
 		box-shadow:inset 0 0 3px 0px rgba(0,0,0,0.8), 0 0 3px 0 #FFF;
 	}
 
+
+/* == switches */
+	input.switch:empty
+	{
+		margin-left: -999px;
+	}
+	input.switch:empty ~ label
+	{
+		position: relative;
+		float: left;
+		line-height: 1.6em;
+		text-indent: 4em;
+		margin: 0.5rem;
+		cursor: pointer;
+		-webkit-user-select: none;
+		-moz-user-select: none;
+		-ms-user-select: none;
+		user-select: none;
+	}
+	input.switch:empty ~ label:before, 
+	input.switch:empty ~ label:after
+	{
+		position: absolute;
+		display: block;
+		top: 0;
+		bottom: 0;
+		left: 0;
+		content: ' ';
+		width: 3.6em;
+		background-color: #c33;
+		border-radius: 0.3em;
+		-webkit-transition: all 100ms ease-in;
+		transition: all 100ms ease-in;
+	}
+	input.switch:empty ~ label:after
+	{
+		width: 1.4em;
+		top: 0.2em;
+		bottom: 0.2em;
+		margin-left: 0.2em;
+		background-color: #fff;
+		border-radius: 0.15em;
+	}
+	input.switch:checked ~ label:before
+	{
+		background-color: #393;
+	}
+	input.switch:checked ~ label:after
+	{
+		margin-left: 2em;
+	}
+
+/* == tags */
+	.tag img {
+		vertical-align:middle;
+	}
+	.tag a {
+		font-weight:bold;
+		/*how to remove this gap bettwen the two blocs ? Negative margins work, but this is so ugly :(*/
+		margin-right:-5px;
+		padding: 3px;
+	}	
+	.tagLink,
+	.tagDel {
+		box-shadow: 0 0 3px 0 rgba(0,0,0, 0.5);
+		border: 1px solid rgba(0,0,0,0.4);
+	}
+	a.tagLink {
+		border-radius: 4px 0px 0px 4px;
+		background-color:#f1f1f1;
+		padding-right:1rem;
+	}
+	a.tagDel {
+		border-radius: 0px 4px 4px 0px;
+		background-color:#f16301;
+		border-left:none;
+	}
