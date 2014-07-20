@@ -147,11 +147,27 @@
 	}
 
 /* == tags */
-	.tag {
+	.tag img {
+		vertical-align:middle;
 	}
-	.tag .tagLink {
-		
+	.tag a {
+		font-weight:bold;
+		/*how to remove this gap bettwen the two blocs ? Negative margins work, but this is so ugly :(*/
+		margin-right:-5px;
+		padding: 3px;
+	}	
+	.tagLink,
+	.tagDel {
+		box-shadow: 0 0 3px 0 rgba(0,0,0, 0.5);
+		border: 1px solid rgba(0,0,0,0.4);
 	}
-	.tag .tagDel {
-		
+	a.tagLink {
+		border-radius: 4px 0px 0px 4px;
+		background-color:#f1f1f1;
+		padding-right:1rem;
+	}
+	a.tagDel {
+		border-radius: 0px 4px 4px 0px;
+		background-color:#f16301;
+		border-left:none;
 	}
