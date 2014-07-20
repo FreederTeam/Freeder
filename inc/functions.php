@@ -106,6 +106,27 @@ function get_generation_time($start_generation_time) {
 
 
 /**
+ * Returns the global category of a MIME-TYPE
+ * @param $mime_type, a MIME-TYPE
+ */
+function get_category_mime_type($mime_type) {
+	$end = strpos($mime_type, '/');
+	if ($end === false) {
+		return false;
+	}
+	$category = substr($mime_type, 0, $end);
+	$available_categories = array('application', 'audio', 'example', 'image', 'message', 'model', 'multipart', 'text', 'video');
+	$end = in_array($category, $available_categories);
+	if ($end !== false) {
+		return $category;
+	}
+	else {
+		return false;
+	}
+}
+
+
+/**
  * Downloads all the urls in the array $urls and returns an array with the results and the http status_codes.
  *
  * Mostly inspired by blogotext by timovn : https://github.com/timovn/blogotext/blob/master/inc/fich.php
@@ -172,4 +193,5 @@ function curl_downloader($urls, $fetch_content=true) {
 
 	return array('results'=>$results, 'status_codes'=>$status_codes);
 }
+
 

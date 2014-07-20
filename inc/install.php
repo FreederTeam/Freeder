@@ -141,6 +141,15 @@ function install_db() {
 	$dbh->query('INSERT INTO tags(name) VALUES("_sticky")');
 	$dbh->query('INSERT INTO tags(name) VALUES("_private")');
 	$dbh->query('INSERT INTO tags(name) VALUES("_no_home")');
+	$dbh->query('INSERT INTO tags(name) VALUES("_application")');
+	$dbh->query('INSERT INTO tags(name) VALUES("_audio")');
+	$dbh->query('INSERT INTO tags(name) VALUES("_example")');
+	$dbh->query('INSERT INTO tags(name) VALUES("_image")');
+	$dbh->query('INSERT INTO tags(name) VALUES("_message")');
+	$dbh->query('INSERT INTO tags(name) VALUES("_model")');
+	$dbh->query('INSERT INTO tags(name) VALUES("_multipart")');
+	$dbh->query('INSERT INTO tags(name) VALUES("_text")');
+	$dbh->query('INSERT INTO tags(name) VALUES("_video")');
 
 	// Create table to store association between tags and entries
 	$dbh->query('CREATE TABLE IF NOT EXISTS tags_entries(

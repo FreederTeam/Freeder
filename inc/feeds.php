@@ -81,12 +81,12 @@ function refresh_feeds($feeds, $check_favicons=false) {
 		$query_insert_tag->bindParam(':name', $tag_name);
 
 		// Register the tags of the feed
-		$query_feeds_tags = $dbh->prepare('INSERT INTO tags_feeds(tag_id, feed_id, auto_added_tag) VALUES((SELECT id FROM tags WHERE name=:name), :feed_id, 1)');
+		$query_feeds_tags = $dbh->prepare('INSERT OR IGNORE INTO tags_feeds(tag_id, feed_id, auto_added_tag) VALUES((SELECT id FROM tags WHERE name=:name), :feed_id, 1)');
 		$query_feeds_tags->bindParam(':name', $tag_name);
 		$query_feeds_tags->bindParam(':feed_id', $feed_id);
 
 		// Finally, query to register the tags of the entry
-		$query_tags = $dbh->prepare('INSERT INTO tags_entries(tag_id, entry_id, auto_added_tag) VALUES((SELECT id FROM tags WHERE name=:name), (SELECT id FROM entries WHERE guid=:entry_guid), 1)');
+		$query_tags = $dbh->prepare('INSERT OR IGNORE INTO tags_entries(tag_id, entry_id, auto_added_tag) VALUES((SELECT id FROM tags WHERE name=:name), (SELECT id FROM entries WHERE guid=:entry_guid), 1)');
 		$query_tags->bindParam(':name', $tag_name);
 		$query_tags->bindParam(':entry_guid', $guid);
 	}
@@ -154,6 +154,14 @@ function refresh_feeds($feeds, $check_favicons=false) {
 						// Create tags if needed, get their id and add bind the articles to these tags
 						$query_insert_tag->execute();
 						$query_tags->execute();
+					}
+				}
+				if (!empty($event['enclosures'])) {
+					foreach ($event['enclosures'] as $enclosure) {
+						$tag_name = '_'.get_category_mime_type($enclosure['type']);
+						if ($tag_name !== false) {
+							$query_tags->execute();
+						}
 					}
 				}
 			}
