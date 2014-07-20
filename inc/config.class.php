@@ -13,17 +13,20 @@
  * @todo Use stdClass ?
  */
 class Config {
-	private static $default_config = array(  /** This is the default config */
-		'timezone'=>'Europe/Paris',
-		'use_tags_from_feeds'=>1,
-		'template'=>'default/',
-		'synchronization_type'=>'cron',
-        'anonymous_access'=>0,
-		'entries_to_keep'=>50,  // Number of entries to keep, set to 0 if you want to keep all of them
-		'display_entries'=>'description'
-	);
+	public static $versions = array('0.1');
+	private static $default_config;
 
 	public function __construct() {
+		self::$default_config = array(  /** This is the default config */
+			'timezone'=>'Europe/Paris',
+			'use_tags_from_feeds'=>1,
+			'template'=>'default/',
+			'synchronization_type'=>'cron',
+			'anonymous_access'=>0,
+			'entries_to_keep'=>50,  // Number of entries to keep, set to 0 if you want to keep all of them
+			'display_entries'=>'description',
+			'version'=>self::$versions[count(self::$versions) - 1],  // Current version
+		);
 		$this->load();
 	}
 
@@ -69,3 +72,5 @@ class Config {
 		$dbh->commit();
 	}
 }
+
+

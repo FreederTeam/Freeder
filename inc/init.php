@@ -52,6 +52,15 @@ $config = new Config();
 date_default_timezone_set($config->timezone);
 
 
+// Test wether an update should be done
+if($config->version !== Config::$versions[count(Config::$versions) - 1]) {
+	require_once('update.php');
+	update($config->version, Config::$versions[count(Config::$versions) - 1]);
+	header('location: index.php');
+	exit();
+}
+
+
 // Load Rain TPL
 require_once('inc/rain.tpl.class.php');
 RainTPL::$tpl_dir = TPL_DIR.$config->template;
