@@ -2,6 +2,16 @@
  * Base style : reset, global colors and co
  */
 
+/* switching box model for all elements */
+	* {
+		-webkit-box-sizing: border-box;
+		-moz-box-sizing: border-box;
+		box-sizing: border-box;
+	}
+/*CSSO*/
+	.hidden {
+		display:none;
+	}
 /*base*/
 	html {
 		//font-size:62.5%;
@@ -13,7 +23,6 @@
 		line-height:1.5;
 		color:#222;
 		background-color:#F1F1F1;
-
 	}
 	p,
 	ul,

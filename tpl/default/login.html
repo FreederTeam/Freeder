@@ -1,14 +1,21 @@
 {* When the user is not logged, this page is loaded instead of the common index.html. *}
 
-{include="_begin"}
-<form method="post" action="" id="login">
+{include="_begin_login"}
+
+
+<form method="post" action="" id="loginform">
+	<h1>Connection</h1>
 	<div>
 		<input type="text" name="login" id="login" placeholder="Login"/>
-		<label for="login">Login</label>
+		<label for="login" class="hidden" >Login</label>
 	</div>
 	<div>
 		<input type="password" name="password" id="password" placeholder="Password" />
-		<label for="password">Password</label>
+		<label for="password" class="hidden">Password</label>
+	</div>
+	<div>
+		<input type="checkbox" name="remember" id="remember" class="switch" />
+		<label for="remember">Remember me</label>
 	</div>
 	<input class="red" type="submit"/>
 </form>
