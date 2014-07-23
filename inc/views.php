@@ -75,7 +75,7 @@ function parse_rule($rule) {
  */
 function rule2sql($rule) {
 	$ast = parse_rule($rule);
-	$query = 'SELECT entry_id FROM tags_entries';
+	$query = 'SELECT E.id FROM entries E';
 	
 	$var_array = array();
 	$subquery = '';
@@ -95,7 +95,7 @@ function rule2sql($rule) {
 								if ($subquery != '') {
 									$subquery = "($subquery) OR ";
 								}
-								$subquery .= "tag_id = $tag_id";
+								$subquery .= "EXISTS (SELECT tag_id FROM tags_entries WHERE tag_id = $tag_id AND entry_id = E.id)";
 								array_push($var_array, $word[2]);
 						}
 						break;
@@ -110,7 +110,7 @@ function rule2sql($rule) {
 								if ($subquery != '') {
 									$subquery = "($subquery) AND ";
 								}
-								$subquery .= "tag_id != $tag_id";
+								$subquery .= "NOT EXISTS (SELECT tag_id FROM tags_entries WHERE tag_id = $tag_id AND entry_id = E.id)";
 								array_push($var_array, $word[2]);
 						}
 						break;
@@ -132,11 +132,12 @@ function rule2sql($rule) {
 				$bind = false;
 				switch ($word[2]) {
 					case '$pubDate':
-						$tag_count = "(SELECT pubDate FROM entries WHERE id = entry_id)";
+						$tag_count = "E.pubDate";
 						break;
 
 					default:
-						$tag_count = "(SELECT COUNT(*) FROM tags WHERE name = ?)";
+						$tag_id = "(SELECT id FROM tags WHERE name = ?)";
+						$tag_count = "(SELECT COUNT(*) FROM tags_entries WHERE tag_id = $tag_id AND entry_id = E.id)";
 						$bind = true;
 				}
 				switch (strtolower($word[1])) {
