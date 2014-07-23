@@ -164,14 +164,14 @@ function install_db() {
 	// Create the table to store views
 	$dbh->query('CREATE TABLE IF NOT EXISTS views(
 		id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-		title TEXT,
+		name TEXT,
 		rule TEXT, -- Specifies what to display. See RFF 4 for more info
 		isPublic INT DEFAULT 0 -- Whether the view is publicly available
 		-- theme TEXT,
 		-- displayStyle INT (Title only, Summary, Full text)
 	)');
 
-	$dbh->query('INSERT INTO views(title, rule) VALUES
+	$dbh->query('INSERT INTO views(name, rule) VALUES
 		("_home", "+$all -_read -_no_home BY -$pubDate"),
 		("_public", "+$all -_private BY -$pubDate")
 	');

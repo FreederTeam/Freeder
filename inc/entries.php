@@ -7,14 +7,26 @@
  */
 
 
+require_once('views.php');
+
 /**
  * Get all the available entries from the database
+ * @param $view is the name of the view. By default view rule is empty.
  * @return Array of associative arrays for each entry.
  */
-function get_entries() {
+function get_entries($view='') {
 	global $dbh, $config;
 
-	$query = $dbh->query('SELECT id, feed_id, authors, title, links, description, content, enclosures, comments, guid, pubDate, lastUpdate FROM entries ORDER BY pubDate DESC');
+	// Get rule from view name.
+	$query = $dbh->query('SELECT rule FROM views WHERE name = ?');
+	$query.execute(array($view));
+	if (!($rule = $query->fetch(PDO::FETCH_ASSOC)['rule'])) {
+		$rule = '';
+	}
+
+	$r = rule2sql($rule, 'id, feed_id, authors, title, links, description, content, enclosures, comments, guid, pubDate, lastUpdate');
+	$query = $dbh->query($r[0]);
+	$query->execute($r[1]);
 	$fetched_entries = $query->fetchall(PDO::FETCH_ASSOC);
 
 	$entries = array();

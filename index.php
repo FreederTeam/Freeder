@@ -24,5 +24,5 @@ $q->execute($r[1]);
 $res = $q->fetchAll(PDO::FETCH_ASSOC);
 var_dump($res);
 
-$tpl->assign('entries', get_entries());
+$tpl->assign('entries', get_entries('_home'));
 $tpl->draw('index');

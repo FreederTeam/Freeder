@@ -69,14 +69,15 @@ function parse_rule($rule) {
 /**
  * Build a SQL query from a view rule.
  * @param $rule is the rule as raw text.
+ * @param $selection designate what field to get from SQL table. Warning: it is not escaped.
  * @return a PDO-ready query and the binding array.
  *
  * TODO: Refactor me!!!
  */
-function rule2sql($rule) {
+function rule2sql($rule, $selection) {
 	$ast = parse_rule($rule);
 	array_push($ast, array('by', 'by', ''));
-	$query = 'SELECT E.id FROM entries E';
+	$query = "SELECT $selection FROM entries E";
 	
 	$var_array = array();
 	$subquery = '';
