@@ -75,6 +75,7 @@ function install_db() {
 	$salt = uniqid(mt_rand(), true);
 	$password = sha1($salt.$_POST['password']);
 
+	$dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 	$dbh->beginTransaction();
 
 	// Create the table to handle users
@@ -168,7 +169,25 @@ function install_db() {
 		FOREIGN KEY(tag_id) REFERENCES tags(id) ON DELETE CASCADE,
 		FOREIGN KEY(feed_id) REFERENCES feeds(id) ON DELETE CASCADE
 	)');
+
+	$dbh->query('DROP TABLE views');
+	// Create the table to store views
+	$dbh->query('CREATE TABLE IF NOT EXISTS views(
+		id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+		name TEXT,
+		rule TEXT, -- Specifies what to display. See RFF 4 for more info
+		isPublic INT DEFAULT 0 -- Whether the view is publicly available
+		-- theme TEXT,
+		-- displayStyle INT (Title only, Summary, Full text)
+	)');
+
+	$dbh->query('INSERT INTO views(name, rule) VALUES
+		("_home", "+$all -_read -_no_home BY -$pubDate"),
+		("_public", "+$all -_private BY -$pubDate")
+	');
+
 	$dbh->commit();
+
 }
 
 

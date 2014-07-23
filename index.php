@@ -4,8 +4,11 @@
  *	See the file LICENSE at the root of this repo for copying permission.
  */
 
+
+
 require_once('inc/init.php');
 require_once('inc/entries.php');
 
-$tpl->assign('entries', get_entries());
+
+$tpl->assign('entries', get_entries('_home'));
 $tpl->draw('index');
