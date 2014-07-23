@@ -37,6 +37,10 @@ function parse_word($word) {
  * @return a rule abstract syntax tree which is an array of word abstract trees.
  */
 function parse_rule($rule) {
+	if ($rule == '') {
+		return array();
+	}
+
 	$tokens = explode(' ', $rule);
 	$ast = array();
 
@@ -73,31 +77,42 @@ function rule2sql($rule) {
 	$ast = parse_rule($rule);
 	$query = 'SELECT entry_id FROM tags_entries';
 	
-	$var_index = 0;
 	$var_array = array();
 	$subquery = '';
 	$state = 'select';
 	foreach ($ast as $word) {
 		switch ($state) {
 			case 'select':
-				$tag_id = "(SELECT id FROM tags WHERE name = ':" . $var_index . "')";
-				switch(strtolower($word[1])) {
+				$tag_id = "(SELECT id FROM tags WHERE name = ?)";
+				switch (strtolower($word[1])) {
 					case '+':
-						if ($subquery != '') {
-							$subquery = "(" . $subquery . ") OR ";
+						switch ($word[2]) {
+							case '$all':
+								$subquery = '';
+								break;
+
+							default:
+								if ($subquery != '') {
+									$subquery = "($subquery) OR ";
+								}
+								$subquery .= "tag_id = $tag_id";
+								array_push($var_array, $word[2]);
 						}
-						$subquery .= "tag_id = $tag_id";
-						$var_index++;
-						array_push($var_array, $word[2]);
 						break;
 
 					case '-':
-						if ($subquery != '') {
-							$subquery = "(" . $subquery . ") AND ";
+						switch ($word[2]) {
+							case '$all':
+								$subquery = '1=0'; // A little bit hacky
+								break;
+
+							default:
+								if ($subquery != '') {
+									$subquery = "($subquery) AND ";
+								}
+								$subquery .= "tag_id != $tag_id";
+								array_push($var_array, $word[2]);
 						}
-						$subquery .= "tag_id != $tag_id";
-						$var_index++;
-						array_push($var_array, $word[2]);
 						break;
 
 					case 'by':
@@ -114,15 +129,25 @@ function rule2sql($rule) {
 				break;
 
 			case 'order':
-				$tag_count = "(SELECT COUNT(*) FROM tags WHERE name = ':" . $var_index . "')";
-				switch(strtolower($word[1])) {
+				$bind = false;
+				switch ($word[2]) {
+					case '$pubDate':
+						$tag_count = "(SELECT pubDate FROM entries WHERE id = entry_id)";
+						break;
+
+					default:
+						$tag_count = "(SELECT COUNT(*) FROM tags WHERE name = ?)";
+						$bind = true;
+				}
+				switch (strtolower($word[1])) {
 					case '+':
 						if ($subquery != '') {
 							$subquery .= ", ";
 						}
 						$subquery .= "$tag_count ASC";
-						$var_index++;
-						array_push($var_array, $word[2]);
+						if ($bind) {
+							array_push($var_array, $word[2]);
+						}
 						break;
 
 					case '-':
@@ -130,14 +155,12 @@ function rule2sql($rule) {
 							$subquery .= ", ";
 						}
 						$subquery .= "$tag_count DESC";
-						$var_index++;
-						array_push($var_array, $word[2]);
+						if ($bind) {
+							array_push($var_array, $word[2]);
+						}
 						break;
 
 					case 'by':
-						if ($subquery != '') {
-							$query /= " ORDER BY $subquery";
-						}
 						$status = 'done';
 						break;
 
@@ -146,6 +169,10 @@ function rule2sql($rule) {
 				}
 				break;
 		}
+	}
+
+	if ($subquery != '') {
+		$query .= " ORDER BY $subquery";
 	}
 
 	return array($query, $var_array);
