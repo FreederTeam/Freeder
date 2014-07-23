@@ -7,5 +7,10 @@
 require_once('inc/init.php');
 require_once('inc/entries.php');
 
+// Test
+require_once('inc/views.php');
+$r = rule2sql('+$all\ of\ us -_read\ me -_ho_home BY -_sticky -$pubDate');
+print_r($r);
+
 $tpl->assign('entries', get_entries());
 $tpl->draw('index');
