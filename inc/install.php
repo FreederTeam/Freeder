@@ -165,7 +165,10 @@ function install_db() {
 	$dbh->query('CREATE TABLE IF NOT EXISTS views(
 		id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
 		title TEXT,
-		rule TEXT
+		rule TEXT, -- Specifies what to display. See RFF 4 for more info
+		isPublic INT DEFAULT 0 -- Whether the view is publicly available
+		-- theme TEXT,
+		-- displayStyle INT (Title only, Summary, Full text)
 	)');
 
 	$dbh->query('INSERT INTO views(title, rule) VALUES
