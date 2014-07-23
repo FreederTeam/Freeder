@@ -19,7 +19,7 @@ function get_entries($view='') {
 
 	// Get rule from view name.
 	$query = $dbh->query('SELECT rule FROM views WHERE name = ?');
-	$query.execute(array($view));
+	$query->execute(array($view));
 	if (!($rule = $query->fetch(PDO::FETCH_ASSOC)['rule'])) {
 		$rule = '';
 	}

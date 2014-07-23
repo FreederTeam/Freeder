@@ -74,7 +74,7 @@ function parse_rule($rule) {
  *
  * TODO: Refactor me!!!
  */
-function rule2sql($rule, $selection) {
+function rule2sql($rule, $selection='*') {
 	$ast = parse_rule($rule);
 	array_push($ast, array('by', 'by', ''));
 	$query = "SELECT $selection FROM entries E";
