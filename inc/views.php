@@ -75,6 +75,7 @@ function parse_rule($rule) {
  */
 function rule2sql($rule) {
 	$ast = parse_rule($rule);
+	array_push($ast, array('by', 'by', ''));
 	$query = 'SELECT E.id FROM entries E';
 	
 	$var_array = array();
@@ -162,6 +163,9 @@ function rule2sql($rule) {
 						break;
 
 					case 'by':
+						if ($subquery != '') {
+							$query .= " ORDER BY $subquery";
+						}
 						$status = 'done';
 						break;
 
@@ -172,9 +176,6 @@ function rule2sql($rule) {
 		}
 	}
 
-	if ($subquery != '') {
-		$query .= " ORDER BY $subquery";
-	}
 
 	return array($query, $var_array);
 }
