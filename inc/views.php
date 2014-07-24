@@ -37,34 +37,23 @@ function parse_word($word) {
  * @return a rule abstract syntax tree which is an array of word abstract trees.
  */
 function parse_rule($rule) {
-	if ($rule == '') {
-		return array();
-	}
-
-	$tokens = explode(' ', $rule);
+	$rem = $rule;
 	$ast = array();
 
-	$word = '';
-	foreach ($tokens as $token) {
-		$word .= $token;
-
-		// If next space is escaped, merge it with the next token
-		if (substr($token, -1) == '\\') {
-			$word = substr($word, 0, -1) . ' ';
-			continue;
+	while ($rem != '') {
+		if (!preg_match('/^((?:[^ \\\\]|\\\\\\\\|\\\\ )*)(?: +(.*)|$)/', $rem, $matches)) {
+			throw new ParseError("Error in rule `$rule` near `$rem`");
 		}
 
+		$word = preg_replace(array('/\\\\\\\\/', '/\\\\ /'), array('\\', ' '), $matches[1]);
 		array_push($ast, parse_word($word));
 
-		$word = '';
-	}
-
-	if ($word != '') {
-		throw new ParseError("Unexpected trailing backslash in rule `$rule`");
+		$rem = isset($matches[2]) ? $matches[2] : '';
 	}
 
 	return $ast;
 }
+
 
 /**
  * Build a SQL query from a view rule.
