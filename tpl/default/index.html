@@ -2,6 +2,7 @@
 	{loop="$entries"}
 		<article>
 			<h1>{$value['title']}</h1>
+			<a href="mark_as_read.php?entry={$value['id']}">Lu</a>
 			<div>{$value['displayed_content']}</div>
 		</article>
 	{/loop}

@@ -21,7 +21,7 @@ class ParseError extends Exception { }
  */
 function parse_word($word) {
 	$prefixe = '\\+|-|BY';
-	if(!preg_match('/^('.$prefixe.')(.*)$/i', $word, $matches)) {
+	if(!preg_match('/^(\\+|-|BY)(.*)$/i', $word, $matches)) {
 		throw new ParseError("Unknown prefix in word `$word`");
 	}
 
