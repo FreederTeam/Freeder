@@ -2,7 +2,7 @@
 	{loop="$entries"}
 		<article>
 			<h1>{$value['title']}</h1>
-			<a href="#" onclick="ajax(mark_as_read.php?entry={$value['id']})">Lu</a>
+			<a href="#" onclick="ajax(this, 'mark_as_read.php?entry={$value['id']}')">Lu</a>
 			<div>{$value['displayed_content']}</div>
 		</article>
 	{/loop}
