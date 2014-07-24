@@ -170,7 +170,6 @@ function install_db() {
 		FOREIGN KEY(feed_id) REFERENCES feeds(id) ON DELETE CASCADE
 	)');
 
-	$dbh->query('DROP TABLE views');
 	// Create the table to store views
 	$dbh->query('CREATE TABLE IF NOT EXISTS views(
 		id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
