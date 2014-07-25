@@ -18,19 +18,23 @@
 			<main>
 				<form method="post" action="" id="loginform">
 					<header>
-						<h1><a href="index.php"><img alt="Freeder" src="img/logo_complete.svg"></a></h1>
+						<h1><a href="index.php"><img alt="Freeder" src="tpl/default/img/logo_complete.svg"></a></h1>
 					</header>
 					<div>
-						<label for="login">Login:</label>
-						<input type="text" name="login" id="login" />
+						<label for="login" class="hidden">Login:</label>
+						<input type="text" name="login" id="login" placeholder="Login" />
 					</div>
 					<div>
-						<label for="password">Password:</label>
-						<input type="password" name="password" id="password" />
+						<label for="password" class="hidden">Password:</label>
+						<input type="password" name="password" id="password" placeholder="Password" />
 					</div>
 					<div>
-						<label for="timezone">Timezone:</label>
-						<input type="text" name="timezone" id="timezone" value="$default_timezone"/>
+						<label for="confirm_password" class="hidden">Password:</label>
+						<input type="password" name="confirm_password" id="confirm_password" placeholder="Password (again)" />
+					</div>
+					<div>
+						<label for="timezone" class="hidden">Timezone:</label>
+						<input type="text" name="timezone" id="timezone" value="$default_timezone" placeholder="Timezone" />
 					</div>
 					<input class="red" type="submit" value="Install !" />
 				</form>
