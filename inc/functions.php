@@ -97,7 +97,7 @@ function list_templates() {
  * @return Generation time as a string, with units (seconds or milliseconds)
  */
 function get_generation_time($start_generation_time) {
-	$round = round(microtime(true) - (int)$start_generation_time, 2).'s';
+	$round = round(microtime(true) - (float)$start_generation_time, 2).'s';
 	if($round == '0s') {
 		$round = round((microtime(true) - $start_generation_time)*1000, 3).'ms';
 	}
