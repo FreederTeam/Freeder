@@ -175,24 +175,40 @@ function install_db() {
  */
 function install() {
 	global $default_timezone;
+	$login = isset($_POST['login']) ? $_POST['login'] : '';
+	$timezone = isset($_POST['timezone']) ? $_POST['timezone'] : $default_timezone;
+	$is_installed = false;
+	$error_msg = '';
 
-	if (!empty($_POST['login']) && !empty($_POST['password']) && !empty($_POST['timezone'])) {
-		install_dir(DATA_DIR);
-		install_dir('tmp');
+	if (!empty($_POST['login']) && !empty($_POST['password']) && !empty($_POST['confirm_password']) && !empty($_POST['timezone'])) {
+		if ($_POST['confirm_password'] != $_POST['password']) {
+			$error_msg = 'Passwords does not match!';
+		}
+		else {
+			install_dir(DATA_DIR);
+			install_dir('tmp');
 
-		install_config();
-		require_once(DATA_DIR.'config.php');
+			install_config();
+			require_once(DATA_DIR.'config.php');
 
-		install_db();
+			install_db();
 
-		$_SESSION['user'] = new stdClass;
-		$_SESSION['user']->login = $_POST['login'];
-		$_SESSION['is_admin'] = 1;
+			$_SESSION['user'] = new stdClass;
+			$_SESSION['user']->login = $_POST['login'];
+			$_SESSION['is_admin'] = 1;
+
+			$is_installed = true;
+		}
+	} else {
+		if(isset($_POST['login'])) {
+			$error_msg = 'You must fill every field.';
+		}
 	}
-	else {
+
+	if(!$is_insalled) {
 		$install_template = file_get_contents('tpl/default/install.html');
-		$vars = array('/\$default_timezone/');
-		$bind = array($default_timezone);
+		$vars = array('/\$error_msg/', '/\$login/', '/\$timezone/');
+		$bind = array($error_msg, $login, $timezone);
 		$page = preg_replace($vars, $bind, $install_template);
 		echo($page);
 		exit();
