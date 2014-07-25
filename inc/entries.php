@@ -25,7 +25,7 @@ function get_entries($view='') {
 	}
 
 	$r = rule2sql($rule, 'id, feed_id, authors, title, links, description, content, enclosures, comments, guid, pubDate, lastUpdate');
-	$query = $dbh->query($r[0]);
+	$query = $dbh->prepare($r[0]);
 	$query->execute($r[1]);
 	$fetched_entries = $query->fetchall(PDO::FETCH_ASSOC);
 
