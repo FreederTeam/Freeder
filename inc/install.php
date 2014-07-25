@@ -174,7 +174,7 @@ function install_db() {
  * Proceed to Freeder installation.
  */
 function install() {
-	global $install_template;
+	global $default_timezone;
 
 	if (!empty($_POST['login']) && !empty($_POST['password']) && !empty($_POST['timezone'])) {
 		install_dir(DATA_DIR);
@@ -190,7 +190,11 @@ function install() {
 		$_SESSION['is_admin'] = 1;
 	}
 	else {
-		echo file_get_contents('tpl/default/install.html');
+		$install_template = file_get_contents('tpl/default/install.html');
+		$vars = array('/\$default_timezone/');
+		$bind = array($default_timezone);
+		$page = preg_replace($vars, $bind, $install_template);
+		echo($page);
 		exit();
 	}
 }
