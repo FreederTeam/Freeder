@@ -7,26 +7,6 @@
  */
 
 $default_timezone = @date_default_timezone_get();
-$install_template =
-'
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="fr">
-<head>
-	<meta charset="utf-8"/>
-</head>
-<body>
-	<h1>Installation</h1>
-
-	<form method="post" action="">
-		<p><label for="login">Login: </label><input type="text" name="login" id="login"/></p>
-		<p><label for="password">Password: </label><input type="password" name="password" id="password"/></p>
-		<p><label for="timezone">Timezone : </label><input type="text" name="timezone" id="timezone" value="'.$default_timezone.'"/></p>
-
-		<p><input type="submit" value="Install !"/></p>
-	</form>
-</body>
-</html>
-';
 
 $config_template =
 "
@@ -210,7 +190,7 @@ function install() {
 		$_SESSION['is_admin'] = 1;
 	}
 	else {
-		echo $install_template;
+		echo file_get_contents('tpl/default/install.html');
 		exit();
 	}
 }
