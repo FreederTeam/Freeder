@@ -14,7 +14,7 @@ _Note :_ There are some TODOs in the files. If you are a developper and want to 
 Installation
 ------------
 
-![https://raw.githubusercontent.com/FreederTeam/Freeder/master/doc/screenshots/install.png](Freeder installation page)
+![Freeder installation page](https://raw.githubusercontent.com/FreederTeam/Freeder/master/doc/screenshots/install.png)
 
 ### Cloning this repository
 
