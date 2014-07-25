@@ -1,8 +1,10 @@
 {include="_begin"}
 	{loop="$entries"}
 		<article>
+			<nav class="articles-button-bar">
+				<button class="btn red read_button" onclick="ajax(this, 'mark_as_read.php?entry={$value['id']}')">Lu</button>
+			</nav>
 			<h1>{$value['title']}</h1>
-			<a href="#" onclick="ajax(this, 'mark_as_read.php?entry={$value['id']}')">Lu</a>
 			<div>{$value['displayed_content']}</div>
 		</article>
 	{/loop}

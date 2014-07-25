@@ -8,3 +8,8 @@ main article {
 	background-color: #FFF;
 	padding:1rem;
 }
+
+.articles-button-bar {
+	float: right;
+}
+

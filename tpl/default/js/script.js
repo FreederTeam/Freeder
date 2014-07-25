@@ -9,7 +9,7 @@ function ajax(caller, target) {
 	xhr.open('GET', target, true);
 	xhr.onload = function () {
 		if (xhr.status == 200) {
-			var article = caller.parentNode;
+			var article = caller.parentNode.parentNode;
 			article.parentNode.removeChild(article);
 		}
 	};
