@@ -59,11 +59,14 @@ function parse_rule($rule) {
  * Build a SQL query from a view rule.
  * @param $rule is the rule as raw text.
  * @param $selection designate what field to get from SQL table. Warning: it is not escaped.
+ * @param $limit specifies the maximum number of items to return. Ignored if negative.
  * @return a PDO-ready query and the binding array.
  *
  * TODO: Refactor me!!!
  */
-function rule2sql($rule, $selection='*') {
+function rule2sql($rule, $selection='*', $limit=-1) {
+	$limit = (int)$limit;
+
 	$ast = parse_rule($rule);
 	array_push($ast, array('by', 'by', ''));
 	$query = "SELECT $selection FROM entries E";
@@ -166,6 +169,9 @@ function rule2sql($rule, $selection='*') {
 		}
 	}
 
+	if ($limit >= 0) {
+		$query .= " LIMIT $limit";
+	}
 
 	return array($query, $var_array);
 }

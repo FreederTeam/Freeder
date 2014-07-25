@@ -18,13 +18,13 @@ function get_entries($view='') {
 	global $dbh, $config;
 
 	// Get rule from view name.
-	$query = $dbh->query('SELECT rule FROM views WHERE name = ?');
+	$query = $dbh->prepare('SELECT rule FROM views WHERE name = ?');
 	$query->execute(array($view));
 	if (!($rule = $query->fetch(PDO::FETCH_ASSOC)['rule'])) {
 		$rule = '';
 	}
 
-	$r = rule2sql($rule, 'id, feed_id, authors, title, links, description, content, enclosures, comments, guid, pubDate, lastUpdate');
+	$r = rule2sql($rule, 'id, feed_id, authors, title, links, description, content, enclosures, comments, guid, pubDate, lastUpdate', 10);
 	$query = $dbh->prepare($r[0]);
 	$query->execute($r[1]);
 	$fetched_entries = $query->fetchall(PDO::FETCH_ASSOC);
