@@ -176,4 +176,27 @@ function rule2sql($rule, $selection='*', $limit=-1) {
 	return array($query, $var_array);
 }
 
+/**
+ * Get rule from view name.
+ * The rule comes from database for regular views or is computed some
+ * other way if it is recognized as a virtual view.
+ * @param $view is the view name.
+ */
+function get_view_rule($view) {
+	global $dbh;
+
+	// Handle virtual views
+	if (substr($view, 0, 1) == "$") {
+		echo('virtual');
+	}
+
+	$query = $dbh->prepare('SELECT rule FROM views WHERE name = ?');
+	$query->execute(array($view));
+	if (!($rule = $query->fetch(PDO::FETCH_ASSOC)['rule'])) {
+		$rule = '';
+	}
+
+	return $rule;
+}
+
 

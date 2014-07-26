@@ -9,6 +9,7 @@
 require_once('inc/init.php');
 require_once('inc/entries.php');
 
+$view = isset($_GET['view']) ? $_GET['view'] : '_home';
 
-$tpl->assign('entries', get_entries('_home'));
+$tpl->assign('entries', get_entries($view));
 $tpl->draw('index');

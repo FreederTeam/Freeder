@@ -32,12 +32,7 @@ function clean_authors($authors) {
 function get_entries($view='') {
 	global $dbh, $config;
 
-	// Get rule from view name.
-	$query = $dbh->prepare('SELECT rule FROM views WHERE name = ?');
-	$query->execute(array($view));
-	if (!($rule = $query->fetch(PDO::FETCH_ASSOC)['rule'])) {
-		$rule = '';
-	}
+	$rule = get_view_rule($view);
 
 	$r = rule2sql($rule, 'id, feed_id, authors, title, links, description, content, enclosures, comments, guid, pubDate, lastUpdate', 10);
 	$query = $dbh->prepare($r[0]);
