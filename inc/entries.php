@@ -10,6 +10,21 @@
 require_once('views.php');
 
 /**
+ * Clean up 'authors' attribute of entry.
+ * @param authors list to clean.
+ */
+function clean_authors($authors) {
+	if ($authors == NULL) return array();
+	$new_authors = array();
+	foreach($authors as &$author) {
+		if ($author->name != '') {
+			$new_authors[] = $author;
+		}
+	}
+	return $new_authors;
+}
+
+/**
  * Get all the available entries from the database
  * @param $view is the name of the view. By default view rule is empty.
  * @return Array of associative arrays for each entry.
@@ -53,6 +68,11 @@ function get_entries($view='') {
 				$entry['displayed_content'] = $entry['description'];
 				break;
 		}
+
+		$entry['authors'] = clean_authors(json_decode($entry['authors']));
+		$entry['links'] = json_decode($entry['links']);
+		$entry['enclosures'] = json_decode($entry['enclosures']);
+
 		$entries[] = $entry;
 	}
 	return $entries;
@@ -65,3 +85,4 @@ function get_entries($view='') {
  */
 function delete_old_entries() {
 }
+

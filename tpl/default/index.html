@@ -5,6 +5,7 @@
 				<button class="btn red read_button" onclick="ajax(this, 'mark_as_read.php?entry={$value['id']}')">Lu</button>
 			</nav>
 			<h1>{$value['title']}</h1>
+			<div class="articles-authors">{include="_author"}</div>
 			<div>{$value['displayed_content']}</div>
 		</article>
 	{/loop}
