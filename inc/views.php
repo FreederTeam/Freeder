@@ -64,13 +64,23 @@ function parse_rule($rule) {
  * @return the new subquery.
  */
 function append_selection_query($prefix, $tag, $subquery, &$bindings) {
-	if ($tag == '$all') {
-		return $prefix == '+' ? '' : '1=0'; // A little bit hacky
-	}
-
 	if ($subquery != '') {
 		$operator = $prefix == '+' ? 'OR' : 'AND';
 		$subquery = "($subquery) $operator ";
+	}
+
+	// Handle virtual tags
+	if (substr($tag, 0, 1) == '$') {
+		// Designate all entries
+		if ($tag == '$all') {
+			return $prefix == '+' ? '' : '1=0'; // A little bit hacky
+		}
+
+		// Entries by parent feed
+		if (substr($tag, 1, 5) == 'feed_') {
+			$feed_id = (int)substr($tag, 6);
+			return $subquery . "feed_id = $feed_id";
+		}
 	}
 
 	$bindings[] = $tag;
