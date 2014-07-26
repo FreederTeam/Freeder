@@ -81,3 +81,14 @@ function get_entries($view='') {
 function delete_old_entries() {
 }
 
+
+function get_entry_link($entry) {
+	foreach ($entry['links'] as $link) {
+		if ($link->rel == 'alternate') {
+			return $link->href;
+		}
+	}
+	return '#';
+}
+
+

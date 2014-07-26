@@ -4,7 +4,7 @@
 			<nav class="articles-button-bar">
 				<button class="btn red read_button" onclick="ajax(this, 'mark_as_read.php?entry={$value['id']}')">Lu</button>
 			</nav>
-			<h1>{$value['title']}</h1>
+			<h1><a href="{function="get_entry_link($value)"}">{$value['title']}</a></h1>
 			<div class="articles-authors">{include="_author"}</div>
 			<div>{$value['displayed_content']}</div>
 		</article>
