@@ -186,8 +186,16 @@ function get_view_rule($view) {
 	global $dbh;
 
 	// Handle virtual views
-	if (substr($view, 0, 1) == "$") {
-		echo('virtual');
+	if (substr($view, 0, 1) == '$') {
+		// Raw view rules (to be avoided but useful for debug purpose)
+		if (substr($view, 1, 4) == 'raw_') {
+			return substr($view, 5);
+		}
+
+		// Tag specific view
+		if (substr($view, 1, 4) == 'tag_') {
+			return '+' . substr($view, 5) . ' by -$pubDate';
+		}
 	}
 
 	$query = $dbh->prepare('SELECT rule FROM views WHERE name = ?');
