@@ -6,12 +6,15 @@
  *  @brief Functions to install the script
  */
 
+$theme = "default";
+
 $default_timezone = @date_default_timezone_get();
 
 $config_template =
 "
 <?php
 define('DB_FILE', 'db.sqlite3');
+define('THEME', '$theme');
 ?>
 ";
 
@@ -175,6 +178,7 @@ function install_db() {
  */
 function install() {
 	global $default_timezone;
+	global $theme;
 	$login = isset($_POST['login']) ? $_POST['login'] : '';
 	$timezone = isset($_POST['timezone']) ? $_POST['timezone'] : $default_timezone;
 	$is_installed = false;
@@ -206,9 +210,9 @@ function install() {
 	}
 
 	if(!$is_insalled) {
-		$install_template = file_get_contents('tpl/default/install.html');
-		$vars = array('/\$error_msg/', '/\$login/', '/\$timezone/');
-		$bind = array($error_msg, $login, $timezone);
+		$install_template = file_get_contents("tpl/$theme/install.html");
+		$vars = array('/\$theme/', '/\$error_msg/', '/\$login/', '/\$timezone/');
+		$bind = array($theme, $error_msg, $login, $timezone);
 		$page = preg_replace($vars, $bind, $install_template);
 		echo($page);
 		exit();
