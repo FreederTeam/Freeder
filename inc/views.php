@@ -56,6 +56,29 @@ function parse_rule($rule) {
 
 
 /**
+ * Subroutine for rule2sql building the selection subquery.
+ * @param $prefix is the tag prefix (+, -, etc)
+ * @param $tag is the tag to considere.
+ * @param $subquery is the beginning of the selection subquery.
+ * @param $bindings is a reference to an array of values bound inside the query.
+ * @return the new subquery.
+ */
+function append_selection_query($prefix, $tag, $subquery, &$bindings) {
+	if ($tag == '$all') {
+		return $prefix == '+' ? '' : '1=0'; // A little bit hacky
+	}
+
+	if ($subquery != '') {
+		$operator = $prefix == '+' ? 'OR' : 'AND';
+		$subquery = "($subquery) $operator ";
+	}
+
+	$bindings[] = $tag;
+	$tag_id = "(SELECT id FROM tags WHERE name = ?)";
+	return $subquery . ($prefix == '+' ? '' : 'NOT ') . "EXISTS (SELECT tag_id FROM tags_entries WHERE tag_id = $tag_id AND entry_id = E.id)";
+}
+
+/**
  * Build a SQL query from a view rule.
  * @param $rule is the rule as raw text.
  * @param $selection designate what field to get from SQL table. Warning: it is not escaped.
@@ -68,47 +91,24 @@ function rule2sql($rule, $selection='*', $limit=-1) {
 	$limit = (int)$limit;
 
 	$ast = parse_rule($rule);
-	array_push($ast, array('by', 'by', ''));
+	$ast[] = array('by', 'by', ''); // Hacky
 	$query = "SELECT $selection FROM entries E";
 	
-	$var_array = array();
+	$bindings = array();
 	$subquery = '';
 	$state = 'select';
 	foreach ($ast as $word) {
+		$prefix = strtolower($word[1]);
+		$tag = $word[2];
 		switch ($state) {
 			case 'select':
-				$tag_id = "(SELECT id FROM tags WHERE name = ?)";
-				switch (strtolower($word[1])) {
+				switch ($prefix) {
 					case '+':
-						switch ($word[2]) {
-							case '$all':
-								$subquery = '';
-								break;
-
-							default:
-								if ($subquery != '') {
-									$subquery = "($subquery) OR ";
-								}
-								$subquery .= "EXISTS (SELECT tag_id FROM tags_entries WHERE tag_id = $tag_id AND entry_id = E.id)";
-								array_push($var_array, $word[2]);
-						}
-						break;
-
 					case '-':
-						switch ($word[2]) {
-							case '$all':
-								$subquery = '1=0'; // A little bit hacky
-								break;
-
-							default:
-								if ($subquery != '') {
-									$subquery = "($subquery) AND ";
-								}
-								$subquery .= "NOT EXISTS (SELECT tag_id FROM tags_entries WHERE tag_id = $tag_id AND entry_id = E.id)";
-								array_push($var_array, $word[2]);
-						}
+						$subquery = append_selection_query($prefix, $tag, $subquery, $bindings);
 						break;
 
+					// Go to next parsing state
 					case 'by':
 						if ($subquery != '') {
 							$query .= " WHERE $subquery";
@@ -118,13 +118,13 @@ function rule2sql($rule, $selection='*', $limit=-1) {
 						break;
 
 					default:
-						throw new ParseError("Unknown prefix `$word[1]`");
+						throw new ParseError("Unknown prefix `$prefix`");
 				}
 				break;
 
 			case 'order':
 				$bind = false;
-				switch ($word[2]) {
+				switch ($tag) {
 					case '$pubDate':
 						$tag_count = "E.pubDate";
 						break;
@@ -134,14 +134,14 @@ function rule2sql($rule, $selection='*', $limit=-1) {
 						$tag_count = "(SELECT COUNT(*) FROM tags_entries WHERE tag_id = $tag_id AND entry_id = E.id)";
 						$bind = true;
 				}
-				switch (strtolower($word[1])) {
+				switch ($prefix) {
 					case '+':
 						if ($subquery != '') {
 							$subquery .= ", ";
 						}
 						$subquery .= "$tag_count ASC";
 						if ($bind) {
-							array_push($var_array, $word[2]);
+							$bindings[] = $tag;
 						}
 						break;
 
@@ -151,7 +151,7 @@ function rule2sql($rule, $selection='*', $limit=-1) {
 						}
 						$subquery .= "$tag_count DESC";
 						if ($bind) {
-							array_push($var_array, $word[2]);
+							$bindings[] = $tag;
 						}
 						break;
 
@@ -173,7 +173,7 @@ function rule2sql($rule, $selection='*', $limit=-1) {
 		$query .= " LIMIT $limit";
 	}
 
-	return array($query, $var_array);
+	return array($query, $bindings);
 }
 
 /**
@@ -187,14 +187,20 @@ function get_view_rule($view) {
 
 	// Handle virtual views
 	if (substr($view, 0, 1) == '$') {
-		// Raw view rules (to be avoided but useful for debug purpose)
+		// Raw view rules : $raw_foobar -> use rule "foobar"
+		// (to be avoided but useful for debug purpose)
 		if (substr($view, 1, 4) == 'raw_') {
 			return substr($view, 5);
 		}
 
-		// Tag specific view
+		// Tag specific view: $tag_foobar -> foobar-tagged entries
 		if (substr($view, 1, 4) == 'tag_') {
 			return '+' . substr($view, 5) . ' by -$pubDate';
+		}
+
+		// Feed specific view: $feed_2343 -> entries from feed whose id is 2343
+		if (substr($view, 1, 5) == 'feed_') {
+			return '+' . $view . ' by -$pubDate';
 		}
 	}
 
