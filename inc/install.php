@@ -166,7 +166,8 @@ function install() {
 	global $default_timezone;
 	global $theme;
 
-	if (!empty(install_dir('tmp'))) {
+	$tmp = install_dir('tmp');
+	if (!empty($tmp)) {
 		exit('Unable to create or write to tmp/ folder. Please check write permissions on this folder.');
 	}
 
