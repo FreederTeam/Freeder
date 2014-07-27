@@ -6,32 +6,15 @@
  *  @brief Functions to install the script
  */
 
+$theme = "default";
+
 $default_timezone = @date_default_timezone_get();
-$install_template =
-'
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="fr">
-<head>
-	<meta charset="utf-8"/>
-</head>
-<body>
-	<h1>Installation</h1>
-
-	<form method="post" action="">
-		<p><label for="login">Login: </label><input type="text" name="login" id="login"/></p>
-		<p><label for="password">Password: </label><input type="password" name="password" id="password"/></p>
-		<p><label for="timezone">Timezone : </label><input type="text" name="timezone" id="timezone" value="'.$default_timezone.'"/></p>
-
-		<p><input type="submit" value="Install !"/></p>
-	</form>
-</body>
-</html>
-';
 
 $config_template =
 "
 <?php
 define('DB_FILE', 'db.sqlite3');
+define('THEME', '$theme');
 ?>
 ";
 
@@ -202,23 +185,44 @@ function install_db() {
  * Proceed to Freeder installation.
  */
 function install() {
-	global $install_template;
+	global $default_timezone;
+	global $theme;
+	$login = isset($_POST['login']) ? $_POST['login'] : '';
+	$timezone = isset($_POST['timezone']) ? $_POST['timezone'] : $default_timezone;
+	$is_installed = false;
+	$error_msg = '';
 
-	if (!empty($_POST['login']) && !empty($_POST['password']) && !empty($_POST['timezone'])) {
-		install_dir(DATA_DIR);
-		install_dir('tmp');
+	if (!empty($_POST['login']) && !empty($_POST['password']) && !empty($_POST['confirm_password']) && !empty($_POST['timezone'])) {
+		if ($_POST['confirm_password'] != $_POST['password']) {
+			$error_msg = 'Passwords does not match!';
+		}
+		else {
+			install_dir(DATA_DIR);
+			install_dir('tmp');
 
-		install_config();
-		require_once(DATA_DIR.'config.php');
+			install_config();
+			require_once(DATA_DIR.'config.php');
 
-		install_db();
+			install_db();
 
-		$_SESSION['user'] = new stdClass;
-		$_SESSION['user']->login = $_POST['login'];
-		$_SESSION['is_admin'] = 1;
+			$_SESSION['user'] = new stdClass;
+			$_SESSION['user']->login = $_POST['login'];
+			$_SESSION['is_admin'] = 1;
+
+			$is_installed = true;
+		}
+	} else {
+		if(isset($_POST['login'])) {
+			$error_msg = 'You must fill every field.';
+		}
 	}
-	else {
-		echo $install_template;
+
+	if(!$is_insalled) {
+		$install_template = file_get_contents("tpl/$theme/install.html");
+		$vars = array('/\$theme/', '/\$error_msg/', '/\$login/', '/\$timezone/');
+		$bind = array($theme, $error_msg, $login, $timezone);
+		$page = preg_replace($vars, $bind, $install_template);
+		echo($page);
 		exit();
 	}
 }

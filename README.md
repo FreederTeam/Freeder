@@ -14,6 +14,8 @@ _Note :_ There are some TODOs in the files. If you are a developper and want to 
 Installation
 ------------
 
+![Freeder installation page](https://raw.githubusercontent.com/FreederTeam/Freeder/master/doc/screenshots/install.png)
+
 ### Cloning this repository
 
 Freeder git repo is available at `https://github.com/FreederTeam/Freeder.git`. To clone it, follow these instructions:

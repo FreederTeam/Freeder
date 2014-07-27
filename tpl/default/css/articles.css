@@ -6,10 +6,20 @@ main article {
 	border: 1px solid #E5E5E5;
 	border-radius: 2px;
 	background-color: #FFF;
-	padding:1rem;
 }
 
-.articles-button-bar {
-	float: right;
+main article > h1 {
+	font-size: 1.6em;
+	padding: 0 1rem;
 }
+
+.article-content {
+	padding: 1rem;
+}
+
+.article-button-bar {
+	float: right;
+	margin: 0;
+}
+
 
