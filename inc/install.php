@@ -20,7 +20,7 @@ function install_dir($dir) {
 		if (!mkdir($dir) || !is_writable($dir)) {
 			$current_user = get_current_user();
 			$error = array();
-			$error['type'] = 2;
+			$error['type'] = 'error';
 			$error['title'] = 'Permissions error';
 			$error['content'] = 'Unable to create or write in data directory. Check the writing rights of Freeder root directory. The user who executes Freeder — '.$current_user.' — should be able to write in this directory. You may prefere to create the /data directory on your own and allow '.$current_user.' to write only in /data instead of in the whole Freeder root.';
 			return $error;
@@ -184,7 +184,7 @@ function install() {
 	if (!empty($_POST['login']) && !empty($_POST['password']) && !empty($_POST['confirm_password']) && !empty($_POST['timezone'])) {
 		if ($_POST['confirm_password'] != $_POST['password']) {
 			$error = array();
-			$error['type'] = 2;
+			$error['type'] = 'error';
 			$error['title'] = 'Password mismatch';
 			$error['content'] = 'Passwords do not match!';
 		}
@@ -210,7 +210,7 @@ function install() {
 	} else {
 		if(isset($_POST['login'])) {
 			$error = array();
-			$error['type'] = 2;
+			$error['type'] = 'error';
 			$error['title'] = 'Incomplete installation form';
 			$error['content'] = 'You must fill every field.';
 			$tpl->assign('error', $error);
