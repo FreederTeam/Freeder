@@ -13,7 +13,6 @@ require_once('functions.php');
  * Generate an OPML file to export the feeds.
  *
  * @copyright Heavily based on a function from FreshRSS.
- * @todo Adapt to our code
  */
 function opml_export($feeds) {
 	$tags = array();

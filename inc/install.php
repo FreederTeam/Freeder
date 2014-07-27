@@ -6,17 +6,10 @@
  *  @brief Functions to install the script
  */
 
+require_once('inc/constants.php');
 $theme = "default";
 
 $default_timezone = @date_default_timezone_get();
-
-$config_template =
-"
-<?php
-define('DB_FILE', 'db.sqlite3');
-define('THEME', '$theme');
-?>
-";
 
 
 /**
@@ -30,25 +23,10 @@ function install_dir($dir) {
 			$error['type'] = 2;
 			$error['title'] = 'Permissions error';
 			$error['content'] = 'Unable to create or write in data directory. Check the writing rights of Freeder root directory. The user who executes Freeder — '.$current_user.' — should be able to write in this directory. You may prefere to create the /data directory on your own and allow '.$current_user.' to write only in /data instead of in the whole Freeder root.';
-			// TODO
+			return $error;
 		}
 	}
-}
-
-
-/**
- * Create configuration file in data directory.
- */
-function install_config() {
-	global $config_template;
-
-	if (false === file_put_contents(DATA_DIR.'config.php', $config_template)) {
-		$error = array();
-		$error['type'] = 2;
-		$error['title'] = 'Permissions error';
-		$error['content'] = 'Unable to create "'.DATA_DIR.'config.php". Check the writing rights in "'.DATA_DIR.'"';
-		// TODO
-	}
+	return;
 }
 
 
@@ -77,7 +55,7 @@ function install_db() {
 		salt TEXT,
 		is_admin INT DEFAULT 0
 	)');
-	$query = $dbh->prepare('INSERT INTO users(login, password, salt, is_admin) VALUES(:login, :password, :salt, 1)');
+	$query = $dbh->prepare('INSERT OR IGNORE INTO users(login, password, salt, is_admin) VALUES(:login, :password, :salt, 1)');
 	$query->execute(array(
 		':login'=>$_POST['login'],
 		':password'=>$password,
@@ -90,7 +68,7 @@ function install_db() {
 		value TEXT
 	)');
 	// Insert timezone in the config
-	$query = $dbh->prepare('INSERT INTO config(option, value) VALUES("timezone", :value)');
+	$query = $dbh->prepare('INSERT OR IGNORE INTO config(option, value) VALUES("timezone", :value)');
 	$query->execute(array(':value'=>$_POST['timezone']));
 
 	// Create the table to store feeds
@@ -129,19 +107,19 @@ function install_db() {
 		id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
 		name TEXT UNIQUE COLLATE NOCASE
 	)');
-	$dbh->query('INSERT INTO tags(name) VALUES("_read")');
-	$dbh->query('INSERT INTO tags(name) VALUES("_sticky")');
-	$dbh->query('INSERT INTO tags(name) VALUES("_private")');
-	$dbh->query('INSERT INTO tags(name) VALUES("_no_home")');
-	$dbh->query('INSERT INTO tags(name) VALUES("_application")');
-	$dbh->query('INSERT INTO tags(name) VALUES("_audio")');
-	$dbh->query('INSERT INTO tags(name) VALUES("_example")');
-	$dbh->query('INSERT INTO tags(name) VALUES("_image")');
-	$dbh->query('INSERT INTO tags(name) VALUES("_message")');
-	$dbh->query('INSERT INTO tags(name) VALUES("_model")');
-	$dbh->query('INSERT INTO tags(name) VALUES("_multipart")');
-	$dbh->query('INSERT INTO tags(name) VALUES("_text")');
-	$dbh->query('INSERT INTO tags(name) VALUES("_video")');
+	$dbh->query('INSERT OR IGNORE INTO tags(name) VALUES("_read")');
+	$dbh->query('INSERT OR IGNORE INTO tags(name) VALUES("_sticky")');
+	$dbh->query('INSERT OR IGNORE INTO tags(name) VALUES("_private")');
+	$dbh->query('INSERT OR IGNORE INTO tags(name) VALUES("_no_home")');
+	$dbh->query('INSERT OR IGNORE INTO tags(name) VALUES("_application")');
+	$dbh->query('INSERT OR IGNORE INTO tags(name) VALUES("_audio")');
+	$dbh->query('INSERT OR IGNORE INTO tags(name) VALUES("_example")');
+	$dbh->query('INSERT OR IGNORE INTO tags(name) VALUES("_image")');
+	$dbh->query('INSERT OR IGNORE INTO tags(name) VALUES("_message")');
+	$dbh->query('INSERT OR IGNORE INTO tags(name) VALUES("_model")');
+	$dbh->query('INSERT OR IGNORE INTO tags(name) VALUES("_multipart")');
+	$dbh->query('INSERT OR IGNORE INTO tags(name) VALUES("_text")');
+	$dbh->query('INSERT OR IGNORE INTO tags(name) VALUES("_video")');
 
 	// Create table to store association between tags and entries
 	$dbh->query('CREATE TABLE IF NOT EXISTS tags_entries(
@@ -164,14 +142,14 @@ function install_db() {
 	// Create the table to store views
 	$dbh->query('CREATE TABLE IF NOT EXISTS views(
 		id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-		name TEXT,
-		rule TEXT, -- Specifies what to display. See RFF 4 for more info
+		name TEXT UNIQUE,
+		rule TEXT UNIQUE, -- Specifies what to display. See RFF 4 for more info
 		isPublic INT DEFAULT 0 -- Whether the view is publicly available
 		-- theme TEXT,
 		-- displayStyle INT (Title only, Summary, Full text)
 	)');
 
-	$dbh->query('INSERT INTO views(name, rule) VALUES
+	$dbh->query('INSERT OR IGNORE INTO views(name, rule) VALUES
 		("_home", "+$all -_read -_no_home BY -$pubDate"),
 		("_public", "+$all -_private BY -$pubDate")
 	');
@@ -187,43 +165,59 @@ function install_db() {
 function install() {
 	global $default_timezone;
 	global $theme;
+
+	if (!empty(install_dir('tmp'))) {
+		exit('Unable to create or write to tmp/ folder. Please check write permissions on this folder.');
+	}
+
 	$login = isset($_POST['login']) ? $_POST['login'] : '';
 	$timezone = isset($_POST['timezone']) ? $_POST['timezone'] : $default_timezone;
-	$is_installed = false;
-	$error_msg = '';
+
+	require_once('inc/rain.tpl.class.php');
+	require_once('inc/functions.php');
+	RainTPL::$tpl_dir = TPL_DIR.$theme.'/';
+	$tpl = new RainTPL;
+	$tpl->assign('start_generation_time', microtime(true));
+	$tpl->assign('login', $login);
+	$tpl->assign('timezone', $timezone);
 
 	if (!empty($_POST['login']) && !empty($_POST['password']) && !empty($_POST['confirm_password']) && !empty($_POST['timezone'])) {
 		if ($_POST['confirm_password'] != $_POST['password']) {
-			$error_msg = 'Passwords does not match!';
+			$error = array();
+			$error['type'] = 2;
+			$error['title'] = 'Password mismatch';
+			$error['content'] = 'Passwords do not match!';
 		}
 		else {
-			install_dir(DATA_DIR);
-			install_dir('tmp');
-
-			install_config();
-			require_once(DATA_DIR.'config.php');
-
-			install_db();
-
-			$_SESSION['user'] = new stdClass;
-			$_SESSION['user']->login = $_POST['login'];
-			$_SESSION['is_admin'] = 1;
-
-			$is_installed = true;
+			$error = install_dir(DATA_DIR);
+			if(empty($error)) {
+				$error = install_db();
+				if(empty($error)) {
+					$_SESSION['user'] = new stdClass;
+					$_SESSION['user']->login = $_POST['login'];
+					$_SESSION['is_admin'] = 1;
+					header('location: index.php');
+					exit();
+				}
+				else {
+					$tpl->assign('error', $error);
+				}
+			}
+			else {
+				$tpl->assign('error', $error);
+			}
 		}
 	} else {
 		if(isset($_POST['login'])) {
-			$error_msg = 'You must fill every field.';
+			$error = array();
+			$error['type'] = 2;
+			$error['title'] = 'Incomplete installation form';
+			$error['content'] = 'You must fill every field.';
+			$tpl->assign('error', $error);
 		}
 	}
 
-	if(!$is_insalled) {
-		$install_template = file_get_contents("tpl/$theme/install.html");
-		$vars = array('/\$theme/', '/\$error_msg/', '/\$login/', '/\$timezone/');
-		$bind = array($theme, $error_msg, $login, $timezone);
-		$page = preg_replace($vars, $bind, $install_template);
-		echo($page);
-		exit();
-	}
+	$tpl->draw('install');
+	exit();
 }
 

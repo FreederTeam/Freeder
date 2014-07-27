@@ -1,53 +1,22 @@
-<!DOCTYPE html>
-<html>
-	<head>
-		<meta charset="UTF-8">
-		<title>Freeder</title>
-		<link rel="stylesheet" href="tpl/$theme/css/base.css">
-		<link rel="stylesheet" href="tpl/$theme/css/layout.css" />
-		<link rel="stylesheet" href="tpl/$theme/css/ui.css">
-		<link rel="stylesheet" href="tpl/$theme/css/sidebar.css">
-		<link rel="stylesheet" href="tpl/$theme/css/articles.css">
-		<link rel="stylesheet" href="tpl/$theme/css/articles_content.css">
-		<link rel="stylesheet" href="tpl/$theme/css/footer.css">
-		<link rel="stylesheet" href="tpl/$theme/css/settings.css">
-		<link rel="stylesheet" href="tpl/$theme/css/login.css">
-	</head>
-	<body>
-		<div id="flex">
-			<main>
-				<form method="post" action="" id="loginform">
-					<header>
-						<h1><a href="index.php"><img alt="Freeder" src="tpl/$theme/img/logo_complete.svg"></a></h1>
-					</header>
-					<p class="error">$error_msg</p>
-					<div>
-						<label for="login" class="hidden">Login:</label>
-						<input type="text" name="login" id="login" value="$login" placeholder="Login" />
-					</div>
-					<div>
-						<label for="password" class="hidden">Password:</label>
-						<input type="password" name="password" id="password" placeholder="Password" />
-					</div>
-					<div>
-						<label for="confirm_password" class="hidden">Password:</label>
-						<input type="password" name="confirm_password" id="confirm_password" placeholder="Password (again)" />
-					</div>
-					<div>
-						<label for="timezone" class="hidden">Timezone:</label>
-						<input type="text" name="timezone" id="timezone" value="$timezone" placeholder="Timezone" />
-					</div>
-					<input class="red" type="submit" value="Install !" />
-				</form>
-			</main>
+{include="_begin"}
+	<form method="post" action="" id="loginform">
+		<div>
+			<label for="login" class="hidden">Login:</label>
+			<input type="text" name="login" id="login" value="{$login}" placeholder="Login" />
 		</div>
-		
-		<footer>
-			<p>Follow us on <a href="https://github.com/FreederTeam/Freeder">GitHub</a> !</p>
-		</footer>
+		<div>
+			<label for="password" class="hidden">Password:</label>
+			<input type="password" name="password" id="password" placeholder="Password" />
+		</div>
+		<div>
+			<label for="confirm_password" class="hidden">Password:</label>
+			<input type="password" name="confirm_password" id="confirm_password" placeholder="Password (again)" />
+		</div>
+		<div>
+			<label for="timezone" class="hidden">Timezone:</label>
+			<input type="text" name="timezone" id="timezone" value="{$timezone}" placeholder="Timezone" />
+		</div>
+		<input class="red" type="submit" value="Install !" />
+	</form>
+{include="_end"}
 
-		<script src="tpl/$theme/js/jquery-2.1.1.min.js"></script>
-		<script src="tpl/$theme/js/svgeezy.min.js"></script>
-		<script src="tpl/$theme/js/script.js"></script>
-	</body>
-</html>
