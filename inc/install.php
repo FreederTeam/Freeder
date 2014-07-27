@@ -43,7 +43,11 @@ function install_dir($dir) {
 	if (!file_exists($dir)) {
 		if (!mkdir($dir) || !is_writable($dir)) {
 			$current_user = get_current_user();
-			exit('error: Unable to create or write in data directory. Check the writing rights of Freeder root directory. The user who executes Freeder — '.$current_user.' — should be able to write in this directory. You may prefere to create the /data directory on your own and allow '.$current_user.' to write only in /data instead of in the whole Freeder root.');
+			$error = array();
+			$error['type'] = 2;
+			$error['title'] = 'Permissions error';
+			$error['content'] = 'Unable to create or write in data directory. Check the writing rights of Freeder root directory. The user who executes Freeder — '.$current_user.' — should be able to write in this directory. You may prefere to create the /data directory on your own and allow '.$current_user.' to write only in /data instead of in the whole Freeder root.';
+			// TODO
 		}
 	}
 }
@@ -56,7 +60,11 @@ function install_config() {
 	global $config_template;
 
 	if (false === file_put_contents(DATA_DIR.'config.php', $config_template)) {
-		exit('error: Unable to create "'.DATA_DIR.'config.php". Check the writing rights in "'.DATA_DIR.'"');
+		$error = array();
+		$error['type'] = 2;
+		$error['title'] = 'Permissions error';
+		$error['content'] = 'Unable to create "'.DATA_DIR.'config.php". Check the writing rights in "'.DATA_DIR.'"';
+		// TODO
 	}
 }
 

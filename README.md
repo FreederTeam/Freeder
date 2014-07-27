@@ -84,7 +84,7 @@ THE SOFTWARE.
 ### Template
 The template (files under `tpl/default/`) is licensed under a specific license, it is under Creative Commons CC BYSA.
 
-**TODO:** Add more license info on CC.
+For more information on this license, please have a look at [this brief summary](https://creativecommons.org/licenses/by-sa/4.0/).
 
 
 Related information

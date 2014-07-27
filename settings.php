@@ -12,6 +12,12 @@ require_once('inc/entries.php');
 
 require_auth();
 
+$feeds = get_feeds();
+
+$tpl->assign('config', $config);
+$tpl->assign('templates', list_templates());
+$tpl->assign('feeds', $feeds);
+
 // Handle posted info for settings
 if (!empty($_POST['synchronization_type']) && !empty($_POST['template']) && !empty($_POST['timezone']) && isset($_POST['use_tags_from_feeds']) && isset($_POST['anonymous_access']) && isset($_POST['entries_to_keep']) && !empty($_POST['display_entries'])) {
 	$config->synchronization_type = $_POST['synchronization_type'];
@@ -67,7 +73,17 @@ if (!empty($_POST['feed_url']) && isset($_POST['feed_post'])) {
 		exit();
 	}
 	else {
-		exit('Error encountered when adding feed.');
+		$error = array();
+		$errror['type'] = 2;
+		$error['title'] = 'Error encountered when adding feeds.');
+		$error['content'] = '<p>There were errors while trying to add the following feeds:</p><ul>';
+		foreach($add_errors as $add_error) {
+			$error['content'] .= '<li><a href="'.htmlspecialchars($add_error).'">'.htmlspecialchars($add_error).'</a></li>';
+		}
+		$error['content'] .= '</ul>';
+		$tpl->assign('error', $error);
+		$tpl->draw('settings');
+		exit();
 	}
 }
 
@@ -101,15 +117,33 @@ if (isset($_POST['export'])) {
 // Handle OPML import
 if (isset($_FILES['import'])) {
 	if ($_FILES['import']['error'] > 0) {
-		exit('The OPML file could not be imported.');
+		$error = array();
+		$error['type'] = 2;
+		$error['title'] = 'OPML import error';
+		$error['content'] = '<p>The OPML file could not be imported.</p>';
+		$tpl->assign('error', $error);
+		$tpl->draw('settings');
+		exit();
 	}
 	if ($_FILES['import']['size'] > 1048576) {
-		exit('The OPML file is too large.');
+		$error = array();
+		$error['type'] = 2;
+		$error['title'] = 'OPML import error';
+		$error['content'] = '<p>The OPML file is too large.</p>';
+		$tpl->assign('error', $error);
+		$tpl->draw('settings');
+		exit();
 	}
 	require_once('inc/opml.php');
 	$feeds_opml = opml_import(file_get_contents($_FILES['import']['tmp_name']));
 	if ($feeds_opml === false) {
-		exit('An error occurred during the OPML import. Maybe you did not upload a valid OPML file ?');
+		$error = array();
+		$error['type'] = 2;
+		$error['title'] = 'OPML import error';
+		$error['content'] = '<p>An error occurred during the OPML import. Maybe you did not upload a valid OPML file ?</p>';
+		$tpl->assign('error', $error);
+		$tpl->draw('settings');
+		exit();
 	}
 	$errors_refresh = add_feeds($feeds_opml);
 	if(empty($errors_refresh)) {
@@ -118,17 +152,20 @@ if (isset($_FILES['import'])) {
 	}
 	else {
 		// Some feeds errorred
-		echo 'Some of the imported feeds encountered errors during refresh. The following feeds were NOT imported:';
-		var_dump($errors_refresh);
+		$error = array();
+		$error['type'] = 1;
+		$error['title'] = 'OPML import error';
+		$error['content'] = '<p>Some of the imported feeds encountered errors during refresh. The following feeds were <strong>NOT</strong> imported:</p><ul>';
+		foreach($errors_refresh as $error_refresh) {
+			$error['content'] .= '<li><a href="'.$error_refresh.'">'.$error_refresh.'</a></li>';
+		}
+		$error['content'] .= '</ul>';
+		$tpl->assign('error', $error);
+		$tpl->draw('settings');
 		exit();
 	}
 }
 
-$feeds = get_feeds();
-
-$tpl->assign('config', $config);
-$tpl->assign('templates', list_templates());
-$tpl->assign('feeds', $feeds);
 $tpl->draw('settings');
 
 
