@@ -75,7 +75,7 @@ if (!empty($_POST['feed_url']) && isset($_POST['feed_post'])) {
 	else {
 		$error = array();
 		$error['type'] = 'error';
-		$error['title'] = 'Error encountered when adding feeds.');
+		$error['title'] = 'Error encountered when adding feeds.';
 		$error['content'] = '<p>There were errors while trying to add the following feeds:</p><ul>';
 		foreach($add_errors as $add_error) {
 			$error['content'] .= '<li><a href="'.htmlspecialchars($add_error).'">'.htmlspecialchars($add_error).'</a></li>';
