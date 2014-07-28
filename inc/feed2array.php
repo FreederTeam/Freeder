@@ -201,7 +201,7 @@ function feed2array($feed, $load=false, $debug=false) {
 						$flux['items'][$c]['description'] = (string)$item->description;
 					}
 					if($item->author) {
-						$flux['items'][$c]['authors'] = array(
+						$flux['items'][$c]['authors'][] = array(
 							'name'=>'',
 							'email'=>(string)$item->author,
 							'uri'=>''

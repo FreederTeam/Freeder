@@ -16,7 +16,7 @@ require_once('views.php');
 function clean_authors($authors) {
 	if ($authors == NULL) return array();
 	$new_authors = array();
-	foreach($authors as &$author) {
+	foreach($authors as $author) {
 		if ($author->name != '') {
 			$new_authors[] = $author;
 		}
