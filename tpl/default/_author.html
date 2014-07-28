@@ -1,6 +1,12 @@
 {if="!empty($value['authors'])"}
 	Edited by
 	{loop="$value['authors']"}
-		{$value1}
+		{if="!empty($value1['url'])"}
+			<a href="{$value1['url']}">{$value1['name']}</a>
+		{elseif="!empty($value1['email'])"}
+			<a href="mailto:{$value1['email']}">{$value1['name']}</a>
+		{else}
+			{$value1['name']}
+		{/if}
 	{/loop}
 {/if}
