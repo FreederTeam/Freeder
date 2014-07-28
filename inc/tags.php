@@ -6,7 +6,7 @@
  *  @brief Functions to handle the tags
  */
 
-require_once('functions.php');
+require_once(INC_DIR . 'functions.php');
 
 
 /**

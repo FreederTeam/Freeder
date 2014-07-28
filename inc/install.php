@@ -6,8 +6,7 @@
  *  @brief Functions to install the script
  */
 
-require_once('inc/constants.php');
-$theme = "default";
+require_once('constants.php');
 
 $default_timezone = @date_default_timezone_get();
 
@@ -164,7 +163,6 @@ function install_db() {
  */
 function install() {
 	global $default_timezone;
-	global $theme;
 
 	$tmp = install_dir('tmp');
 	if (!empty($tmp)) {
@@ -174,9 +172,9 @@ function install() {
 	$login = isset($_POST['login']) ? $_POST['login'] : '';
 	$timezone = isset($_POST['timezone']) ? $_POST['timezone'] : $default_timezone;
 
-	require_once('inc/rain.tpl.class.php');
-	require_once('inc/functions.php');
-	RainTPL::$tpl_dir = TPL_DIR.$theme.'/';
+	require_once(INC_DIR . 'rain.tpl.class.php');
+	require_once(INC_DIR . 'functions.php');
+	RainTPL::$tpl_dir = RELATIVE_TPL_DIR . DEFAULT_THEME . '/';
 	$tpl = new RainTPL;
 	$tpl->assign('start_generation_time', microtime(true));
 	$tpl->assign('login', $login);
