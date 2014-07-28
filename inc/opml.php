@@ -6,7 +6,7 @@
  *  @brief Functions to handle the OPML files
  */
 
-require_once(INCPATH . '/functions.php');
+require_once(INC_DIR . 'functions.php');
 
 
 /**

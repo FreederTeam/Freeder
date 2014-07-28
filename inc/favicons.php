@@ -6,7 +6,7 @@
  *  @brief Simple lib to try to get favicons from URLs.
  */
 
-require_once(INCPATH . '/functions.php');
+require_once(INC_DIR . 'functions.php');
 
 
 /**

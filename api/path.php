@@ -1,4 +1,4 @@
 <?php
 
-define('INCPATH', dirname(dirname(__FILE__)));
+define('ROOT_DIR', dirname(dirname(__FILE__)) . '/');
 

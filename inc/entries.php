@@ -7,7 +7,7 @@
  */
 
 
-require_once(INCPATH . '/views.php');
+require_once(INC_DIR . 'views.php');
 
 /**
  * Clean up 'authors' attribute of entry.
