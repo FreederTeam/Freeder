@@ -62,7 +62,7 @@ class Config {
 		$query_update->bindParam(':value', $value);
 		$query_update->bindParam(':option', $option);
 
-		foreach($this as $option=>$value) {
+		foreach(get_object_vars($this) as $option=>$value) {
 			if(!isset(self::$default_config[$option])) {
 				continue;
 			}
@@ -70,6 +70,18 @@ class Config {
 			$query_update->execute();
 		}
 		$dbh->commit();
+	}
+
+	public function sanitize() {  /** Sanitize the data for html display */
+		$return = new stdClass();
+		foreach(get_object_vars($this) as $option=>$value) {
+			if(!isset(self::$default_config[$option])) {
+				continue;
+			}
+			$option = htmlspecialchars($option);
+			$return->$option = htmlspecialchars($value);
+		}
+		return $return;
 	}
 }
 

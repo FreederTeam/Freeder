@@ -12,6 +12,7 @@
  *  @copyright LGPLv3, Federico Ulfo & the Rain Team
  */
 
+require_once('inc/functions.php');
 
 class RainTPL{
 
@@ -142,6 +143,8 @@ class RainTPL{
 	 */
 
 	function assign( $variable, $value = null ){
+		$variable = sanitize($variable);
+		$value = sanitize($value);
 		if( is_array( $variable ) )
 			$this->var = $variable + $this->var;
 		else
