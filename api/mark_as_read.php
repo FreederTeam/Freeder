@@ -4,7 +4,7 @@
  *	See the file LICENSE at the root of this repo for copying permission.
  */
 
-require_once('inc/init.php');
+require_once('../inc/init.php');
 
 
 if (isset($_GET['entry'])) {

@@ -17,13 +17,23 @@
 
 session_start();
 
+// Load current directory's `path.php` to retrieve root path.
+// If there is no such file, use the current directory as root.
+if (is_file('path.php')) {
+	require('path.php');
+} else {
+	define('ROOTPATH', dirname(dirname(__FILE__)));
+}
+
+define(INCPATH, ROOTPATH . '/inc');
+
 // Load constant config
-require_once('inc/constants.php');
+require_once(INCPATH . '/constants.php');
 
 
 // Check database installation
 if(!is_file(DATA_DIR.DB_FILE)) {
-	require_once('inc/install.php');
+	require_once(INCPATH . '/install.php');
 
 	install();
 }
@@ -36,21 +46,21 @@ $dbh->query('PRAGMA foreign_keys = ON');
 $query = $dbh->query('SELECT COUNT(*) AS nb_admins FROM users WHERE is_admin=1');
 $admins = $query->fetch();
 if($admins['nb_admins'] == 0) {
-	require_once('inc/install.php');
+	require_once(INCPATH . '/install.php');
 
 	install();
 }
 
 
 // Load config from database
-require_once('inc/config.class.php');
+require_once(INCPATH . '/config.class.php');
 $config = new Config();
 date_default_timezone_set($config->timezone);
 
 
 // Test wether an update should be done
 if($config->version !== Config::$versions[count(Config::$versions) - 1]) {
-	require_once('update.php');
+	require_once(INCPATH . '/update.php');
 	update($config->version, Config::$versions[count(Config::$versions) - 1]);
 	header('location: index.php');
 	exit();
@@ -58,16 +68,16 @@ if($config->version !== Config::$versions[count(Config::$versions) - 1]) {
 
 
 // Load Rain TPL
-require_once('inc/rain.tpl.class.php');
+require_once(INCPATH . '/rain.tpl.class.php');
 RainTPL::$tpl_dir = TPL_DIR.$config->template;
 $tpl = new RainTPL;
 $tpl->assign('start_generation_time', microtime(true));
 
 // `functions.php` must be included in each page for templates.
-require_once('inc/functions.php');
+require_once(INCPATH . '/functions.php');
 
 // Manage users
-require_once('inc/users.php');
+require_once(INCPATH . '/users.php');
 log_user_in();
 $tpl->assign('user', isset($_SESSION['user']) ? $_SESSION['user'] : false);
 check_anonymous_view();

@@ -6,11 +6,11 @@
  *  @brief Functions to handle the feeds (includes feed2array)
  */
 
-require_once('entries.php');
-require_once('favicons.php');
-require_once('feed2array.php');
-require_once('functions.php');
-require_once('tags.php');
+require_once(INCPATH . '/entries.php');
+require_once(INCPATH . '/favicons.php');
+require_once(INCPATH . '/feed2array.php');
+require_once(INCPATH . '/functions.php');
+require_once(INCPATH . '/tags.php');
 
 
 /**
