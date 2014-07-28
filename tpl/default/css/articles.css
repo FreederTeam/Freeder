@@ -1,25 +1,82 @@
 /*
- * Styles for the articles (the html tag <article>)
+ * Styles for the articles
  */
 
-main article {
-	border: 1px solid #E5E5E5;
-	border-radius: 2px;
-	background-color: #FFF;
-}
+/* == article html tag */
+	main article {
+		border: 1px solid #E5E5E5;
+		border-radius: 2px;
+		background-color: #FFF;
+	}
+	main article > * {
+		padding:0;
+	}
 
-main article > h1 {
-	font-size: 1.6em;
-	padding: 0 1rem;
-}
+/* == article <nav>*/
+	.articleControls {
+		text-align:center;
+	}
+	.articleControls button {
+		padding:2px;
+		margin:5px;
+	}		
+	.articleControls button img {
+		float:left;
+		padding:2px;
+		height:17px;
+	}
+	.articleControls input	{
+		background-color:#ECECEC;
+	}
+	
+	.articleTagList {
+		display:none;
+	}
 
-.article-content {
-	padding: 1rem;
-}
+	.articleControls ul {
+		display:inline-flex;
+	}
+	.articleControls ul li {
+		padding:.5rem;
+	}
 
-.article-button-bar {
-	float: right;
-	margin: 0;
-}
+	@media(min-width:960px)
+	/*must be the same value than in the Responsive part of layout.css*/
+	{
+		.articleControls {
+			text-align:left
+		}
+		.articleControls button,
+		.articleControls input	{
+			width:100%;
+		}
+		.articleControls ul {
+			display:inline;
+		}
 
+		/*hide the list and show the display button*/
+		.articleDisplayTagButton{
+			display:none;
+		}
+		.articleTagList {
+			display:block;
+		}
+	}
 
+/* == article content */
+	main article h1,
+	main article h2,
+	main article h3,
+	main article h4,
+	main article h5,
+	main article h6 {
+		margin-top:0;
+	}
+
+	.articleContent ul,
+	.articleContent ol {
+		padding-left:2em;
+	}
+	.articleContent > * {
+		padding:0px 2rem 1rem 2rem;
+	}

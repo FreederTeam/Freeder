@@ -8,19 +8,15 @@
 	input[type="submit"],
 	.btn {
 		height:35px;
-		line-height:35px;
 		border: 0 none;
 		padding:0 1rem;
 		margin:.5rem;
 		text-align:center;
 		font-weight:bold;
 		cursor:pointer;
-		-webkit-box-shadow: 0 0 2px 0 rgba(0,0,0,0.5);
-		box-shadow: 0 0 2px 0 rgba(0,0,0,0.5);
-
 		/*by default, red buttons*/
 		color:#FFF;
-		background:#D14836;
+		background-color:#D14836;
 
 	}
 		button:hover,
@@ -32,31 +28,31 @@
 		.btn:hover,
 		.btn:active,
 		.btn:focus {
-			-webkit-box-shadow: 0 0 4px 0 rgba(0,0,0,0.7);
-			box-shadow: 0 0 4px 0 rgba(0,0,0,0.7);
+			background-color:#C03927;
+			-webkit-box-shadow: 0 0 4px 0 rgba(0,0,0,0.3);
+			box-shadow: 0 0 4px 0 rgba(0,0,0,0.3);
 		}
-	/*this class is useless if the defauls buttons are red*/
-	.red {
-		color:#FFF;
-		background:#D14836;
-	}
-		.red:hover,
-		.red:active,
-		.red:focus {
-			background:#C03927;
-		}
-	.grey {
+	.lightgrey {
 		color:#444;
-		background:#DCDCDC;
+		background-color:#DCDCDC;
 	}
-		.grey:hover,
-		.grey:active,
-		.grey:focus {
-			background:#BCBCBC;
+		.lightgrey:hover,
+		.lightgrey:active,
+		.lightgrey:focus {
+			background-color:#BCBCBC;
+		}
+	.darkgrey {
+		color:#FFF;
+		background-color:#444;
+	}
+		.darkgrey:hover,
+		.darkgrey:active,
+		.darkgrey:focus {
+			background-color:#333;
 		}
 	.blue {
 		color:#FFF;
-		background:#15C;
+		background-color:#15C;
 	}
 		.blue:hover,
 		.blue:active,
@@ -65,12 +61,12 @@
 		}
 	.green {
 		color:#FFF;
-		background:#4EAD48;
+		background-color:#4EAD48;
 	}
 		.green:hover,
 		.green:active,
 		.green:focus {
-
+			background-color:#3C9C37;
 		}
 
 /* == Form */
@@ -83,6 +79,7 @@
 		margin:.5rem;
 	}
 	input[type="text"],
+	input[type="textaera"],
 	input[type="password"] {
 		padding:.5rem;
 		background-color:#fff;
@@ -93,7 +90,7 @@
 		background-color:#ECECEC;
 		box-shadow:inset 0 0 3px 0px rgba(0,0,0,0.8), 0 0 3px 0 #FFF;
 	}
-
+/* ==  */
 
 /* == switches */
 	input.switch:empty
@@ -147,27 +144,5 @@
 	}
 
 /* == tags */
-	.tag img {
-		vertical-align:middle;
-	}
-	.tag a {
-		font-weight:bold;
-		/*how to remove this gap bettwen the two blocs ? Negative margins work, but this is so ugly :(*/
-		margin-right:-5px;
-		padding: 3px;
-	}	
-	.tagLink,
-	.tagDel {
-		box-shadow: 0 0 3px 0 rgba(0,0,0, 0.5);
-		border: 1px solid rgba(0,0,0,0.4);
-	}
-	a.tagLink {
-		border-radius: 4px 0px 0px 4px;
-		background-color:#f1f1f1;
-		padding-right:1rem;
-	}
-	a.tagDel {
-		border-radius: 0px 4px 4px 0px;
-		background-color:#f16301;
-		border-left:none;
-	}
+
+
