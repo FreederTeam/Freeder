@@ -5,8 +5,10 @@
 			<a href="{$value1['url']}">{$value1['name']}</a>
 		{elseif="!empty($value1['email'])"}
 			<a href="mailto:{$value1['email']}">{$value1['name']}</a>
-		{else}
+		{elseif="!empty($value1['name'])"}
 			{$value1['name']}
+		{else}
+			Unknown
 		{/if}
 	{/loop}
 {/if}
