@@ -1,6 +1,6 @@
 {if="!empty($value['authors'])"}
-	Edited by 
+	Edited by
 	{loop="$value['authors']"}
-		<a href="{$value2->url}">{$value2->name}</a>
+		{$value1}
 	{/loop}
 {/if}

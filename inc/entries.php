@@ -17,8 +17,19 @@ function clean_authors($authors) {
 	if ($authors == NULL) return array();
 	$new_authors = array();
 	foreach($authors as $author) {
-		if ($author->name != '') {
+		if (!empty($author->name)) {
 			$new_authors[] = $author;
+		}
+		else if (!empty($author->email)) {
+			$explode = explode(' ', $author->email);
+			$email = trim($explode[0]);
+			if (!empty($explode[1])) {
+				$name = trim($explode[1], ' ()');
+				$new_authors[] = '<a href="mailto:'.$email.'">'.$name.'</a>';
+			}
+			else {
+				$new_authors[] = '<a href="mailto:'.$email.'">'.$email.'</a>';
+			}
 		}
 	}
 	return $new_authors;
