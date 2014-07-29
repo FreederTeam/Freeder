@@ -30,7 +30,7 @@ function refresh_feeds($feeds, $check_favicons=false) {
 	foreach ($download['status_codes'] as $url=>$status_code) {
 		// Keep the errors to return them and display them to the user
 		if ($status_code != 200) {
-			$errors[] = $url;
+			$errors[] = array('url'=>$url, 'msg'=>'Feed page not found (http status: ' . $status_code . ')');
 		}
 	}
 
@@ -103,7 +103,7 @@ function refresh_feeds($feeds, $check_favicons=false) {
 
 		// If an error has occurred, keep a trace of it
 		if ($parsed === false || empty($parsed['infos']) || empty($parsed['items'])) {
-			$errors[] = $url;
+			$errors[] = array('url'=>$url, 'msg'=>'Unable to parse feed file');
 			continue;
 		}
 
@@ -228,21 +228,19 @@ function add_feeds($urls) {
 			$tags = array();
 		}
 		if (filter_var($url, FILTER_VALIDATE_URL)) {
-            $query->execute();
-            $id = $dbh->lastInsertId();
-            if ($id === 0) {
-                continue;
-            }
-			$added[] = array('id'=>$id, 'url'=>$url, 'post'=>$post, 'tags'=>$tags);
+			$query->execute();
+			$added[] = array('id'=>$dbh->lastInsertId(), 'url'=>$url, 'post'=>$post, 'tags'=>$tags);
 		}
 		else {
-			$errors[] = $url;
+			$errors[] = array('url'=>$url, 'msg'=>'Invalid URL');
 		}
 	}
 	$dbh->commit();
 	$errors_refresh = refresh_feeds($added, true);
+	$errors_urls = array();
 	foreach ($errors_refresh as $error) {
-		delete_feed_url($error);
+		delete_feed_url($error['url']);
+		$errors_urls[] = $error['url'];
 	}
 
 	// Add feeds tags
@@ -256,7 +254,7 @@ function add_feeds($urls) {
 	$query_tags->bindParam(':feed_id', $feed_id);
 
 	foreach($added as $url_array) {
-		if(in_array($url_array['url'], $errors_refresh)) {
+		if(in_array($url_array['url'], $errors_urls)) {
 			continue;
 		}
 

@@ -78,7 +78,7 @@ if (!empty($_POST['feed_url']) && isset($_POST['feed_post'])) {
 		$error['title'] = 'Error encountered when adding feeds.';
 		$error['content'] = '<p>There were errors while trying to add the following feeds:</p><ul>';
 		foreach($add_errors as $add_error) {
-			$error['content'] .= '<li><a href="'.htmlspecialchars($add_error).'">'.htmlspecialchars($add_error).'</a></li>';
+			$error['content'] .= '<li><a href="'.htmlspecialchars($add_error['url']).'">'.htmlspecialchars($add_error['url']).'</a> ('.htmlspecialchars($add_error['msg']).')</li>';
 		}
 		$error['content'] .= '</ul>';
 		$tpl->assign('error', $error);
@@ -157,7 +157,7 @@ if (isset($_FILES['import'])) {
 		$error['title'] = 'OPML import error';
 		$error['content'] = '<p>Some of the imported feeds encountered errors during refresh. The following feeds were <strong>NOT</strong> imported:</p><ul>';
 		foreach($errors_refresh as $error_refresh) {
-			$error['content'] .= '<li><a href="'.$error_refresh.'">'.$error_refresh.'</a></li>';
+			$error['content'] .= '<li><a href="'.htmlspecialchars($add_error['url']).'">'.htmlspecialchars($add_error['url']).'</a> ('.htmlspecialchars($add_error['msg']).')</li>';
 		}
 		$error['content'] .= '</ul>';
 		$tpl->assign('error', $error);
