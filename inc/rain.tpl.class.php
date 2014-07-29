@@ -12,6 +12,7 @@
  *  @copyright LGPLv3, Federico Ulfo & the Rain Team
  */
 
+require_once('inc/functions.php');
 
 class RainTPL{
 
@@ -141,7 +142,11 @@ class RainTPL{
 	 * @param mixed $value value assigned to this variable. Not set if variable_name is an associative array
 	 */
 
-	function assign( $variable, $value = null ){
+	function assign( $variable, $value = null, $ignore_sanitize=false ){
+		if(!$ignore_sanitize) {
+			$variable = sanitize($variable);
+			$value = sanitize($value);
+		}
 		if( is_array( $variable ) )
 			$this->var = $variable + $this->var;
 		else

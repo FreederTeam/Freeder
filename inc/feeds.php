@@ -228,8 +228,12 @@ function add_feeds($urls) {
 			$tags = array();
 		}
 		if (filter_var($url, FILTER_VALIDATE_URL)) {
-			$query->execute();
-			$added[] = array('id'=>$dbh->lastInsertId(), 'url'=>$url, 'post'=>$post, 'tags'=>$tags);
+            $query->execute();
+            $id = $dbh->lastInsertId();
+            if ($id === 0) {
+                continue;
+            }
+			$added[] = array('id'=>$id, 'url'=>$url, 'post'=>$post, 'tags'=>$tags);
 		}
 		else {
 			$errors[] = $url;
