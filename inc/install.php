@@ -178,8 +178,8 @@ function install() {
 	RainTPL::$tpl_dir = RELATIVE_TPL_DIR . DEFAULT_THEME . '/';
 	$tpl = new RainTPL;
 	$tpl->assign('start_generation_time', microtime(true));
-	$tpl->assign('login', $login);
-	$tpl->assign('timezone', $timezone);
+	$tpl->assign('login', $login, false);
+	$tpl->assign('timezone', $timezone, false);
 
 	if (!empty($_POST['login']) && !empty($_POST['password']) && !empty($_POST['confirm_password']) && !empty($_POST['timezone'])) {
 		if ($_POST['confirm_password'] != $_POST['password']) {
@@ -200,11 +200,11 @@ function install() {
 					exit();
 				}
 				else {
-					$tpl->assign('error', $error, true);
+					$tpl->assign('error', $error);
 				}
 			}
 			else {
-				$tpl->assign('error', $error, true);
+				$tpl->assign('error', $error);
 			}
 		}
 	} else {
@@ -213,7 +213,7 @@ function install() {
 			$error['type'] = 'error';
 			$error['title'] = 'Incomplete installation form';
 			$error['content'] = 'You must fill every field.';
-			$tpl->assign('error', $error, true);
+			$tpl->assign('error', $error);
 		}
 	}
 

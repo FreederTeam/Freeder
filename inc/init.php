@@ -77,7 +77,7 @@ require_once(INC_DIR . 'functions.php');
 // Manage users
 require_once(INC_DIR . 'users.php');
 log_user_in();
-$tpl->assign('user', isset($_SESSION['user']) ? $_SESSION['user'] : false);
+$tpl->assign('user', isset($_SESSION['user']) ? $_SESSION['user'] : false, false);
 check_anonymous_view();
 
 
