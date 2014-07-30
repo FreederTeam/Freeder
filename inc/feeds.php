@@ -242,6 +242,14 @@ function add_feeds($urls) {
 		delete_feed_url($error['url']);
 		$errors_urls[] = $error['url'];
 	}
+	$search_feed_url = get_feed_url_from_html($errors_refresh);
+	if(!empty($search_feed_url['urls'])) {
+		foreach($search_feed_url['urls'] as $error) {
+			unset($errors_urls[array_search($error['url'], $errors_urls)]);
+		}
+		// TODO : Handle errors
+		add_feeds($search_feed_url['urls']);
+	}
 
 	// Add feeds tags
 	$dbh->beginTransaction();
@@ -267,6 +275,56 @@ function add_feeds($urls) {
 	$dbh->commit();
 
 	return array_merge($errors, $errors_refresh);
+}
+
+
+/**
+ * Try to get the feed URL associated to a URL to a HTML page, by parsing the header.
+ *
+ * @param an array $urls of {'url'=>URL}
+ * @return an array {'urls', 'errors'}. `errors` is an array of URLs for which there could not be any fetched feed. `urls` is an array with input URLs as keys and f{'url'=>URL} as values.
+ */
+function get_feed_url_from_html($urls_to_fetch) {
+	$feeds = array();
+	$errors = array();
+
+	$contents = curl_downloader($urls_to_fetch);
+	foreach($contents['status_codes'] as $url=>$status) {
+		if($status != 200) {
+			$errors[] = $url;
+		}
+	}
+
+	foreach($contents['results'] as $url=>$content) {
+		$content = substr($content, 0, strpos($content, '</head>')).'</head></html>'; // We don't need the full page, just the <head>
+
+		$html = new DOMDocument();
+		$html->strictErrorChecking = false;
+		$fail = @$html->loadHTML($content);
+		if ($fail === false or empty($fail)) {
+			continue;
+		}
+		$xml = @simplexml_import_dom($html);
+		if ($xml === false or empty($xml)) {
+			continue;
+		}
+
+		// Try to fetch the favicon URL from the <head> tag
+		foreach($xml->head->children() as $head_tag) {
+			if($head_tag->getName() != 'link') {
+				continue;
+			}
+			foreach($head_tag->attributes() as $key=>$attribute) {
+				if($key != 'type') {
+					continue;
+				}
+				if(strstr((string) $attribute, 'rss') || strstr((string) $attribute, 'atom')) {
+					$feeds[$url] = array('url'=>(string) $head_tag->attributes()['href']);
+				}
+			}
+		}
+	}
+	return array('urls'=>$feeds, 'errors'=>$errors);
 }
 
 
@@ -364,3 +422,5 @@ function get_feed($id) {
 
 	return $feed;
 }
+
+
