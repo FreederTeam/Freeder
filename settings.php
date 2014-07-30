@@ -157,7 +157,7 @@ if (isset($_FILES['import'])) {
 		$error['title'] = 'OPML import error';
 		$error['content'] = '<p>Some of the imported feeds encountered errors during refresh. The following feeds were <strong>NOT</strong> imported:</p><ul>';
 		foreach($errors_refresh as $error_refresh) {
-			$error['content'] .= '<li><a href="'.sanitize($add_error['url']).'">'.sanitize($add_error['url']).'</a> ('.sanitize($add_error['msg']).')</li>';
+			$error['content'] .= '<li><a href="'.sanitize($error_refresh['url']).'">'.sanitize($error_refresh['url']).'</a> ('.sanitize($error_refresh['msg']).')</li>';
 		}
 		$error['content'] .= '</ul>';
 		$tpl->assign('error', $error, true);

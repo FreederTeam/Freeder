@@ -174,7 +174,7 @@ function refresh_feeds($feeds, $check_favicons=false) {
 		$query_favicon = $dbh->prepare('UPDATE feeds SET image=:image WHERE url=:url');
 		$query_favicon->bindParam(':url', $url);
 		$query_favicon->bindParam(':image', $image);
-		foreach($favicons as $url->$favicon) {
+		foreach($favicons as $url=>$favicon) {
 			if(!empty($favicon[0]['favicon_url'])) {
 				$image = $favicon[0]['favicon_url'];
 				$query_favicon->execute();
