@@ -7,6 +7,7 @@
  */
 
 require_once('constants.php');
+require_once('functions.php');
 
 $default_timezone = @date_default_timezone_get();
 
@@ -21,7 +22,7 @@ function install_dir($dir) {
 			$error = array();
 			$error['type'] = 'error';
 			$error['title'] = 'Permissions error';
-			$error['content'] = 'Unable to create or write in data directory. Check the writing rights of Freeder root directory. The user who executes Freeder — '.$current_user.' — should be able to write in this directory. You may prefere to create the /data directory on your own and allow '.$current_user.' to write only in /data instead of in the whole Freeder root.';
+			$error['content'] = 'Unable to create or write in data directory. Check the writing rights of Freeder root directory. The user who executes Freeder — '.sanitize($current_user).' — should be able to write in this directory. You may prefere to create the /data directory on your own and allow '.sanitize($current_user).' to write only in /data instead of in the whole Freeder root.';
 			return $error;
 		}
 	}
@@ -199,11 +200,11 @@ function install() {
 					exit();
 				}
 				else {
-					$tpl->assign('error', $error);
+					$tpl->assign('error', $error, true);
 				}
 			}
 			else {
-				$tpl->assign('error', $error);
+				$tpl->assign('error', $error, true);
 			}
 		}
 	} else {
@@ -212,7 +213,7 @@ function install() {
 			$error['type'] = 'error';
 			$error['title'] = 'Incomplete installation form';
 			$error['content'] = 'You must fill every field.';
-			$tpl->assign('error', $error);
+			$tpl->assign('error', $error, true);
 		}
 	}
 

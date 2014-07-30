@@ -121,7 +121,7 @@ if (isset($_FILES['import'])) {
 		$error['type'] = 'error';
 		$error['title'] = 'OPML import error';
 		$error['content'] = '<p>The OPML file could not be imported.</p>';
-		$tpl->assign('error', $error);
+		$tpl->assign('error', $error, true);
 		$tpl->draw('settings');
 		exit();
 	}
@@ -130,7 +130,7 @@ if (isset($_FILES['import'])) {
 		$error['type'] = 'error';
 		$error['title'] = 'OPML import error';
 		$error['content'] = '<p>The OPML file is too large.</p>';
-		$tpl->assign('error', $error);
+		$tpl->assign('error', $error, true);
 		$tpl->draw('settings');
 		exit();
 	}
@@ -141,7 +141,7 @@ if (isset($_FILES['import'])) {
 		$error['type'] = 'error';
 		$error['title'] = 'OPML import error';
 		$error['content'] = '<p>An error occurred during the OPML import. Maybe you did not upload a valid OPML file ?</p>';
-		$tpl->assign('error', $error);
+		$tpl->assign('error', $error, true);
 		$tpl->draw('settings');
 		exit();
 	}
@@ -157,10 +157,10 @@ if (isset($_FILES['import'])) {
 		$error['title'] = 'OPML import error';
 		$error['content'] = '<p>Some of the imported feeds encountered errors during refresh. The following feeds were <strong>NOT</strong> imported:</p><ul>';
 		foreach($errors_refresh as $error_refresh) {
-			$error['content'] .= '<li><a href="'.htmlspecialchars($add_error['url']).'">'.htmlspecialchars($add_error['url']).'</a> ('.htmlspecialchars($add_error['msg']).')</li>';
+			$error['content'] .= '<li><a href="'.sanitize($add_error['url']).'">'.sanitize($add_error['url']).'</a> ('.sanitize($add_error['msg']).')</li>';
 		}
 		$error['content'] .= '</ul>';
-		$tpl->assign('error', $error);
+		$tpl->assign('error', $error, true);
 		$tpl->draw('settings');
 		exit();
 	}
