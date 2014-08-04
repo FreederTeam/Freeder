@@ -42,6 +42,15 @@ Then just load the index page and it will automatically install Freeder if it's 
 
 If you want to reinit your Freeder installation, you just have to clean up the `data/` directory.
 
+
+Getting help
+------------
+
+Please report any issue you might find using the Github issues.
+
+We also have an IRC channel for live chat: #freeder on freenode. Please wait up to a few hours after saying anything, we may not be always around.
+
+
 Contributing
 ------------
 
