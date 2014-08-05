@@ -67,7 +67,7 @@ class RainTPL{
 		 *
 		 * @var array
 		 */
-		static $path_replace_list = array( 'a', 'img', 'link', 'script', 'input' );
+		static $path_replace_list = array( 'a', 'img', 'link', 'script', 'input', 'form' );
 
 
 		/**
@@ -276,7 +276,7 @@ class RainTPL{
 
 			// if the template doesn't exist and is not an external source throw an error
 			if( self::$check_template_update && !file_exists( $this->tpl['tpl_filename'] ) && !preg_match('/http/', $tpl_name) ){
-				$e = new RainTpl_NotFoundException( 'Template '. $tpl_basename .' not found!' );
+				$e = new RainTpl_NotFoundException( 'Template '. $tpl_basename .' not found! (Searched at ' . $this->tpl['tpl_filename'] . ')' );
 				throw $e->setTemplateFile($this->tpl['tpl_filename']);
 			}
 
@@ -677,6 +677,11 @@ class RainTPL{
 			if( in_array( "input", self::$path_replace_list ) ){
 				$exp = array_merge( $exp , array( '/<input(.*?)src=(?:")(http|https)\:\/\/([^"]+?)(?:")/i', '/<input(.*?)src=(?:")([^"]+?)#(?:")/i', '/<input(.*?)src="(.*?)"/', '/<input(.*?)src=(?:\@)([^"]+?)(?:\@)/i' ) );
 				$sub = array_merge( $sub , array( '<input$1src=@$2://$3@', '<input$1src=@$2@', '<input$1src="' . $path . '$2"', '<input$1src="$2"' ) );
+			}
+
+			if( in_array( "form", self::$path_replace_list ) ){
+				$exp = array_merge( $exp , array( '/<form(.*?)action=(?:")(http\:\/\/|https\:\/\/|javascript:|mailto:)([^"]+?)(?:")/i', '/<form(.*?)action="(.*?)"/', '/<form(.*?)action=(?:\@)([^"]+?)(?:\@)/i'  ) );
+				$sub = array_merge( $sub , array( '<form$1action=@$2$3@', '<form$1action="' . self::$base_url . '$2"', '<form$1action="$2"' ) );
 			}
 
 			return preg_replace( $exp, $sub, $html );
