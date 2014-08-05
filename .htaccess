@@ -6,6 +6,7 @@ Options +Indexes
 	RewriteEngine On
 	RewriteBase /freeder/
 	RewriteRule ^tag/(.+)$ index.php?view=\$tag_$1
+	RewriteRule ^feed/(.+)$ index.php?view=\$feed_$1
 </IfModule>
 # END Freeder generated
 

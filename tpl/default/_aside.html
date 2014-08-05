@@ -16,7 +16,7 @@
 	</ul>
 	<ul id="feedList">
 		{loop="$feeds"}
-		<li><a href="index.php?view=%24feed_{$value['id']}">{$value['title']}</a></li>
+		<li><a href="feed/{$value['id']}">{$value['title']}</a></li>
 		{/loop}
 	</ul>
 </aside>
