@@ -1,7 +1,7 @@
 {include="_begin"}
 <div id="settings_preferences">
 	{* Script preferences *}
-	<form method="post" action="">
+	<form method="post" action="#">
 		<fieldset>
 			<legend>Synchronization</legend>
 			<p>
@@ -72,7 +72,7 @@
 <div id="settings_feeds">
 	{* Feeds management *}
 	<h2>Add a feed</h2>
-	<form method="post" action="">
+	<form method="post" action="#">
 		<p><input type="text" name="feed_url" id="feed_url" placeholder="Feed URL"/></p>
 		<p>
 			<label for="feed_post">POST data to send to have access to the feed (JSON formatted)</label><br/>
@@ -101,7 +101,7 @@
 <div id="settings_import_export">
 	{* Import / Export panel *}
 	<h2>Import an OPML file</h2>
-	<form method="post" action="" enctype="multipart/form-data">
+	<form method="post" action="#" enctype="multipart/form-data">
 		<input type="hidden" name="MAX_FILE_SIZE" value="1048576" />
 		<p><label for="import">OPML file: </label><input type="file" name="import" id="import"/></p>
 		<p>
@@ -109,7 +109,7 @@
 		</p>
 	</form>
 	<h2>Export as OPML</h2>
-	<form method="post" action="">
+	<form method="post" action="#">
 		<p>
 			<label for="export">Export selected feeds (ctrl+click to select multiple):</label><br/>
 			<select name="export[]" id="export" multiple>
