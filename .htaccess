@@ -1,0 +1,11 @@
+
+# BEGIN Freeder generated
+Options +FollowSymLinks
+Options +Indexes
+<IfModule mod_rewrite.c>
+	RewriteEngine On
+	RewriteBase /freeder/
+	RewriteRule ^tag/(.+)$ index.php?view=\$tag_$1
+</IfModule>
+# END Freeder generated
+

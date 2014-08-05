@@ -20,7 +20,8 @@ class Config {
 		self::$default_config = array(  /** This is the default config */
 			'timezone'=>'Europe/Paris',
 			'use_tags_from_feeds'=>1,
-			'template'=>'default/',
+			'template'=>DEFAULT_THEME,
+			'base_dir'=>dirname($_SERVER['SCRIPT_NAME']) . '/',
 			'synchronization_type'=>'cron',
 			'anonymous_access'=>0,
 			'entries_to_keep'=>50,  // Number of entries to keep, set to 0 if you want to keep all of them
