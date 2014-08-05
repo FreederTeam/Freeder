@@ -22,8 +22,8 @@ Freeder git repo is available at `https://github.com/FreederTeam/Freeder.git`. T
 
  * `git clone https://github.com/FreederTeam/Freeder.git`
  * `cd Freeder`
- * `git submodules init`
- * `git submodules update`
+ * `git submodule init`
+ * `git submodule update`
 
 Note that we use git submodules only to include the wiki inside the project for now, so you can ignore the last two commands if you don't need it. It is actually useful to be able to access the wiki pages while not connected to the Internet.
 
