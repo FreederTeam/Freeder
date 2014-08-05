@@ -12,7 +12,7 @@
  *  @copyright LGPLv3, Federico Ulfo & the Rain Team
  */
 
-require_once(INC_DIR . 'inc/functions.php');
+require_once(INC_DIR . 'functions.php');
 
 class RainTPL{
 
