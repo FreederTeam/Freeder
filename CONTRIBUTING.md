@@ -163,10 +163,10 @@ TODO
 Misc
 ----
 
+If you contribute in any form to Freeder, we will list you on the [CONTRIBUTORS wiki page](https://github.com/FreederTeam/Freeder/wiki/CONTRIBUTORS). If you want us to put a custom link (instead of a link to your github account) or do not want to appear on this page, just let us know :)
+
 If you want to add some tips but you don't know where it should be, put it here. If many items of that list are about the same topic, please take time to add a new section for it!
 
  * Use `die` for erronous situations that way not happend in a usual flow. It whould never be raised for a basic use of Freeder but could help developpers and code hackers to debug.
  * Don't rely on what an included file includes itself, unless it is officially documented. It may change. For example, although `inc/init.php` includes `inc/users.php` right now, you should include `inc/users.php` again in you file — if you use functions that come from it, of course — even if you include `inc/init.php`.
  * Prefix branch names with the appropriate prefix: `feature_`, `refactor_`, `bugfix_`. You can use your name as prefix if it is a private branch.
-
-
