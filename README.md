@@ -22,8 +22,8 @@ Freeder git repo is available at `https://github.com/FreederTeam/Freeder.git`. T
 
  * `git clone https://github.com/FreederTeam/Freeder.git`
  * `cd Freeder`
- * `git submodules init`
- * `git submodules update`
+ * `git submodule init`
+ * `git submodule update`
 
 Note that we use git submodules only to include the wiki inside the project for now, so you can ignore the last two commands if you don't need it. It is actually useful to be able to access the wiki pages while not connected to the Internet.
 
@@ -41,6 +41,15 @@ Then just load the index page and it will automatically install Freeder if it's 
 ### Reinstallation
 
 If you want to reinit your Freeder installation, you just have to clean up the `data/` directory.
+
+
+Getting help
+------------
+
+Please report any issue you might find using the Github issues.
+
+We also have an IRC channel for live chat: #freeder on freenode. Please wait up to a few hours after saying anything, we may not be always around.
+
 
 Contributing
 ------------
