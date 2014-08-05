@@ -9,6 +9,17 @@ organised. It is recommanded to everybody to:
    actual code.
 
 
+Keywords
+--------
+
+Make sure you think about it while working on Freeder!
+
+ * **Free**
+ * **Clean** Clean user interface, Clean code, Clean documentation
+ * **Super easy** Easy to set-up, Easy to use, Easy to contribute
+ * **Extensibile**
+
+
 License
 -------
 
