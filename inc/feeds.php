@@ -280,7 +280,6 @@ function add_feeds($urls) {
 		}
 	}
 	$dbh->commit();
-    var_dump(array_merge($errors, $errors_refresh));
 
 	return array_merge($errors, $errors_refresh);
 }
