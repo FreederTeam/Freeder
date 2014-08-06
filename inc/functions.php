@@ -167,6 +167,7 @@ function curl_downloader($urls, $fetch_content=true) {
 	$chunks = array_chunk($urls, 40, true);  // Chunks of 40 urls because curl has problems with too big "multi" requests
 	$results = array();
 	$status_codes = array();
+	$content_types = array();
 
 	if (ini_get('open_basedir') == '' && ini_get('safe_mode') === false) { // Disable followlocation option if this is activated, to avoid warnings
 		$follow_redirect = true;
@@ -211,13 +212,14 @@ function curl_downloader($urls, $fetch_content=true) {
 			$url = $url_array['url'];
 			$results[$url] = curl_multi_getcontent($handlers[$i]);
 			$status_codes[$url] = curl_getinfo($handlers[$i], CURLINFO_HTTP_CODE);
+			$content_types[$url] = curl_getinfo($handlers[$i], CURLINFO_CONTENT_TYPE);
 			curl_multi_remove_handle($multihandler, $handlers[$i]);
 			curl_close($handlers[$i]);
 		}
 		curl_multi_close($multihandler);
 	}
 
-	return array('results'=>$results, 'status_codes'=>$status_codes);
+	return array('results'=>$results, 'status_codes'=>$status_codes, 'content_types'=>$content_types);
 }
 
 
