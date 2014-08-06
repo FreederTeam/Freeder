@@ -245,10 +245,17 @@ function add_feeds($urls) {
 	$search_feed_url = get_feed_url_from_html($errors_refresh);
 	if(!empty($search_feed_url['urls'])) {
 		foreach($search_feed_url['urls'] as $error) {
-			unset($errors_urls[array_search($error['url'], $errors_urls)]);
-		}
-		// TODO : Handle errors
-		add_feeds($search_feed_url['urls']);
+            $key = array_search($error['original_url'], $errors_urls);
+            if ($key !== false) {
+                unset($errors_urls[$key]);
+            }
+            foreach($errors_refresh as $key=>$error_refresh) {
+                if ($error_refresh['url'] == $error['original_url']) {
+                    unset($errors_refresh[$key]);
+                }
+            }
+        }
+        add_feeds($search_feed_url['urls']);
 	}
 
 	// Add feeds tags
@@ -273,6 +280,7 @@ function add_feeds($urls) {
 		}
 	}
 	$dbh->commit();
+    var_dump(array_merge($errors, $errors_refresh));
 
 	return array_merge($errors, $errors_refresh);
 }
@@ -319,7 +327,7 @@ function get_feed_url_from_html($urls_to_fetch) {
 					continue;
 				}
 				if(strstr((string) $attribute, 'rss') || strstr((string) $attribute, 'atom')) {
-					$feeds[$url] = array('url'=>(string) $head_tag->attributes()['href']);
+					$feeds[$url] = array('original_url' => $url, 'url'=>(string) $head_tag->attributes()['href']);
 				}
 			}
 		}
