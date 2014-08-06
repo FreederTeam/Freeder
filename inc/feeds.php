@@ -245,17 +245,17 @@ function add_feeds($urls) {
 	$search_feed_url = get_feed_url_from_html($errors_refresh);
 	if(!empty($search_feed_url['urls'])) {
 		foreach($search_feed_url['urls'] as $error) {
-            $key = array_search($error['original_url'], $errors_urls);
-            if ($key !== false) {
-                unset($errors_urls[$key]);
-            }
-            foreach($errors_refresh as $key=>$error_refresh) {
-                if ($error_refresh['url'] == $error['original_url']) {
-                    unset($errors_refresh[$key]);
-                }
-            }
-        }
-        add_feeds($search_feed_url['urls']);
+			$key = array_search($error['original_url'], $errors_urls);
+			if ($key !== false) {
+				unset($errors_urls[$key]);
+			}
+			foreach($errors_refresh as $key=>$error_refresh) {
+				if ($error_refresh['url'] == $error['original_url']) {
+					unset($errors_refresh[$key]);
+				}
+			}
+		}
+		add_feeds($search_feed_url['urls']);
 	}
 
 	// Add feeds tags
