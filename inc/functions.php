@@ -225,13 +225,13 @@ function curl_downloader($urls, $fetch_content=true) {
  * Clean the rainTPL cache
  * @param (optional) $folder, folder with the rainTPL cache, default to tmp
  */
-function clean_cache($folder=ROOT_DIR . 'tmp/') {
-	$folder_handler = opendir($folder);
+function clean_cache($folder='tmp/') {
+	$folder_handler = opendir(ROOT_DIR.$folder);
 	while ($file = readdir($folder_handler)) {
 		if ($file == '.' || $file == '..') {
 			continue;
 		}
-		unlink($folder.'/'.$file);
+		unlink(ROOT_DIR.$folder.'/'.$file);
 	}
 	closedir($folder_handler);
 }
