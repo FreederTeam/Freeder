@@ -1,54 +1,20 @@
-<!--
-	Unit tests for URL-rewriting.
--->
-
-
-<!--
-	Tag <img />
-
-	src="foo" is processed iff foo is a relative path (i.e. if it doesn't begin with http:// or https://, other protocols are ignored) that dosn't end with a #.
-	src = "foo" is not processed (using it is depreciated).
-	src=@foo@ is replaced by src="foo" without rewriting foo.
--->
-
 <img onclick="{}" src="http://example.org/foo/bar.html" alt="https://foo" />
 <img src="https://example.org/fee/baz.html" alt="http://fee" />
 <img src="/foo/bar.html#truc" alt="bla" />
 <img alt="hi!" src="bar/bla?ans=42" />
-
-
-
-<!--
-	Tag <script>
-
-	idem
--->
+<img src="/foo/bar#" />
 
 <script src="http://example.org/foo/bar.js" type="text/foo"></script>
 <script src="https://example.org/fee/baz.js" type="application/fee+biz"></script>
 <script onclick="{}" src="/foo/bar.js#truc" type="bla"></script>
 <script type="msg/hi!" src="bar/bla?ans=42" /></script>
-
-
-<!--
-	Tag <link>
-
-	idem (s/src/href)
--->
-
+<script src="/foo/bar#"></script>
 
 <link rel="icon" href="http://example.org/foo/bar.png" type="image/png" />
 <link href="https://example.org/fee/baz.css" type="application/fee+biz" />
 <link onclick="{}" href="/foo/bar.js#truc" type="bla" />
-<link rel="" type="msg/hi!" src="bar/bla?ans=42" />
-
-
-<!--
-	Tag a
-
-	idem, except that mailto:* and javascript:* are not processed.
-	Actually urls with # are processed too. Is it a wanted feature?
--->
+<link rel="" type="msg/hi!" href="bar/bla?ans=42" />
+<link href="/foo/bar#" />
 
 <a href="http://example.org/foo/bar.js" target="blank">a</a>
 <a href="https://example.org/fee/baz.js" type="application/fee+biz">b</a>
@@ -56,26 +22,12 @@
 <a target="u" href="bar/bla?ans=42">d</a>
 <a href="mailto:me@example.org">e</a>
 <a href="javascript:alert('test');">f</a>
+<a href="/foo/bar#">g</a>
 
-<!-- Won't fix bugs -->
-<a title="href=" href="foo">1</a>
-
-<!--
-	Tag input
-
-	idem, for src
--->
-
-<input type="image" src"https://foo.org/bar.png" />
-<input type="image" src"/fee.jpg" />
-<input type="image" src"http://example.org/baz/bla.gif" />
-
-
-<!--
-	Tag form
-
-	idem, for action
--->
+<input type="image" src="https://foo.org/bar.png" />
+<input type="image" src="/fee.jpg" />
+<input type="image" src="http://example.org/baz/bla.gif" />
+<input type="image" src="/fee2.jpg#" />
 
 <form action="http://example.org" method="POST"></form>
 <form method="GET" action="https://baz.org"></form>

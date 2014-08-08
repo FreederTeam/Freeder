@@ -13,7 +13,7 @@ define('INC_DIR', '../inc/');
 
 // Load Rain TPL
 require_once(INC_DIR . 'rain.tpl.class.php');
-RainTPL::$tpl_dir = '';
+RainTPL::$tpl_dir = 'tpl_dir/';
 RainTPL::$base_url = 'base_url/';
 $tpl = new RainTPL;
 $tpl->draw('rewriting');

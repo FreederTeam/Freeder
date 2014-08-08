@@ -681,7 +681,7 @@ class RainTPL{
 
 			if( in_array( "form", self::$path_replace_list ) ){
 				$exp = array_merge( $exp , array( '/<form(.*?)action=(?:")(http\:\/\/|https\:\/\/)([^"]+?)(?:")/i', '/<form(.*?)action=(?:")([^"]+?)#(?:")/i', '/<form(.*?)action=(?:")([^"]+?)(?:")/i', '/<form(.*?)action=(?:\@)([^"]+?)(?:\@)/i'  ) );
-				$sub = array_merge( $sub , array( '<form$1action=@$2$3@', '<form$1action=@$2#@', '<form$1action="' . self::$base_url . '$2"', '<form$1action="$2"' ) );
+				$sub = array_merge( $sub , array( '<form$1action=@$2$3@', '<form$1action=@$2@', '<form$1action="' . self::$base_url . '$2"', '<form$1action="$2"' ) );
 			}
 
 			return preg_replace( $exp, $sub, $html );
