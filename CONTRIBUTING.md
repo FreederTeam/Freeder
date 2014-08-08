@@ -4,7 +4,7 @@ Freeder - Technical log
 This documents aims to help newcomers to understand how and why the project is
 organised. It is recommanded to everybody to:
 
- * Read it carrefully before contributing.
+ * Read it carefully before contributing.
  * Complete and modify it such as it is always up to date and coherent with the
    actual code.
 
@@ -18,6 +18,15 @@ Make sure you think about it while working on Freeder!
  * **Clean** Clean user interface, Clean code, Clean documentation
  * **Super easy** Easy to set-up, Easy to use, Easy to contribute
  * **Extensibile**
+
+
+Easy tasks
+----------
+
+Some issues are labeled `easytask`. These issues, based on what LibreOffice does, aims at being very easy to handle for new contributors, for a first contact with the Freeder source code. Such issues are generally easy to solve, they can be either programming or translation or whatever necessary for Freeder, so feel free to have a look =)
+
+Usually, there are all the necessary informations in the issue to be able to find the relevant parts of the code, and to solve it.
+
 
 
 License

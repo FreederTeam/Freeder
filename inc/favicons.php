@@ -23,7 +23,7 @@ function get_favicon($urls) {
 	$urls_to_fetch = array();
 	// Don't do first check for non HTML content
 	foreach ($urls as $url_array) {
-		if (!endswith($url_array['url'], '.html')) {
+		if (endswith($url_array['url'], '.xml')) {
 			$errors[] = $url_array['url'];
 		}
 		else {
@@ -39,7 +39,10 @@ function get_favicon($urls) {
 	}
 
 	foreach($contents['results'] as $url=>$content) {
-		$content = substr($content, 0, strpos($content, '</head>')).'</html>'; // We don't need the full page, just the <head>
+		$content = substr($content, 0, strpos($content, '</head>')).'</head></html>'; // We don't need the full page, just the <head>
+		if ($content === '</head></html>') {
+			continue;
+		}
 
 		$html = new DOMDocument();
 		$html->strictErrorChecking = false;
@@ -127,7 +130,6 @@ function get_favicon($urls) {
 			$errors[] = $tested_url['input_url'];
 		}
 	}
-
 
 	return array('favicons'=>$favicons, 'errors'=>$errors);
 }

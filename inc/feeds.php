@@ -31,6 +31,11 @@ function refresh_feeds($feeds, $check_favicons=false) {
 		// Keep the errors to return them and display them to the user
 		if ($status_code != 200) {
 			$errors[] = array('url'=>$url, 'msg'=>'Feed page not found (http status: ' . $status_code . ')');
+			unset($download['results'][$url]);
+		}
+		elseif($download['content_types'][$url] != 'application/xml' && $download['content_types'][$url] != 'text/xml' && $download['content_types'][$url] != 'application/rss+xml' && $download['content_types'][$url] != 'application/atom+xml') {
+			$errors[] = array('url'=>$url, 'msg'=>'Unable to find a feed at the address '.$url);
+			unset($download['results'][$url]);
 		}
 	}
 
@@ -242,6 +247,21 @@ function add_feeds($urls) {
 		delete_feed_url($error['url']);
 		$errors_urls[] = $error['url'];
 	}
+	$search_feed_url = get_feed_url_from_html($errors_refresh);
+	if(!empty($search_feed_url['urls'])) {
+		foreach($search_feed_url['urls'] as $error) {
+			$key = array_search($error['original_url'], $errors_urls);
+			if ($key !== false) {
+				unset($errors_urls[$key]);
+			}
+			foreach($errors_refresh as $key=>$error_refresh) {
+				if ($error_refresh['url'] == $error['original_url']) {
+					unset($errors_refresh[$key]);
+				}
+			}
+		}
+		add_feeds($search_feed_url['urls']);
+	}
 
 	// Add feeds tags
 	$dbh->beginTransaction();
@@ -267,6 +287,56 @@ function add_feeds($urls) {
 	$dbh->commit();
 
 	return array_merge($errors, $errors_refresh);
+}
+
+
+/**
+ * Try to get the feed URL associated to a URL to a HTML page, by parsing the header.
+ *
+ * @param an array $urls of {'url'=>URL}
+ * @return an array {'urls', 'errors'}. `errors` is an array of URLs for which there could not be any fetched feed. `urls` is an array with input URLs as keys and f{'url'=>URL} as values.
+ */
+function get_feed_url_from_html($urls_to_fetch) {
+	$feeds = array();
+	$errors = array();
+
+	$contents = curl_downloader($urls_to_fetch);
+	foreach($contents['status_codes'] as $url=>$status) {
+		if($status != 200) {
+			$errors[] = $url;
+		}
+	}
+
+	foreach($contents['results'] as $url=>$content) {
+		$content = substr($content, 0, strpos($content, '</head>')).'</head></html>'; // We don't need the full page, just the <head>
+
+		$html = new DOMDocument();
+		$html->strictErrorChecking = false;
+		$fail = @$html->loadHTML($content);
+		if ($fail === false or empty($fail)) {
+			continue;
+		}
+		$xml = @simplexml_import_dom($html);
+		if ($xml === false or empty($xml)) {
+			continue;
+		}
+
+		// Try to fetch the favicon URL from the <head> tag
+		foreach($xml->head->children() as $head_tag) {
+			if($head_tag->getName() != 'link') {
+				continue;
+			}
+			foreach($head_tag->attributes() as $key=>$attribute) {
+				if($key != 'type') {
+					continue;
+				}
+				if(strstr((string) $attribute, 'rss') || strstr((string) $attribute, 'atom')) {
+					$feeds[$url] = array('original_url' => $url, 'url'=>(string) $head_tag->attributes()['href']);
+				}
+			}
+		}
+	}
+	return array('urls'=>$feeds, 'errors'=>$errors);
 }
 
 
@@ -364,3 +434,5 @@ function get_feed($id) {
 
 	return $feed;
 }
+
+
