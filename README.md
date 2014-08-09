@@ -103,3 +103,13 @@ Related information
 
 * [Quick and dirty benchmark on RSS / ATOM feed parsing](http://phyks.me/2014/07/benchmark_rss.html)
 * [PHP CURL multi (French)](http://lehollandaisvolant.net/index.php?d=2014/05/20/19/21/36-php-faire-plusieurs-requetes-http-simultanees-avec-curl)
+
+
+Troubleshooting
+---------------
+
+### Enable pdo_mysql
+
+ 1. Make sure `php-sqlite` has been installed.
+ 2. Check whether `/etc/php/php.ini` contains a line `extension=pdo_sqlite.so`
+ 3. Restart apache2/nginx/httpd/…
