@@ -38,6 +38,14 @@ function install_dir($dir) {
  *	  * add indexes in db ?
  */
 function install_db() {
+	if (!in_array('pdo_sqlite', get_loaded_extensions())) {
+		$error = array();
+		$error['type'] = 'error';
+		$error['title'] = 'Missing dependency';
+		$error['content'] = 'Module pdo_sqlite not found.';
+		return $error;
+	}
+
 	$dbh = new PDO('sqlite:'.DATA_DIR.DB_FILE);
 	$dbh->query('PRAGMA foreign_keys = ON');
 
