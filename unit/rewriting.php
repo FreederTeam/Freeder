@@ -9,13 +9,25 @@
  * Currently it only checks Rain TPL rewriting but it should also check Freeder's one when it will becom available.
  */
 
+define('TESTING', 'local'); // Defines what unit to test
+
 define('INC_DIR', '../inc/');
 
-// Load Rain TPL
-require_once(INC_DIR . 'rain.tpl.class.php');
-RainTPL::$tpl_dir = 'tpl_dir/';
-RainTPL::$base_url = 'base_url/';
-$tpl = new RainTPL;
-$tpl->draw('rewriting');
+if (TESTING == 'raintpl') {
 
+	// Load Rain TPL
+	require_once(INC_DIR . 'rain.tpl.class.php');
+	RainTPL::$tpl_dir = 'tpl_dir/';
+	RainTPL::$base_url = 'base_url/';
+	$tpl = new RainTPL;
+	$tpl->draw('rewriting');
+
+}
+else if (TESTING == 'local') {
+
+	require_once('rewriting.inc.php');
+	$html = file_get_contents('tpl_dir/rewriting.html');
+	echo(path_replace($html));
+
+}
 
