@@ -9,7 +9,7 @@
  * Currently it only checks Rain TPL rewriting but it should also check Freeder's one when it will becom available.
  */
 
-define('TESTING', 'local'); // Defines what unit to test
+define('TESTING', 'raintpl'); // Defines what unit to test
 
 define('INC_DIR', '../inc/');
 
