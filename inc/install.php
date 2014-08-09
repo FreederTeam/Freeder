@@ -16,7 +16,7 @@ $default_timezone = @date_default_timezone_get();
  * Create a directory, checking writeable and the rights.
  */
 function install_dir($dir) {
-	if (!file_exists($dir)) {
+	if (!file_exists($dir) || !is_writable($dir)) {
 		if (!mkdir($dir) || !is_writable($dir)) {
 			$current_user = get_current_user();
 			$error = array();
