@@ -33,6 +33,7 @@
 		}
 		.articleControls {
 			flex:1;
+			max-width:250px;
 			text-align:left
 		}
 		.articleContent {

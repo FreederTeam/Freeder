@@ -25,30 +25,53 @@
 		padding:2px;
 		height:17px;
 	}
-	.articleControls input	{
-		background-color:#ECECEC;
-	}
-	
-	.articleTagList {
+
+	.articleTagsList {
 		display:none;
 	}
-
-	.articleControls ul {
+	.articleTagsList ul {
 		display:inline-flex;
 	}
-	.articleControls ul li {
+	.articleTagsList ul li {
 		padding:.5rem;
 	}
+
+	.articleTagForm {
+		display:relative;
+		margin:5px;
+		width:calc(100% - 10px);
+	}
+	.articleTagForm > input,
+	.articleTagForm > button {
+		margin:0;
+		height:35px;
+	}
+	.articleTagForm input {
+		width:calc(100% - 65px);
+		background-color:#ECECEC;
+		border-radius:2px 0 0 2px;
+	}
+	.articleTagForm button {
+		display:absolute;
+		top:0;
+		right:0;
+		float:right;
+		min-width:65px;
+		border-radius: 0 2px 2px 0;
+	}
+
 
 	@media(min-width:960px)
 	/*must be the same value than in the Responsive part of layout.css*/
 	{
+		.articleTagsList {
+			display:block;
+		}
+		.articleControls > button {
+			width:100%;
+		}
 		.articleControls {
 			text-align:left
-		}
-		.articleControls button,
-		.articleControls input	{
-			width:100%;
 		}
 		.articleControls ul {
 			display:inline;
@@ -60,6 +83,9 @@
 		}
 		.articleTagList {
 			display:block;
+		}
+		.articleTagForm {
+			width:100%;
 		}
 	}
 
