@@ -13,6 +13,7 @@
  */
 
 require_once(INC_DIR . 'functions.php');
+require_once(INC_DIR . 'xss.php');
 
 class RainTPL{
 
@@ -142,10 +143,24 @@ class RainTPL{
 	 * @param mixed $value value assigned to this variable. Not set if variable_name is an associative array
 	 */
 
-	function assign( $variable, $value = null, $ignore_sanitize=true){
-		if(!$ignore_sanitize) {
-			$variable = sanitize($variable);
-			$value = sanitize($value);
+	const RAINTPL_IGNORE_SANITIZE = 0;
+	const RAINTPL_HTML_SANITIZE = 1;
+	const RAINTPL_XSS_SANITIZE = 2;
+	function assign( $variable, $value = null, $sanitize=self::RAINTPL_IGNORE_SANITIZE){
+		switch($sanitize) {
+			case self::RAINTPL_HTML_SANITIZE:
+				$variable = sanitize($variable);
+				$value = sanitize($value);
+				break;
+
+			case self::RAINTPL_XSS_SANITIZE:
+				$variable = xss_clean($variable);
+				$value = xss_clean($value);
+				break;
+
+			case self::RAINTPL_IGNORE_SANITIZE:
+			default:
+				break;
 		}
 		if( is_array( $variable ) )
 			$this->var = $variable + $this->var;

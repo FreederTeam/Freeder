@@ -127,32 +127,6 @@ function get_category_mime_type($mime_type) {
 
 
 /**
- * Sanitize data for displaying in HTML
- * @param $data, data to sanitize
- */
-function sanitize($data) {
-	if (is_object($data)) {
-		if (get_class($data) === 'stdClass') {
-			$output = (object)sanitize((array) $data);
-		}
-		else {
-			$output = $data->sanitize();
-		}
-	}
-	elseif (is_array($data)) {
-		$output = array();
-		foreach($data as $key=>$datum) {
-			$output[$key] = sanitize($datum);
-		}
-	}
-	else {
-		$output = htmlspecialchars($data, ENT_COMPAT, 'UTF-8');
-	}
-	return $output;
-}
-
-
-/**
  * Downloads all the urls in the array $urls and returns an array with the results and the http status_codes.
  *
  * Mostly inspired by blogotext by timovn : https://github.com/timovn/blogotext/blob/master/inc/fich.php

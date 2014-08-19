@@ -12,6 +12,6 @@ require_once('inc/feeds.php');
 
 $view = isset($_GET['view']) ? $_GET['view'] : '_home';
 
-$tpl->assign('entries', get_entries($view), false);
-$tpl->assign('feeds', get_feeds(), false);
+$tpl->assign('entries', get_entries($view), RainTPL::RAINTPL_XSS_SANITIZE);
+$tpl->assign('feeds', get_feeds(), RainTPL::RAINTPL_XSS_SANITIZE);
 $tpl->draw('index');

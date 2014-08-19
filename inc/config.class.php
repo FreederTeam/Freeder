@@ -84,6 +84,10 @@ class Config {
 		}
 		return $return;
 	}
+
+	public function xss_clean() {  /** Sanitize the data to prevent XSS */
+		return $this->sanitize();
+	}
 }
 
 

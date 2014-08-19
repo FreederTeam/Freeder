@@ -67,13 +67,13 @@ require_once(INC_DIR . 'rain.tpl.class.php');
 RainTPL::$tpl_dir = RELATIVE_TPL_DIR.$config->template;
 RainTPL::$base_url = $config->base_url;
 $tpl = new RainTPL;
-$tpl->assign('start_generation_time', microtime(true));
+$tpl->assign('start_generation_time', microtime(true), RainTPL::RAINTPL_IGNORE_SANITIZE);
 
 
 // Manage users
 require_once(INC_DIR . 'users.php');
 log_user_in();
-$tpl->assign('user', isset($_SESSION['user']) ? $_SESSION['user'] : false, false);
+$tpl->assign('user', isset($_SESSION['user']) ? $_SESSION['user'] : false, RainTPL::RAINTPL_HTML_SANITIZE);
 check_anonymous_view();
 
 
