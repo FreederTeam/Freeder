@@ -162,10 +162,10 @@ function get_feed_tags($feed_id) {
 function filter_tags($tags, $keep=ALL_TAGS) {
 	$output = $tags;
 	foreach($tags as $key=>$tag) {
-		if ($keep == USER_TAGS && startswith($tag, '_')) {
+		if ($keep == USER_TAGS && startswith($tag['name'], '_')) {
 			unset($output[$key]);
 		}
-		elseif ($keep == SYSTEM_TAGS && !startswith($tag, '_')) {
+		elseif ($keep == SYSTEM_TAGS && !startswith($tag['name'], '_')) {
 			unset($output[$key]);
 		}
 	}
