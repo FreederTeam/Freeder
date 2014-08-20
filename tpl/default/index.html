@@ -15,8 +15,9 @@
 					<img class="articleDisplayTagButton" alt="display the tag list" src="img/tag.svg">
 					<div class="articleTagsList">
 						<ul>
-							<!-- tag loop here -->
-							<li>test</li>
+							{loop="$value['tags']"}
+							<li><a href="{$tag_rewrite}{$value2['name']}">{$value2['name']}</a></li>
+							{/loop}
 						</ul>
 						<form class="articleTagForm">
 							<input type="text" name="newTag" id="newTag" placeholder="Tag…"/>
