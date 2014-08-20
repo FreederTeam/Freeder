@@ -16,7 +16,7 @@
 	</ul>
 	<ul id="feedList">
 		{loop="$feeds"}
-		<li><a href="feed/{$value['id']}">{$value['title']}</a></li>
+		<li><a href="{$feed_baselink}{$value['id']}">{$value['title']}</a></li>
 		{/loop}
 	</ul>
 </aside>
