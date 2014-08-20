@@ -7,6 +7,7 @@
  */
 
 
+require_once(INC_DIR . 'tags.php');
 require_once(INC_DIR . 'views.php');
 
 /**
@@ -75,6 +76,10 @@ function get_entries($view='') {
 		$entry['authors'] = clean_authors(json_decode($entry['authors']));
 		$entry['links'] = json_decode($entry['links']);
 		$entry['enclosures'] = json_decode($entry['enclosures']);
+
+		$entry_tags = get_entry_tags($entry['id']);
+		$feed_tags = get_feed_tags($entry['feed_id']);
+		$entry['tags'] = array_merge($entry_tags, $feed_tags);
 
 		$entries[] = $entry;
 	}
