@@ -12,15 +12,15 @@
 	</ul>
 	<ul id="tagList">
 		<li>
-			{loop="get_tags(USER_TAGS)"}	
-				<li><a href="{$feed_baselink}{$value['id']}">{$value['title']}</a></li>
+			{loop="get_tags(USER_TAGS)"}
+				<li><a href="{$tag_baselink}{$value['name']}">{$value['name']}</a></li>
 			{/loop}
 
 		</li>
 	</ul>
 	<ul id="feedList">
 		{loop="$feeds"}
-		<li><a href="{$feed_baselink}{$value['id']}">{$value['title']}</a></li>
+			<li><a href="{$feed_baselink}{$value['id']}">{$value['title']}</a></li>
 		{/loop}
 	</ul>
 </aside>
