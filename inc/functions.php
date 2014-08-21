@@ -22,6 +22,20 @@ function multiarray_search($field, $value, $array, $default_value=false) {
 
 
 /**
+ * Search for the key of the first item with value $value for field $field in a 2D array.
+ * @return The matching key or -1
+ */
+function multiarray_search_key($field, $value, $array) {
+	foreach($array as $key=>$val) {
+		if($val[$field] == $value) {
+			return $key;
+		}
+	}
+	return -1;
+}
+
+
+/**
  * Filters a 2D array returning all the entries where $field is not equal to $value.
  * @return The filtered array.
  */

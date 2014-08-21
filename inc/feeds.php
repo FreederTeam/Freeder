@@ -97,12 +97,11 @@ function refresh_feeds($feeds, $check_favicons=false) {
 	}
 
 	foreach ($updated_feeds as $url=>$feed) {
-		$feed_id = multiarray_search('url', $url, $feeds, array());
-		if (empty($feed_id)) {
+		$feed_id = multiarray_search_key('url', $url, $feeds);
+		if ($feed_id === -1) {
 			assert(false); // TODO
 			exit();
 		}
-		$feed_id = array_search($feed_id, $feeds);
 		// Parse feed
 		$parsed = @feed2array($feed);
 
