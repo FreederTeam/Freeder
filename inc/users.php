@@ -45,6 +45,7 @@ function log_user_in() {
 			$_SESSION['user'] = $user;
 		}
 		header('location: index.php');
+		exit();
 	}
 }
 

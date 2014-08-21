@@ -8,4 +8,5 @@ require_once('inc/init.php');
 
 session_destroy();
 header('location: index.php');
+exit();
 
