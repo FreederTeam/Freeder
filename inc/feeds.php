@@ -102,7 +102,7 @@ function refresh_feeds($feeds, $check_favicons=false) {
 			assert(false); // TODO
 			exit();
 		}
-		$feed_id = $feed_id['id'];
+		$feed_id = array_search($feed_id, $feeds);
 		// Parse feed
 		$parsed = @feed2array($feed);
 
