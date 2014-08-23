@@ -113,7 +113,7 @@ function remove_stay_connected() {
 function check_anonymous_view() {
 	global $tpl, $config;
 
-	if (empty($_SESSION['user']) && $config->anonymous_access == 0) {
+	if (empty($_SESSION['user']) && $config->anonymous_access == 0 && !is_command_line()) {
 		$tpl->draw('login');
 		exit();
 	}

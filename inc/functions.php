@@ -179,7 +179,7 @@ function curl_downloader($urls, $fetch_content=true) {
 				CURLOPT_TIMEOUT => 15,
 				CURLOPT_FOLLOWLOCATION => $follow_redirect,
 				CURLOPT_MAXREDIRS => 5,
-				CURLOPT_USERAGENT => $_SERVER['HTTP_USER_AGENT'],  // Add a user agent to prevent problems with some feeds
+				CURLOPT_USERAGENT => (!empty($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : ''),  // Add a user agent to prevent problems with some feeds
 				CURLOPT_HEADER => $fetch_content ? FALSE : TRUE,
 				CURLOPT_NOBODY => $fetch_content ? FALSE : TRUE,
 			));

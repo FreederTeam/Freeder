@@ -16,10 +16,12 @@ $feeds = get_feeds();
 
 $feeds_to_refresh = array();
 foreach($feeds as $feed) {
-	$feeds_to_refresh[$feed['id']] = array('url'=>$feed['url'], 'post'=>$feed['post']);
+	$feeds_to_refresh[$feed['id']] = array('id'=>$feed['id'], 'url'=>$feed['url'], 'post'=>$feed['post']);
 }
 
 refresh_feeds($feeds_to_refresh);
+
+echo "Refreshed"
 
 header('location: index.php');
 exit();
