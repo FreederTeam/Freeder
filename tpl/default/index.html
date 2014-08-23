@@ -1,5 +1,6 @@
 {include="_begin"}
 	{loop="$entries"}
+<<<<<<< HEAD
 		<article class="Article">
 			<nav class="Controls">
 				{if="!empty($user)"}
@@ -18,12 +19,21 @@
 								</li>
 							{/loop}
 						</ul>
+<<<<<<< HEAD
 
 						<form class="Article-mainForm MainForm">
 							<input class="MainForm-Input Input" type="text" name="newTag" id="newTag" placeholder="Tag…"/>
 							<button class="MainForm-Submit Submit Button" onclick="tag(this, {$value['id']}, {$tag_baselink});">Tagguer</button>
 						</form>
 
+=======
+						{if="!empty($user)"}
+							<form class="articleTagForm">
+								<input type="text" name="newTag" id="newTag" placeholder="Tag…"/>
+								<button onclick="tag(this, {$value['id']}, {$tag_baselink});">Tagguer</button>
+							</form>
+						{/if}
+>>>>>>> Hide also the share button in anonymous view
 					</div>
 				</div>
 			</nav>
