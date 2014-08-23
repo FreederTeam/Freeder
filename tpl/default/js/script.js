@@ -22,8 +22,6 @@
 				$('#newTag').val("");
 				var article = caller.parentNode.parentNode;
 				$('ul', $(article)).append('<li><a href="'+tag_baselink+tag_value+'">'+tag_value+'</a></li>');
-)
-
 			}
 		});
 	}
