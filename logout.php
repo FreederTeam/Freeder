@@ -6,6 +6,7 @@
 
 require_once('inc/init.php');
 
+remove_stay_connected();
 session_destroy();
 header('location: index.php');
 exit();

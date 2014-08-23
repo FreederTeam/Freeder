@@ -61,6 +61,7 @@ function install_db() {
 		login TEXT UNIQUE,
 		password TEXT,
 		salt TEXT,
+		remember_token TEXT,
 		is_admin INT DEFAULT 0
 	)');
 	$query = $dbh->prepare('INSERT OR IGNORE INTO users(login, password, salt, is_admin) VALUES(:login, :password, :salt, 1)');
