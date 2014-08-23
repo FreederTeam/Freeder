@@ -102,6 +102,7 @@ function refresh_feeds($feeds, $check_favicons=false) {
 			assert(false); // TODO
 			exit();
 		}
+		$feed_id = $feeds[$feed_id]['id'];
 		// Parse feed
 		$parsed = @feed2array($feed);
 
@@ -233,7 +234,13 @@ function add_feeds($urls) {
 		}
 		if (filter_var($url, FILTER_VALIDATE_URL)) {
 			$query->execute();
-			$added[] = array('id'=>$dbh->lastInsertId(), 'url'=>$url, 'post'=>$post, 'tags'=>$tags);
+			$id = $dbh->lastInsertId();
+			if($id != 0) {
+				$added[] = array('id'=>$dbh->lastInsertId(), 'url'=>$url, 'post'=>$post, 'tags'=>$tags);
+			}
+			else {
+				$errors[] = array('url'=>$url, 'msg'=>'Feed already exists');
+			}
 		}
 		else {
 			$errors[] = array('url'=>$url, 'msg'=>'Invalid URL');
