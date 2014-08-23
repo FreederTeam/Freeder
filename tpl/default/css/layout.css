@@ -8,7 +8,7 @@
 		display:flex;
 	}
 	aside {
-		flex: 0 1 300px;
+		flex: 0 1 250px;
 	}
 	main {
 		flex: 3 1 0;
