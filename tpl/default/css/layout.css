@@ -4,7 +4,7 @@
 
 /* == Main */
 	/* flex */
-	#flex {
+	.flex {
 		display:flex;
 	}
 	aside {
@@ -28,10 +28,10 @@
 	/*big screens*/
 	@media(min-width:960px)
 	{
-		main article {
+		.Article {
 			display:flex;
 		}
-		.articleControls {
+		.Controls {
 			flex:1;
 			max-width:250px;
 			text-align:left
@@ -43,8 +43,8 @@
 	/*phones*/
 	@media(max-width:700px)
 	{
-		#flex,
-		body main article {
+		.flex,
+		.Article {
 			display:block;
 		}
 	}

@@ -1,13 +1,24 @@
 /*
  * Style for the sidebar
  */
-
-aside header h1 {
+.Logo-h1 {
 	margin:0;
 	text-align:center;
 }
-
-aside header h1 a {
-	padding-top:.5em;
+.Logo-a {
+	padding:.5em 0 0 0;
 	display:block;
+}
+.Logo-img {
+	width: 100%;
+	padding: 0 1rem;
+}
+
+.Menu {
+	text-align: center;
+	margin: 0;
+}
+.Menu-li{
+	display: inline-block;
+	padding:.5rem;
 }

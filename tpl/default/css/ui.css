@@ -1,12 +1,9 @@
 /*
  * Style for User-Interaction parts : buttons, forms, etc.
  */
-
 /* == Buttons */
 	/*Remember that if the .btn class is added to a non-standard button element, aria role is needed*/
-	button,
-	input[type="submit"],
-	.btn {
+	.Button {
 		height:35px;
 		border: 0 none;
 		padding:0 1rem;
@@ -70,7 +67,6 @@
 		}
 
 /* == Form */
-
 	input[type="submit"],
 	input[type="text"],
 	input[type="password"]
@@ -90,8 +86,6 @@
 		background-color:#ECECEC;
 		box-shadow:inset 0 0 3px 0px rgba(0,0,0,0.8), 0 0 3px 0 #FFF;
 	}
-/* ==  */
-
 /* == switches */
 	input.switch:empty
 	{
@@ -144,5 +138,34 @@
 	}
 
 /* == tags */
+	/*common*/
+	.DelTag,
+	.TagName {
+		padding: 0 .3rem;
+	}
+	/*The ul, containing the loop of tags*/
+	.TagList {
 
+	}
+	/*One complete tag*/
+	.TagList-completeTag {
 
+	}
+	.CompleteTag {
+		padding:.3rem 0 .3rem .3rem;
+		margin: .3rem;
+	}
+	/*The name of the tag*/
+	.TagList-tagName {
+
+	}
+	.TagName {
+
+	}
+	/*the delete button of the tag*/
+	.TagList-delTag {
+
+	}
+	.DelTag {
+
+	}

@@ -1,32 +1,33 @@
 {* Page header (contains banner, menus, etc). *}
 
-<aside>
-	<header>
-		<h1><a href="index.php"><img alt="Freeder" src="img/logo_complete.svg"></a></h1>
+<aside class="Side">
+	<header class="Side-logo Logo">
+		<h1 class="Logo-h1"><a class="Logo-a" href="index.php"><img class="Logo-img" alt="Freeder" src="img/logo_complete.svg"></a></h1>
 	</header>
-	<ul id="menu">
-		<li><a href="index.php"><img src="img/home.svg" alt="Home"></a></li>
-		<li><a href="{$tag_baselink}_sticky"><img src="img/stick.svg" alt="Sticky"></a></li>
-		{if="!empty($user)"}
-			<li><a href="refresh.php"><img src="img/sync.svg" alt="Refresh"></a></li>
-			<li><a href="settings.php"><img src="img/settings.svg" alt="Settings"</a></li>
-			<li><a href="logout.php"><img src="img/off.svg" alt="Logout"></a></li>
-		{else}
-			<li><a href="login.php">Login</a></li>
-		{/if}
+	<ul class="Side-menu Menu">
+		<li class="Menu-li"><a href="index.php"><img src="img/home.svg" alt="Home"></a></li>
+		<li class="Menu-li"><a href="{$tag_baselink}_sticky"><img src="img/stick.svg" alt="Sticky"></a></li>
+	{if="!empty($user)"}
+		<li class="Menu-li"><a href="refresh.php"><img src="img/sync.svg" alt="Refresh"></a></li>
+		<li class="Menu-li"><a href="settings.php"><img src="img/settings.svg" alt="Settings"</a></li>
+		<li class="Menu-li"><a href="logout.php"><img src="img/off.svg" alt="Logout"></a></li>
+	{else}
+		<li><a href="login.php">Login</a></li>
+	{/if}
 	</ul>
-	<ul id="tagList">
-		<li>
+	<ul class="Side-tagList TagList">
 			{loop="get_tags(USER_TAGS)"}
-				<li><a href="{$tag_baselink}{$value['name']}">{$value['name']}</a></li>
+				<li class="TagList-completeTag CompleteTag">
+					<a class="TagList-tagName tagName" href="{$tag_baselink}{$value['name']}">{$value['name']}</a><a class="TagList-delTag DelTag" href="#">X</a>
+				</li>
 			{/loop}
-
-		</li>
 	</ul>
+	<!--
 	<ul id="feedList">
 		{loop="$feeds"}
 			<li><a href="{$feed_baselink}{$value['id']}">{$value['title']}</a></li>
 		{/loop}
 	</ul>
+	-->
 </aside>
 

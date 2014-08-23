@@ -1,22 +1,26 @@
 {include="_begin"}
 	{loop="$entries"}
-		<article>
-			<nav class="articleControls">
-				<button class="green" onclick="">Share</button>
-				<button class="darkgrey" onclick="ajax(this, 'api/tags.php?entry={$value['id']}&amp;tag=_sticky')">Stick</button>
-				<button class="red" onclick="ajax(this, 'api/mark_as_read.php?entry={$value['id']}')">Read</button>
+		<article class="Article">
+			<nav class="Controls">
+				<button class="Controls-button Button red" onclick="ajax(this, 'api/mark_as_read.php?entry={$value['id']}')">Read</button>
+				<button class="Controls-button Button darkgrey" onclick="ajax(this, 'api/tags.php?entry={$value['id']}&amp;tag=_sticky')">Stick</button>
+				<button class="Controls-button Button green" onclick="">Share</button>
+				
+				
 
-				<div class="articleTags">
-					<img class="articleDisplayTagButton" alt="display the tag list" src="img/tag.svg">
-					<div class="articleTagsList">
-						<ul>
+				<div class="ArticleTags">
+					<img class="displayTagsButton" alt="display the tag list" src="img/tag.svg">
+					<div class="ArticleTagsList">
+						<ul class="Side-tagList TagList">
 							{loop="$value['tags']"}
-								<li><a href="{$tag_baselink}{$value2['name']}">{$value2['name']}</a></li>
+								<li class="TagList-completeTag CompleteTag">
+									<a class="TagList-tagName TagName" href="{$tag_baselink}{$value2['name']}">{$value2['name']}</a><a class="TagList-delTag DelTag" href="#">X</a>
+								</li>
 							{/loop}
 						</ul>
-						<form class="articleTagForm">
-							<input type="text" name="newTag" id="newTag" placeholder="Tag…"/>
-							<button>Tagguer</button>
+						<form class="ArticleTagForm">
+							<input class="ArticleTagForm-addTagInput AddTagInput" type="text" name="newTag" id="newTag" placeholder="Tag…"/>
+							<button class="ArticleTagForm-addTagButton AddTagButton Button">Tagguer</button>
 						</form>
 					</div>
 				</div>

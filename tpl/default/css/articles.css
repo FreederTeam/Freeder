@@ -3,82 +3,72 @@
  */
 
 /* == article html tag */
-	main article {
+	main .Article {
 		border: 1px solid #E5E5E5;
 		border-radius: 2px;
 		background-color: #FFF;
 	}
-	main article > * {
+	main .Article > * {
 		padding:0;
 	}
 
 /* == article <nav>*/
-	.articleControls {
+	.Controls {
 		text-align:center;
 	}
-	.articleControls button {
+	.Controls-button {
 		padding:2px;
 		margin:5px;
 	}		
-	.articleControls button img {
-		float:left;
-		padding:2px;
-		height:17px;
-	}
-
-	.articleTagsList {
+	/*mobile-first*/
+	.ArticleTagsList {
 		display:none;
 	}
-	.articleTagsList ul {
-		display:inline-flex;
-	}
-	.articleTagsList ul li {
-		padding:.5rem;
-	}
 
-	.articleTagForm {
+	.ArticleTagForm {
 		display:relative;
 		margin:5px;
-		width:calc(100% - 10px);
+		width:100%;
 	}
-	.articleTagForm > input,
-	.articleTagForm > button {
+	input.AddTagInput,
+	button.AddTagButton {
 		margin:0;
 		height:35px;
 	}
-	.articleTagForm input {
+	input.AddTagInput {
 		width:calc(100% - 65px);
 		background-color:#ECECEC;
 		border-radius:2px 0 0 2px;
 	}
-	.articleTagForm button {
-		display:absolute;
+	.ArticleTagForm-addTagButton {
 		top:0;
 		right:0;
 		float:right;
+	}
+	.AddTagButton {
+		padding: 2px;
 		min-width:65px;
 		border-radius: 0 2px 2px 0;
 	}
 
-
 	@media(min-width:960px)
 	/*must be the same value than in the Responsive part of layout.css*/
 	{
-		.articleTagsList {
+		.ArticleTagsList {
 			display:block;
 		}
-		.articleControls > button {
+		.Controls-button {
 			width:100%;
 		}
-		.articleControls {
+		.Controls {
 			text-align:left
 		}
-		.articleControls ul {
+		.TagList {
 			display:inline;
 		}
 
 		/*hide the list and show the display button*/
-		.articleDisplayTagButton{
+		.displayTagsButton{
 			display:none;
 		}
 		.articleTagList {
