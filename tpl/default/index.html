@@ -5,8 +5,8 @@
 				<button class="Controls-button Button red" onclick="ajax(this, 'api/mark_as_read.php?entry={$value['id']}')">Read</button>
 				<button class="Controls-button Button darkgrey" onclick="ajax(this, 'api/tags.php?entry={$value['id']}&amp;tag=_sticky')">Stick</button>
 				<button class="Controls-button Button green" onclick="">Share</button>
-				
-				
+
+
 
 				<div class="ArticleTags">
 					<img class="DisplayTagsButton" alt="display the tag list" src="img/tag.svg">
@@ -21,7 +21,7 @@
 
 						<form class="Article-mainForm MainForm">
 							<input class="MainForm-Input Input" type="text" name="newTag" id="newTag" placeholder="Tag…"/>
-							<button class="MainForm-Submit Submit Button">Tagguer</button>
+							<button class="MainForm-Submit Submit Button" onclick="tag(this, {$value['id']}, {$tag_baselink});">Tagguer</button>
 						</form>
 
 					</div>
