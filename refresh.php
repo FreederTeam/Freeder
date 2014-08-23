@@ -7,7 +7,10 @@
 require_once('inc/init.php');
 require_once('inc/feeds.php');
 
-require_auth();
+if (!require_auth(false) && !is_command_line()) {
+	header('location: index.php');
+	exit();
+}
 
 $feeds = get_feeds();
 

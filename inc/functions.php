@@ -227,3 +227,11 @@ function clean_cache($folder='tmp/') {
 }
 
 
+/**
+ * Check if the script is run from the command line or not
+ * @return true if script is run from command line, false otherwise
+ */
+function is_command_line() {
+	return 'cli' == php_sapi_name();
+}
+

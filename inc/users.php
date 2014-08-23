@@ -123,10 +123,16 @@ function check_anonymous_view() {
 /**
  * Exit if unauthentified user.
  */
-function require_auth() {
+function require_auth($redirect=true) {
 	if(!isset($_SESSION['user'])) {
-		header('location: index.php');
-		exit();
+		if ($redirect) {
+			header('location: index.php');
+			exit();
+		}
+		else {
+			return false;
+		}
 	}
+	return true;
 }
 
