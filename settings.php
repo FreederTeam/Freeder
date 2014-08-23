@@ -19,7 +19,7 @@ $tpl->assign('templates', list_templates(), RainTPL::RAINTPL_HTML_SANITIZE);
 $tpl->assign('feeds', $feeds, RainTPL::RAINTPL_XSS_SANITIZE);
 
 // Handle posted info for settings
-if (!empty($_POST['synchronization_type']) && !empty($_POST['template']) && !empty($_POST['timezone']) && isset($_POST['use_tags_from_feeds']) && isset($_POST['anonymous_access']) && isset($_POST['entries_to_keep']) && !empty($_POST['display_entries'])) {
+if (!empty($_POST['synchronization_type']) && !empty($_POST['template']) && !empty($_POST['timezone']) && isset($_POST['use_tags_from_feeds']) && isset($_POST['anonymous_access']) && isset($_POST['entries_to_keep']) && !empty($_POST['display_entries']) && isset($_POST['entries_per_page'])) {
 	$config->synchronization_type = $_POST['synchronization_type'];
 
 	// Template
@@ -44,6 +44,7 @@ if (!empty($_POST['synchronization_type']) && !empty($_POST['template']) && !emp
 	$config->use_tags_from_feeds = (int) $_POST['use_tags_from_feeds'];
 	$config->anonymous_access = (int) $_POST['anonymous_access'];
 	$config->entries_to_keep = (int) $_POST['entries_to_keep'];
+	$config->entries_per_page = (int) $_POST['entries_per_page'];
 	if ($_POST['display_entries'] == 'content' || $_POST['display_entries'] == 'description' || $_POST['display_entries'] == 'title') {
 		$config->display_entries = $_POST['display_entries'];
 	}

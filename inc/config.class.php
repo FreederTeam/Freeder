@@ -27,6 +27,7 @@ class Config {
 			'entries_to_keep'=>50,  // Number of entries to keep, set to 0 if you want to keep all of them
 			'display_entries'=>'description',
 			'version'=>self::$versions[count(self::$versions) - 1],  // Current version
+			'entries_per_page'=>20,
 		);
 		$this->load();
 	}
