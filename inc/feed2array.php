@@ -41,29 +41,26 @@ function feed2array($feed, $load=false, $debug=false) {
 					$items = $feed_obj->entry;
 					break;
 
+				case 'RDF':
+					$type = 'RDF';
+					if(empty($feed_obj->item)) {
+						return false;
+					}
+					$items = array();
+					foreach($feed_obj->item as $i) {
+						$items[] = $i;
+					}
+					break;
+
 				default:
 					return false;
 			}
 
 			$flux['infos']['type'] = $type;
-			$flux['infos']['version'] = $feed_obj->attributes()->version;
 
 			if($type == "RSS") {  // RSS feed
 				if($feed_obj->attributes()->version){
 					$flux['infos']['version'] = (string)$feed_obj->attributes()->version;
-				}
-				if($feed_obj->channel->title) {
-					$flux['infos']['title'] = (string)$feed_obj->channel->title;
-				}
-				if($feed_obj->channel->link) {
-					$flux['infos']['links'][] = array(
-						'href'=>(string)$feed_obj->channel->link,
-						'rel'=>'self',
-						'title'=>''
-					);
-				}
-				if($feed_obj->channel->description) {
-					$flux['infos']['description'] = (string)$feed_obj->channel->description;
 				}
 				if($feed_obj->channel->language) {
 					$flux['infos']['language'] = (string)$feed_obj->channel->language;
@@ -103,7 +100,30 @@ function feed2array($feed, $load=false, $debug=false) {
 					}
 				}
 			}
-			elseif($type == "ATOM") {  // ATOM feed
+
+			if($type == "RSS" || $type == "RDF") {  // RSS or RDF feed
+				if($feed_obj->channel->title) {
+					$flux['infos']['title'] = (string)$feed_obj->channel->title;
+				}
+				if($feed_obj->channel->link) {
+					$flux['infos']['links'][] = array(
+						'href'=>(string)$feed_obj->channel->link,
+						'rel'=>'self',
+						'title'=>''
+					);
+				}
+				if($feed_obj->channel->description) {
+					$flux['infos']['description'] = (string)$feed_obj->channel->description;
+				}
+			}
+
+			if ($type == 'RDF') {  // RDF feed
+				if($feed_obj->channel->dc) {
+					$flux['infos']['pubDate'] = (string)$feed_obj->channel->dc;
+				}
+			}
+
+			if($type == "ATOM") {  // ATOM feed
 				if($feed_obj->id) {
 					$flux['infos']['id'] = (string)$feed_obj->id;
 				}
@@ -186,7 +206,7 @@ function feed2array($feed, $load=false, $debug=false) {
 
 			foreach($items as $item) {
 				$c = count($flux['items']);
-				if($type == "RSS") {
+				if($type == "RSS" || $type == 'RDF') {
 					if($item->title) {
 						$flux['items'][$c]['title'] = (string)$item->title;
 					}
@@ -200,6 +220,13 @@ function feed2array($feed, $load=false, $debug=false) {
 					if($item->description) {
 						$flux['items'][$c]['description'] = (string)$item->description;
 					}
+				}
+				if ($type == 'RDF') {
+					if($item->dc) {
+						$flux['infos']['pubDate'] = (string)$item->dc;
+					}
+				}
+				if($type == 'RSS') {
 					if($item->author) {
 						$flux['items'][$c]['authors'][] = array(
 							'name'=>'',
@@ -237,7 +264,7 @@ function feed2array($feed, $load=false, $debug=false) {
 						$flux['items'][$c]['pubDate'] = (new DateTime((string)$item->pubDate))->format('U');
 					}
 				}
-				elseif($type == "ATOM") {
+				if($type == "ATOM") {
 					if($item->id) {
 						$flux['items'][$c]['guid'] = (string)$item->id;
 					}
