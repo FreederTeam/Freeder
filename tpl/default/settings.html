@@ -10,7 +10,7 @@
 			</p>
 			<p>
 				<input type="radio" name="synchronization_type" id="synchronization_type_webcron" value="webcron" {if="$config->synchronization_type == 'webcron'"} checked="checked"{/if}/><label for="synchronization_type_webcron"> Webcron</label><br/>
-				Use a webcron task to update the feeds regularly.
+				Use a webcron task to update the feeds regularly. Then, you can register the <code>refresh.php</code> script address at an external webcron service, like e.g. <a href="http://www.easycron.com/">easyCron</a>.
 			</p>
 			<p>
 				<input type="radio" name="synchronization_type" id="synchronization_type_cron" value="cron" {if="$config->synchronization_type == 'cron'"} checked="checked"{/if}/><label for="synchronization_type_cron"> Cron</label><br/>
