@@ -11,24 +11,3 @@ aside header h1 a {
 	padding-top:.5em;
 	display:block;
 }
-
-/*
-#feedList li a {
-	display: block;
-	background-color: #ccc;
-	margin-top: 2px;
-	padding: 0.5rem;
-	border-radius: 2px;
-
-	-webkit-transition:all .2s ease;
-	-moz-transition:all .2s ease;
-	-ms-transition:all .2s ease;
-	-o-transition:all .2s ease;
-	transition:all .2s ease;
-}
-
-#feedList li a:hover {
-	background-color: #888;
-	color: white;
-}
-*/
