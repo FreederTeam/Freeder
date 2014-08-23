@@ -21,8 +21,6 @@ foreach($feeds as $feed) {
 
 refresh_feeds($feeds_to_refresh);
 
-echo "Refreshed"
-
 header('location: index.php');
-exit();
+exit("Refreshed");
 
