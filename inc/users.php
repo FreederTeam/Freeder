@@ -25,6 +25,7 @@ function check_and_get_user($login, $pass) {
 		return false;
 	}
 	else {
+		unset($user_db['password']);
 		$user = (object) $user_db;
 
 		return $user;
