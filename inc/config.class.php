@@ -19,7 +19,7 @@ class Config {
 	public function __construct() {
 		self::$default_config = array(  /** This is the default config */
 			'timezone'=>'Europe/Paris',
-			'use_tags_from_feeds'=>1,
+			'use_tags_from_feeds'=>0,
 			'template'=>DEFAULT_THEME . '/',
 			'base_url'=>dirname($_SERVER['SCRIPT_NAME']) . '/',
 			'synchronization_type'=>'cron',
