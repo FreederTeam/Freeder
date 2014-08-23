@@ -95,6 +95,9 @@ function delete_old_entries() {
 }
 
 
+/**
+ * Returns the link associated with the entry
+ */
 function get_entry_link($entry) {
 	foreach ($entry['links'] as $link) {
 		if ($link->rel == 'alternate') {
@@ -102,6 +105,19 @@ function get_entry_link($entry) {
 		}
 	}
 	return '#';
+}
+
+
+/**
+ * Check wether an entry is read (true) or not (false).
+ */
+function is_read($entry) {
+	if (!empty(multiarray_search('name', '_read', $entry['tags'], false))) {
+		return true;
+	}
+	else {
+		return false;
+	}
 }
 
 

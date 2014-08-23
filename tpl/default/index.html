@@ -3,9 +3,17 @@
 		<article class="Article">
 			<nav class="Controls">
 				{if="!empty($user)"}
-					<button class="Controls-button Button red" onclick="ajax(this, 'api/mark_as_read.php?entry={$value['id']}')">Read</button>
+					{if="!is_read($value)"}
+						<button class="Controls-button Button red" onclick="ajax(this, 'api/mark_as_read.php?entry={$value['id']}')">Read</button>
+					{else}
+						<button class="Controls-button Button red" onclick="ajax(this, 'api/mark_as_read.php?entry={$value['id']}&amp;unread=1')">Unread</button>
+					{/if}
 					<button class="Controls-button Button darkgrey" onclick="ajax(this, 'api/tags.php?entry={$value['id']}&amp;tag=_sticky')">Stick</button>
 					<button class="Controls-button Button green" onclick="">Share</button>
+						<button class="red" onclick="read_entry(this, '{$value['id']}')">Read</button>
+					{else}
+						<button class="red" onclick="unread_entry(this, '{$value['id']}')">Unread</button>
+					{/if}
 				{/if}
 
 				<div class="ArticleTags">
