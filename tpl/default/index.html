@@ -5,7 +5,7 @@
 				<button class="green" onclick="">
 					<img src="img/share.svg" alt="Share this entry">
 					Share</button>
-				<button class="darkgrey" onclick="">
+				<button class="darkgrey" onclick="ajax(this, 'api/tags.php?entry={$value['id']}&amp;tag=_sticky')">
 					<img src="img/stick.svg" alt="Stick this entry">
 					Stick</button>
 				<button class="red" onclick="ajax(this, 'api/mark_as_read.php?entry={$value['id']}')">
