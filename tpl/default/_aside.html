@@ -6,9 +6,13 @@
 	</header>
 	<ul id="menu">
 		<li><a href="index.php">Home</a></li>
-		<li><a href="refresh.php">Refresh!</a></li>
-		<li><a href="settings.php">Settings</a></li>
-		<li><a href="logout.php">Logout</a></li>
+		{if="!empty($user)"}
+			<li><a href="refresh.php">Refresh!</a></li>
+			<li><a href="settings.php">Settings</a></li>
+			<li><a href="logout.php">Logout</a></li>
+		{else}
+			<li><a href="login.php">Login</a></li>
+		{/if}
 	</ul>
 	<ul id="tagList">
 		<li>
