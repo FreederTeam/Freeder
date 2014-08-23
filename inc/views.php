@@ -103,7 +103,7 @@ function rule2sql($rule, $selection='*', $limit=-1) {
 	$ast = parse_rule($rule);
 	$ast[] = array('by', 'by', ''); // Hacky
 	$query = "SELECT $selection FROM entries E";
-	
+
 	$bindings = array();
 	$subquery = '';
 	$state = 'select';

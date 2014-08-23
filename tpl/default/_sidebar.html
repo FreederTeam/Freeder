@@ -22,6 +22,9 @@
 		<button class="MainForm-Submit Submit Button"><!--<img src="img/glass.png" alt="Search">-->Search</button>
 	</form>
 
+	{if="!empty($user)"}
+		<button class="Button" onclick="read_all(this)">Read all</button>
+	{/if}
 	<ul class="Side-tagList TagList">
 			{loop="get_tags(USER_TAGS)"}
 				<li class="TagList-completeTag CompleteTag">
