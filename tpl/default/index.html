@@ -2,11 +2,11 @@
 	{loop="$entries"}
 		<article class="Article">
 			<nav class="Controls">
-				<button class="Controls-button Button red" onclick="ajax(this, 'api/mark_as_read.php?entry={$value['id']}')">Read</button>
-				<button class="Controls-button Button darkgrey" onclick="ajax(this, 'api/tags.php?entry={$value['id']}&amp;tag=_sticky')">Stick</button>
-				<button class="Controls-button Button green" onclick="">Share</button>
-
-
+				{if="!empty($user)"}
+					<button class="Controls-button Button red" onclick="ajax(this, 'api/mark_as_read.php?entry={$value['id']}')">Read</button>
+					<button class="Controls-button Button darkgrey" onclick="ajax(this, 'api/tags.php?entry={$value['id']}&amp;tag=_sticky')">Stick</button>
+					<button class="Controls-button Button green" onclick="">Share</button>
+				{/if}
 
 				<div class="ArticleTags">
 					<img class="DisplayTagsButton" alt="display the tag list" src="img/tag.svg">
