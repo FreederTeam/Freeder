@@ -34,8 +34,9 @@ if (!empty($_POST['synchronization_type']) && !empty($_POST['template']) && !emp
 	}
 
 	// Timezone
-	if (in_array($_POST['timezone'], timezone_identifiers_list())) {
-		$config->timezone = $_POST['timezone'];
+	$timezone = trim($_POST['timezone']);
+	if (in_array($timezone, timezone_identifiers_list())) {
+		$config->timezone = $timezone;
 	}
 	else {
 		die('Error: Invalid timezone.');
@@ -59,15 +60,16 @@ if (!empty($_POST['synchronization_type']) && !empty($_POST['template']) && !emp
 // Handle posted info for new feed
 if (!empty($_POST['feed_url']) && isset($_POST['feed_post'])) {
 	// If provided, get POST data to send to the feed server (for authentification essentially).
-	if (is_array(json_decode($_POST['feed_post'], true))) {
-		$post = $_POST['feed_post'];
+	$feed_post = trim($_POST['feed_post']);
+	if (is_array(json_decode($feed_post, true))) {
+		$post = $feed_post;
 	}
 	else {
 		$post = '';
 	}
 
 	// Try to add feed
-	$add_errors = add_feeds(array(array('url'=>$_POST['feed_url'], 'post'=>$post)));
+	$add_errors = add_feeds(array(array('url'=>trim($_POST['feed_url']), 'post'=>$post)));
 
 	if(empty($add_errors)) {
 		header('location: settings.php');
