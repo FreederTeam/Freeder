@@ -738,14 +738,14 @@ class RainTPL{
 			$tpl_dir = self::$base_url . self::$tpl_dir . $tpl_basedir;
 
 			// Prepare reduced path not to compute it for each link
-			$self->path = $this->reduce_path( $tpl_dir );
+			$this->path = $this->reduce_path( $tpl_dir );
 
 			$exp = array();
 			$exp[] = '/<(link|a)(.*?)(href)="(.*?)"/i';
 			$exp[] = '/<(img|script|input)(.*?)(src)="(.*?)"/i';
 			$exp[] = '/<(form)(.*?)(action)="(.*?)"/i';
 
-			return preg_replace_callback( $exp, '$this->single_path_replace', $html );
+			return preg_replace_callback( $exp, 'self::single_path_replace', $html );
 
 		}
 		else
