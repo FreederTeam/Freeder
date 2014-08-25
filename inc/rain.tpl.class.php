@@ -716,24 +716,23 @@ class RainTPL{
 			// reduce the path
 			$path = $this->reduce_path($tpl_dir);
 
-			$exp = array();
-			$exp[] = '/<(link|a)(.*?)(href)="(.*?)"/i';
-			$exp[] = '/<(img|script|input)(.*?)(src)="(.*?)"/i';
-			$exp[] = '/<(form)(.*?)(action)="(.*?)"/i';
+			/**
+			 * replace one single path corresponding to a given match in the next `preg_replace_callback` regex.
+			 *
+			 * @param array $matches
+			 * @return replacement string
+			 */
+			function single_path_replace ( $matches ) use ( $path ){
+				$tag  = $matches[1];
+				$_    = $matches[2];
+				$attr = $matches[3];
+				$url  = $matches[4];
+				$new_url = $this->rewrite_url( $url, $tag, $path );
 
-			return preg_replace_callback(
-				$exp,
-				function ($matches) use ($path) {
-					$tag  = $matches[1];
-					$_    = $matches[2];
-					$attr = $matches[3];
-					$url  = $matches[4];
-					$new_url = $this->rewrite_url($url, $tag, $path);
+				return "<$tag$_$attr=\"$new_url\"";
+			}
 
-					return "<$tag$_$attr=\"$new_url\"";
-				},
-				$html
-			);
+			return preg_replace_callback( $exp, single_path_replace, $html );
 
 		}
 		else
