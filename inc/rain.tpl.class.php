@@ -637,6 +637,7 @@ class RainTPL{
 	}
 
 
+
 	/**
 	 * Reduce a path, eg. www/library/../filepath//file => www/filepath/file
 	 * @param type $path
@@ -653,6 +654,7 @@ class RainTPL{
 			}
 			return $path;
 	}
+
 
 
 	/**
@@ -700,6 +702,27 @@ class RainTPL{
 	}
 
 
+
+	/**
+	 * replace one single path corresponding to a given match in the `path_replace` regex.
+	 * This function has no reason to be used anywhere but in `path_replace`.
+	 * @see path_replace
+	 *
+	 * @param array $matches
+	 * @return replacement string
+	 */
+	protected function single_path_replace ( $matches ) use ( $path ){
+		$tag  = $matches[1];
+		$_    = $matches[2];
+		$attr = $matches[3];
+		$url  = $matches[4];
+		$new_url = $this->rewrite_url( $url, $tag, this::$path );
+
+		return "<$tag$_$attr=\"$new_url\"";
+	}
+
+
+
 	/**
 	 * replace the path of image src, link href and a href.
 	 * @see rewrite_url for more information about how paths are replaced.
@@ -714,33 +737,20 @@ class RainTPL{
 			$tpl_dir = self::$base_url . self::$tpl_dir . $tpl_basedir;
 
 			// reduce the path
-			$path = $this->reduce_path($tpl_dir);
+			this::$path = $this->reduce_path($tpl_dir);
 
-			/**
-			 * replace one single path corresponding to a given match in the next `preg_replace_callback` regex.
-			 *
-			 * @param array $matches
-			 * @return replacement string
-			 */
-			function single_path_replace ( $matches ) use ( $path ){
-				$tag  = $matches[1];
-				$_    = $matches[2];
-				$attr = $matches[3];
-				$url  = $matches[4];
-				$new_url = $this->rewrite_url( $url, $tag, $path );
+			$exp = array();
+			$exp[] = '/<(link|a)(.*?)(href)="(.*?)"/i';
+			$exp[] = '/<(img|script|input)(.*?)(src)="(.*?)"/i';
+			$exp[] = '/<(form)(.*?)(action)="(.*?)"/i';
 
-				return "<$tag$_$attr=\"$new_url\"";
-			}
-
-			return preg_replace_callback( $exp, single_path_replace, $html );
+			return preg_replace_callback( $exp, $this->single_path_replace, $html );
 
 		}
 		else
 			return $html;
 
 	}
-
-
 
 
 
