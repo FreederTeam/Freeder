@@ -123,9 +123,10 @@ class RainTPL{
 
 		protected $tpl = array(),		// variables to keep the template directories and info
 				  $cache = false,		// static cache enabled / disabled
-				  $cache_id = null;	   // identify only one cache
+				  $cache_id = null,	   // identify only one cache
+				  $path = null;			// cache for path_replace
 
-				protected static $config_name_sum = array();   // takes all the config to create the md5 of the file
+		protected static $config_name_sum = array();   // takes all the config to create the md5 of the file
 
 	// -------------------------
 
@@ -711,12 +712,12 @@ class RainTPL{
 	 * @param array $matches
 	 * @return replacement string
 	 */
-	protected function single_path_replace ( $matches ) use ( $path ){
+	protected function single_path_replace ( $matches ){
 		$tag  = $matches[1];
 		$_    = $matches[2];
 		$attr = $matches[3];
 		$url  = $matches[4];
-		$new_url = $this->rewrite_url( $url, $tag, this::$path );
+		$new_url = $this->rewrite_url( $url, $tag, $this->path );
 
 		return "<$tag$_$attr=\"$new_url\"";
 	}
@@ -736,15 +737,15 @@ class RainTPL{
 
 			$tpl_dir = self::$base_url . self::$tpl_dir . $tpl_basedir;
 
-			// reduce the path
-			this::$path = $this->reduce_path($tpl_dir);
+			// Prepare reduced path not to compute it for each link
+			$self->path = $this->reduce_path( $tpl_dir );
 
 			$exp = array();
 			$exp[] = '/<(link|a)(.*?)(href)="(.*?)"/i';
 			$exp[] = '/<(img|script|input)(.*?)(src)="(.*?)"/i';
 			$exp[] = '/<(form)(.*?)(action)="(.*?)"/i';
 
-			return preg_replace_callback( $exp, $this->single_path_replace, $html );
+			return preg_replace_callback( $exp, '$this->single_path_replace', $html );
 
 		}
 		else
