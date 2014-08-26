@@ -4,6 +4,7 @@
 	<header class="Side-logo Logo">
 		<h1 class="Logo-h1"><a class="Logo-a" href="index.php"><img class="Logo-img" alt="Freeder" src="img/logo_complete.svg"></a></h1>
 	</header>
+
 	<ul class="Side-menu Menu">
 		<li class="Menu-li"><a href="index.php"><img src="img/home.svg" alt="Home"></a></li>
 		<li class="Menu-li"><a href="{$tag_baselink}_sticky"><img src="img/stick.svg" alt="Sticky"></a></li>
@@ -15,6 +16,12 @@
 		<li><a href="login.php">Login</a></li>
 	{/if}
 	</ul>
+
+	<form class="Side-mainForm MainForm">
+		<input class="MainForm-Input Input" type="text" name="newTag" id="newTag" placeholder="Tag search…"/>
+		<button class="MainForm-Submit Submit Button"><!--<img src="img/glass.png" alt="Search">-->Search</button>
+	</form>
+
 	<ul class="Side-tagList TagList">
 			{loop="get_tags(USER_TAGS)"}
 				<li class="TagList-completeTag CompleteTag">

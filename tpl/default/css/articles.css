@@ -6,7 +6,7 @@
 	main .Article {
 		border: 1px solid #E5E5E5;
 		border-radius: 2px;
-		background-color: #FFF;
+		background-color: #FEFEFE;
 	}
 	main .Article > * {
 		padding:0;
@@ -25,30 +25,8 @@
 		display:none;
 	}
 
-	.ArticleTagForm {
-		display:relative;
-		margin:5px;
-		width:100%;
-	}
-	input.AddTagInput,
-	button.AddTagButton {
-		margin:0;
-		height:35px;
-	}
-	input.AddTagInput {
-		width:calc(100% - 65px);
+	.Article-mainForm input.Input {
 		background-color:#ECECEC;
-		border-radius:2px 0 0 2px;
-	}
-	.ArticleTagForm-addTagButton {
-		top:0;
-		right:0;
-		float:right;
-	}
-	.AddTagButton {
-		padding: 2px;
-		min-width:65px;
-		border-radius: 0 2px 2px 0;
 	}
 
 	@media(min-width:960px)

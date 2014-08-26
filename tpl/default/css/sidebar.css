@@ -27,6 +27,11 @@
 	padding:.5rem;
 }
 
+.Side .MainForm {
+	width: 95%;
+	margin: 5px auto;
+}
+
 .Side-tagList .DelTag{
 	/*this cascade can be considered not really as BEM css, but I can't figure how to do this without cascade…*/
 	display: none;

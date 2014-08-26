@@ -13,20 +13,15 @@
 		cursor:pointer;
 		/*by default, red buttons*/
 		color:#FFF;
-		background-color:#D14836;
+		background-color:#ED7261;
 	}
-		button:hover,
-		button:active,
-		button:focus,
+		.Button:hover,
+		.Button:active,
+		.Button:focus,
 		input[type="submit"]:hover,
 		input[type="submit"]:active,
-		input[type="submit"]:focus,
-		.btn:hover,
-		.btn:active,
-		.btn:focus {
-			background-color:#C03927;
-			-webkit-box-shadow: 0 0 4px 0 rgba(0,0,0,0.3);
-			box-shadow: 0 0 4px 0 rgba(0,0,0,0.3);
+		input[type="submit"]:focus {
+			background-color:#D14836;
 		}
 	.lightgrey {
 		color:#444;
@@ -39,12 +34,12 @@
 		}
 	.darkgrey {
 		color:#FFF;
-		background-color:#444;
+		background-color:#666;
 	}
 		.darkgrey:hover,
 		.darkgrey:active,
 		.darkgrey:focus {
-			background-color:#333;
+			background-color:#444;
 		}
 	.blue {
 		color:#FFF;
@@ -57,12 +52,12 @@
 		}
 	.green {
 		color:#FFF;
-		background-color:#4EAD48;
+		background-color:#88BF57;
 	}
 		.green:hover,
 		.green:active,
 		.green:focus {
-			background-color:#3C9C37;
+			background-color:#4EAD48;
 		}
 
 /* == Form */
@@ -80,11 +75,40 @@
 		background-color:#fff;
 		color:#333;
 	}
-	input[type="text"]:focus,
-	input[type="password"]:focus {
+	/*
+	 * box-shadow inset have a huge performance issue, so I prefer desactivate it.
+	 * Note that the perf issue was noticed in 2010, and is still here in 2014
+	input:focus {
 		background-color:#ECECEC;
-		box-shadow:inset 0 0 3px 0px rgba(0,0,0,0.8), 0 0 3px 0 #FFF;
+		box-shadow:inset 0 0 3px 0px #333, 0 0 3px 0 #FFF;
+		box-shadow:0 0 3px 0 #FFF;
 	}
+	*/
+/* == Search/add/ main form */
+	.MainForm {
+		margin:5px;
+		width:100%;
+	}
+	input.Input,
+	.Submit {
+		margin:0;
+		height:35px;
+	}
+	input.Input {
+		width:calc(100% - 65px);
+		border-radius:2px 0 0 2px;
+	}
+	.MainForm-Submit {
+		top:0;
+		right:0;
+		float:right;
+	}
+	.Submit {
+		padding: 2px;
+		min-width:65px;
+		border-radius: 0 2px 2px 0;
+	}
+
 /* == switches */
 	.switch:empty
 	{
@@ -98,10 +122,6 @@
 		text-indent: 4em;
 		margin: 0.5rem;
 		cursor: pointer;
-		-webkit-user-select: none;
-		-moz-user-select: none;
-		-ms-user-select: none;
-		user-select: none;
 	}
 	.switch:empty ~ label:before, 
 	.switch:empty ~ label:after
