@@ -151,17 +151,43 @@ function get_category_mime_type($mime_type) {
  *  @param an array $urls of associative arrays {'url', 'post'} for each URL. 'post' is a JSON array of data to send _via_ POST.
  *  @return an array {'results', 'status_code'}, results being an array of the retrieved contents, indexed by URLs, and 'status_codes' being an array of status_code, indexed by URL.
  */
-function curl_downloader($urls, $fetch_content=true) {
+function curl_downloader($urls, $fetch_content=true, $verbose=true) {
 	$chunks = array_chunk($urls, 40, true);  // Chunks of 40 urls because curl has problems with too big "multi" requests
 	$results = array();
 	$status_codes = array();
 	$content_types = array();
+	$command_line = is_command_line();
 
 	if (ini_get('open_basedir') == '' && ini_get('safe_mode') === false) { // Disable followlocation option if this is activated, to avoid warnings
 		$follow_redirect = true;
 	}
 	else {
 		$follow_redirect = false;
+	}
+
+	if ($verbose) {
+		if (function_exists('apache_setenv')) {
+			/* Selon l'hébergeur la fonction peut être désactivée. Alors Php
+			   arrête le programme avec l'erreur :
+			   "PHP Fatal error:  Call to undefined function apache_setenv()".
+			*/
+			@apache_setenv('no-gzip', 1);
+		}
+		@ini_set('zlib.output_compression', 0);
+		@ini_set('implicit_flush', 1);
+		for ($i = 0; $i < ob_get_level(); $i++) { ob_end_flush(); }
+		ob_implicit_flush(1);
+
+		if ($command_line) {
+			$backspace = "\n";
+			$span_start = '';
+			$span_end = '';
+		}
+		else {
+			$backspace = '<br/>';
+			$span_start = '<span id="ID">';
+			$span_end = '</span>';
+		}
 	}
 
 	foreach ($chunks as $chunk) {
@@ -188,6 +214,10 @@ function curl_downloader($urls, $fetch_content=true) {
 				curl_setopt($handlers[$i], CURLOPT_POSTFIELDS, json_decode($url_array['post'], true));
 			}
 
+			if ($verbose) {
+				echo str_replace('ID', 'refreshed-feed-'.$i, $span_start).'Starting to download '.$url.'…'.$backspace.$span_end;
+			}
+
 			curl_multi_add_handle($multihandler, $handlers[$i]);
 		}
 
@@ -203,6 +233,10 @@ function curl_downloader($urls, $fetch_content=true) {
 			$content_types[$url] = curl_getinfo($handlers[$i], CURLINFO_CONTENT_TYPE);
 			curl_multi_remove_handle($multihandler, $handlers[$i]);
 			curl_close($handlers[$i]);
+
+			if ($verbose) {
+				echo str_replace('ID', 'refreshed-feed-'.$i.'-done', $span_start).'Starting to download '.$url.'… Done.'.$backspace.$span_end;
+			}
 		}
 		curl_multi_close($multihandler);
 	}

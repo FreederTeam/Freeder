@@ -20,11 +20,11 @@ require_once(INC_DIR . 'tags.php');
  * @param $update_feeds_infos should be true to update the feed infos from values in the RSS / ATOM
  * @todo assert(false)
  */
-function refresh_feeds($feeds, $check_favicons=false) {
+function refresh_feeds($feeds, $check_favicons=false, $verbose=true) {
 	global $dbh, $config;
 
 	// Download the feeds
-	$download = curl_downloader($feeds);
+	$download = curl_downloader($feeds, true, $verbose);
 	$errors = array();
 	$favicons_to_check = array();
 	foreach ($download['status_codes'] as $url=>$status_code) {

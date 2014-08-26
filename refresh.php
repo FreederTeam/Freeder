@@ -12,6 +12,7 @@ if (!require_auth(false) && !is_command_line()) {
 	exit();
 }
 
+$refresh_start = microtime(true);
 $feeds = get_feeds();
 
 $feeds_to_refresh = array();
@@ -19,8 +20,5 @@ foreach($feeds as $feed) {
 	$feeds_to_refresh[$feed['id']] = array('id'=>$feed['id'], 'url'=>$feed['url'], 'post'=>$feed['post']);
 }
 
-refresh_feeds($feeds_to_refresh);
-
-header('location: index.php');
-exit("Refreshed");
-
+$tpl->assign('feeds_to_refresh', $feeds_to_refresh);
+$tpl->draw('refresh');
