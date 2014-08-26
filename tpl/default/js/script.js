@@ -59,6 +59,17 @@
 	}
 
 
+	/**
+	 * Mark an entry as unread.
+	 */
+	function unread_entry(caller, entry_id) {
+		ajax(caller, 'api/mark_as_read.php?entry='+entry_id+'&unread=1', function(c, d) {
+			var article = c.parentNode.parentNode;
+			alert('ok');
+		});
+	}
+
+
 // == Display Tags
 	$(".DisplayTagsButton").click(function(){
 		$(this).siblings(".ArticleTagsList").slideToggle(200);

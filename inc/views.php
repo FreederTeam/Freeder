@@ -93,11 +93,12 @@ function append_selection_query($prefix, $tag, $subquery, &$bindings) {
  * @param $rule is the rule as raw text.
  * @param $selection designate what field to get from SQL table. Warning: it is not escaped.
  * @param $limit specifies the maximum number of items to return. Ignored if negative.
+ * @param $offset specifies the offset to apply for limit. Ignored if negative.
  * @return a PDO-ready query and the binding array.
  *
  * TODO: Refactor me!!!
  */
-function rule2sql($rule, $selection='*', $limit=-1) {
+function rule2sql($rule, $selection='*', $limit=-1, $offset=-1) {
 	$limit = (int)$limit;
 
 	$ast = parse_rule($rule);
@@ -181,6 +182,9 @@ function rule2sql($rule, $selection='*', $limit=-1) {
 
 	if ($limit >= 0) {
 		$query .= " LIMIT $limit";
+	}
+	if ($offset >= 0) {
+		$query .= " OFFSET $offset";
 	}
 
 	return array($query, $bindings);

@@ -33,17 +33,19 @@ function clean_authors($authors) {
 	return $new_authors;
 }
 
+
 /**
  * Get all the available entries from the database
  * @param $view is the name of the view. By default view rule is empty.
+ * @param $page is the page in the view
  * @return Array of associative arrays for each entry.
  */
-function get_entries($view='') {
+function get_entries($view='', $page=1) {
 	global $dbh, $config;
 
 	$rule = get_view_rule($view);
 
-	$r = rule2sql($rule, 'id, feed_id, authors, title, links, description, content, enclosures, comments, guid, pubDate, lastUpdate', $config->entries_per_page);
+	$r = rule2sql($rule, 'id, feed_id, authors, title, links, description, content, enclosures, comments, guid, pubDate, lastUpdate', $config->entries_per_page, ($page-1)*$config->entries_per_page);
 	$query = $dbh->prepare($r[0]);
 	$query->execute($r[1]);
 	$fetched_entries = $query->fetchall(PDO::FETCH_ASSOC);
@@ -84,6 +86,25 @@ function get_entries($view='') {
 		$entries[] = $entry;
 	}
 	return $entries;
+}
+
+
+/**
+ * Get the number of matching entries for the view $view
+ * @param $view is the name of the view. By default view rule is empty.
+ * @param $page is the page in the view
+ * @return Array of associative arrays for each entry.
+ */
+function get_entries_count($view='', $page=1) {
+	global $dbh, $config;
+
+	$rule = get_view_rule($view);
+
+	$r = rule2sql($rule, 'COUNT(*) AS nb', $config->entries_per_page, ($page-1)*$config->entries_per_page);
+	$query = $dbh->prepare($r[0]);
+	$query->execute($r[1]);
+	$fetched = $query->fetch(PDO::FETCH_ASSOC);
+	return $fetched['nb'];
 }
 
 
