@@ -7,7 +7,7 @@
  */
 
 require_once('constants.php');
-require_once('functions.php');
+require_once(INC_DIR.'functions.php');
 
 $default_timezone = @date_default_timezone_get();
 
@@ -184,7 +184,6 @@ function install() {
 
 	require_once(INC_DIR . 'rain.tpl.class.php');
 	require_once(INC_DIR . 'rewriting.class.php');
-	require_once(INC_DIR . 'functions.php');
 	RainTPL::$tpl_dir = RELATIVE_TPL_DIR . DEFAULT_THEME . '/';
 	RainTPL::$base_url = dirname($_SERVER['SCRIPT_NAME']) . '/';
 	RewriteEngine::$rewrite_base = RainTPL::$base_url;

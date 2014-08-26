@@ -6,6 +6,8 @@
  *  @brief Config class used to handle the config stored in database
  */
 
+require_once(INC_DIR.'functions.php');
+
 
 /**
  * Store the configuration retrieved from database.
@@ -28,6 +30,7 @@ class Config {
 			'display_entries'=>'description',
 			'version'=>self::$versions[count(self::$versions) - 1],  // Current version
 			'entries_per_page'=>20,
+			'use_rewriting'=>get_url_rewriting(),
 		);
 		$this->load();
 	}

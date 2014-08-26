@@ -68,6 +68,14 @@
 				<input type="radio" name="anonymous_access" id="anonymous_access_yes" value="1" {if="$config->anonymous_access != 0"}checked="checked"{/if}/><label for="anonymous_access_yes">Yes</label>
 				<input type="radio" name="anonymous_access" id="anonymous_access_no" value="0" {if="$config->anonymous_access == 0"}checked="checked"{/if}/><label for="anonymous_access_no">No</label>
 			</p>
+			<p>Enable URL rewriting ?
+				{if="get_url_rewriting() == 1"}
+					<input type="radio" name="use_rewriting" id="use_rewriting_yes" value="1" {if="$config->use_rewriting != 0"}checked="checked"{/if}/><label for="use_rewriting_yes">Yes</label>
+					<input type="radio" name="use_rewriting" id="use_rewriting_no" value="1" {if="$config->use_rewriting == 0"}checked="checked"{/if}/><label for="use_rewriting_no">No</label>
+				{else}
+					<span class="error"><code>mod_rewrite</code> does not seem to be enabled on your system.</span>
+				{/if}
+			</p>
 		</fieldset>
 
 		<p><input type="submit" value="Save"/></p>
