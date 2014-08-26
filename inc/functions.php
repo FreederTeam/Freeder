@@ -185,7 +185,7 @@ function curl_downloader($urls, $fetch_content=true, $verbose=true) {
 		}
 		else {
 			$backspace = '<br/>';
-			$span_start = '<span id="ID">';
+			$span_start = '<span CLASS>';
 			$span_end = '</span>';
 		}
 	}
@@ -215,7 +215,7 @@ function curl_downloader($urls, $fetch_content=true, $verbose=true) {
 			}
 
 			if ($verbose) {
-				echo str_replace('ID', 'refreshed-feed-'.$i, $span_start).'Starting to download '.$url.'…'.$backspace.$span_end;
+				echo str_replace('CLASS', 'class="refreshed-feed-tmp"', $span_start).'Starting to download '.$url.'…'.$backspace.$span_end;
 			}
 
 			curl_multi_add_handle($multihandler, $handlers[$i]);
@@ -226,6 +226,9 @@ function curl_downloader($urls, $fetch_content=true, $verbose=true) {
 			curl_multi_select($multihandler);
 		} while ($active > 0);
 
+		if ($verbose && !$command_line) {
+			echo '<script type="text/javascript">var elts = document.getElementsByClassName("refreshed-feed-tmp"); for(var i=0; i < elts.length; i++) { elts[i].parentElement.removeChild(elts[i]); }</script>';
+		}
 		foreach ($chunk as $i=>$url_array) {
 			$url = $url_array['url'];
 			$results[$url] = curl_multi_getcontent($handlers[$i]);
@@ -235,7 +238,7 @@ function curl_downloader($urls, $fetch_content=true, $verbose=true) {
 			curl_close($handlers[$i]);
 
 			if ($verbose) {
-				echo str_replace('ID', 'refreshed-feed-'.$i.'-done', $span_start).'Starting to download '.$url.'… Done.'.$backspace.$span_end;
+				echo str_replace('CLASS', '', $span_start).'Starting to download '.$url.'… Done.'.$backspace.$span_end;
 			}
 		}
 		curl_multi_close($multihandler);
