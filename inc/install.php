@@ -79,6 +79,11 @@ function install_db() {
 	// Insert timezone in the config
 	$query = $dbh->prepare('INSERT OR IGNORE INTO config(option, value) VALUES("timezone", :value)');
 	$query->execute(array(':value'=>$_POST['timezone']));
+	$query = $dbh->prepare('INSERT OR IGNORE INTO config(option, value) VALUES("use_rewriting", :value)');
+	$query->execute(array(':value'=>get_url_rewriting()));
+	if (get_url_rewriting()) {
+		write_htaccess();
+	}
 
 	// Create the table to store feeds
 	$dbh->query('CREATE TABLE IF NOT EXISTS feeds(

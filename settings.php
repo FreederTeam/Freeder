@@ -54,37 +54,7 @@ if (!empty($_POST['synchronization_type']) && !empty($_POST['template']) && !emp
 	}
 	$config->use_rewriting = (int) $_POST['use_rewriting'];
 	if ($config->use_rewriting == 1) {
-		$rewrite_base = substr($_SERVER['REQUEST_URI'], 0, strpos($_SERVER['REQUEST_URI'], '/', 1)).'/';
-		$htaccess = "Options +FollowSymLinks\nOptions +Indexes\n<IfModule mod_rewrite.c>\n\tRewriteEngine On\n\tRewriteBase $rewrite_base\n\tRewriteRule ^tag/(.+)$ index.php?view=\$tag_$1\n\tRewriteRule ^feed/(.+)$ index.php?view=\$feed_$1\n\t</IfModule>\n";
-		if (is_file('.htaccess')) {
-			$htaccess = file('.htaccess');
-		}
-		else {
-			$htaccess = array();
-		}
-		$start_index = -1;
-		$end_index = -1;
-		$htaccess_new = array();
-		foreach ($htaccess as $key=>$line) {
-			if (stristr($line, 'begin freeder generated') !== FALSE) {
-				$start_index = $key;
-				$htaccess_new[] = $line;
-				$htaccess_new[] = $htaccess;
-				continue;
-			}
-			elseif (stristr($line, 'end freeder generated') !== FALSE) {
-				$end_index = $key;
-				$htaccess_new[] = $line;
-				continue;
-			}
-
-			if (!($start_index != -1 && ($end_index == -1 || $key < $end_index) && $key > $start_index)) {
-				$htaccess_new[] = $line;
-			}
-		}
-
-		$htaccess_new = implode("\n", $htaccess_new);
-		file_put_contents('.htaccess', $htacces_new);
+		write_htaccess();
 	}
 	$config->save();
 	header('location: settings.php');

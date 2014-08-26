@@ -248,3 +248,41 @@ function get_url_rewriting() {
 		return getenv('HTTP_MOD_REWRITE')=='On' ? 1 : 0;
 	}
 }
+
+
+/**
+ * Write the htaccess file for URL rewriting
+ */
+function write_htaccess() {
+	$rewrite_base = substr($_SERVER['REQUEST_URI'], 0, strpos($_SERVER['REQUEST_URI'], '/', 1)).'/';
+	$htaccess = "Options +FollowSymLinks\nOptions +Indexes\n<IfModule mod_rewrite.c>\n\tRewriteEngine On\n\tRewriteBase $rewrite_base\n\tRewriteRule ^tag/(.+)$ index.php?view=\$tag_$1\n\tRewriteRule ^feed/(.+)$ index.php?view=\$feed_$1\n\t</IfModule>\n";
+	if (is_file('.htaccess')) {
+		$htaccess = file('.htaccess');
+	}
+	else {
+		$htaccess = array();
+	}
+	$start_index = -1;
+	$end_index = -1;
+	$htaccess_new = array();
+	foreach ($htaccess as $key=>$line) {
+		if (stristr($line, 'begin freeder generated') !== FALSE) {
+			$start_index = $key;
+			$htaccess_new[] = $line;
+			$htaccess_new[] = $htaccess;
+			continue;
+		}
+		elseif (stristr($line, 'end freeder generated') !== FALSE) {
+			$end_index = $key;
+			$htaccess_new[] = $line;
+			continue;
+		}
+
+		if (!($start_index != -1 && ($end_index == -1 || $key < $end_index) && $key > $start_index)) {
+			$htaccess_new[] = $line;
+		}
+	}
+
+	$htaccess_new = implode("\n", $htaccess_new);
+	file_put_contents('.htaccess', $htacces_new);
+}
