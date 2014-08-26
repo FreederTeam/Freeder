@@ -18,7 +18,7 @@
 	<ul class="Side-tagList TagList">
 			{loop="get_tags(USER_TAGS)"}
 				<li class="TagList-completeTag CompleteTag">
-					<a class="TagList-tagName tagName" href="{$tag_baselink}{$value['name']}">{$value['name']}</a><a class="TagList-delTag DelTag" href="#">X</a>
+					<a class="TagList-tagName TagName" href="{$tag_baselink}{$value['name']}">{$value['name']}</a><a class="TagList-delTag DelTag" href="#">X</a>
 				</li>
 			{/loop}
 	</ul>

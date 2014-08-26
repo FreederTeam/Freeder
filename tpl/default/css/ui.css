@@ -14,7 +14,6 @@
 		/*by default, red buttons*/
 		color:#FFF;
 		background-color:#D14836;
-
 	}
 		button:hover,
 		button:active,
@@ -87,11 +86,11 @@
 		box-shadow:inset 0 0 3px 0px rgba(0,0,0,0.8), 0 0 3px 0 #FFF;
 	}
 /* == switches */
-	input.switch:empty
+	.switch:empty
 	{
 		margin-left: -999px;
 	}
-	input.switch:empty ~ label
+	.switch:empty ~ label
 	{
 		position: relative;
 		float: left;
@@ -104,8 +103,8 @@
 		-ms-user-select: none;
 		user-select: none;
 	}
-	input.switch:empty ~ label:before, 
-	input.switch:empty ~ label:after
+	.switch:empty ~ label:before, 
+	.switch:empty ~ label:after
 	{
 		position: absolute;
 		display: block;
@@ -119,7 +118,7 @@
 		-webkit-transition: all 100ms ease-in;
 		transition: all 100ms ease-in;
 	}
-	input.switch:empty ~ label:after
+	.switch:empty ~ label:after
 	{
 		width: 1.4em;
 		top: 0.2em;
@@ -128,11 +127,11 @@
 		background-color: #fff;
 		border-radius: 0.15em;
 	}
-	input.switch:checked ~ label:before
+	.switch:checked ~ label:before
 	{
 		background-color: #393;
 	}
-	input.switch:checked ~ label:after
+	.switch:checked ~ label:after
 	{
 		margin-left: 2em;
 	}
@@ -144,28 +143,46 @@
 		padding: 0 .3rem;
 	}
 	/*The ul, containing the loop of tags*/
-	.TagList {
+		.TagList {
 
-	}
+		}
 	/*One complete tag*/
-	.TagList-completeTag {
+		.TagList-completeTag {
 
-	}
-	.CompleteTag {
-		padding:.3rem 0 .3rem .3rem;
-		margin: .3rem;
+		}
+		.CompleteTag {
+			margin: .3rem;
+			display: inline-block;
+			overflow: hidden;
+			white-space: nowrap;
+			text-overflow:ellipsis;
+			border-radius: 2rem;
+
+			border: 1px solid #6A6A6A;
+		}
+			.CompleteTag:hover {
+				background-color: #6A6A6A;
+			}
+			.CompleteTag:hover a.TagName {
+				color:#FFF;
+			}
+	.TagName,
+	.DelTag {
+		padding:.3rem .5rem;
 	}
 	/*The name of the tag*/
-	.TagList-tagName {
+		.TagList-tagName {
 
-	}
-	.TagName {
-
-	}
+		}
+		a.TagName {
+			color:#6A6A6A;
+		}
 	/*the delete button of the tag*/
-	.TagList-delTag {
+		.TagList-delTag {
 
-	}
-	.DelTag {
-
-	}
+		}
+		a.DelTag {
+			background-color: #6A6A6A;
+			font-weight: bold;
+			color: #FFF;
+		}

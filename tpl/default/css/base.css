@@ -8,10 +8,6 @@
 		-moz-box-sizing: border-box;
 		box-sizing: border-box;
 	}
-/*CSSO*/
-	.hidden {
-		display:none;
-	}
 /*base*/
 	html {
 		//font-size:62.5%;
@@ -94,8 +90,11 @@
 	}
 
 /*Animate this !*/
+/*
 	input,
-	button
+	.Button,
+	.CompleteTag,
+	.TagName
 	{
 		-webkit-transition: all .2s ease;
 		-moz-transition: all .2s ease;
@@ -103,10 +102,9 @@
 		-o-transition: all .2s ease;
 		transition: all .2s ease;
 	}
-
+	*/
 
 /*Misc*/
 	.error {
 		color: red;
 	}
-
