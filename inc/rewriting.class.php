@@ -18,7 +18,7 @@ class RewriteEngine {
 	 *
 	 * @var array
 	 */
-	protected rules = array();
+	protected $rules = array();
 
 	/**
 	 * Use internal rules to rewrite url.
