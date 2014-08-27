@@ -33,7 +33,7 @@ function refresh_feeds($feeds, $check_favicons=false) {
 			$errors[] = array('url'=>$url, 'msg'=>'Feed page not found (http status: ' . $status_code . ')');
 			unset($download['results'][$url]);
 		}
-		elseif($download['content_types'][$url] != 'application/xml' && $download['content_types'][$url] != 'text/xml' && $download['content_types'][$url] != 'application/rss+xml' && $download['content_types'][$url] != 'application/atom+xml') {
+		elseif(!startswith($download['content_types'][$url], 'application/xml') && !startswith($download['content_types'][$url], 'text/xml') && !startswith($download['content_types'][$url], 'application/rss+xml') && !startswith($download['content_types'][$url], 'application/atom+xml')) {
 			$errors[] = array('url'=>$url, 'msg'=>'Unable to find a feed at the address '.$url);
 			unset($download['results'][$url]);
 		}
@@ -97,12 +97,11 @@ function refresh_feeds($feeds, $check_favicons=false) {
 	}
 
 	foreach ($updated_feeds as $url=>$feed) {
-		$feed_id = multiarray_search('url', $url, $feeds, array());
-		if (empty($feed_id)) {
+		$feed_id = multiarray_search_key('url', $url, $feeds);
+		if ($feed_id === -1) {
 			assert(false); // TODO
 			exit();
 		}
-		$feed_id = $feed_id['id'];
 		// Parse feed
 		$parsed = @feed2array($feed);
 

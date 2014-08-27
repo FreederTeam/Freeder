@@ -61,6 +61,7 @@ function install_db() {
 		login TEXT UNIQUE,
 		password TEXT,
 		salt TEXT,
+		remember_token TEXT,
 		is_admin INT DEFAULT 0
 	)');
 	$query = $dbh->prepare('INSERT OR IGNORE INTO users(login, password, salt, is_admin) VALUES(:login, :password, :salt, 1)');
@@ -188,9 +189,9 @@ function install() {
 	RainTPL::$base_url = dirname($_SERVER['SCRIPT_NAME']) . '/';
 	RainTPL::$rewriteEngine = new RewriteEngine;
 	$tpl = new RainTPL;
-	$tpl->assign('start_generation_time', microtime(true));
-	$tpl->assign('login', $login, false);
-	$tpl->assign('timezone', $timezone, false);
+	$tpl->assign('start_generation_time', microtime(true), RainTPL::RAINTPL_IGNORE_SANITIZE);
+	$tpl->assign('login', $login, RainTPL::RAINTPL_HTML_SANITIZE);
+	$tpl->assign('timezone', $timezone, RainTPL::RAINTPL_HTML_SANITIZE);
 
 	if (!empty($_POST['login']) && !empty($_POST['password']) && !empty($_POST['confirm_password']) && !empty($_POST['timezone'])) {
 		if ($_POST['confirm_password'] != $_POST['password']) {
@@ -211,11 +212,11 @@ function install() {
 					exit();
 				}
 				else {
-					$tpl->assign('error', $error);
+					$tpl->assign('error', $error, RainTPL::RAINTPL_IGNORE_SANITIZE);
 				}
 			}
 			else {
-				$tpl->assign('error', $error);
+				$tpl->assign('error', $error, RainTPL::RAINTPL_IGNORE_SANITIZE);
 			}
 		}
 	} else {
@@ -224,7 +225,7 @@ function install() {
 			$error['type'] = 'error';
 			$error['title'] = 'Incomplete installation form';
 			$error['content'] = 'You must fill every field.';
-			$tpl->assign('error', $error);
+			$tpl->assign('error', $error, RainTPL::RAINTPL_IGNORE_SANITIZE);
 		}
 	}
 

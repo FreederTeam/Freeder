@@ -89,8 +89,8 @@ function opml_import($xml) {
 						continue;
 					}
 
-					$search = multiarray_search('url', (string) $feed['xmlUrl'], $feeds, false);
-					if($search === FALSE) {
+					$search = multiarray_search_key('url', (string) $feed['xmlUrl'], $feeds);
+					if($search === -1) {
 						// Feed was not yet encountered, so add it first
 						if(isset($feed['title'])) {
 							$feed_title = (string) $feed['title'];
@@ -108,13 +108,9 @@ function opml_import($xml) {
 							'tags'=>array(),
 							'post'=>''
 						);
-						$key = count($feeds) - 1;
+						$search = count($feeds) - 1;
 					}
-					else {
-						// Else, append categories to the existing feed
-						$key = array_search($search, $feeds);
-					}
-					$feeds[$key]['tags'][] = $tag;
+					$feeds[$search]['tags'][] = $tag;
 				}
 			}
 		}
@@ -129,7 +125,7 @@ function opml_import($xml) {
 				$title = '';
 			}
 
-			if(multiarray_search('url', (string) $outline['xmlUrl'], $feeds, false) !== false) {
+			if(multiarray_search_key('url', (string) $outline['xmlUrl'], $feeds) !== -1) {
 				$feeds[] = array(
 					'url'=>(string) $outline['xmlUrl'],
 					'title'=>$title,

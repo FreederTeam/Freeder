@@ -22,6 +22,20 @@ function multiarray_search($field, $value, $array, $default_value=false) {
 
 
 /**
+ * Search for the key of the first item with value $value for field $field in a 2D array.
+ * @return The matching key or -1
+ */
+function multiarray_search_key($field, $value, $array) {
+	foreach($array as $key=>$val) {
+		if($val[$field] == $value) {
+			return $key;
+		}
+	}
+	return -1;
+}
+
+
+/**
  * Filters a 2D array returning all the entries where $field is not equal to $value.
  * @return The filtered array.
  */
@@ -123,32 +137,6 @@ function get_category_mime_type($mime_type) {
 	else {
 		return false;
 	}
-}
-
-
-/**
- * Sanitize data for displaying in HTML
- * @param $data, data to sanitize
- */
-function sanitize($data) {
-	if (is_object($data)) {
-		if (get_class($data) === 'stdClass') {
-			$output = (object)sanitize((array) $data);
-		}
-		else {
-			$output = $data->sanitize();
-		}
-	}
-	elseif (is_array($data)) {
-		$output = array();
-		foreach($data as $key=>$datum) {
-			$output[$key] = sanitize($datum);
-		}
-	}
-	else {
-		$output = htmlspecialchars($data, ENT_COMPAT, 'UTF-8');
-	}
-	return $output;
 }
 
 

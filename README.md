@@ -29,6 +29,7 @@ Note that we use git submodules only to include the wiki inside the project for 
 
 ### Dependencies
 
+ * `php` >= 5.3
  * `php5-sqlite`
  * `php5-curl`
 

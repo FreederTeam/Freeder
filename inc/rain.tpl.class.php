@@ -13,6 +13,7 @@
  */
 
 require_once(INC_DIR . 'functions.php');
+require_once(INC_DIR . 'xss.php');
 
 class RainTPL{
 
@@ -132,9 +133,10 @@ class RainTPL{
 
 		protected $tpl = array(),		// variables to keep the template directories and info
 				  $cache = false,		// static cache enabled / disabled
-				  $cache_id = null;	   // identify only one cache
+				  $cache_id = null,	   // identify only one cache
+				  $path = null;			// cache for path_replace
 
-				protected static $config_name_sum = array();   // takes all the config to create the md5 of the file
+		protected static $config_name_sum = array();   // takes all the config to create the md5 of the file
 
 	// -------------------------
 
@@ -152,10 +154,24 @@ class RainTPL{
 	 * @param mixed $value value assigned to this variable. Not set if variable_name is an associative array
 	 */
 
-	function assign( $variable, $value = null, $ignore_sanitize=true){
-		if(!$ignore_sanitize) {
-			$variable = sanitize($variable);
-			$value = sanitize($value);
+	const RAINTPL_IGNORE_SANITIZE = 0;
+	const RAINTPL_HTML_SANITIZE = 1;
+	const RAINTPL_XSS_SANITIZE = 2;
+	function assign( $variable, $value = null, $sanitize=self::RAINTPL_IGNORE_SANITIZE){
+		switch($sanitize) {
+			case self::RAINTPL_HTML_SANITIZE:
+				$variable = sanitize($variable);
+				$value = sanitize($value);
+				break;
+
+			case self::RAINTPL_XSS_SANITIZE:
+				$variable = xss_clean($variable);
+				$value = xss_clean($value);
+				break;
+
+			case self::RAINTPL_IGNORE_SANITIZE:
+			default:
+				break;
 		}
 		if( is_array( $variable ) )
 			$this->var = $variable + $this->var;
@@ -488,7 +504,14 @@ class RainTPL{
 	 			$loop_level++;
 
 				//replace the variable in the loop
-				$var = $this->var_replace( '$' . $code[ 1 ], $tag_left_delimiter=null, $tag_right_delimiter=null, $php_left_delimiter=null, $php_right_delimiter=null, $loop_level-1 );
+				if(endswith($code[1], ')')) {  // If the variable is a function call
+					$var = $this->var_replace( $code[ 1 ], $tag_left_delimiter=null, $tag_right_delimiter=null, $php_left_delimiter=null, $php_right_delimiter=null, $loop_level-1 );
+					$check_code = "NULL !== $var";
+				}
+				else {  // Else, add a $ sign
+					$var = $this->var_replace( '$' . $code[ 1 ], $tag_left_delimiter=null, $tag_right_delimiter=null, $php_left_delimiter=null, $php_right_delimiter=null, $loop_level-1 );
+					$check_code = "isset($var)";
+				}
 
 				//loop variables
 				$counter = "\$counter$loop_level";	   // count iteration
@@ -496,7 +519,7 @@ class RainTPL{
 				$value = "\$value$loop_level";		   // value
 
 				//loop code
-				$compiled_code .=  "<?php $counter=-1; if( isset($var) && is_array($var) && sizeof($var) ) foreach( $var as $key => $value ){ $counter++; ?>";
+				$compiled_code .=  "<?php $counter=-1; if( $check_code && is_array($var) && sizeof($var) ) foreach( $var as $key => $value ){ $counter++; ?>";
 
 			}
 
@@ -625,6 +648,7 @@ class RainTPL{
 	}
 
 
+
 	/**
 	 * Reduce a path, eg. www/library/../filepath//file => www/filepath/file
 	 * @param type $path
@@ -641,6 +665,7 @@ class RainTPL{
 			}
 			return $path;
 	}
+
 
 
 	/**
@@ -688,6 +713,32 @@ class RainTPL{
 	}
 
 
+
+	/**
+	 * replace one single path corresponding to a given match in the `path_replace` regex.
+	 * This function has no reason to be used anywhere but in `path_replace`.
+	 * @see path_replace
+	 *
+	 * @param array $matches
+	 * @return replacement string
+	 */
+	protected function single_path_replace ( $matches ){
+		$tag  = $matches[1];
+		$_    = $matches[2];
+		$attr = $matches[3];
+		$url  = $matches[4];
+		$new_url = $this->rewrite_url( $url, $tag, $this->path );
+
+		// Eventually call the external rewrite engine.
+		if (self::$rewriteEngine != null) {
+			$new_url = self::$rewriteEngine->rewrite($new_url);
+		}
+
+		return "<$tag$_$attr=\"$new_url\"";
+	}
+
+
+
 	/**
 	 * replace the path of image src, link href and a href.
 	 * @see rewrite_url for more information about how paths are replaced.
@@ -701,40 +752,21 @@ class RainTPL{
 
 			$tpl_dir = self::$base_url . self::$tpl_dir . $tpl_basedir;
 
-			// reduce the path
-			$path = $this->reduce_path($tpl_dir);
+			// Prepare reduced path not to compute it for each link
+			$this->path = $this->reduce_path( $tpl_dir );
 
 			$exp = array();
 			$exp[] = '/<(link|a)(.*?)(href)="(.*?)"/i';
 			$exp[] = '/<(img|script|input)(.*?)(src)="(.*?)"/i';
 			$exp[] = '/<(form)(.*?)(action)="(.*?)"/i';
 
-			return preg_replace_callback(
-				$exp,
-				function ($matches) use ($path) {
-					$tag  = $matches[1];
-					$_    = $matches[2];
-					$attr = $matches[3];
-					$url  = $matches[4];
-					$new_url = $this->rewrite_url($url, $tag, $path);
-
-					// Eventually call the external rewrite engine.
-					if (self::$rewriteEngine != null) {
-						$new_url = self::$rewriteEngine->rewrite($new_url);
-					}
-
-					return "<$tag$_$attr=\"$new_url\"";
-				},
-				$html
-			);
+			return preg_replace_callback( $exp, 'self::single_path_replace', $html );
 
 		}
 		else
 			return $html;
 
 	}
-
-
 
 
 

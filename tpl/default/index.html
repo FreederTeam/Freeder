@@ -2,25 +2,19 @@
 	{loop="$entries"}
 		<article>
 			<nav class="articleControls">
-				<button class="green" onclick="">
-					<img src="img/share.svg" alt="Share this entry">
-					Share</button> 
-				<button class="darkgrey" onclick="">
-					<img src="img/stick.svg" alt="Stick this entry">
-					Stick</button>
-				<button class="red" onclick="ajax(this, 'api/mark_as_read.php?entry={$value['id']}')">
-					<img src="img/read.svg" alt="Read this entry">
-					Read</button>
+				<button class="green" onclick="">Share</button>
+				<button class="darkgrey" onclick="ajax(this, 'api/tags.php?entry={$value['id']}&amp;tag=_sticky')">Stick</button>
+				<button class="red" onclick="ajax(this, 'api/mark_as_read.php?entry={$value['id']}')">Read</button>
+
 				<div class="articleTags">
 					<img class="articleDisplayTagButton" alt="display the tag list" src="img/tag.svg">
-					<div class="articleTagList">
+					<div class="articleTagsList">
 						<ul>
-							<li>tag 1</li>
-							<li>tag 2</li>
-							<li>tag 3</li>
-							<li>tag 4</li>
+							{loop="$value['tags']"}
+								<li><a href="{$tag_baselink}{$value2['name']}">{$value2['name']}</a></li>
+							{/loop}
 						</ul>
-						<form>
+						<form class="articleTagForm">
 							<input type="text" name="newTag" id="newTag" placeholder="Tag…"/>
 							<button>Tagguer</button>
 						</form>

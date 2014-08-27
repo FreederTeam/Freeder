@@ -14,9 +14,9 @@ require_auth();
 
 $feeds = get_feeds();
 
-$tpl->assign('config', $config, false);
-$tpl->assign('templates', list_templates(), false);
-$tpl->assign('feeds', $feeds, false);
+$tpl->assign('config', $config, RainTPL::RAINTPL_HTML_SANITIZE);
+$tpl->assign('templates', list_templates(), RainTPL::RAINTPL_HTML_SANITIZE);
+$tpl->assign('feeds', $feeds, RainTPL::RAINTPL_XSS_SANITIZE);
 
 // Handle posted info for settings
 if (!empty($_POST['synchronization_type']) && !empty($_POST['template']) && !empty($_POST['timezone']) && isset($_POST['use_tags_from_feeds']) && isset($_POST['anonymous_access']) && isset($_POST['entries_to_keep']) && !empty($_POST['display_entries'])) {
@@ -81,7 +81,7 @@ if (!empty($_POST['feed_url']) && isset($_POST['feed_post'])) {
 			$error['content'] .= '<li><a href="'.htmlspecialchars($add_error['url']).'">'.htmlspecialchars($add_error['url']).'</a> ('.htmlspecialchars($add_error['msg']).')</li>';
 		}
 		$error['content'] .= '</ul>';
-		$tpl->assign('error', $error);
+		$tpl->assign('error', $error, RainTPL::RAINTPL_IGNORE_SANITIZE);
 		$tpl->draw('settings');
 		exit();
 	}
@@ -121,7 +121,7 @@ if (isset($_FILES['import'])) {
 		$error['type'] = 'error';
 		$error['title'] = 'OPML import error';
 		$error['content'] = '<p>The OPML file could not be imported.</p>';
-		$tpl->assign('error', $error);
+		$tpl->assign('error', $error, RainTPL::RAINTPL_IGNORE_SANITIZE);
 		$tpl->draw('settings');
 		exit();
 	}
@@ -130,7 +130,7 @@ if (isset($_FILES['import'])) {
 		$error['type'] = 'error';
 		$error['title'] = 'OPML import error';
 		$error['content'] = '<p>The OPML file is too large.</p>';
-		$tpl->assign('error', $error);
+		$tpl->assign('error', $error, RainTPL::RAINTPL_IGNORE_SANITIZE);
 		$tpl->draw('settings');
 		exit();
 	}
@@ -141,7 +141,7 @@ if (isset($_FILES['import'])) {
 		$error['type'] = 'error';
 		$error['title'] = 'OPML import error';
 		$error['content'] = '<p>An error occurred during the OPML import. Maybe you did not upload a valid OPML file ?</p>';
-		$tpl->assign('error', $error);
+		$tpl->assign('error', $error, RainTPL::RAINTPL_IGNORE_SANITIZE);
 		$tpl->draw('settings');
 		exit();
 	}
@@ -160,7 +160,7 @@ if (isset($_FILES['import'])) {
 			$error['content'] .= '<li><a href="'.sanitize($error_refresh['url']).'">'.sanitize($error_refresh['url']).'</a> ('.sanitize($error_refresh['msg']).')</li>';
 		}
 		$error['content'] .= '</ul>';
-		$tpl->assign('error', $error);
+		$tpl->assign('error', $error, RainTPL::RAINTPL_IGNORE_SANITIZE);
 		$tpl->draw('settings');
 		exit();
 	}
