@@ -163,10 +163,8 @@ function install_db() {
 		-- displayStyle INT (Title only, Summary, Full text)
 	)');
 
-	$dbh->query('INSERT OR IGNORE INTO views(name, rule) VALUES
-		("_home", "+$all -_read -_no_home BY -$pubDate"),
-		("_public", "+$all -_private BY -$pubDate")
-	');
+	$dbh->query('INSERT OR IGNORE INTO views(name, rule) VALUES("_home", "+$all -_read -_no_home BY -$pubDate")');
+	$dbh->query('INSERT OR IGNORE INTO views(name, rule) VALUES("_public", "+$all -_private BY -$pubDate")');
 
 	$dbh->commit();
 
