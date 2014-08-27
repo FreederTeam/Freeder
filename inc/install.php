@@ -182,9 +182,11 @@ function install() {
 	$timezone = isset($_POST['timezone']) ? $_POST['timezone'] : $default_timezone;
 
 	require_once(INC_DIR . 'rain.tpl.class.php');
+	require_once(INC_DIR . 'rewriting.class.php');
 	require_once(INC_DIR . 'functions.php');
 	RainTPL::$tpl_dir = RELATIVE_TPL_DIR . DEFAULT_THEME . '/';
 	RainTPL::$base_url = dirname($_SERVER['SCRIPT_NAME']) . '/';
+	RainTPL::$rewriteEngine = new RewriteEngine;
 	$tpl = new RainTPL;
 	$tpl->assign('start_generation_time', microtime(true));
 	$tpl->assign('login', $login, false);

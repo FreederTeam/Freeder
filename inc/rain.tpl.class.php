@@ -98,6 +98,16 @@ class RainTPL{
 
 
 		/**
+		 * Rewrite engine
+		 * This is a class that must implement a rewrite($url) method returning an url.
+		 * Ignored if null
+		 *
+		 * @var RewriteEngine
+		 */
+		static $rewriteEngine = null;
+
+
+		/**
 		 * Debug mode flag.
 		 * True: debug mode is used, syntax errors are displayed directly in template. Execution of script is not terminated.
 		 * False: exception is thrown on found error.
@@ -707,6 +717,11 @@ class RainTPL{
 					$attr = $matches[3];
 					$url  = $matches[4];
 					$new_url = $this->rewrite_url($url, $tag, $path);
+
+					// Eventually call the external rewrite engine.
+					if (self::$rewriteEngine != null) {
+						$new_url = self::$rewriteEngine->rewrite($new_url);
+					}
 
 					return "<$tag$_$attr=\"$new_url\"";
 				},

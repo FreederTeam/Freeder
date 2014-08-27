@@ -64,8 +64,10 @@ if($config->version !== Config::$versions[count(Config::$versions) - 1]) {
 
 // Load Rain TPL
 require_once(INC_DIR . 'rain.tpl.class.php');
+require_once(INC_DIR . 'rewriting.class.php');
 RainTPL::$tpl_dir = RELATIVE_TPL_DIR.$config->template;
 RainTPL::$base_url = $config->base_url;
+RainTPL::$rewriteEngine = new RewriteEngine;
 $tpl = new RainTPL;
 $tpl->assign('start_generation_time', microtime(true));
 
