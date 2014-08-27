@@ -60,12 +60,13 @@ class RewriteEngine {
 		$rules = "<IfModule mod_rewrite.c>\n";
 		$rules .= "  RewriteEngine On\n";
 		$rules .= "  RewriteBase $rewrite_base\n";
+
 		foreach($this->rules as $match => $query) {
 			// Apache 1.3 does not support the reluctant (non-greedy) modifier.
 			$match = str_replace('.+?', '.+', $match);
 			$rules .= '  RewriteRule ^' . $match . '$ ' . $query . "\n";
 		}
-		$rules .= "</IfModule>\n";
+		$rules .= "</IfModule>";
 
 		return $rules;
 	}
@@ -87,16 +88,23 @@ class RewriteEngine {
 
 		$begin_tag = '# BEGIN Freeder generated';
 		$end_tag = '# END Freeder generated';
-		$freeder_generated = "/$begin_tag\n.*?$end_tag/s";
 
 		$old_file = file_get_contents($htaccess_filename);
 
 		// Change freeder content or append at the end of file.
-		if (preg_match($freeder_generated, $old_file)) {
-			$file = preg_replace($freeder_generated, "$begin_tag\n$rules\n$end_tag", $old_file);
+		if (preg_match("/$begin_tag\n.*?$end_tag/s", $old_file)) {
+			$tmp = explode($begin_tag, $old_file, 2);
+			$before = rtrim($tmp[0], "\n");
+			$tmp2 = explode($end_tag, $tmp[1], 2);
+			$after = $tmp2[1];
 		} else {
-			$file = "$old_file\n\n$begin_tag\n$rules\n$end_tag\n";
+			$before = $old_file;
+			$after = '';
 		}
+
+		$file = "$before\n\n$begin_tag\n$rules\n$end_tag\n$after";
+
+		echo("$rules");
 
 		file_put_contents($htaccess_filename, $file);
 
