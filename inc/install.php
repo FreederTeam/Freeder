@@ -183,13 +183,24 @@ function install() {
 	$timezone = isset($_POST['timezone']) ? $_POST['timezone'] : $default_timezone;
 
 	require_once(INC_DIR . 'rain.tpl.class.php');
+	require_once(INC_DIR . 'rewriting.class.php');
 	require_once(INC_DIR . 'functions.php');
 	RainTPL::$tpl_dir = RELATIVE_TPL_DIR . DEFAULT_THEME . '/';
 	RainTPL::$base_url = dirname($_SERVER['SCRIPT_NAME']) . '/';
+	RewriteEngine::$rewrite_base = RainTPL::$base_url;
+	RainTPL::$rewriteEngine = new RewriteEngine;
 	$tpl = new RainTPL;
 	$tpl->assign('start_generation_time', microtime(true), RainTPL::RAINTPL_IGNORE_SANITIZE);
 	$tpl->assign('login', $login, RainTPL::RAINTPL_HTML_SANITIZE);
 	$tpl->assign('timezone', $timezone, RainTPL::RAINTPL_HTML_SANITIZE);
+
+	if ($err = RainTPL::$rewriteEngine->write_htaccess()) {
+		$error = array();
+		$error['type'] = 'error';
+		$error['title'] = 'Permissions error';
+		$error['content'] = 'Unable to create or write .htaccess file. Check the writing rights of Freeder root directory. The user who executes Freeder — '.sanitize($current_user).' — should be able to write in this directory. You may prefere to create the .htaccess file on your own and allow '.sanitize($current_user).' to write only in .htaccess instead of in the whole Freeder root.';
+		$tpl->assign('error', $error, RainTPL::RAINTPL_IGNORE_SANITIZE);
+	}
 
 	if (!empty($_POST['login']) && !empty($_POST['password']) && !empty($_POST['confirm_password']) && !empty($_POST['timezone'])) {
 		if ($_POST['confirm_password'] != $_POST['password']) {
