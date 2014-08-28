@@ -227,7 +227,7 @@ function curl_downloader($urls, $fetch_content=true, $verbose=true) {
 		} while ($active > 0);
 
 		if ($verbose && !$command_line) {
-			echo '<script type="text/javascript">var elts = document.getElementsByClassName("refreshed-feed-tmp"); for(var i=0; i < elts.length; i++) { elts[i].parentElement.removeChild(elts[i]); }</script>';
+			echo '<script type="text/javascript">var elts = document.getElementsByClassName("refreshed-feed-tmp"); while(elts[0]) { elts[0].parentNode.removeChild(elts[0]); }</script>';
 		}
 		foreach ($chunk as $i=>$url_array) {
 			$url = $url_array['url'];
