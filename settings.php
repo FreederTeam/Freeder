@@ -57,7 +57,7 @@ if (!empty($_POST['synchronization_type']) && !empty($_POST['template']) && !emp
 		write_htaccess();
 	}
 	$config->save();
-	//header('location: settings.php');
+	header('location: settings.php');
 	exit();
 }
 
