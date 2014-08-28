@@ -321,5 +321,5 @@ function write_htaccess() {
 	}
 
 	$htaccess_new = implode("\n", $htaccess_new);
-	file_put_contents('.htaccess', $htacces_new);
+	file_put_contents('.htaccess', $htaccess_new);
 }
