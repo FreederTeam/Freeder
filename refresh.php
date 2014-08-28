@@ -21,4 +21,5 @@ foreach($feeds as $feed) {
 }
 
 $tpl->assign('feeds_to_refresh', $feeds_to_refresh);
+$tpl->assign('feeds', $feeds);
 $tpl->draw('refresh');

@@ -237,7 +237,7 @@ function curl_downloader($urls, $fetch_content=true, $verbose=true) {
 			curl_multi_remove_handle($multihandler, $handlers[$i]);
 			curl_close($handlers[$i]);
 
-			if ($verbose) {
+			if ($verbose && !$command_line) {
 				echo str_replace('CLASS', '', $span_start).'Starting to download '.$url.'… Done.'.$backspace.$span_end;
 			}
 		}
