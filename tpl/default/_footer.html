@@ -1,7 +1,10 @@
 {* Footer.				*}
 
-<footer>
+<footer class="Footer">
 	<p>Follow us on <a href="https://github.com/FreederTeam/Freeder">GitHub</a> !</p>
 	<p>This page was generated in {function="get_generation_time($start_generation_time)"}.</p>
-	{if="!empty($error)"}<p class="error"><strong>{$error['title']}</strong></p>{$error['content']}{/if}
 </footer>
+
+{if="!empty($error)"}
+	<p class="error"><strong>{$error['title']}</strong></p>{$error['content']}
+{/if}
