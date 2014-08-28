@@ -65,7 +65,7 @@ class RewriteEngine {
 			$match = str_replace('.+?', '.+', $match);
 			$rules .= '  RewriteRule ^' . $match . '$ ' . $query . "\n";
 		}
-		$rules .= "</IfModule>\n";
+		$rules .= "</IfModule>";
 
 		return $rules;
 	}
