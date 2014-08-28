@@ -18,14 +18,14 @@
 	</ul>
 
 	<form class="Side-mainForm MainForm">
-		<input class="MainForm-Input Input" type="text" name="newTag" id="newTag" placeholder="Tag search…"/>
+		<input class="MainForm-Input Input" type="text" name="newTag" id="newTag" placeholder="Global search…"/>
 		<button class="MainForm-Submit Submit Button"><!--<img src="img/glass.png" alt="Search">-->Search</button>
 	</form>
 
 	<ul class="Side-tagList TagList">
 			{loop="get_tags(USER_TAGS)"}
 				<li class="TagList-completeTag CompleteTag">
-					<a class="TagList-tagName TagName" href="{$tag_baselink}{$value['name']}">{$value['name']}</a><a class="TagList-delTag DelTag" href="#">X</a>
+					<a class="TagList-tagName TagName" href="{$tag_baselink}{$value['name']}">{$value['name']}</a>
 				</li>
 			{/loop}
 	</ul>

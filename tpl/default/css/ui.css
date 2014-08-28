@@ -197,12 +197,3 @@
 		a.TagName {
 			color:#6A6A6A;
 		}
-	/*the delete button of the tag*/
-		.TagList-delTag {
-
-		}
-		a.DelTag {
-			background-color: #6A6A6A;
-			font-weight: bold;
-			color: #FFF;
-		}
