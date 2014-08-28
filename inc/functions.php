@@ -292,7 +292,7 @@ function get_url_rewriting() {
  */
 function write_htaccess() {
 	$rewrite_base = substr($_SERVER['REQUEST_URI'], 0, strpos($_SERVER['REQUEST_URI'], '/', 1)).'/';
-	$htaccess = "Options +FollowSymLinks\nOptions +Indexes\n<IfModule mod_rewrite.c>\n\tRewriteEngine On\n\tRewriteBase $rewrite_base\n\tRewriteRule ^tag/(.+)$ index.php?view=\$tag_$1\n\tRewriteRule ^feed/(.+)$ index.php?view=\$feed_$1\n\t</IfModule>\n";
+	$to_write = "Options +FollowSymLinks\nOptions +Indexes\n<IfModule mod_rewrite.c>\n\tRewriteEngine On\n\tRewriteBase $rewrite_base\n\tRewriteRule ^tag/(.+)$ index.php?view=\$tag_$1\n\tRewriteRule ^feed/(.+)$ index.php?view=\$feed_$1\n</IfModule>\n";
 	if (is_file('.htaccess')) {
 		$htaccess = file('.htaccess');
 	}
@@ -306,7 +306,7 @@ function write_htaccess() {
 		if (stristr($line, 'begin freeder generated') !== FALSE) {
 			$start_index = $key;
 			$htaccess_new[] = $line;
-			$htaccess_new[] = $htaccess;
+			$htaccess_new[] = $to_write;
 			continue;
 		}
 		elseif (stristr($line, 'end freeder generated') !== FALSE) {
@@ -320,6 +320,14 @@ function write_htaccess() {
 		}
 	}
 
-	$htaccess_new = implode("\n", $htaccess_new);
+	// Failsafe if no comments are available
+	if ($start_index == -1 && $end_index == -1) {
+		$htaccess_new[] = "# BEGIN FREEDER GENERATED";
+		$htaccess_new[] = $to_write;
+		$htaccess_new[] = "# END FREEDER GENERATED";
+	}
+
+	//$htaccess_new = implode("\n", $htaccess_new);
+	var_dump(implode("\n", $htaccess_new));
 	file_put_contents('.htaccess', $htaccess_new);
 }
