@@ -38,6 +38,8 @@ function check_and_get_user($login, $pass) {
  * Set `$_SESSION['user']` value.
  */
 function log_user_in() {
+	global $dbh;
+
 	// If user alreadu connected, returns immediately
 	if (!empty($_SESSION['user'])) {
 		return;
