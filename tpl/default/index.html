@@ -10,10 +10,6 @@
 					{/if}
 					<button class="Controls-button Button darkgrey" onclick="ajax(this, 'api/tags.php?entry={$value['id']}&amp;tag=_sticky')">Stick</button>
 					<button class="Controls-button Button green" onclick="">Share</button>
-						<button class="red" onclick="read_entry(this, '{$value['id']}')">Read</button>
-					{else}
-						<button class="red" onclick="unread_entry(this, '{$value['id']}')">Unread</button>
-					{/if}
 				{/if}
 
 				<div class="ArticleTags">

@@ -23,7 +23,7 @@
 	</form>
 
 	{if="!empty($user)"}
-		<button class="Button" onclick="read_all(this)">Read all</button>
+		<button class="Button red" onclick="read_all(this)">Read all</button>
 	{/if}
 	<ul class="Side-tagList TagList">
 			{loop="get_tags(USER_TAGS)"}
