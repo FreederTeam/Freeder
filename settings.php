@@ -96,7 +96,12 @@ if (!empty($_GET['delete_feed'])) {
 
 // Handle feed refresh
 if (!empty($_GET['refresh_feed'])) {
-	refresh_feeds(array(intval($_GET['refresh_feed']) => '')); // TODO
+	$query = $dbh->prepare('SELECT url FROM feeds WHERE id=:id');
+	$query->execute(array('id'=>intval($_GET['refresh_feed'])));
+	$url = $query->fetch();
+	if (!empty($url['url'])) {
+		refresh_feeds(array(intval($_GET['refresh_feed']) => array('url'=>$url['url'], 'post'=>''))); // TODO
+	}
 	header('location: settings.php');
 	exit();
 }
