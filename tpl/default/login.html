@@ -3,22 +3,22 @@
 {include="_begin_login"}
 
 
-<form method="post" action="#" id="loginform">
+<form method="post" action="#" class="LoginForm">
 	<header>
-		<h1><img alt="Freeder" src="img/logo_complete.svg"></h1>
+		<h1 class="LoginForm-h1"><img alt="Freeder" src="img/logo_complete.svg"></h1>
 	</header>
 	<div>
-		<input type="text" name="login" id="login" placeholder="Login"/>
 		<label for="login" class="hidden" >Login</label>
+		<input class="LoginForm-input" type="text" name="login" id="login" placeholder="Login"/>
 	</div>
 	<div>
-		<input type="password" name="password" id="password" placeholder="Password" />
 		<label for="password" class="hidden">Password</label>
+		<input class="LoginForm-input" type="password" name="password" id="password" placeholder="Password" />
 	</div>
 	<div>
-		<input type="checkbox" name="remember" id="remember" class="switch" />
+		<input type="checkbox" name="remember" id="remember" class="Switch" />
 		<label for="remember">Remember me</label>
 	</div>
-	<input class="red" type="submit"/>
+	<input class="LoginForm-input Button" type="submit"/>
 </form>
 {include="_end"}

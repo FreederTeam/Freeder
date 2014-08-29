@@ -2,22 +2,16 @@
  * Styles specific to the loginform page
  */
 
-#loginform {
+.LoginForm {
 	width:25%;
 	min-width:250px;
 	margin: 0 auto;
 }
-#loginform h1 {
+.LoginForm-h1 {
 	text-align:center;
 	margin-bottom:2rem;
 }
 
-#loginform input[type="text"],
-#loginform input[type="password"],
-#loginform input[type="submit"] {
+ .LoginForm-input {
 	width:100%;
-}
-
-.switch {
-	
 }

@@ -4,23 +4,23 @@
 
 /* == Main */
 	/* flex */
-	#flex {
+	.flex {
 		display:flex;
 	}
 	aside {
 		flex: 0 1 250px;
 	}
-	main {
+	.MainContent {
 		flex: 3 1 0;
 	}
 	/*space around elements*/
-	#flex > * {
+	.flex > * {
 		margin:1rem;
 	}
-	main article:first-child {
+	.Article:first-child {
 		margin-top:0;
 	}
-	main article {
+	.Article {
 		margin: 2rem 0;
 	}
 
@@ -28,27 +28,23 @@
 	/*big screens*/
 	@media(min-width:960px)
 	{
-		main article {
+		.Article {
 			display:flex;
 		}
-		.articleControls {
+		.Controls {
 			flex:1;
 			max-width:250px;
 			text-align:left
 		}
-		.articleContent {
+		.ArticleContent {
 			flex:3;
 		}
 	}
 	/*phones*/
 	@media(max-width:700px)
 	{
-		#flex,
-		body main article {
+		.flex,
+		.Article {
 			display:block;
 		}
-	}
-/* == Tools */
-	.clear {
-		clear:both;
 	}

@@ -1,12 +1,9 @@
 /*
  * Style for User-Interaction parts : buttons, forms, etc.
  */
-
 /* == Buttons */
 	/*Remember that if the .btn class is added to a non-standard button element, aria role is needed*/
-	button,
-	input[type="submit"],
-	.btn {
+	.Button {
 		height:35px;
 		border: 0 none;
 		padding:0 1rem;
@@ -16,21 +13,15 @@
 		cursor:pointer;
 		/*by default, red buttons*/
 		color:#FFF;
-		background-color:#D14836;
-
+		background-color:#ED7261;
 	}
-		button:hover,
-		button:active,
-		button:focus,
+		.Button:hover,
+		.Button:active,
+		.Button:focus,
 		input[type="submit"]:hover,
 		input[type="submit"]:active,
-		input[type="submit"]:focus,
-		.btn:hover,
-		.btn:active,
-		.btn:focus {
-			background-color:#C03927;
-			-webkit-box-shadow: 0 0 4px 0 rgba(0,0,0,0.3);
-			box-shadow: 0 0 4px 0 rgba(0,0,0,0.3);
+		input[type="submit"]:focus {
+			background-color:#D14836;
 		}
 	.lightgrey {
 		color:#444;
@@ -43,12 +34,12 @@
 		}
 	.darkgrey {
 		color:#FFF;
-		background-color:#444;
+		background-color:#666;
 	}
 		.darkgrey:hover,
 		.darkgrey:active,
 		.darkgrey:focus {
-			background-color:#333;
+			background-color:#444;
 		}
 	.blue {
 		color:#FFF;
@@ -61,16 +52,15 @@
 		}
 	.green {
 		color:#FFF;
-		background-color:#4EAD48;
+		background-color:#88BF57;
 	}
 		.green:hover,
 		.green:active,
 		.green:focus {
-			background-color:#3C9C37;
+			background-color:#4EAD48;
 		}
 
 /* == Form */
-
 	input[type="submit"],
 	input[type="text"],
 	input[type="password"]
@@ -85,19 +75,46 @@
 		background-color:#fff;
 		color:#333;
 	}
-	input[type="text"]:focus,
-	input[type="password"]:focus {
+	/*
+	 * box-shadow inset have a huge performance issue, so I prefer desactivate it.
+	 * Note that the perf issue was noticed in 2010, and is still here in 2014
+	input:focus {
 		background-color:#ECECEC;
-		box-shadow:inset 0 0 3px 0px rgba(0,0,0,0.8), 0 0 3px 0 #FFF;
+		box-shadow:inset 0 0 3px 0px #333, 0 0 3px 0 #FFF;
+		box-shadow:0 0 3px 0 #FFF;
 	}
-/* ==  */
+	*/
+/* == Search/add/ main form */
+	.MainForm {
+		margin:5px;
+		width:100%;
+	}
+	input.Input,
+	.Submit {
+		margin:0;
+		height:35px;
+	}
+	input.Input {
+		width:calc(100% - 65px);
+		border-radius:2px 0 0 2px;
+	}
+	.MainForm-Submit {
+		top:0;
+		right:0;
+		float:right;
+	}
+	.Submit {
+		padding: 2px;
+		min-width:65px;
+		border-radius: 0 2px 2px 0;
+	}
 
 /* == switches */
-	input.switch:empty
+	.Switch:empty
 	{
 		margin-left: -999px;
 	}
-	input.switch:empty ~ label
+	.Switch:empty ~ label
 	{
 		position: relative;
 		float: left;
@@ -105,13 +122,9 @@
 		text-indent: 4em;
 		margin: 0.5rem;
 		cursor: pointer;
-		-webkit-user-select: none;
-		-moz-user-select: none;
-		-ms-user-select: none;
-		user-select: none;
 	}
-	input.switch:empty ~ label:before, 
-	input.switch:empty ~ label:after
+	.Switch:empty ~ label:before, 
+	.Switch:empty ~ label:after
 	{
 		position: absolute;
 		display: block;
@@ -120,12 +133,12 @@
 		left: 0;
 		content: ' ';
 		width: 3.6em;
-		background-color: #c33;
+		background-color: #ED7261;
 		border-radius: 0.3em;
 		-webkit-transition: all 100ms ease-in;
 		transition: all 100ms ease-in;
 	}
-	input.switch:empty ~ label:after
+	.Switch:empty ~ label:after
 	{
 		width: 1.4em;
 		top: 0.2em;
@@ -134,15 +147,53 @@
 		background-color: #fff;
 		border-radius: 0.15em;
 	}
-	input.switch:checked ~ label:before
+	.Switch:checked ~ label:before
 	{
 		background-color: #393;
 	}
-	input.switch:checked ~ label:after
+	.Switch:checked ~ label:after
 	{
 		margin-left: 2em;
 	}
 
 /* == tags */
+	/*common*/
+	.DelTag,
+	.TagName {
+		padding: 0 .3rem;
+	}
+	/*The ul, containing the loop of tags*/
+		.TagList {
 
+		}
+	/*One complete tag*/
+		.TagList-completeTag {
 
+		}
+		.CompleteTag {
+			margin: .3rem;
+			display: inline-block;
+			overflow: hidden;
+			white-space: nowrap;
+			text-overflow:ellipsis;
+			border-radius: 2rem;
+
+			border: 1px solid #6A6A6A;
+		}
+			.CompleteTag:hover {
+				background-color: #6A6A6A;
+			}
+			.CompleteTag:hover a.TagName {
+				color:#FFF;
+			}
+	.TagName,
+	.DelTag {
+		padding:.3rem .5rem;
+	}
+	/*The name of the tag*/
+		.TagList-tagName {
+
+		}
+		a.TagName {
+			color:#6A6A6A;
+		}

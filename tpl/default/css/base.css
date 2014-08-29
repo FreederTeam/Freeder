@@ -8,10 +8,6 @@
 		-moz-box-sizing: border-box;
 		box-sizing: border-box;
 	}
-/*CSSO*/
-	.hidden {
-		display:none;
-	}
 /*base*/
 	html {
 		//font-size:62.5%;
@@ -88,15 +84,15 @@
 	button,
 	input[type="submit"],
 	input[type="text"],
-	input[type="password"]
-	{
+	input[type="password"] {
 		border-radius:2px;
 	}
 
 /*Animate this !*/
 	input,
-	button
-	{
+	.Button,
+	.CompleteTag,
+	.TagName {
 		-webkit-transition: all .2s ease;
 		-moz-transition: all .2s ease;
 		-ms-transition: all .2s ease;
@@ -104,9 +100,7 @@
 		transition: all .2s ease;
 	}
 
-
-/*Misc*/
-	.error {
-		color: red;
+/*Tools*/
+	.hidden {
+		display: none;
 	}
-
