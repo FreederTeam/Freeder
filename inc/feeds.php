@@ -143,7 +143,18 @@ function refresh_feeds($feeds, $check_favicons=false, $verbose=true) {
 			$description = isset($event['description']) ? $event['description'] : '';
 			$content = isset($event['content']) ? $event['content'] : '';
 			$enclosures = isset($event['enclosures']) ? json_encode($event['enclosures']) : '';
-			$comments = isset($event['comments']) ? $event['comments'] : ((isset($event['links'])) ? multiarray_search('rel', 'replies', $event['links'], array('href'=>''))['href'] : '');
+			if (isset($event['comments'])) {
+				$comments = $event['comments'];
+			}
+			else {
+				if ((isset($event['links']))) {
+					$tmp = multiarray_search('rel', 'replies', $event['links'], array('href'=>''));
+					$comments = $tmp['href'];
+				}
+				else {
+					$comments = '';
+				}
+			}
 			$guid = isset($event['guid']) ? $event['guid'] : '';
 			$pubDate = isset($event['pubDate']) ? $event['pubDate'] : '';
 			$last_update = isset($event['updated']) ? $event['updated'] : '';
@@ -175,7 +186,8 @@ function refresh_feeds($feeds, $check_favicons=false, $verbose=true) {
 
 	// Check favicons
 	if ($check_favicons && !empty($favicons_to_check)) {
-		$favicons = get_favicon($favicons_to_check)['favicons'];
+		$favicons = get_favicon($favicons_to_check);
+		$favicons = $favicons['favicons'];
 		$query_favicon = $dbh->prepare('UPDATE feeds SET image=:image WHERE url=:url');
 		$query_favicon->bindParam(':url', $url);
 		$query_favicon->bindParam(':image', $image);
@@ -337,7 +349,8 @@ function get_feed_url_from_html($urls_to_fetch) {
 					continue;
 				}
 				if(strstr((string) $attribute, 'rss') || strstr((string) $attribute, 'atom')) {
-					$feeds[$url] = array('original_url' => $url, 'url'=>(string) $head_tag->attributes()['href']);
+					$tmp = $head_tag->attributes();
+					$feeds[$url] = array('original_url' => $url, 'url'=>(string) $tmp['href']);
 				}
 			}
 		}
