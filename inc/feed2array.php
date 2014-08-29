@@ -261,7 +261,8 @@ function feed2array($feed, $load=false, $debug=false) {
 						}
 					}
 					if($item->pubDate) {
-						$flux['items'][$c]['pubDate'] = (new DateTime((string)$item->pubDate))->format('U');
+						$tmp_date = new DateTime((string)$item->pubDate);
+						$flux['items'][$c]['pubDate'] = $tmp_date->format('U');
 					}
 				}
 				if($type == "ATOM") {
@@ -272,7 +273,8 @@ function feed2array($feed, $load=false, $debug=false) {
 						$flux['items'][$c]['title'] = (string)$item->title;
 					}
 					if($item->updated) {
-						$flux['items'][$c]['updated'] = (new DateTime((string)$item->updated))->format('U');
+						$tmp_date = new DateTime((string)$item->updated);
+						$flux['items'][$c]['updated'] = $tmp_date->format('U');
 					}
 					if($item->author) {
 						foreach($item->author as $author) {
@@ -352,7 +354,8 @@ function feed2array($feed, $load=false, $debug=false) {
 						}
 					}
 					if($item->published) {
-						$flux['items'][$c]['pubDate'] = (new DateTime((string)$item->published))->format('U');
+						$tmp_date = new DateTime((string)$item->published);
+						$flux['items'][$c]['pubDate'] = $tmp_date->format('U');
 					}
 					if($item->rights) {
 						$flux['items'][$c]['copyright'] = (string)$item->rights;

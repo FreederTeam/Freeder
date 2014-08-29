@@ -66,7 +66,8 @@ function get_favicon($urls) {
 					continue;
 				}
 				if(strstr((string) $attribute, 'icon')) {
-					if(isset($head_tag->attributes()['sizes'])) {
+					$tmp = $head_tag->attributes();
+					if(isset($tmp['sizes'])) {
 						$sizes = (string)$head_tag->attributes()['sizes'];
 					}
 					else {

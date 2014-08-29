@@ -220,7 +220,8 @@ function get_view_rule($view) {
 
 	$query = $dbh->prepare('SELECT rule FROM views WHERE name = ?');
 	$query->execute(array($view));
-	if (!($rule = $query->fetch(PDO::FETCH_ASSOC)['rule'])) {
+	$tmp = $query->fetch(PDO::FETCH_ASSOC);
+	if (!($rule = $tmp['rule'])) {
 		$rule = '';
 	}
 
