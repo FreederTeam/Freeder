@@ -10,17 +10,17 @@
 	aside {
 		flex: 0 1 250px;
 	}
-	main {
+	.MainContent {
 		flex: 3 1 0;
 	}
 	/*space around elements*/
-	#flex > * {
+	.flex > * {
 		margin:1rem;
 	}
-	main article:first-child {
+	.Article:first-child {
 		margin-top:0;
 	}
-	main article {
+	.Article {
 		margin: 2rem 0;
 	}
 
@@ -36,7 +36,7 @@
 			max-width:250px;
 			text-align:left
 		}
-		.articleContent {
+		.ArticleContent {
 			flex:3;
 		}
 	}
@@ -47,8 +47,4 @@
 		.Article {
 			display:block;
 		}
-	}
-/* == Tools */
-	.clear {
-		clear:both;
 	}

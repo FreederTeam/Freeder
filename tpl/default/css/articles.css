@@ -46,13 +46,13 @@
 		}
 
 		/*hide the list and show the display button*/
-		.displayTagsButton{
+		.DisplayTagsButton{
 			display:none;
 		}
-		.articleTagList {
+		.ArticleTagsList {
 			display:block;
 		}
-		.articleTagForm {
+		.Article-mainForm {
 			width:100%;
 		}
 	}
@@ -67,10 +67,10 @@
 		margin-top:0;
 	}
 
-	.articleContent ul,
-	.articleContent ol {
+	.ArticleContent ul,
+	.ArticleContent ol {
 		padding-left:2em;
 	}
-	.articleContent > * {
+	.ArticleContent > * {
 		padding:0px 2rem 1rem 2rem;
 	}

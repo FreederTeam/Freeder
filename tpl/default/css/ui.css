@@ -110,11 +110,11 @@
 	}
 
 /* == switches */
-	.switch:empty
+	.Switch:empty
 	{
 		margin-left: -999px;
 	}
-	.switch:empty ~ label
+	.Switch:empty ~ label
 	{
 		position: relative;
 		float: left;
@@ -123,8 +123,8 @@
 		margin: 0.5rem;
 		cursor: pointer;
 	}
-	.switch:empty ~ label:before, 
-	.switch:empty ~ label:after
+	.Switch:empty ~ label:before, 
+	.Switch:empty ~ label:after
 	{
 		position: absolute;
 		display: block;
@@ -133,12 +133,12 @@
 		left: 0;
 		content: ' ';
 		width: 3.6em;
-		background-color: #c33;
+		background-color: #ED7261;
 		border-radius: 0.3em;
 		-webkit-transition: all 100ms ease-in;
 		transition: all 100ms ease-in;
 	}
-	.switch:empty ~ label:after
+	.Switch:empty ~ label:after
 	{
 		width: 1.4em;
 		top: 0.2em;
@@ -147,11 +147,11 @@
 		background-color: #fff;
 		border-radius: 0.15em;
 	}
-	.switch:checked ~ label:before
+	.Switch:checked ~ label:before
 	{
 		background-color: #393;
 	}
-	.switch:checked ~ label:after
+	.Switch:checked ~ label:after
 	{
 		margin-left: 2em;
 	}

@@ -18,6 +18,6 @@
 	}
 
 // == Display Tags
-	$(".displayTagsButton").click(function(){
+	$(".DisplayTagsButton").click(function(){
 		$(this).siblings(".ArticleTagsList").slideToggle(200);
 	});

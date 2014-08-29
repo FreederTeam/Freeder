@@ -84,27 +84,23 @@
 	button,
 	input[type="submit"],
 	input[type="text"],
-	input[type="password"]
-	{
+	input[type="password"] {
 		border-radius:2px;
 	}
 
 /*Animate this !*/
-	/*
 	input,
 	.Button,
 	.CompleteTag,
-	.TagName
-	{
+	.TagName {
 		-webkit-transition: all .2s ease;
 		-moz-transition: all .2s ease;
 		-ms-transition: all .2s ease;
 		-o-transition: all .2s ease;
 		transition: all .2s ease;
 	}
-	*/
 
-/*Misc*/
-	.error {
-		color: red;
+/*Tools*/
+	.hidden {
+		display: none;
 	}

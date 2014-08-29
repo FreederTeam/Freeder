@@ -9,7 +9,7 @@
 				
 
 				<div class="ArticleTags">
-					<img class="displayTagsButton" alt="display the tag list" src="img/tag.svg">
+					<img class="DisplayTagsButton" alt="display the tag list" src="img/tag.svg">
 					<div class="ArticleTagsList">
 						<ul class="Article-tagList TagList">
 							{loop="$value['tags']"}
@@ -27,9 +27,9 @@
 					</div>
 				</div>
 			</nav>
-			<div class="articleContent">
+			<div class="ArticleContent">
 				<h1><a href="{function="get_entry_link($value)"}">{$value['title']}</a></h1>
-				<div class="article-authors">{include="_author"}</div>
+				<div class="Authors">{include="_author"}</div>
 				<div>{$value['displayed_content']}</div>
 			</div>
 		</article>
