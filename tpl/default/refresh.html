@@ -1,3 +1,9 @@
-{include="_begin"}
-	<p>{$empty_var=refresh_feeds($feeds_to_refresh)}</p>
-{include="_end"}
+{if="!$command_line"}
+	{include="_begin"}
+	<p>
+{/if}
+{$empty_var=refresh_feeds($feeds_to_refresh)}
+{if="!$command_line"}
+	</p>
+	{include="_end"}
+{/if}

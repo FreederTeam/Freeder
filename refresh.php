@@ -7,7 +7,8 @@
 require_once('inc/init.php');
 require_once('inc/feeds.php');
 
-if (!require_auth(false) && !is_command_line()) {
+$command_line = is_command_line();
+if (!require_auth(false) && !$command_line) {
 	header('location: index.php');
 	exit();
 }
@@ -22,4 +23,5 @@ foreach($feeds as $feed) {
 
 $tpl->assign('feeds_to_refresh', $feeds_to_refresh);
 $tpl->assign('feeds', $feeds);
+$tpl->assign('command_line', $command_line);
 $tpl->draw('refresh');
