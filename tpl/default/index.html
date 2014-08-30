@@ -38,6 +38,17 @@
 				<div class="Authors">{include="_author"}</div>
 				<div>{$value['displayed_content']}</div>
 			</div>
+			{if="!empty($user) && $config->display_entries == 'content'"}
+				<nav class="Controls">
+					{if="!is_read($value)"}
+						<button class="Controls-button Button red" onclick="read_entry(this, {$value['id']})">Read</button>
+					{else}
+						<button class="Controls-button Button red" onclick="unread_entry(this, {$value['id']})">Unread</button>
+					{/if}
+					<button class="Controls-button Button darkgrey" onclick="tag_entry(this, {$value['id']}, '_sticky')">Stick</button>
+					<button class="Controls-button Button green" onclick="">Share</button>
+				</nav>
+			{/if}
 		</article>
 	{/loop}
 	<p>{$nb_pages} pages</p>
