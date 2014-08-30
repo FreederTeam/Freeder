@@ -47,4 +47,8 @@
 		.Article {
 			display:block;
 		}
+
+		.Side-tagList {
+			display: none;
+		}
 	}
