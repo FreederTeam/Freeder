@@ -171,3 +171,13 @@ function filter_tags($tags, $keep=ALL_TAGS) {
 	}
 	return $output;
 }
+
+
+/**
+ * Encode tags for URLs
+ */
+function tag_encode($tag) {
+	return urlencode(str_replace(array(' '), array('\ '), $tag));
+}
+
+
