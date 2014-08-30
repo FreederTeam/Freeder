@@ -104,8 +104,6 @@ class RewriteEngine {
 
 		$file = "$before\n\n$begin_tag\n$rules\n$end_tag\n$after";
 
-		echo("$rules");
-
 		file_put_contents($htaccess_filename, $file);
 
 		return null;
