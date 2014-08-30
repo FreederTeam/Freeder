@@ -62,12 +62,13 @@ function log_user_in() {
 		$query = $dbh->prepare('SELECT id, password, salt, remember_token, is_admin FROM users WHERE remember_token=?');
 		$query->execute(array($_COOKIE['freeder_remember_me']));
 
-		if ($query->rowCount() !== 1) {
+		$user = $query->fetch();
+		if (empty($user)) {
 			remove_stay_connected();
 			return false;
 		}
 		else {
-			$_SESSION['user'] = $query->fetch();
+			$_SESSION['user'] = $user;
 			header('location: index.php');
 			exit();
 		}
