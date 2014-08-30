@@ -25,6 +25,9 @@
 	{if="!empty($user)"}
 		<button class="Button red" onclick="read_all(this)">Read all</button>
 	{/if}
+
+	<p id="nbItems">{$nb_entries} item{if="$nb_entries> 1"}s{/if}.</p>
+
 	<ul class="Side-tagList TagList">
 			{loop="get_tags(USER_TAGS)"}
 				<li class="TagList-completeTag CompleteTag">
