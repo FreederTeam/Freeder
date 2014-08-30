@@ -1,5 +1,6 @@
 {include="_begin"}
 	{loop="$entries"}
+		{$entry_feed=get_feed_from_entry($value, $feeds)}
 		<article class="Article">
 			<nav class="Controls">
 				{if="!empty($user)"}
@@ -35,6 +36,7 @@
 			</nav>
 			<div class="ArticleContent">
 				<h1><a href="{function="get_entry_link($value)"}">{$value['title']}</a></h1>
+				<div class="Feed">From <a href="feed/{$entry_feed['id']}">{$entry_feed['title']}</a></div>
 				<div class="Authors">{include="_author"}</div>
 				<div>{$value['displayed_content']}</div>
 			</div>

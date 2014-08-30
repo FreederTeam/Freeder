@@ -455,3 +455,19 @@ function get_feed($id) {
 }
 
 
+/**
+ * Returns the feed array associated with an entry
+ */
+function get_feed_from_entry($entry, $feeds=array()) {
+	$feed_id = $entry['feed_id'];
+	$search = multiarray_search('id', $feed_id, $feeds, false);
+	if ($search !== false) {
+		return $search;
+	}
+	else {
+		return get_feed($feed_id);
+	}
+}
+
+
+
