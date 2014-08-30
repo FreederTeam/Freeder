@@ -177,6 +177,7 @@ function install_db() {
 function install() {
 	global $default_timezone;
 
+	$current_user = get_current_user();
 	$tmp = install_dir('tmp');
 	if (!empty($tmp)) {
 		exit('Unable to create or write to tmp/ folder. Please check write permissions on this folder.');
@@ -200,7 +201,7 @@ function install() {
 		$error = array();
 		$error['type'] = 'error';
 		$error['title'] = 'Permissions error';
-		$error['content'] = 'Unable to create or write .htaccess file. Check the writing rights of Freeder root directory. The user who executes Freeder — '.sanitize($current_user).' — should be able to write in this directory. You may prefere to create the .htaccess file on your own and allow '.sanitize($current_user).' to write only in .htaccess instead of in the whole Freeder root.';
+		$error['content'] = 'Unable to create or write .htaccess file. Check the writing rights of Freeder root directory. The user who executes Freeder — '.sanitize($current_user).' — should be able to write in this directory. You may prefer to create the .htaccess file on your own and allow '.sanitize($current_user).' to write only in .htaccess instead of in the whole Freeder root.';
 		$tpl->assign('error', $error, RainTPL::RAINTPL_IGNORE_SANITIZE);
 	}
 
