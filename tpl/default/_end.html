@@ -4,7 +4,14 @@
 			</main>
 		</div> {* end #flex *}
 		{include="_footer"}
-		<div class="modalbox"></div>
+		<div id="JsModalbox" class="Modalbox" class="hidden">
+			<!-- 
+				* don't fill this code, this is filled js-only ;
+				* Both ID and classes are used, because for JS selection, ID are way faster than classes.
+			-->
+			<h1 id="JsModalbox-h1" class="Modalbox-h1"></h1>
+			<p id="JsModalbox-p" class="Modalbox-content"></p>
+		</div>
 		{include="_include_end"}
 	</body>
 </html>

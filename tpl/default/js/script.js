@@ -74,3 +74,12 @@
 	$(".DisplayTagsButton").click(function(){
 		$(this).siblings(".ArticleTagsList").slideToggle(200);
 	});
+
+// == Modal Box
+	function fillModalbox(title, content, className) {
+		if (className != undefined) {
+			$("#JsModalbox").addClass(className);
+		}
+		$("#JsModalbox-h1").html(title);
+		$("#JsModalbox-p").html(content);
+	}
