@@ -17,5 +17,5 @@ define('DATA_DIR', ROOT_DIR . RELATIVE_DATA_DIR);
 define('TPL_DIR',  ROOT_DIR . RELATIVE_TPL_DIR);
 
 // TODO : Autodetection
-define('TAG_BASELINK', 'tag/');
-define('FEED_BASELINK', 'feed/');
+define('TAG_BASELINK', '/tag/');
+define('FEED_BASELINK', '/feed/');

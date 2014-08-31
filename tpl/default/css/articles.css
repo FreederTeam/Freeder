@@ -19,7 +19,7 @@
 	.Controls-button {
 		padding:2px;
 		margin:5px;
-	}		
+	}
 	/*mobile-first*/
 	.ArticleTagsList {
 		display:none;
@@ -73,4 +73,8 @@
 	}
 	.ArticleContent > * {
 		padding:0px 2rem 1rem 2rem;
+	}
+	.ArticleContent img {
+		max-width: 100%;
+		height: auto;
 	}

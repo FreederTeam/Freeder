@@ -1,5 +1,6 @@
 {include="_begin"}
 	{loop="$entries"}
+		{$entry_feed=get_feed_from_entry($value, $feeds)}
 		<article class="Article">
 			<nav class="Controls">
 				{if="!empty($user)"}
@@ -18,7 +19,7 @@
 						<ul class="Article-tagList TagList">
 							{loop="$value['tags']"}
 								<li class="TagList-completeTag CompleteTag">
-									<a class="TagList-tagName TagName" href="{$tag_baselink}{$value2['name']}">{$value2['name']}</a>
+									<a class="TagList-tagName TagName" href="{$tag_baselink}{function="tag_encode($value2['name'])"}">{$value2['name']}</a>
 								</li>
 							{/loop}
 						</ul>
@@ -33,11 +34,29 @@
 					</div>
 				</div>
 			</nav>
+
 			<div class="ArticleContent">
 				<h1><a href="{function="get_entry_link($value)"}">{$value['title']}</a></h1>
+				<div class="Feed">From <a href="feed/{$entry_feed['id']}">{$entry_feed['title']}</a></div>
 				<div class="Authors">{include="_author"}</div>
 				<div>{$value['displayed_content']}</div>
 			</div>
+
+			<!--
+			**not usable yet**
+			
+			{if="!empty($user) && $config->display_entries == 'content'"}
+				<nav class="Controls">
+					{if="!is_read($value)"}
+						<button class="Controls-button Button red" onclick="read_entry(this, {$value['id']})">Read</button>
+					{else}
+						<button class="Controls-button Button red" onclick="unread_entry(this, {$value['id']})">Unread</button>
+					{/if}
+					<button class="Controls-button Button darkgrey" onclick="tag_entry(this, {$value['id']}, '_sticky')">Stick</button>
+					<button class="Controls-button Button green" onclick="">Share</button>
+				</nav>
+			{/if}
+			-->
 		</article>
 	{/loop}
 	<p>{$nb_pages} pages</p>

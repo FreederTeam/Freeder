@@ -14,7 +14,7 @@
 	display:block;
 }
 .Logo-img {
-	width: 100%;
+	max-width: 100%;
 	padding: 0 1rem;
 }
 
@@ -26,8 +26,22 @@
 	display: inline-block;
 	padding:.5rem;
 }
-
+/*global search*/
 .Side .MainForm {
 	width: 95%;
 	margin: 5px auto;
+}
+.ItemsNumber {
+	text-align: center;
+	color:#6A6A6A;
+	font-weight: bold;
+}
+/*read all*/
+.Side-button {
+	display: block;
+	width: 100%;
+}
+/*taglist*/
+.Side-tagList {
+	margin-top: 20px;
 }

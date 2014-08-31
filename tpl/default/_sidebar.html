@@ -22,16 +22,20 @@
 		<button class="MainForm-Submit Submit Button"><!--<img src="img/glass.png" alt="Search">-->Search</button>
 	</form>
 
+	<p class="ItemsNumber">{$nb_entries} item{if="$nb_entries> 1"}s{/if}</p>
+
 	{if="!empty($user)"}
-		<button class="Button red" onclick="read_all(this)">Read all</button>
+		<button class="Side-button Button red" onclick="read_all(this)">Read all</button>
 	{/if}
+
 	<ul class="Side-tagList TagList">
 			{loop="get_tags(USER_TAGS)"}
 				<li class="TagList-completeTag CompleteTag">
-					<a class="TagList-tagName TagName" href="{$tag_baselink}{$value['name']}">{$value['name']}</a>
+					<a class="TagList-tagName TagName" href="{$tag_baselink}{function="tag_encode($value['name'])"}">{$value['name']}</a>
 				</li>
 			{/loop}
 	</ul>
+
 	<!--
 	<ul id="feedList">
 		{loop="$feeds"}
@@ -39,5 +43,6 @@
 		{/loop}
 	</ul>
 	-->
+
 </aside>
 

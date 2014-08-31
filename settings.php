@@ -54,7 +54,10 @@ if (!empty($_POST['synchronization_type']) && !empty($_POST['template']) && !emp
 	}
 	$config->use_rewriting = (int) $_POST['use_rewriting'];
 	if ($config->use_rewriting == 1) {
-		write_htaccess();
+		if ($err = RainTPL::$rewriteEngine->write_htaccess()) {
+			$current_user = get_current_user();
+			die('Error: Unable to create or write .htaccess file. Check the writing rights of Freeder root directory. The user who executes Freeder — '.sanitize($current_user).' — should be able to write in this directory. You may prefer to create the .htaccess file on your own and allow '.sanitize($current_user).' to write only in .htaccess instead of in the whole Freeder root.');
+		}
 	}
 	$config->save();
 	header('location: settings.php');
