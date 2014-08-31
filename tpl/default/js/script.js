@@ -82,4 +82,7 @@
 		}
 		$("#JsModalbox-h1").html(title);
 		$("#JsModalbox-p").html(content);
+		
+		$("#JsOverlay").toggle();
+		$("#JsModalbox").toggle();
 	}

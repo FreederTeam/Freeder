@@ -1,0 +1,26 @@
+.Overlay {
+	display: none;
+
+	height:100%;
+	width:100%;
+	position:fixed;
+	left:0;
+	top:0;
+	z-index:1 !important;
+	background-color:black;
+	filter: alpha(opacity=75);
+	-khtml-opacity: 0.75;
+	-moz-opacity: 0.75;
+	opacity: 0.75;
+}
+
+.Modalbox {
+	display: none;
+	height:50%;
+	width:50%;
+	position:fixed;
+	left:0;
+	top:0;
+	z-index:2 !important;
+	background-color: #FFF;
+}
