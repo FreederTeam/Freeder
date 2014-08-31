@@ -71,8 +71,6 @@ RewriteEngine::$rewrite_base = RainTPL::$base_url;
 RainTPL::$rewriteEngine = new RewriteEngine;
 $tpl = new RainTPL;
 $tpl->assign('start_generation_time', microtime(true), RainTPL::RAINTPL_IGNORE_SANITIZE);
-$tpl->assign('feed_baselink', FEED_BASELINK);
-$tpl->assign('tag_baselink', TAG_BASELINK);
 $tpl->assign('config', $config);
 
 
