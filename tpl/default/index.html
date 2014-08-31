@@ -19,7 +19,7 @@
 						<ul class="Article-tagList TagList">
 							{loop="$value['tags']"}
 								<li class="TagList-completeTag CompleteTag">
-									<a class="TagList-tagName TagName" href="{$tag_baselink}{function="tag_encode($value2['name'])"}">{$value2['name']}</a>
+									<a class="TagList-tagName TagName" href="/tag/{function="tag_encode($value2['name'])"}">{$value2['name']}</a>
 								</li>
 							{/loop}
 						</ul>
@@ -27,7 +27,7 @@
 						{if="!empty($user)"}
 							<form class="Article-mainForm MainForm">
 								<input class="MainForm-Input Input" type="text" name="newTag" id="newTag" placeholder="Tag…"/>
-								<button class="MainForm-Submit Submit Button" onclick="tag(this, {$value['id']}, {$tag_baselink});">Tagguer</button>
+								<button class="MainForm-Submit Submit Button" onclick="tag(this, {$value['id']}, '/tag/');">Tagguer</button>
 							</form>
 
 						{/if}
@@ -44,7 +44,7 @@
 
 			<!--
 			**not usable yet**
-			
+
 			{if="!empty($user) && $config->display_entries == 'content'"}
 				<nav class="Controls">
 					{if="!is_read($value)"}
