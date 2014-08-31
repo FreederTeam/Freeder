@@ -728,6 +728,7 @@ class RainTPL{
 		$attr = $matches[3];
 		$url  = $matches[4];
 		$new_url = $this->rewrite_url( $url, $tag, $this->path );
+		echo("$url<br/>\n");
 
 		// Eventually call the external rewrite engine.
 		if (self::$rewriteEngine != null) {
@@ -755,10 +756,12 @@ class RainTPL{
 			// Prepare reduced path not to compute it for each link
 			$this->path = $this->reduce_path( $tpl_dir );
 
+			$url = '(?:(?:\\{.*?\\})?[^{}]*?)*?'; // allow " inside {} for cases in which url contains {function="foo()"}
+
 			$exp = array();
-			$exp[] = '/<(link|a)(.*?)(href)="(.*?)"/i';
-			$exp[] = '/<(img|script|input)(.*?)(src)="(.*?)"/i';
-			$exp[] = '/<(form)(.*?)(action)="(.*?)"/i';
+			$exp[] = '/<(link|a)(.*?)(href)="(' . $url . ')"/i';
+			$exp[] = '/<(img|script|input)(.*?)(src)="(' . $url . ')"/i';
+			$exp[] = '/<(form)(.*?)(action)="(' . $url . ')"/i';
 
 			return preg_replace_callback( $exp, 'self::single_path_replace', $html );
 
