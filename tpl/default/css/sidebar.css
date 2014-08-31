@@ -14,7 +14,7 @@
 	display:block;
 }
 .Logo-img {
-	width: 100%;
+	max-width: 100%;
 	padding: 0 1rem;
 }
 
