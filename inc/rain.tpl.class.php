@@ -393,11 +393,11 @@ class RainTPL{
 
 		$tag_regexp = "/" . join( "|", $tag_regexp ) . "/";
 
-		//split the code with the tags regexp
-		$template_code = preg_split ( $tag_regexp, $template_code, -1, PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY );
-
 		//path replace (src of img, background and href of link)
 		$template_code = $this->path_replace( $template_code, $tpl_basedir );
+
+		//split the code with the tags regexp
+		$template_code = preg_split ( $tag_regexp, $template_code, -1, PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY );
 
 		//compile the code
 		$compiled_code = $this->compileCode( $template_code );
@@ -728,7 +728,6 @@ class RainTPL{
 		$attr = $matches[3];
 		$url  = $matches[4];
 		$new_url = $this->rewrite_url( $url, $tag, $this->path );
-		echo("$url<br/>\n");
 
 		// Eventually call the external rewrite engine.
 		if (self::$rewriteEngine != null) {
@@ -750,6 +749,7 @@ class RainTPL{
 	protected function path_replace( $html, $tpl_basedir ){
 
 		if( self::$path_replace ){
+			var_dump($html);
 
 			$tpl_dir = self::$base_url . self::$tpl_dir . $tpl_basedir;
 
