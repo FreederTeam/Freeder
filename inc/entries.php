@@ -20,7 +20,18 @@ function clean_authors($authors) {
 	foreach($authors as $author) {
 		$new_authors[] = (array) $author;
 		if (empty($author->name) && !empty($author->email)) {
-			$new_authors[count($new_authors) - 1]['name'] = $author->email;
+			$explode = explode(' ', $author->email);
+			if (count($explode) == 2 && filter_var(trim($explode[0], ' ()<>'), FILTER_VALIDATE_EMAIL)) {
+				$name = trim($explode[1], ' ()');
+				$new_authors[count($new_authors) - 1]['name'] = $name;
+			}
+			elseif (count($explode) == 2 && filter_var(trim($explode[1], ' ()<>'), FILTER_VALIDATE_EMAIL)) {
+				$name = trim($explode[0], ' ()');
+				$new_authors[count($new_authors) - 1]['name'] = $name;
+			}
+			else {
+				$new_authors[count($new_authors) - 1]['name'] = $author->email;
+			}
 		}
 	}
 	return $new_authors;
