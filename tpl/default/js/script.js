@@ -21,12 +21,15 @@
 	 * Add a new tag to an entry via the form.
 	 */
 	function tag_form(caller, entry_id, tag_baselink) {
-		var tag_value = $('#newTag').val();
+		var tag_input = $('input[name="newTag"]', caller);
+		var tag_value = tag_input.val();
 		ajax(caller, 'api/tags.php?entry='+entry_id+'&tag='+tag_value, function(c, d) {
-			$('#newTag').val("");
+			tag_input.val("");
 			var article = c.parentNode.parentNode;
-			$('ul', $(article)).append('<li><a href="'+tag_baselink+tag_value+'">'+tag_value+'</a></li>');
+			$('ul', $(article)).append('<li class="TagList-completeTag CompleteTag"><a class="TagList-tagName TagName" href="'+tag_baselink+tag_value+'">'+tag_value+'</a></li>');
+			$('.Side-tagList').append('<li class="TagList-completeTag CompleteTag"><a class="TagList-tagName TagName" href="'+tag_baselink+tag_value+'">'+tag_value+'</a></li>');
 		});
+		return false;
 	}
 
 
