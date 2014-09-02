@@ -135,6 +135,7 @@ function feed2array($feed, $load=false, $debug=false) {
 				}
 				if($feed_obj->author) {
 					foreach($feed_obj->author as $author) {
+						$author = (array) $author;
 						if(!empty($author['email'])) {
 							$email = (string)$author['email'];
 						}
@@ -278,6 +279,7 @@ function feed2array($feed, $load=false, $debug=false) {
 					}
 					if($item->author) {
 						foreach($item->author as $author) {
+							$author = (array) $author;
 							if(!empty($author['email'])) {
 								$email = (string)$author['email'];
 							}
@@ -507,3 +509,5 @@ function truncate($text, $length = 500, $ending = '…', $exact=false, $consider
 	}
 	return $truncate;
 }
+
+

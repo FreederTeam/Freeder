@@ -749,7 +749,7 @@ class RainTPL{
 	protected function path_replace( $html, $tpl_basedir ){
 
 		if( self::$path_replace ){
-			var_dump($html);
+			// DEBUG: var_dump($html);
 
 			$tpl_dir = self::$base_url . self::$tpl_dir . $tpl_basedir;
 
