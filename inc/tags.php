@@ -74,7 +74,7 @@ function add_tag_to_entry($id, $tag) {
 	$dbh->beginTransaction();
 
 	$query = $dbh->query('INSERT OR IGNORE INTO tags(name) VALUES(:tag_name)');
-	$query_execute(array(':tag_name'=>$tag));
+	$query->execute(array(':tag_name'=>$tag));
 
 	$query = $dbh->query('INSERT INTO tags_entries(tag_id, entry_id, auto_added_tag) VALUES((SELECT id FROM tags WHERE name=:tag_name), :entry_id, 0)');
 	$query->bindValue(':tag_name', $tag);
@@ -97,6 +97,60 @@ function remove_tag_from_entry($id, $tag) {
 	$query->execute();
 
 	delete_useless_tags();
+}
+
+
+/**
+ * Tag all entries of view $view with tag $tag
+ */
+function add_tag_to_all($view='', $tag) {
+	global $dbh;
+
+	$dbh->beginTransaction();
+
+	$rule = get_view_rule($view);
+	$r = rule2sql($rule, 'id');
+	$query = $dbh->prepare($r[0]);
+	$query->execute($r[1]);
+	$fetched_entries = $query->fetchall(PDO::FETCH_ASSOC);
+
+	$q = $dbh->prepare('INSERT OR IGNORE INTO tags_entries(tag_id, entry_id) VALUES((SELECT id FROM tags WHERE name=:tag_name), :id)');
+	$q->bindParam(':id', $id, PDO::PARAM_INT);
+	$q->bindParam(':tag_name', $tag);
+
+	foreach($fetched_entries as $entry) {
+		$id = intval($entry['id']);
+		$q->execute();
+	}
+
+	$dbh->commit();
+}
+
+
+/**
+ * Remove tag $tag from all entries of view $view
+ */
+function remove_tag_to_all($view='', $tag) {
+	global $dbh;
+
+	$dbh->beginTransaction();
+
+	$rule = get_view_rule($view);
+	$r = rule2sql($rule, 'id');
+	$query = $dbh->prepare($r[0]);
+	$query->execute($r[1]);
+	$fetched_entries = $query->fetchall(PDO::FETCH_ASSOC);
+
+	$q = $dbh->prepare('DELETE FROM tags_entries WHERE tag_id=(SELECT id FROM tags WHERE name=:tag_name) AND entry_id=:id');
+	$q->bindParam(':id', $id, PDO::PARAM_INT);
+	$q->bindParam(':tag_name', $tag);
+
+	foreach($fetched_entries as $entry) {
+		$id = intval($entry['id']);
+		$q->execute();
+	}
+
+	$dbh->commit();
 }
 
 

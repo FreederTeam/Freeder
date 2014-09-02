@@ -134,10 +134,10 @@ function get_entry_link($entry) {
 
 
 /**
- * Check wether an entry is read (true) or not (false).
+ * Check wether an entry has the tag `$tag` (true) or not (false).
  */
-function is_read($entry) {
-	$res = multiarray_search('name', '_read', $entry['tags'], false);
+function is_tag($tag, $entry) {
+	$res = multiarray_search('name', $tag, $entry['tags'], false);
 	if (!empty($res)) {
 		return true;
 	}

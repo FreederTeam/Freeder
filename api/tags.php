@@ -12,8 +12,23 @@ require_once('../inc/views.php');
 require_once('../inc/tags.php');
 
 
-if (isset($_GET['entry']) && isset($_GET['tag'])) {
-	add_tag_to_entry(intval($_GET['entry']), $_GET['tag']);
+if (isset($_GET['entry']) && !empty($_GET['tag'])) {
+	if (!isset($_GET['remove'])) {
+		add_tag_to_entry(intval($_GET['entry']), $_GET['tag']);
+	}
+	else {
+		remove_tag_from_entry(intval($_GET['entry']), $_GET['tag']);
+	}
+	exit('OK');
+}
+elseif (isset($_GET['all']) && !empty($_GET['tag'])) {
+	$view = (isset($_GET['view'])) ? $_GET['view'] : '';
+	if (!isset($_GET['remove'])) {
+		add_tag_to_all($view, $_GET['tag']);
+	}
+	else {
+		remove_tag_to_all($view, $_GET['tag']);
+	}
 	exit('OK');
 }
 else {

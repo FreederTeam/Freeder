@@ -33,39 +33,63 @@
 	/**
 	 * Add a tag to an entry
 	 */
-	function tag_entry(caller, entry_id, tag) {
-		ajax(caller, 'api/tags.php?entry='+entry_id+'&tag='+tag_value, function(c, d) {});
+	function tag_entry(caller, entry_id, tag_value) {
+		var callback;
+		switch (tag_value) {
+			case "_read":
+				callback = function(c, d) {
+					c.innerHTML = "Unread";
+					var article = c.parentNode.parentNode;
+					article.parentNode.removeChild(article);
+				}
+				break;
+
+			case "_sticky":
+				callback = function(c, d) {
+					c.innerHTML = "Unstick";
+				}
+				break;
+
+			default:
+				callback = function (c, d) { };
+				break;
+		}
+		ajax(caller, 'api/tags.php?entry='+entry_id+'&tag='+tag_value, callback);
 	}
 
 
 	/**
-	 * Mark an entry as read.
+	 * Remove a tag on an entry
 	 */
-	function read_entry(caller, entry_id) {
-		ajax(caller, 'api/mark_as_read.php?entry='+entry_id, function(c, d) {
-			var article = c.parentNode.parentNode;
-			article.parentNode.removeChild(article);
-		});
+	function untag_entry(caller, entry_id, tag_value) {
+		var callback;
+		switch (tag_value) {
+			case "_read":
+				callback = function(c, d) {
+					c.innerHTML = "Read";
+				}
+				break;
+
+			case "_sticky":
+				callback = function(c, d) {
+					c.innerHTML = "Stick";
+				}
+				break;
+
+			default:
+				callback = function (c, d) { };
+				break;
+		}
+		ajax(caller, 'api/tags.php?entry='+entry_id+'&tag='+tag_value+'&remove=1', callback);
 	}
 
 
 	/**
 	 * Mark all entries as read.
 	 */
-	function read_all(caller) {
-		ajax(caller, 'api/mark_as_read.php?all=1', function(c, d) {
+	function tag_all(caller, tag_value) {
+		ajax(caller, 'api/tags.php?all=1&tag='+tag_value, function(c, d) {
 			$('main article').remove();
-		});
-	}
-
-
-	/**
-	 * Mark an entry as unread.
-	 */
-	function unread_entry(caller, entry_id) {
-		ajax(caller, 'api/mark_as_read.php?entry='+entry_id+'&unread=1', function(c, d) {
-			var article = c.parentNode.parentNode;
-			alert('ok');
 		});
 	}
 
@@ -82,7 +106,7 @@
 		}
 		$("#JsModalbox-h1").html(title);
 		$("#JsModalbox-p").html(content);
-		
+
 		$("#JsOverlay").toggle();
 		$("#JsModalbox").toggle();
 	}

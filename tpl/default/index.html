@@ -4,12 +4,16 @@
 		<article class="Article">
 			<nav class="Controls">
 				{if="!empty($user)"}
-					{if="!is_read($value)"}
-						<button class="Controls-button Button red" onclick="read_entry(this, {$value['id']})">Read</button>
+					{if="!is_tag('_read', $value)"}
+						<button class="Controls-button Button red" onclick="tag_entry(this, {$value['id']}, '_read')">Read</button>
 					{else}
-						<button class="Controls-button Button red" onclick="unread_entry(this, {$value['id']})">Unread</button>
+						<button class="Controls-button Button red" onclick="untag_entry(this, {$value['id']}, '_read')">Unread</button>
 					{/if}
-					<button class="Controls-button Button darkgrey" onclick="tag_entry(this, {$value['id']}, '_sticky')">Stick</button>
+					{if="!is_tag('_sticky', $value)"}
+						<button class="Controls-button Button darkgrey" onclick="tag_entry(this, {$value['id']}, '_sticky')">Stick</button>
+					{else}
+						<button class="Controls-button Button darkgrey" onclick="untag_entry(this, {$value['id']}, '_sticky')">Unstick</button>
+					{/if}
 					<button class="Controls-button Button green" onclick="">Share</button>
 				{/if}
 

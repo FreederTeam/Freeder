@@ -26,8 +26,8 @@
 		<p class="ItemsNumber">{$nb_entries} item{if="$nb_entries> 1"}s{/if}</p>
 	{/if}
 
-	{if="!empty($user)"}
-		<button class="Side-button Button red" onclick="read_all(this)">Read all</button>
+	{if="!empty($user) && !empty($nb_entries)"}
+		<button class="Side-button Button red" onclick="tag_all(this, '_read')">Read all</button>
 	{/if}
 
 	<ul class="Side-tagList TagList">
