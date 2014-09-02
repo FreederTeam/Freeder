@@ -22,7 +22,9 @@
 		<button class="MainForm-Submit Submit Button"><!--<img src="img/glass.png" alt="Search">-->Search</button>
 	</form>
 
-	<p class="ItemsNumber">{$nb_entries} item{if="$nb_entries> 1"}s{/if}</p>
+	{if="!empty($nb_entries)"}
+		<p class="ItemsNumber">{$nb_entries} item{if="$nb_entries> 1"}s{/if}</p>
+	{/if}
 
 	{if="!empty($user)"}
 		<button class="Side-button Button red" onclick="read_all(this)">Read all</button>

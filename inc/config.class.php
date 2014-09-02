@@ -11,8 +11,6 @@ require_once(INC_DIR.'functions.php');
 
 /**
  * Store the configuration retrieved from database.
- *
- * @todo Use stdClass ?
  */
 class Config {
 	public static $versions = array('0.1');

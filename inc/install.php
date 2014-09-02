@@ -32,10 +32,6 @@ function install_dir($dir) {
 
 /**
  * Initialize database.
- *
- * @todo
- *	  * handle errors
- *	  * add indexes in db ?
  */
 function install_db() {
 	if (!in_array('pdo_sqlite', get_loaded_extensions())) {

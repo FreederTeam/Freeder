@@ -145,7 +145,7 @@ function get_category_mime_type($mime_type) {
  *
  * Mostly inspired by blogotext by timovn : https://github.com/timovn/blogotext/blob/master/inc/fich.php
  *
- *  @todo If open_basedir or safe_mode, Curl will not follow redirections :
+ *  Note: If open_basedir or safe_mode, Curl will not follow redirections :
  *  https://stackoverflow.com/questions/24687145/curlopt-followlocation-and-curl-multi-and-safe-mode
  *
  *  @param an array $urls of associative arrays {'url', 'post'} for each URL. 'post' is a JSON array of data to send _via_ POST.
