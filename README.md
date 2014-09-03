@@ -9,7 +9,9 @@ Disclaimer
 
 It is currently a WIP, more information will come soon. In the mean time, it may be only interesting for devs.
 
-_Note :_ There are some TODOs in the files. If you are a developper and want to give a hand, this is what you should look for :)
+_Note:_ There are some TODOs in the files. If you are a developper and want to give a hand, this is what you should look for :)
+
+**Important**: From time to time, when you `git pull` the repo, your Freeder install might not work anymore (blank screen in most cases, or database related errors). As we are currently in heavy WIP, we might change the database structure from time to time, and not implement backward compatibility. In such cases, please refer to the commit log for more infos, or reinstall Freeder if you don't want to bother.
 
 Installation
 ------------
