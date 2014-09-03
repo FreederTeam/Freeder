@@ -89,7 +89,8 @@ function install_db() {
 		ttl INT DEFAULT 0,  -- This is the ttl of the feed, 0 means that it uses the config value
 		has_user_ttl INT DEFAULT 0,  -- To specify wether the user edited the TTL manually or not
 		image TEXT,
-		post TEXT
+		post TEXT,
+		import_tags_from_feed INTEGER DEFAULT 0 -- To specify wether to use tags from feed or not
 	)');
 
 	// Create table to store entries

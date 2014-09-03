@@ -45,8 +45,8 @@
 			<legend>Entries</legend>
 
 			<p>Tag entries from the tags in the feeds?
-				<input type="radio" name="use_tags_from_feeds" id="use_tags_from_feeds_yes" value="1" {if="$config->use_tags_from_feeds != 0"}checked="checked"{/if}/><label for=use_tags_from_feeds_yes">Yes</label>
-				<input type="radio" name="use_tags_from_feeds" id="use_tags_from_feeds_no" value="0" {if="$config->use_tags_from_feeds == 0"}checked="checked"{/if}/><label for=use_tags_from_feeds_no">No</label>
+				<input type="radio" name="import_tags_from_feeds" id="import_tags_from_feeds_yes" value="1" {if="$config->import_tags_from_feeds != 0"}checked="checked"{/if}/><label for=import_tags_from_feeds_yes">Yes</label>
+				<input type="radio" name="import_tags_from_feeds" id="import_tags_from_feeds_no" value="0" {if="$config->import_tags_from_feeds == 0"}checked="checked"{/if}/><label for=import_tags_from_feeds_no">No</label>
 			</p>
 
 			<p>
@@ -87,6 +87,7 @@
 	<h2>Add a feed</h2>
 	<form method="post" action="#">
 		<p><input type="text" name="feed_url" id="feed_url" placeholder="Feed URL"/></p>
+		<p>Import tags as well? <input type="radio" name="import_tags_add" value="1" id="import_tags_yes" {$config->import_tags_from_feeds != 0 ? 'checked="checked"' : ''}/><label for="import_tags_yes"> Yes</label> <input type="radio" name="import_tags_add" value="0" id="import_tags_no" {$config->import_tags_from_feeds == 0 ? 'checked="checked"' : ''}/><label for="import_tags_no"> No</label></p>
 		<p>
 			<label for="feed_post">POST data to send to have access to the feed (JSON formatted)</label><br/>
 			<textarea name="feed_post" id="feed_post"></textarea>
@@ -117,6 +118,7 @@
 	<form method="post" action="#" enctype="multipart/form-data">
 		<input type="hidden" name="MAX_FILE_SIZE" value="1048576" />
 		<p><label for="import">OPML file: </label><input type="file" name="import" id="import"/></p>
+		<p>Import tags as well? <input type="radio" name="import_tags_opml" value="1" id="import_tags_yes" {$config->import_tags_from_feeds != 0 ? 'checked="checked"' : ''}/><label for="import_tags_yes"> Yes</label> <input type="radio" name="import_tags_opml" value="0" id="import_tags_no" {$config->import_tags_from_feeds == 0 ? 'checked="checked"' : ''}/><label for="import_tags_no"> No</label></p>
 		<p>
 			<input type="submit" value="Import"/>
 		</p>

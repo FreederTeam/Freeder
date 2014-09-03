@@ -18,7 +18,7 @@ $feeds = get_feeds();
 
 $feeds_to_refresh = array();
 foreach($feeds as $feed) {
-	$feeds_to_refresh[$feed['id']] = array('id'=>$feed['id'], 'url'=>$feed['url'], 'post'=>$feed['post']);
+	$feeds_to_refresh[$feed['id']] = array('id'=>$feed['id'], 'url'=>$feed['url'], 'post'=>$feed['post'], 'import_tags_from_feed'=>$feed['import_tags_from_feed']);
 }
 
 $tpl->assign('feeds_to_refresh', $feeds_to_refresh);

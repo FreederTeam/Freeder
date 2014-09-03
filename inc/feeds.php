@@ -80,21 +80,19 @@ function refresh_feeds($feeds, $check_favicons=false, $verbose=true) {
 	$query_entries_fail->bindParam(':pubDate', $pubDate, PDO::PARAM_INT);
 	$query_entries_fail->bindParam(':lastUpdate', $last_update, PDO::PARAM_INT);
 
-	if($config->use_tags_from_feeds != 0) {
-		// Query to insert tags if not already existing
-		$query_insert_tag = $dbh->prepare('INSERT OR IGNORE INTO tags(name) VALUES(:name)');
-		$query_insert_tag->bindParam(':name', $tag_name);
+	// Query to insert tags if not already existing
+	$query_insert_tag = $dbh->prepare('INSERT OR IGNORE INTO tags(name) VALUES(:name)');
+	$query_insert_tag->bindParam(':name', $tag_name);
 
-		// Register the tags of the feed
-		$query_feeds_tags = $dbh->prepare('INSERT OR IGNORE INTO tags_feeds(tag_id, feed_id, auto_added_tag) VALUES((SELECT id FROM tags WHERE name=:name), :feed_id, 1)');
-		$query_feeds_tags->bindParam(':name', $tag_name);
-		$query_feeds_tags->bindParam(':feed_id', $feed_id);
+	// Register the tags of the feed
+	$query_feeds_tags = $dbh->prepare('INSERT OR IGNORE INTO tags_feeds(tag_id, feed_id, auto_added_tag) VALUES((SELECT id FROM tags WHERE name=:name), :feed_id, 1)');
+	$query_feeds_tags->bindParam(':name', $tag_name);
+	$query_feeds_tags->bindParam(':feed_id', $feed_id);
 
-		// Finally, query to register the tags of the entry
-		$query_tags = $dbh->prepare('INSERT OR IGNORE INTO tags_entries(tag_id, entry_id, auto_added_tag) VALUES((SELECT id FROM tags WHERE name=:name), (SELECT id FROM entries WHERE guid=:entry_guid), 1)');
-		$query_tags->bindParam(':name', $tag_name);
-		$query_tags->bindParam(':entry_guid', $guid);
-	}
+	// Finally, query to register the tags of the entry
+	$query_tags = $dbh->prepare('INSERT OR IGNORE INTO tags_entries(tag_id, entry_id, auto_added_tag) VALUES((SELECT id FROM tags WHERE name=:name), (SELECT id FROM entries WHERE guid=:entry_guid), 1)');
+	$query_tags->bindParam(':name', $tag_name);
+	$query_tags->bindParam(':entry_guid', $guid);
 
 	foreach ($updated_feeds as $url=>$feed) {
 		$feed_id = multiarray_search_key('url', $url, $feeds);
@@ -124,7 +122,7 @@ function refresh_feeds($feeds, $check_favicons=false, $verbose=true) {
 		$query_feeds->execute();
 
 		// Feeds tags
-		if($config->use_tags_from_feeds != 0) {
+		if ($feed['import_tags_from_feed']) {
 			if (!empty($parsed['infos']['categories'])) {
 				foreach ($parsed['infos']['categories'] as $tag_name) {
 					// Create tags if needed, get their id and add bind the articles to these tags
@@ -164,7 +162,7 @@ function refresh_feeds($feeds, $check_favicons=false, $verbose=true) {
 				$query_entries_fail->execute();
 			}
 
-			if($config->use_tags_from_feeds != 0) {
+			if ($feed['import_tags_from_feed']) {
 				if (!empty($event['categories'])) {
 					foreach ($event['categories'] as $tag_name) {
 						// Create tags if needed, get their id and add bind the articles to these tags
@@ -214,16 +212,17 @@ function refresh_feeds($feeds, $check_favicons=false, $verbose=true) {
  * @param $urls is an array of associative arrays {url, post} for each url. Post is a JSON array of POST data to send
  * @return errored urls in array
  */
-function add_feeds($urls) {
-	global $dbh;
+function add_feeds($urls, $import_tags=NULL) {
+	global $dbh, $config;
 
 	$errors = array();
 	$added = array();
 	$dbh->beginTransaction();
-	$query = $dbh->prepare('INSERT OR IGNORE INTO feeds(url, title, has_user_title, post) VALUES(:url, :title, CASE WHEN :title="" THEN 0 ELSE 1 END, :post)');
+	$query = $dbh->prepare('INSERT OR IGNORE INTO feeds(url, title, has_user_title, post, import_tags_from_feed) VALUES(:url, :title, CASE WHEN :title="" THEN 0 ELSE 1 END, :post, :import_tags)');
 	$query->bindParam(':url', $url);
 	$query->bindParam(':title', $title);
 	$query->bindParam(':post', $post);
+	$query->bindParam(':import_tags', ($import_tags === NULL ? FALSE : (int) $import_tags), PDO::PARAM_INT);
 	foreach($urls as $url_array) {
 		$url = $url_array['url'];
 		if (isset($url_array['post'])) {
@@ -248,7 +247,7 @@ function add_feeds($urls) {
 			$query->execute();
 			$id = $dbh->lastInsertId();
 			if($id != 0) {
-				$added[] = array('id'=>$dbh->lastInsertId(), 'url'=>$url, 'post'=>$post, 'tags'=>$tags);
+				$added[] = array('id'=>$dbh->lastInsertId(), 'url'=>$url, 'post'=>$post, 'tags'=>$tags, 'import_tags_from_feed'=>($import_tags === true || $config->import_tags_from_feeds != 0));
 			}
 			else {
 				$errors[] = array('url'=>$url, 'msg'=>'Feed already exists');
@@ -282,27 +281,29 @@ function add_feeds($urls) {
 	}
 
 	// Add feeds tags
-	$dbh->beginTransaction();
-	$query_insert_tag = $dbh->prepare('INSERT OR IGNORE INTO tags(name) VALUES(:name)');
-	$query_insert_tag->bindParam(':name', $tag_name);
+	if ($import_tags === true || $config->import_tags_from_feeds != 0) {
+		$dbh->beginTransaction();
+		$query_insert_tag = $dbh->prepare('INSERT OR IGNORE INTO tags(name) VALUES(:name)');
+		$query_insert_tag->bindParam(':name', $tag_name);
 
-	// Register the tags of the feed
-	$query_tags = $dbh->prepare('INSERT INTO tags_feeds(tag_id, feed_id, auto_added_tag) VALUES((SELECT id FROM tags WHERE name=:name), :feed_id, 0)');
-	$query_tags->bindParam(':name', $tag_name);
-	$query_tags->bindParam(':feed_id', $feed_id);
+		// Register the tags of the feed
+		$query_tags = $dbh->prepare('INSERT INTO tags_feeds(tag_id, feed_id, auto_added_tag) VALUES((SELECT id FROM tags WHERE name=:name), :feed_id, 0)');
+		$query_tags->bindParam(':name', $tag_name);
+		$query_tags->bindParam(':feed_id', $feed_id);
 
-	foreach($added as $url_array) {
-		if(in_array($url_array['url'], $errors_urls)) {
-			continue;
+		foreach($added as $url_array) {
+			if(in_array($url_array['url'], $errors_urls)) {
+				continue;
+			}
+
+			$feed_id = $url_array['id'];
+			foreach($url_array['tags'] as $tag_name) {
+				$query_insert_tag->execute();
+				$query_tags->execute();
+			}
 		}
-
-		$feed_id = $url_array['id'];
-		foreach($url_array['tags'] as $tag_name) {
-			$query_insert_tag->execute();
-			$query_tags->execute();
-		}
+		$dbh->commit();
 	}
-	$dbh->commit();
 
 	return array_merge($errors, $errors_refresh);
 }
@@ -405,7 +406,7 @@ function edit_feed($old_url, $new_url, $new_title='') {
 			return false;
 		}
 		else {
-			refresh_feeds(array($dbh->lastInsertId()=>$new_url));
+			refresh_feeds(array($dbh->lastInsertId()=>$new_url)); // TODO
 			return true;
 		}
 	}
@@ -422,7 +423,7 @@ function edit_feed($old_url, $new_url, $new_title='') {
  */
 function get_feeds() {
 	global $dbh;
-	$query = $dbh->query('SELECT id, title, url, links, description, ttl, image, post FROM feeds');
+	$query = $dbh->query('SELECT id, title, url, links, description, ttl, image, post, import_tags_from_feed FROM feeds');
 	return $query->fetchAll(PDO::FETCH_ASSOC);
 }
 

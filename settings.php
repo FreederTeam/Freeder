@@ -19,7 +19,7 @@ $tpl->assign('templates', list_templates(), RainTPL::RAINTPL_HTML_SANITIZE);
 $tpl->assign('feeds', $feeds, RainTPL::RAINTPL_XSS_SANITIZE);
 
 // Handle posted info for settings
-if (!empty($_POST['synchronization_type']) && !empty($_POST['template']) && !empty($_POST['timezone']) && isset($_POST['use_tags_from_feeds']) && isset($_POST['anonymous_access']) && isset($_POST['entries_to_keep']) && !empty($_POST['display_entries']) && isset($_POST['entries_per_page'])) {
+if (!empty($_POST['synchronization_type']) && !empty($_POST['template']) && !empty($_POST['timezone']) && isset($_POST['import_tags_from_feeds']) && isset($_POST['anonymous_access']) && isset($_POST['entries_to_keep']) && !empty($_POST['display_entries']) && isset($_POST['entries_per_page'])) {
 	$config->synchronization_type = $_POST['synchronization_type'];
 
 	// Template
@@ -42,7 +42,7 @@ if (!empty($_POST['synchronization_type']) && !empty($_POST['template']) && !emp
 		die('Error: Invalid timezone.');
 	}
 
-	$config->use_tags_from_feeds = (int) $_POST['use_tags_from_feeds'];
+	$config->import_tags_from_feeds = (int) $_POST['import_tags_from_feeds'];
 	$config->anonymous_access = (int) $_POST['anonymous_access'];
 	$config->entries_to_keep = (int) $_POST['entries_to_keep'];
 	$config->entries_per_page = (int) $_POST['entries_per_page'];
@@ -65,7 +65,7 @@ if (!empty($_POST['synchronization_type']) && !empty($_POST['template']) && !emp
 }
 
 // Handle posted info for new feed
-if (!empty($_POST['feed_url']) && isset($_POST['feed_post'])) {
+if (!empty($_POST['feed_url']) && isset($_POST['feed_post']) && isset($_POST['import_tags_add'])) {
 	// If provided, get POST data to send to the feed server (for authentification essentially).
 	$feed_post = trim($_POST['feed_post']);
 	if (is_array(json_decode($feed_post, true))) {
@@ -76,7 +76,7 @@ if (!empty($_POST['feed_url']) && isset($_POST['feed_post'])) {
 	}
 
 	// Try to add feed
-	$add_errors = add_feeds(array(array('url'=>trim($_POST['feed_url']), 'post'=>$post)));
+	$add_errors = add_feeds(array(array('url'=>trim($_POST['feed_url']), 'post'=>$post)), (bool) $_POST['import_tags_add']);
 
 	if(empty($add_errors)) {
 		header('location: settings.php');
@@ -130,7 +130,7 @@ if (isset($_POST['export'])) {
 }
 
 // Handle OPML import
-if (isset($_FILES['import'])) {
+if (isset($_FILES['import']) && isset($_POST['import_tags_opml'])) {
 	if ($_FILES['import']['error'] > 0) {
 		$error = array();
 		$error['type'] = 'error';
@@ -160,7 +160,7 @@ if (isset($_FILES['import'])) {
 		$tpl->draw('settings');
 		exit();
 	}
-	$errors_refresh = add_feeds($feeds_opml);
+	$errors_refresh = add_feeds($feeds_opml, (bool) $_POST['import_tags_opml']);
 	if(empty($errors_refresh)) {
 		header('location: settings.php');
 		exit();
