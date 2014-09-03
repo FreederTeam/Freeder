@@ -118,8 +118,8 @@ function feed2array($feed, $load=false, $debug=false) {
 			}
 
 			if ($type == 'RDF') {  // RDF feed
-				if($feed_obj->channel->dc) {
-					$flux['infos']['pubDate'] = (string)$feed_obj->channel->dc;
+				if($feed_obj->channel->children('dc', true)->date) {
+					$flux['infos']['pubDate'] = (string)$feed_obj->channel->children('dc', true)->date;
 				}
 			}
 
@@ -223,8 +223,12 @@ function feed2array($feed, $load=false, $debug=false) {
 					}
 				}
 				if ($type == 'RDF') {
-					if($item->dc) {
-						$flux['infos']['pubDate'] = (string)$item->dc;
+					if($item->children('dc', true)->date) {
+						$flux['items'][$c]['pubDate'] = (string)$item->children('dc', true)->date;
+					}
+					if($item->attributes('rdf', true)->about) {
+						$flux['items'][$c]['guid'] = (string) $item->attributes('rdf', true)->about;
+						$flux['items'][$c]['guid_is_permalink'] = false;
 					}
 				}
 				if($type == 'RSS') {
