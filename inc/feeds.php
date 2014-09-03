@@ -22,6 +22,7 @@ require_once(INC_DIR . 'tags.php');
  */
 function refresh_feeds($feeds, $check_favicons=false, $verbose=true) {
 	global $dbh, $config;
+	// TODO: Import tag from feeds
 
 	// Download the feeds
 	$download = curl_downloader($feeds, true, $verbose);
@@ -95,12 +96,12 @@ function refresh_feeds($feeds, $check_favicons=false, $verbose=true) {
 	$query_tags->bindParam(':entry_guid', $guid);
 
 	foreach ($updated_feeds as $url=>$feed) {
-		$feed_id = multiarray_search_key('url', $url, $feeds);
+		$array_feed_id = multiarray_search_key('url', $url, $feeds);
 		if ($feed_id === -1) {
 			assert(false); // TODO
 			exit();
 		}
-		$feed_id = $feeds[$feed_id]['id'];
+		$feed_id = $feeds[$array_feed_id]['id'];
 		// Parse feed
 		$parsed = @feed2array($feed);
 
@@ -122,7 +123,7 @@ function refresh_feeds($feeds, $check_favicons=false, $verbose=true) {
 		$query_feeds->execute();
 
 		// Feeds tags
-		if ($feed['import_tags_from_feed']) {
+		if ($feeds[$array_feed_id]['import_tags_from_feed']) {
 			if (!empty($parsed['infos']['categories'])) {
 				foreach ($parsed['infos']['categories'] as $tag_name) {
 					// Create tags if needed, get their id and add bind the articles to these tags
@@ -162,7 +163,7 @@ function refresh_feeds($feeds, $check_favicons=false, $verbose=true) {
 				$query_entries_fail->execute();
 			}
 
-			if ($feed['import_tags_from_feed']) {
+			if ($feeds[$array_feed_id]['import_tags_from_feed']) {
 				if (!empty($event['categories'])) {
 					foreach ($event['categories'] as $tag_name) {
 						// Create tags if needed, get their id and add bind the articles to these tags
@@ -222,7 +223,8 @@ function add_feeds($urls, $import_tags=NULL) {
 	$query->bindParam(':url', $url);
 	$query->bindParam(':title', $title);
 	$query->bindParam(':post', $post);
-	$query->bindParam(':import_tags', ($import_tags === NULL ? FALSE : (int) $import_tags), PDO::PARAM_INT);
+	$import_tags_db = ($import_tags === NULL ? FALSE : (int) $import_tags);
+	$query->bindParam(':import_tags', $import_tags_db, PDO::PARAM_INT);
 	foreach($urls as $url_array) {
 		$url = $url_array['url'];
 		if (isset($url_array['post'])) {
