@@ -10,13 +10,12 @@
 	}
 /*base*/
 	html {
-		//font-size:62.5%;
-		font-size:70%;
+		font-size:100%;
 	}
 	body {
 		font-family:arial,sans-serif;
-		font-size:1.4em;
-		line-height:1.5;
+		font-size: 1.1875rem;
+		line-height: 1.6875rem;
 		color:#222;
 		background-color:#F1F1F1;
 	}
@@ -32,7 +31,8 @@
 	caption,
 	details,
 	figure {
-		margin:.75em 0 0;
+		margin-top: 1.6875rem;
+		margin-bottom: 1.6875rem;
 	}
 	fieldset {
 		border: 1px solid #E5E5E5;
@@ -42,37 +42,50 @@
 		padding-left:0;
 		list-style:none;
 	}
-
+/* Sanitation */
+	hr {
+	  border: 1px solid;
+	  margin: -1px 0;
+	}
+	ul ul, ol ol, ul ol, ol ul {
+	  margin-top: 0;
+	  margin-bottom: 0;
+	}
+	b, strong, em, small, code {
+	  line-height: 1;
+	}
+	sup, sub {
+	  vertical-align: baseline;
+	  position: relative;
+	  top: -0.4em;
+	}
+	sub {
+	  top: 0.4em;
+	}
 /*Titles*/
 	h1 {
-		margin:.8077em 0 0;
-		font-size:2em;
-		line-height:1.7em;
+	  font-size: 2.0625rem;
+	  line-height: 3.375rem;
+	  margin-top: 3.375rem;
+	  margin-bottom: 1.6875rem;
 	}
 	h2 {
-		margin:.875em 0 0;
-		font-size:1.8em;
-		line-height:1.5em;
+	  font-size: 1.6875rem;
+	  line-height: 1.6875rem;
+	  margin-top: 3.375rem;
+	  margin-bottom: 1.6875rem;
 	}
 	h3 {
-		margin:.9545em 0 0;
-		font-size:1.5em;
-		line-height:1.3em;
+	  font-size: 1.4375rem;
+	  line-height: 1.6875rem;
+	  margin-top: 1.6875rem;
+	  margin-bottom: 1.6875rem;
 	}
 	h4 {
-		margin:1.05em 0 0;
-		font-size:1.3em;
-		line-height:1.2em;
-	}
-	h5 {
-		margin:1.1667em 0 0;
-		font-size:1.2em;
-		line-height:1.1em;
-	}
-	h6 {
-		margin:1.3125em 0 0;
-		font-size:1em;
-		line-height:1.1em;
+	  font-size: 1.1875rem;
+	  line-height: 1.6875rem;
+	  margin-top: 1.6875rem;
+	  margin-bottom: 1.6875rem;
 	}
 /*links*/
 	a:link,

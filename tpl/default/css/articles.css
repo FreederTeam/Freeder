@@ -8,9 +8,6 @@
 		border-radius: 2px;
 		background-color: #FEFEFE;
 	}
-	.Article > * {
-		padding:0;
-	}
 
 /* == article <nav>*/
 	.Controls {
@@ -64,7 +61,7 @@
 	main article h4,
 	main article h5,
 	main article h6 {
-		margin-top:0;
+		margin:0;
 	}
 
 	.ArticleContent ul,
@@ -72,7 +69,7 @@
 		padding-left:2em;
 	}
 	.ArticleContent > * {
-		padding:0px 2rem 1rem 2rem;
+		padding:0 2rem 1rem 2rem;
 	}
 	.ArticleContent img {
 		max-width: 100%;

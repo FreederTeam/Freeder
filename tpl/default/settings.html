@@ -78,7 +78,7 @@
 			</p>
 		</fieldset>
 
-		<p><input type="submit" value="Save"/></p>
+		<p><input class="Button" type="submit" value="Save"/></p>
 	</form>
 </div>
 
@@ -92,7 +92,7 @@
 			<label for="feed_post">POST data to send to have access to the feed (JSON formatted)</label><br/>
 			<textarea name="feed_post" id="feed_post"></textarea>
 		</p>
-		<p><input type="submit" value="Add feed"/></p>
+		<p><input class="Button" type="submit" value="Add feed"/></p>
 	</form>
 	<h2>List of available feeds</h2>
 	{if="count($feeds) > 0"}
@@ -118,9 +118,9 @@
 	<form method="post" action="#" enctype="multipart/form-data">
 		<input type="hidden" name="MAX_FILE_SIZE" value="1048576" />
 		<p><label for="import">OPML file: </label><input type="file" name="import" id="import"/></p>
-		<p>Import tags as well? <input type="radio" name="import_tags_opml" value="1" id="import_tags_yes" {$config->import_tags_from_feeds != 0 ? 'checked="checked"' : ''}/><label for="import_tags_yes"> Yes</label> <input type="radio" name="import_tags_opml" value="0" id="import_tags_no" {$config->import_tags_from_feeds == 0 ? 'checked="checked"' : ''}/><label for="import_tags_no"> No</label></p>
+		<p>Import article tags as well (may import a lot of tags, depending the feed) ? <input type="radio" name="import_tags_opml" value="1" id="import_tags_yes" {$config->import_tags_from_feeds != 0 ? 'checked="checked"' : ''}/><label for="import_tags_yes"> Yes</label> <input type="radio" name="import_tags_opml" value="0" id="import_tags_no" {$config->import_tags_from_feeds == 0 ? 'checked="checked"' : ''}/><label for="import_tags_no"> No</label></p>
 		<p>
-			<input type="submit" value="Import"/>
+			<input class="Button" type="submit" value="Import"/>
 		</p>
 	</form>
 	<h2>Export as OPML</h2>
@@ -133,7 +133,7 @@
 				{/loop}
 			</select>
 		</p>
-		<p><input type="submit" value="Export"/></p>
+		<p><input class="Button" type="submit" value="Export"/></p>
 	</form>
 </div>
 {include="_end"}
