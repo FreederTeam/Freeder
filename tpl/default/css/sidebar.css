@@ -24,17 +24,17 @@
 }
 .Menu-li{
 	display: inline-block;
-	padding:.5rem;
+	padding:.2rem;
 }
 /*global search*/
 .Side .MainForm {
-	width: 95%;
-	margin: 5px auto;
+	margin: .5rem auto;
 }
 .ItemsNumber {
 	text-align: center;
 	color:#6A6A6A;
 	font-weight: bold;
+    margin:.5rem;
 }
 /*read all*/
 .Side-button {
