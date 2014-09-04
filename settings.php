@@ -19,7 +19,7 @@ $tpl->assign('templates', list_templates(), RainTPL::RAINTPL_HTML_SANITIZE);
 $tpl->assign('feeds', $feeds, RainTPL::RAINTPL_XSS_SANITIZE);
 
 // Handle posted info for settings
-if (!empty($_POST['synchronization_type']) && !empty($_POST['template']) && !empty($_POST['timezone']) && isset($_POST['import_tags_from_feeds']) && isset($_POST['anonymous_access']) && isset($_POST['entries_to_keep']) && !empty($_POST['display_entries']) && isset($_POST['entries_per_page'])) {
+if (!empty($_POST['synchronization_type']) && !empty($_POST['template']) && !empty($_POST['timezone']) && isset($_POST['import_tags_from_feeds']) && isset($_POST['anonymous_access']) && isset($_POST['entries_to_keep']) && !empty($_POST['display_entries']) && isset($_POST['entries_per_page']) && !empty($_POST['token']) && check_token(600, 'settings_form')) {
 	$config->synchronization_type = $_POST['synchronization_type'];
 
 	// Template
@@ -65,7 +65,7 @@ if (!empty($_POST['synchronization_type']) && !empty($_POST['template']) && !emp
 }
 
 // Handle posted info for new feed
-if (!empty($_POST['feed_url']) && isset($_POST['feed_post']) && isset($_POST['import_tags_add'])) {
+if (!empty($_POST['feed_url']) && isset($_POST['feed_post']) && isset($_POST['import_tags_add']) && !empty($_POST['token']) && check_token(600, 'add_feed')) {
 	// If provided, get POST data to send to the feed server (for authentification essentially).
 	$feed_post = trim($_POST['feed_post']);
 	if (is_array(json_decode($feed_post, true))) {
@@ -98,14 +98,14 @@ if (!empty($_POST['feed_url']) && isset($_POST['feed_post']) && isset($_POST['im
 }
 
 // Handle feed deletion
-if (!empty($_GET['delete_feed'])) {
+if (!empty($_GET['delete_feed']) && !empty($_GET['token']) && check_token(600, 'delete_feed')) {
 	delete_feed_id(intval($_GET['delete_feed']));
 	header('location: settings.php');
 	exit();
 }
 
 // Handle feed refresh
-if (!empty($_GET['refresh_feed'])) {
+if (!empty($_GET['refresh_feed']) && !empty($_GET['token']) && check_token(600, 'refresh_feed')) {
 	$query = $dbh->prepare('SELECT url FROM feeds WHERE id=:id');
 	$query->execute(array('id'=>intval($_GET['refresh_feed'])));
 	$url = $query->fetch();
@@ -117,7 +117,7 @@ if (!empty($_GET['refresh_feed'])) {
 }
 
 // Handle OPML export
-if (isset($_POST['export'])) {
+if (isset($_POST['export']) && !empty($_POST['token']) && check_token(600, 'export_form')) {
 	$feeds = array();
 	foreach($_POST['export'] as $feed_id) {
 		$feeds[] = get_feed($feed_id);
@@ -130,7 +130,7 @@ if (isset($_POST['export'])) {
 }
 
 // Handle OPML import
-if (isset($_FILES['import']) && isset($_POST['import_tags_opml'])) {
+if (isset($_FILES['import']) && isset($_POST['import_tags_opml']) && !empty($_POST['token']) && check_token(600, 'import_form')) {
 	if ($_FILES['import']['error'] > 0) {
 		$error = array();
 		$error['type'] = 'error';

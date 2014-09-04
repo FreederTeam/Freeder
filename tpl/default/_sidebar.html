@@ -9,7 +9,7 @@
 		<li class="Menu-li"><a href="index.php"><img src="img/home.svg" alt="Home"></a></li>
 		<li class="Menu-li"><a href="/tag/_sticky"><img src="img/stick.svg" alt="Sticky"></a></li>
 	{if="!empty($user)"}
-		<li class="Menu-li"><a href="refresh.php"><img src="img/sync.svg" alt="Refresh"></a></li>
+	<li class="Menu-li"><a href="refresh.php?token={function="generate_token('refresh')"}"><img src="img/sync.svg" alt="Refresh"></a></li>
 		<li class="Menu-li"><a href="settings.php"><img src="img/settings.svg" alt="Settings"></a></li>
 		<li class="Menu-li"><a href="logout.php"><img src="img/off.svg" alt="Logout"></a></li>
 	{else}
@@ -26,7 +26,7 @@
 		<p class="ItemsNumber">{$nb_entries} item{if="$nb_entries> 1"}s{/if}</p>
 	{/if}
 
-	{if="!empty($user) && !empty($nb_entries)"}
+	{if="!empty($user) && isset($nb_entries)"}
 		<button class="Side-button Button red" onclick="tag_all(this, '_read')">Read all</button>
 	{/if}
 

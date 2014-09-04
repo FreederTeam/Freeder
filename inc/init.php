@@ -73,6 +73,9 @@ $tpl = new RainTPL;
 $tpl->assign('start_generation_time', microtime(true), RainTPL::RAINTPL_IGNORE_SANITIZE);
 $tpl->assign('config', $config);
 
+// CSRF protection
+require_once(INC_DIR . 'csrf.php');
+
 
 // Manage users
 require_once(INC_DIR . 'users.php');
