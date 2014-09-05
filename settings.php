@@ -33,6 +33,24 @@ if (!empty($_POST['synchronization_type']) && !empty($_POST['template']) && !emp
 		die('Error: Invalid template name.');
 	}
 
+	// If update password
+	if (!empty($_POST['password']) && !empty($_POST['password_check'])) {
+		if ($_POST['password'] == $_POST['password_check']) {
+			$password = sha1($_SESSION['user']->salt.$_POST['password']);
+			$query = $dbh->prepare('UPDATE users SET password=:password WHERE login=:login');
+			$query->execute(array(
+				':login'=>$_SESSION['user']->login,
+				':password'=>$password
+			));
+		}
+		else {
+			$error = array();
+			$error['type'] = 'error';
+			$error['title'] = 'Password mismatch';
+			$error['content'] = 'Passwords do not match!';
+		}
+	}
+
 	// Timezone
 	$timezone = trim($_POST['timezone']);
 	if (in_array($timezone, timezone_identifiers_list())) {
@@ -60,8 +78,15 @@ if (!empty($_POST['synchronization_type']) && !empty($_POST['template']) && !emp
 		}
 	}
 	$config->save();
-	header('location: settings.php');
-	exit();
+	if (empty($error)) {
+		header('location: settings.php');
+		exit();
+	}
+	else {
+		$tpl->assign('error', $error);
+		$tpl->draw('settings');
+		exit();
+	}
 }
 
 // Handle posted info for new feed
