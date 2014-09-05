@@ -97,13 +97,15 @@
 	<h2>List of available feeds</h2>
 	{if="count($feeds) > 0"}
 		<table>
+			{$delete_feed_token=generate_token('delete_feed')}
+			{$refresh_feed_token=generate_token('refresh_feed')}
 			{loop="$feeds"}
 				<tr>
 					<td>{$value['title']}</td>
 					<td><a href="{$value['url']}">{$value['url']}</a></td>
 					<td>Edit</td>
-					<td><a href="settings.php?delete_feed={$value['id']}&amp;token={function="generate_token('delete_feed')"}">Delete</a></td>
-					<td><a href="settings.php?refresh_feed={$value['id']}&amp;token={function="generate_token('refresh_feed')"}">Refresh</a></td>
+					<td><a href="settings.php?delete_feed={$value['id']}&amp;token={$delete_feed_token}">Delete</a></td>
+					<td><a href="settings.php?refresh_feed={$value['id']}&amp;token={$refresh_feed_token}">Refresh</a></td>
 				</tr>
 			{/loop}
 		</table>
