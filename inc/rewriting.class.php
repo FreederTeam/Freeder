@@ -26,15 +26,19 @@ class RewriteEngine {
 	 *
 	 * @var array
 	 */
-	protected $rules = array();
+	protected $post_rules = array();
 
 
 	/**
 	 * Initialize rules.
+	 * @todo Factor regexps
 	 */
 	public function __construct() {
-		$this->rules['tag/(.+)'] = 'index.php?view=\\$tag_$1';
-		$this->rules['feed/(.+)'] = 'index.php?view=\\$feed_$1';
+		$this->post_rules['tag/(.+)'] = 'index.php?view=\\$tag_$1';
+		$this->post_rules['feed/(.+)'] = 'index.php?view=\\$feed_$1';
+
+		$this->pre_rules['#/%tag%/([^/]+)$#'] = '/tag/$1';
+		$this->pre_rules['#/%feed%/([0-9]+)$#'] = '/feed/$1';
 	}
 
 
@@ -45,6 +49,9 @@ class RewriteEngine {
 	 * @return New URL
 	 */
 	public function rewrite($url) {
+		foreach($this->pre_rules as $match => $query) {
+			$url = preg_replace($match, $query, $url);
+		}
 		return $url;
 	}
 
@@ -61,7 +68,7 @@ class RewriteEngine {
 		$rules .= "  RewriteEngine On\n";
 		$rules .= "  RewriteBase $rewrite_base\n";
 
-		foreach($this->rules as $match => $query) {
+		foreach($this->post_rules as $match => $query) {
 			// Apache 1.3 does not support the reluctant (non-greedy) modifier.
 			$match = str_replace('.+?', '.+', $match);
 			$rules .= '  RewriteRule ^' . $match . '$ ' . $query . "\n";
