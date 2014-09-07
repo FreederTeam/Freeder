@@ -8,7 +8,7 @@ require_once('inc/init.php');
 require_once('inc/feeds.php');
 
 $command_line = is_command_line();
-if ((!require_auth(false) && !$command_line) || empty($_GET['token']) || !check_token(600, 'refresh')) {
+if (!$command_line && (!require_auth(false) || empty($_GET['token']) || !check_token(600, 'refresh'))) {
 	header('location: index.php');
 	exit();
 }
