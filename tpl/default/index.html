@@ -47,12 +47,12 @@
 
 			<div class="Article-share Share">
 				<ul class="Share-services Services">
-				{loop="$get_sharing_options"}
-					<li><a href="{value['url']}{$entry_url}">{value['type']}</a></li>
+				{loop="get_sharing_options()"}
+					<li><a href="{$value['url']}{function="get_entry_link($value1)"}">{$value['type']}</a></li>
 				{/loop}
 				</ul>
 			 </div>
-			 
+
 			<!--
 			**not usable yet**
 
