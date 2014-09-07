@@ -119,15 +119,10 @@ function install_db() {
 	$dbh->query('INSERT OR IGNORE INTO tags(name) VALUES("_sticky")');
 	$dbh->query('INSERT OR IGNORE INTO tags(name) VALUES("_private")');
 	$dbh->query('INSERT OR IGNORE INTO tags(name) VALUES("_no_home")');
-	$dbh->query('INSERT OR IGNORE INTO tags(name) VALUES("_application")');
-	$dbh->query('INSERT OR IGNORE INTO tags(name) VALUES("_audio")');
-	$dbh->query('INSERT OR IGNORE INTO tags(name) VALUES("_example")');
-	$dbh->query('INSERT OR IGNORE INTO tags(name) VALUES("_image")');
-	$dbh->query('INSERT OR IGNORE INTO tags(name) VALUES("_message")');
-	$dbh->query('INSERT OR IGNORE INTO tags(name) VALUES("_model")');
-	$dbh->query('INSERT OR IGNORE INTO tags(name) VALUES("_multipart")');
-	$dbh->query('INSERT OR IGNORE INTO tags(name) VALUES("_text")');
-	$dbh->query('INSERT OR IGNORE INTO tags(name) VALUES("_video")');
+	$dbh->query('INSERT OR IGNORE INTO tags(name) VALUES("_type_audio")');
+	$dbh->query('INSERT OR IGNORE INTO tags(name) VALUES("_type_image")');
+	$dbh->query('INSERT OR IGNORE INTO tags(name) VALUES("_type_text")');
+	$dbh->query('INSERT OR IGNORE INTO tags(name) VALUES("_type_video")');
 
 	// Create table to store association between tags and entries
 	$dbh->query('CREATE TABLE IF NOT EXISTS tags_entries(

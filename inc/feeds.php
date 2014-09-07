@@ -171,12 +171,12 @@ function refresh_feeds($feeds, $check_favicons=false, $verbose=true) {
 						$query_tags->execute();
 					}
 				}
-				if (!empty($event['enclosures'])) {
-					foreach ($event['enclosures'] as $enclosure) {
-						$tag_name = '_'.get_category_mime_type($enclosure['type']);
-						if ($tag_name !== false) {
-							$query_tags->execute();
-						}
+			}
+			if (!empty($event['enclosures'])) {
+				foreach ($event['enclosures'] as $enclosure) {
+					$tag_name = '_type_'.get_category_mime_type($enclosure['type']);
+					if ($tag_name !== false) {
+						$query_tags->execute();
 					}
 				}
 			}
