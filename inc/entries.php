@@ -139,7 +139,8 @@ function get_entry_link($entry) {
  * Check wether an entry has the tag `$tag` (true) or not (false).
  */
 function is_tag($tag, $entry) {
-	$res = multiarray_search('name', $tag, $entry['tags'], false);
+	$tags = array_merge($entry['tags'], $entry['system_tags']);
+	$res = multiarray_search('name', $tag, $tags, false);
 	if (!empty($res)) {
 		return true;
 	}
