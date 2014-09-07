@@ -33,7 +33,6 @@
 								<input class="MainForm-Input Input" type="text" name="newTag" id="newTag" placeholder="Tag…"/>
 								<button class="MainForm-Submit Submit Button">Tag</button>
 							</form>
-
 						{/if}
 					</div>
 				</div>
@@ -46,6 +45,14 @@
 				<div>{$value['displayed_content']}</div>
 			</div>
 
+			<div class="Article-share Share">
+				<ul class="Share-services Services">
+				{loop="$get_sharing_options"}
+					<li><a href="{value['url']}{$entry_url}">{value['type']}</a></li>
+				{/loop}
+				</ul>
+			 </div>
+			 
 			<!--
 			**not usable yet**
 
