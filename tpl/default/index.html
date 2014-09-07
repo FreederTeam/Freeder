@@ -23,13 +23,13 @@
 						<ul class="Article-tagList TagList">
 							{loop="$value['tags']"}
 								<li class="TagList-completeTag CompleteTag">
-									<a class="TagList-tagName TagName" href="/tag/{function="tag_encode($value2['name'])"}">{$value2['name']}</a>
+									<a class="TagList-tagName TagName" href="/%tag%/{function="tag_encode($value2['name'])"}">{$value2['name']}</a>
 								</li>
 							{/loop}
 						</ul>
 
 						{if="!empty($user)"}
-							<form class="Article-mainForm MainForm" action="#" onsubmit="return tag_form(this, {$value['id']}, '/tag/');">
+							<form class="Article-mainForm MainForm" action="#" onsubmit="return tag_form(this, {$value['id']}, '/%tag%/');">
 								<input class="MainForm-Input Input" type="text" name="newTag" id="newTag" placeholder="Tag…"/>
 								<button class="MainForm-Submit Submit Button">Tag</button>
 							</form>
