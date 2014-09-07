@@ -179,7 +179,7 @@ function curl_downloader($urls, $fetch_content=true, $verbose=true) {
 		ob_implicit_flush(1);
 
 		if ($command_line) {
-			$backspace = "\n";
+			$backspace = PHP_EOL;
 			$span_start = '';
 			$span_end = '';
 		}

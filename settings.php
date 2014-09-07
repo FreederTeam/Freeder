@@ -20,7 +20,16 @@ $tpl->assign('feeds', $feeds, RainTPL::RAINTPL_XSS_SANITIZE);
 
 // Handle posted info for settings
 if (!empty($_POST['synchronization_type']) && !empty($_POST['template']) && !empty($_POST['timezone']) && isset($_POST['import_tags_from_feeds']) && isset($_POST['anonymous_access']) && isset($_POST['entries_to_keep']) && !empty($_POST['display_entries']) && isset($_POST['entries_per_page']) && isset($_POST['share_input_shaarli']) && isset($_POST['share_input_diaspora']) && !empty($_POST['token']) && check_token(600, 'settings_form')) {
-	$config->synchronization_type = $_POST['synchronization_type'];
+	if ($config->synchronization_type != $_POST['synchronization_type']) {
+		$config->synchronization_type = $_POST['synchronization_type'];
+		require_once(INC_DIR.'cron.php');
+		if ($config->synchronization_type == 'cron') {
+			register_crontask('0 * * * * cd '.dirname(__FILE__).'../ && php refresh.php > logs/cron.log 2>&1  # FREEDER AUTOADDED CRONTASK');
+		}
+		else {
+			unregister_crontask('# FREEDER AUTOADDED CRONTASK');
+		}
+	}
 
 	// Template
 	if (is_dir(TPL_DIR.$_POST['template'])) {

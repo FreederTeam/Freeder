@@ -27,29 +27,29 @@ function opml_export($feeds) {
 	}
 
 	$now = new Datetime();
-	$txt = '<?xml version="1.0" encoding="UTF-8"?>'."\n";
-	$txt .= '<opml version="2.0">'."\n";
-	$txt .= "\t".'<head>'."\n";
-	$txt .= "\t\t".'<title>Export of Freeder feeds</title>'."\n";
-	$txt .= "\t\t".'<dateCreated>'.$now->format(DateTime::RFC822).'</dateCreated>'."\n";
-	$txt .= "\t".'</head>'."\n";
-	$txt .= "\t".'<body>'."\n";
+	$txt = '<?xml version="1.0" encoding="UTF-8"?>'.PHP_EOL;
+	$txt .= '<opml version="2.0">'.PHP_EOL;
+	$txt .= "\t".'<head>'.PHP_EOL;
+	$txt .= "\t\t".'<title>Export of Freeder feeds</title>'.PHP_EOL;
+	$txt .= "\t\t".'<dateCreated>'.$now->format(DateTime::RFC822).'</dateCreated>'.PHP_EOL;
+	$txt .= "\t".'</head>'.PHP_EOL;
+	$txt .= "\t".'<body>'.PHP_EOL;
 
 	foreach ($tags as $tag=>$id_feeds) {
-		$txt .= "\t\t".'<outline text="'.$tag.'">'."\n";
+		$txt .= "\t\t".'<outline text="'.$tag.'">'.PHP_EOL;
 
 		foreach ($id_feeds as $id_feed) {
 			$website = multiarray_search('rel', 'alternate', $feeds[$id_feed]['links'], '');
 			if (!empty($website)) {
 				$website = 'htmlUrl="'.htmlspecialchars($website['href'], ENT_COMPAT, 'UTF-8').'"';
 			}
-			$txt .= "\t\t\t".'<outline text="'.htmlspecialchars($feeds[$id_feed]['title'], ENT_COMPAT, 'UTF-8').'" type="rss" xmlUrl="'.htmlspecialchars($feeds[$id_feed]['url'], ENT_COMPAT, 'UTF-8').'" '.$website.' description="'.htmlspecialchars($feeds[$id_feed]['description'], ENT_COMPAT, 'UTF-8').'" />'."\n";
+			$txt .= "\t\t\t".'<outline text="'.htmlspecialchars($feeds[$id_feed]['title'], ENT_COMPAT, 'UTF-8').'" type="rss" xmlUrl="'.htmlspecialchars($feeds[$id_feed]['url'], ENT_COMPAT, 'UTF-8').'" '.$website.' description="'.htmlspecialchars($feeds[$id_feed]['description'], ENT_COMPAT, 'UTF-8').'" />'.PHP_EOL;
 		}
 
-		$txt .= "\t\t".'</outline>'."\n";
+		$txt .= "\t\t".'</outline>'.PHP_EOL;
 	}
 
-	$txt .= "\t".'</body>'."\n";
+	$txt .= "\t".'</body>'.PHP_EOL;
 	$txt .= '</opml>';
 
 	return $txt;
