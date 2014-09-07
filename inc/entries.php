@@ -85,7 +85,9 @@ function get_entries($view='', $page=1) {
 
 		$entry_tags = get_entry_tags($entry['id']);
 		$feed_tags = get_feed_tags($entry['feed_id']);
-		$entry['tags'] = array_merge($entry_tags, $feed_tags);
+		$tags = array_merge($entry_tags, $feed_tags);
+		$entry['system_tags'] = filter_tags($tags, SYSTEM_TAGS);
+		$entry['tags'] = filter_tags($tags, USER_TAGS);
 
 		$entries[] = $entry;
 	}
