@@ -13,7 +13,7 @@
 		cursor:pointer;
 		/*by default, red buttons*/
 		color:#FFF;
-		background-color:#ED7261;
+		background:#ED7261;
 	}
 		.Button:hover,
 		.Button:active,
@@ -25,25 +25,25 @@
 		}
 	.lightgrey {
 		color:#444;
-		background-color:#DCDCDC;
+		background:#DCDCDC;
 	}
 		.lightgrey:hover,
 		.lightgrey:active,
 		.lightgrey:focus {
-			background-color:#BCBCBC;
+			background:#BCBCBC;
 		}
 	.darkgrey {
 		color:#FFF;
-		background-color:#666;
+		background:#666;
 	}
 		.darkgrey:hover,
 		.darkgrey:active,
 		.darkgrey:focus {
-			background-color:#444;
+			background:#444;
 		}
 	.blue {
 		color:#FFF;
-		background-color:#15C;
+		background:#15C;
 	}
 		.blue:hover,
 		.blue:active,
@@ -52,12 +52,12 @@
 		}
 	.green {
 		color:#FFF;
-		background-color:#88BF57;
+		background:#88BF57;
 	}
 		.green:hover,
 		.green:active,
 		.green:focus {
-			background-color:#4EAD48;
+			background:#4EAD48;
 		}
 
 /* == Form */
