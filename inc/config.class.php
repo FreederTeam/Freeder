@@ -29,6 +29,10 @@ class Config {
 			'version'=>self::$versions[count(self::$versions) - 1],  // Current version
 			'entries_per_page'=>20,
 			'use_rewriting'=>get_url_rewriting(),
+			'facebook_share'=>0,
+			'twitter_share'=>0,
+			'shaarli_share'=>"",
+			'diaspora_share'=>"",
 		);
 		$this->load();
 	}

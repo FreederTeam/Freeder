@@ -19,7 +19,7 @@ $tpl->assign('templates', list_templates(), RainTPL::RAINTPL_HTML_SANITIZE);
 $tpl->assign('feeds', $feeds, RainTPL::RAINTPL_XSS_SANITIZE);
 
 // Handle posted info for settings
-if (!empty($_POST['synchronization_type']) && !empty($_POST['template']) && !empty($_POST['timezone']) && isset($_POST['import_tags_from_feeds']) && isset($_POST['anonymous_access']) && isset($_POST['entries_to_keep']) && !empty($_POST['display_entries']) && isset($_POST['entries_per_page']) && !empty($_POST['token']) && check_token(600, 'settings_form')) {
+if (!empty($_POST['synchronization_type']) && !empty($_POST['template']) && !empty($_POST['timezone']) && isset($_POST['import_tags_from_feeds']) && isset($_POST['anonymous_access']) && isset($_POST['entries_to_keep']) && !empty($_POST['display_entries']) && isset($_POST['entries_per_page']) && isset($_POST['share_input_shaarli']) && isset($_POST['share_input_diaspora']) && !empty($_POST['token']) && check_token(600, 'settings_form')) {
 	$config->synchronization_type = $_POST['synchronization_type'];
 
 	// Template
@@ -77,6 +77,46 @@ if (!empty($_POST['synchronization_type']) && !empty($_POST['template']) && !emp
 			die('Error: Unable to create or write .htaccess file. Check the writing rights of Freeder root directory. The user who executes Freeder — '.sanitize($current_user).' — should be able to write in this directory. You may prefer to create the .htaccess file on your own and allow '.sanitize($current_user).' to write only in .htaccess instead of in the whole Freeder root.');
 		}
 	}
+
+	if (!empty($_POST['share_input_facebook'])) {
+		$config->facebook_share = (int) $_POST['share_input_facebook'];
+	}
+	else {
+		$config->facebook_share = 0;
+	}
+	if (!empty($_POST['share_input_twitter'])) {
+		$config->twitter_share = (int) $_POST['share_input_twitter'];
+	}
+	else {
+		$config->twitter_share = 0;
+	}
+	if (!empty($_POST['share_input_shaarli'])) {
+		if (filter_var($_POST['share_input_shaarli'], FILTER_VALIDATE_URL) !== false) {
+			if (endswith($_POST['share_input_shaarli'], '/')) {
+				$config->shaarli_share = $_POST['share_input_shaarli'];
+			}
+			else {
+				$config->shaarli_share = $_POST['share_input_shaarli'].'/';
+			}
+		}
+		else {
+			die('Error: Incorrect shaarli URL');
+		}
+	}
+	if (!empty($_POST['share_input_diaspora'])) {
+		if (filter_var($_POST['share_input_diaspora'], FILTER_VALIDATE_URL) !== false) {
+			if (endswith($_POST['share_input_diaspora'], '/')) {
+				$config->diaspora_share = $_POST['share_input_diaspora'];
+			}
+			else {
+				$config->diaspora_share = $_POST['share_input_diaspora'].'/';
+			}
+		}
+		else {
+			die('Error: Incorrect diaspora URL');
+		}
+	}
+
 	$config->save();
 	if (empty($error)) {
 		header('location: settings.php');

@@ -76,6 +76,8 @@ $tpl->assign('config', $config);
 // CSRF protection
 require_once(INC_DIR . 'csrf.php');
 
+// Sharing options
+require_once(INC_DIR . 'share.php');
 
 // Manage users
 require_once(INC_DIR . 'users.php');

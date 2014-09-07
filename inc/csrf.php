@@ -1,4 +1,14 @@
 <?php
+/*	Copyright (c) 2014 Freeder
+ *	Released under a MIT License.
+ *	See the file LICENSE at the root of this repo for copying permission.
+ */
+
+/**
+ * This include file aims at providing anti-CSRF functions.
+ */
+
+
 /**
  * Generates a token to protect against CSRF.
  * The token is stored in a session.
