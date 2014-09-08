@@ -36,19 +36,23 @@ function check_and_get_user($login, $pass) {
 /**
  * Check wether login POST data has been provided and handle it to try and log the user in.
  * Set `$_SESSION['user']` value.
+ * @return: Returns false if the user credentials are invalid. Returns true otherwise (user connected or ready to connect). Handles page redirection upon successful login.
  */
 function log_user_in() {
 	global $dbh;
 
 	// If user alreadu connected, returns immediately
 	if (!empty($_SESSION['user'])) {
-		return;
+		return true;
 	}
 	// Else if form was submitted
 	elseif (!empty($_POST['login']) && !empty($_POST['password'])) {
 		$user = check_and_get_user($_POST['login'], $_POST['password']);
 		if ($user !== false) {
 			$_SESSION['user'] = $user;
+		}
+		else {
+			return false;
 		}
 		// Handle "remember me" button
 		if (isset($_POST['remember'])) {
@@ -65,7 +69,7 @@ function log_user_in() {
 		$user = $query->fetch();
 		if (empty($user)) {
 			remove_stay_connected();
-			return false;
+			return true;
 		}
 		else {
 			$_SESSION['user'] = $user;
@@ -73,6 +77,7 @@ function log_user_in() {
 			exit();
 		}
 	}
+	return true;
 }
 
 

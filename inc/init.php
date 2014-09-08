@@ -81,7 +81,13 @@ require_once(INC_DIR . 'share.php');
 
 // Manage users
 require_once(INC_DIR . 'users.php');
-log_user_in();
+if (log_user_in() === false) {
+	$error = array();
+	$error['type'] = 'error';
+	$error['title'] = 'Login error';
+	$error['content'] = '<p>The provided username or password is incorrect.</p>';
+	$tpl->assign('error', $error, RainTPL::RAINTPL_IGNORE_SANITIZE);
+}
 $tpl->assign('user', isset($_SESSION['user']) ? $_SESSION['user'] : false, RainTPL::RAINTPL_HTML_SANITIZE);
 check_anonymous_view();
 
