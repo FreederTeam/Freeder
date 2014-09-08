@@ -140,15 +140,10 @@
 
 	/**
 	 * Fill the modal box
-	 *
 	 * @param title The modalbox title
 	 * @param content The modalbox content
-	 * @param className Class added to the modalbox. Usefull to warn the user about the modalbox level of warn.
 	 */
-	function ModalboxFill(title, content, className) {
-		if (className != undefined) {
-			$("#JsModalbox").addClass(className);
-		}
+	function ModalboxFill(title, content) {
 		$("#JsModalbox-h1").html(title);
 		$("#JsModalbox-p").html(content);
 		}
