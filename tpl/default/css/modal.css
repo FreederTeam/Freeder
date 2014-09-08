@@ -1,26 +1,42 @@
+.Modalbox {
+	display: none;
+	position:fixed;
+	left: 25%;
+	top:1rem;
+	width: 50%;
+	z-index:2;
+
+	background-color: #FFF;
+	border-radius: 2px;
+}
+.Modalbox.error {
+	box-shadow: 0 0 4px 4px red;
+}
+
+.Modalbox-title {
+	text-align: center;
+	margin-top: 1rem;
+}
+.Modalbox-content {
+	padding: 0 1rem;
+}
+.Modalbox .Button {
+	margin: 0;
+	border-radius: 0 0 2px 2px;
+	width: 100%;	
+}
+
 .Overlay {
 	display: none;
-
 	height:100%;
 	width:100%;
 	position:fixed;
 	left:0;
 	top:0;
-	z-index:1 !important;
+	z-index:1;
 	background-color:black;
 	filter: alpha(opacity=75);
 	-khtml-opacity: 0.75;
 	-moz-opacity: 0.75;
 	opacity: 0.75;
-}
-
-.Modalbox {
-	display: none;
-	height:50%;
-	width:50%;
-	position:fixed;
-	left:0;
-	top:0;
-	z-index:2 !important;
-	background-color: #FFF;
 }

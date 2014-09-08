@@ -3,7 +3,7 @@
 		// svg fallback
 		svgeezy.init(false, 'png');
 		// modalbox autolaunch
-		modalAutolaunch();
+		ModalboxAutoLaunch();
 
 	});
 
@@ -132,9 +132,9 @@
 	/**
 	 * Autolaunch of the modalbox at the page load if modalbox is not empty
 	 */
-	function modalAutolaunch() {
+	function ModalboxAutoLaunch() {
 		if ($("#JsModalbox-p").html().length > 0) {
-			displayModalBox();
+			ModalboxDisplay();
 		}
 	}
 
@@ -145,7 +145,7 @@
 	 * @param content The modalbox content
 	 * @param className Class added to the modalbox. Usefull to warn the user about the modalbox level of warn.
 	 */
-	function fillModalbox(title, content, className) {
+	function ModalboxFill(title, content, className) {
 		if (className != undefined) {
 			$("#JsModalbox").addClass(className);
 		}
@@ -156,7 +156,16 @@
 	/**
 	 * Display the modal box
 	 */
-	function displayModalBox() {
+	function ModalboxDisplay() {
+		$("#JsOverlay").toggle();
+		$("#JsModalbox").toggle();
+
+	}
+
+	/**
+	 * Close the modal box
+	 */
+	function ModalboxClose() {
 		$("#JsOverlay").toggle();
 		$("#JsModalbox").toggle();
 

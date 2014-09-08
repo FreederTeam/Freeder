@@ -1,0 +1,14 @@
+{if="empty($error)"}
+	<div id="JsModalbox" class="Modalbox">
+		<h1 id="JsModalbox-h1" class="Modalbox-h1"></h1>
+		<div id="JsModalbox-p" class="Modalbox-content"></div>
+	</div>
+{else}
+	<div id="JsModalbox" class="Modalbox {$error['type']}">
+		<h1 id="JsModalbox-h1" class="Modalbox-title">{$error['title']}</h1>
+		<div id="JsModalbox-p" class="Modalbox-content">{$error['content']}</div>
+		<button class="Button" onclick="ModalboxClose()">ok</button>
+	</div>
+{/if}
+
+<div id="JsOverlay" class="Overlay"></div>

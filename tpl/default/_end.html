@@ -2,24 +2,9 @@
 {* It must be the last thing in your template. *}
 
 			</main>
-		</div> {* end #flex *}
-
+		</div> <!-- end #flex -->
+		{include="_modal"}
 		{include="_footer"}
-
-		<div id="JsOverlay" class="Overlay"></div>
-
-		{if="empty($error)"}
-			<div id="JsModalbox" class="Modalbox">
-				<h1 id="JsModalbox-h1" class="Modalbox-h1"></h1>
-				<div id="JsModalbox-p" class="Modalbox-content"></div>
-			</div>
-		{else}
-			<div id="JsModalbox" class="Modalbox error {$error['type']}">
-				<h1 id="JsModalbox-h1" class="Modalbox-h1">{$error['title']}</h1>
-				<div id="JsModalbox-p" class="Modalbox-content">{$error['content']}</div>
-			</div>
-		{/if}
-
 		{include="_include_end"}
 	</body>
 </html>
