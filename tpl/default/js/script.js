@@ -10,6 +10,10 @@
 // == Functions
 	/**
 	 * Sends an ajax query to the target URL and run callback upon success.
+	 *
+	 * @param: caller is the caller element.
+	 * @param: target is the URL to call
+	 * @param: callback is a function to call upon successful AJAX call
 	 */
 	function ajax(caller, target, callback) {
 		$.get(target, function(data) {
@@ -23,6 +27,10 @@
 
 	/**
 	 * Add a new tag to an entry via the form.
+	 *
+	 * @param: caller is the caller element
+	 * @param: entry_id is the id of the entry to tag
+	 * @param tag_baselink is the baselink for the tags (as in template)
 	 */
 	function tag_form(caller, entry_id, tag_baselink) {
 		var tag_input = $('input[name="newTag"]', caller);
@@ -39,6 +47,10 @@
 
 	/**
 	 * Add a tag to an entry
+	 *
+	 * @param: caller is the caller element
+	 * @param: entry_id is the id of the entry to tag
+	 * @param: tag_value is the tag to add
 	 */
 	function tag_entry(caller, entry_id, tag_value) {
 		var callback;
@@ -67,6 +79,10 @@
 
 	/**
 	 * Remove a tag on an entry
+	 *
+	 * @param: caller is the caller element
+	 * @param: entry_id is the id of the entry to tag
+	 * @param: tag_value is the tag to remove
 	 */
 	function untag_entry(caller, entry_id, tag_value) {
 		var callback;
@@ -93,6 +109,9 @@
 
 	/**
 	 * Mark all entries as read.
+	 *
+	 * @param: caller is the caller element
+	 * @param: tag_value is the tag to add
 	 */
 	function tag_all(caller, tag_value) {
 		ajax(caller, 'api/tags.php?all=1&tag='+tag_value, function(c, d) {
@@ -121,6 +140,7 @@
 
 	/**
 	 * Fill the modal box
+	 *
 	 * @param title The modalbox title
 	 * @param content The modalbox content
 	 * @param className Class added to the modalbox. Usefull to warn the user about the modalbox level of warn.
