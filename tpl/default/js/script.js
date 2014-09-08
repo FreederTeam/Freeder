@@ -1,6 +1,10 @@
 // == Init
 	$(document).ready(function() {
+		// svg fallback
 		svgeezy.init(false, 'png');
+		// modalbox autolaunch
+		modalAutolaunch();
+
 	});
 
 // == Functions
@@ -98,18 +102,42 @@
 
 
 // == Display Tags
+	/**
+	 * Display the tag list and form
+	 */
 	$(".DisplayTagsButton").click(function(){
 		$(this).siblings(".ArticleTagsList").slideToggle(200);
 	});
 
 // == Modal Box
+	/**
+	 * Autolaunch of the modalbox at the page load if modalbox is not empty
+	 */
+	function modalAutolaunch() {
+		if ($("#JsModalbox-p").html().length > 0) {
+			displayModalBox();
+		}
+	}
+
+	/**
+	 * Fill the modal box
+	 * @param title The modalbox title
+	 * @param content The modalbox content
+	 * @param className Class added to the modalbox. Usefull to warn the user about the modalbox level of warn.
+	 */
 	function fillModalbox(title, content, className) {
 		if (className != undefined) {
 			$("#JsModalbox").addClass(className);
 		}
 		$("#JsModalbox-h1").html(title);
 		$("#JsModalbox-p").html(content);
+		}
 
+	/**
+	 * Display the modal box
+	 */
+	function displayModalBox() {
 		$("#JsOverlay").toggle();
 		$("#JsModalbox").toggle();
+
 	}

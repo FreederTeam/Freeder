@@ -3,16 +3,23 @@
 
 			</main>
 		</div> {* end #flex *}
+
 		{include="_footer"}
+
 		<div id="JsOverlay" class="Overlay"></div>
-		<div id="JsModalbox" class="Modalbox">
-			<!-- 
-				* don't fill this code, this is filled js-only ;
-				* Both ID and classes are used, because for JS selection, ID are way faster than classes.
-			-->
-			<h1 id="JsModalbox-h1" class="Modalbox-h1"></h1>
-			<p id="JsModalbox-p" class="Modalbox-content"></p>
-		</div>
+
+		{if="empty($error)"}
+			<div id="JsModalbox" class="Modalbox">
+				<h1 id="JsModalbox-h1" class="Modalbox-h1"></h1>
+				<p id="JsModalbox-p" class="Modalbox-content"></p>
+			</div>
+		{else}
+			<div id="JsModalbox" class="Modalbox error {$error['type']}">
+				<h1 id="JsModalbox-h1" class="Modalbox-h1">{$error['title']}</h1>
+				<p id="JsModalbox-p" class="Modalbox-content">{$error['content']}</p>
+			</div>
+		{/if}
+
 		{include="_include_end"}
 	</body>
 </html>
