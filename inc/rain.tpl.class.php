@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  RainTPL
+ *  RainTPL (Freeder Flavored)
  *  -------
  *  Realized by Federico Ulfo & maintained by the Rain Team
  *  Distributed under GNU/LGPL 3 License
@@ -10,9 +10,11 @@
  *  @file
  *  @brief RainTPL class
  *  @copyright LGPLv3, Federico Ulfo & the Rain Team
+ *
+ *  Warning: This is not the original RainTPL file.
+ *  Some substantial modifications have been applied for Freeder.
  */
 
-require_once(INC_DIR . 'functions.php');
 require_once(INC_DIR . 'xss.php');
 
 class RainTPL{
@@ -731,7 +733,7 @@ class RainTPL{
 
 		// Eventually call the external rewrite engine.
 		if (self::$rewriteEngine != null) {
-			$new_url = self::$rewriteEngine->rewrite($new_url);
+			$new_url = self::$rewriteEngine->rewrite( $new_url, $tag, $attr, $this->path );
 		}
 
 		return "<$tag$_$attr=\"$new_url\"";
