@@ -120,15 +120,24 @@
 	}
 
 
-// == Display Tags
+// == Display Tags in the articles boxes
+
 	/**
-	 * Display the tag list and form
+	 * Display the tag list and form in the article boxes
 	 */
 	$(".DisplayTagsButton").click(function(){
 		$(this).siblings(".ArticleTagsList").slideToggle(200);
 	});
 
+// == Settings tabs
+
+	$(".OneTab-a").click(function(){
+		$(this).preventDefault;
+		
+	});
+
 // == Modal Box
+
 	/**
 	 * Autolaunch of the modalbox at the page load if modalbox is not empty
 	 */
