@@ -41,9 +41,15 @@ class RewriteEngine {
 		if ($server_rewriting_available) {
 			$this->pre_rules['#/%tag%/([^/]+)$#'] = '/tag/$1';
 			$this->pre_rules['#/%feed%/([0-9]+)$#'] = '/feed/$1';
+
+			$this->js_rules['#%tag%#'] = 'tag';
+			$this->js_rules['#%feed%#'] = 'feed';
 		} else {
 			$this->pre_rules['#/%tag%/([^/]+)$#'] = 'index.php?view=%25tag_$1';
 			$this->pre_rules['#/%feed%/([0-9]+)$#'] = 'index.php?view=%25feed_$1';
+
+			$this->js_rules['#%tag%#'] = 'index.php?view=%25tag_';
+			$this->js_rules['#%feed%#'] = 'index.php?view=%25feed_';
 		}
 	}
 
@@ -63,6 +69,13 @@ class RewriteEngine {
 			$url = preg_replace('#^(.*)\.js$#', RainTPL::$base_url . 'js.php?script=$1', $url);
 		}
 		return $url;
+	}
+
+	public function rewrite_js($js) {
+		foreach($this->js_rules as $match => $query) {
+			$js = preg_replace($match, $query, $js);
+		}
+		return $js;
 	}
 
 
