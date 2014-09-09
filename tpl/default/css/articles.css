@@ -72,6 +72,6 @@
 		padding:0 2rem 1rem 2rem;
 	}
 	.ArticleContent img {
-		max-width: 100%;
-		height: auto;
+		max-width: 100% !important;
+		height: auto !important;
 	}
