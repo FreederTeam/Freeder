@@ -1,0 +1,77 @@
+/* == Tabs */
+	.Tabs {
+		display: -ms-flexbox;
+		display: -webkit-flex;
+		display: -ms-flex;
+		display: flex;
+		margin: 0 auto;
+		padding: 0;
+		max-width: 1200px;
+		list-style: none;
+		-ms-box-orient: horizontal;
+		-ms-box-pack: center;
+		-webkit-flex-flow: row wrap;
+		-moz-flex-flow: row wrap;
+		-ms-flex-flow: row wrap;
+		flex-flow: row wrap;
+		-webkit-justify-content: center;
+		-moz-justify-content: center;
+		-ms-justify-content: center;
+		justify-content: center;
+		background-color: #FEFEFE;
+	}
+
+	.OneTab {
+		position: relative;
+		z-index: 1;
+		display: block;
+		margin: 0;
+		text-align: center;
+		-webkit-flex: 1;
+		-moz-flex: 1;
+		-ms-flex: 1;
+		flex: 1;
+		border: 1px solid rgba(40,44,42,0.1);
+	}
+	.OneTab:not(:last-child) {
+		border-right: none;
+	}
+
+	a.OneTab-a {
+		position: relative;
+		display: block;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+		line-height: 2.5;
+		padding: 0.65em 0 0.5em;
+		background: #F3F3F3;
+		color: #15C;
+		line-height: 1.5rem;
+	}
+	.OneTab-a:hover,
+	.OneTab-a:focus {
+		color: #ED7261;
+		outline: none;
+	}
+
+	.OneTab.current {
+		border-top-color: #ED7261;
+		border-bottom: none;
+	}
+	.OneTab.current .OneTab-a {
+		background: #FEFEFE;
+		box-shadow: inset 0 3px 0 #ED7261;
+		color: #ED7261;
+	}
+
+/* == Settings */
+	.TabContent {
+		border: 1px solid rgba(40,44,42,0.1);
+		border-top: none;
+		background-color: #FEFEFE;
+		padding: 2rem 1rem;
+	}
+	.TabContent > .TabContent-h2 {
+		margin-top: 0;
+	}
