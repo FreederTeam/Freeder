@@ -2,8 +2,14 @@
 <div id="settings_preferences">
 	{* Script preferences *}
 	<form method="post" action="#">
-		<fieldset>
-			<legend>Synchronization</legend>
+		<nav>
+			<ul>
+				<li><a href="#"></a></li>
+			</ul>
+		</nav>
+
+		<section class="TabContent" id="">
+			<h2>Synchronization</h2>
 			<p>
 				<input type="radio" name="synchronization_type" id="synchronization_type_ajax" value="ajax" {if="$config->synchronization_type == 'ajax'"} checked="checked"{/if}/><label for="synchronization_type_ajax"> Ajax</label><br/>
 				Update the feeds in the background at each page call.
@@ -12,10 +18,10 @@
 				<input type="radio" name="synchronization_type" id="synchronization_type_cron" value="cron" {if="$config->synchronization_type == 'cron'"} checked="checked"{/if}/><label for="synchronization_type_cron"> Cron</label><br/>
 				Use a crontask to update the feeds regularly.
 			</p>
-		</fieldset>
+		</section>
 
-		<fieldset>
-			<legend>Template</legend>
+		<section class="TabContent" id="">
+			<h2>Template</h2>
 			<p>
 				<label for="template">Template: </label>
 				<select name="template" id="template">
@@ -30,17 +36,17 @@
 				<input type="radio" name="display_entries" id="display_entries_desc" value="description" {if="$config->display_entries == 'description'"}checked="checked"{/if}/><label for="display_entries_desc">Only the description</label><br/>
 				<input type="radio" name="display_entries" id="display_entries_titles" value="title" {if="$config->display_entries == 'title'"}checked="checked"{/if}/><label for="display_entries_titles">Only titles</label>
 			</p>
-		</fieldset>
+		</section>
 
-		<fieldset>
-			<legend>User</legend>
+		<section class="TabContent" id="">
+			<h2>User</h2>
 			<p>Leave these fields blank if you don't want to change your password.</p>
 			<p><label for="password">Password: </label><input type="password" name="password" id="password"/></p>
 			<p><label for="password_check">Password (confirmation): </label><input type="password" name="password_check" id="password_check"/></p>
-		</fieldset>
+		</section>
 
-		<fieldset>
-			<legend>Entries</legend>
+		<section class="TabContent" id="">
+			<h2>Entries</h2>
 
 			<p>Tag entries from the tags in the feeds?
 				<input type="radio" name="import_tags_from_feeds" id="import_tags_from_feeds_yes" value="1" {if="$config->import_tags_from_feeds != 0"}checked="checked"{/if}/><label for=import_tags_from_feeds_yes">Yes</label>
@@ -56,17 +62,18 @@
 				<label for="entries_per_page">Entries per page:</label>
 				<input type="number" name="entries_per_page" id="entries_per_page" value="{$config->entries_per_page}"/>
 			</p>
-		</fieldset>
-		<fieldset>
-			<legend>Share</legend>
+		</section>
+
+		<section class="TabContent" id="">
+			<h2>Share</h2>
 			<p><label for="share_input_facebook">Facebook: </label><input type="checkbox" name="share_input_facebook" id="share_input_facebook" {if="$config->facebook_share > 0"}checked="checked"{/if} value="1"/></p>
 			<p><label for="share_input_twitter">Twitter: </label><input type="checkbox" name="share_input_twitter" id="share_input_twitter" {if="$config->twitter_share > 0"}checked="checked"{/if} value="1"/></p>
 			<p><label for="share_input_shaarli">Shaarli: </label><input type="text" name="share_input_shaarli" id="share_input_shaarli" placeholder="URL of your shaarli" {if="!empty($config->shaarli_share)"}value="{$config->shaarli_share}"{/if}/></p>
 			<p><label for="share_input_diaspora">Diaspora: </label><input type="text" name="share_input_diaspora" id="share_input_diaspora" placeholder="URL of your pod" {if="!empty($config->diaspora_share)"}value="{$config->diaspora_share}"{/if}/></p>
-		</fieldset>
+		</section>
 
-		<fieldset>
-			<legend>Misc</legend>
+		<section class="TabContent" id="">
+			<h2>Misc</h2>
 
 			<p><label for="timezone">Timezone: </label><input type="text" name="timezone" id="timezone" value="{$config->timezone}"/></p>
 			<p>Anonymous access ?
@@ -81,13 +88,13 @@
 					<span class="error"><code>mod_rewrite</code> does not seem to be enabled on your system.</span>
 				{/if}
 			</p>
-		</fieldset>
+		</section>
 
 		<p><input class="Button" type="submit" value="Save"/><input type="hidden" name="token" value="{function="generate_token('settings_form')"}"/></p>
 	</form>
 </div>
 
-<div id="settings_feeds">
+<section class="" id="">
 	{* Feeds management *}
 	<h2>Add a feed</h2>
 	<form method="post" action="#">
@@ -117,9 +124,9 @@
 	{else}
 		<p>You did not add any feeds yet.</p>
 	{/if}
-</div>
+</section class="" id="">
 
-<div id="settings_import_export">
+<section id="">
 	{* Import / Export panel *}
 	<h2>Import an OPML file</h2>
 	<form method="post" action="#" enctype="multipart/form-data">
@@ -146,5 +153,5 @@
 			<input type="hidden" name="token" value="{function="generate_token('export_form')"}"/>
 		</p>
 	</form>
-</div>
+</section>
 {include="_end"}
