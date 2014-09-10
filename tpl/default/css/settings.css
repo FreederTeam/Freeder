@@ -31,7 +31,7 @@
 		-moz-flex: 1;
 		-ms-flex: 1;
 		flex: 1;
-		border: 1px solid rgba(40,44,42,0.1);
+		border: 1px solid #E8E8E8;
 	}
 	.OneTab:not(:last-child) {
 		border-right: none;
@@ -67,11 +67,16 @@
 
 /* == Settings */
 	.TabContent {
-		border: 1px solid rgba(40,44,42,0.1);
+		border: 1px solid #E8E8E8;
 		border-top: none;
 		background-color: #FEFEFE;
-		padding: 2rem 1rem;
+		padding: 2rem 0;
 	}
 	.TabContent > .TabContent-h2 {
 		margin-top: 0;
+	}
+
+	.SettingsSection {
+		border-top: 1px dashed #E8E8E8;
+		padding: 1rem 1rem;
 	}
