@@ -22,10 +22,6 @@
 		display:none;
 	}
 
-	.Article-mainForm input.Input {
-		background-color:#ECECEC;
-	}
-
 	@media(min-width:960px)
 	/*must be the same value than in the Responsive part of layout.css*/
 	{
