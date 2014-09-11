@@ -5,6 +5,15 @@
 		// modalbox autolaunch
 		ModalboxAutoLaunch();
 
+		if(is_touch_device() && $('.Article').length > 0) {
+			var mc = new Hammer(document.querySelector('.Article'));
+			mc.on("panleft panright", slide_effect);
+			mc.on('hammer.input', function(ev) {
+				if(ev.isFinal) {
+					slide_to_read(ev);
+				}
+			});
+		}
 	});
 
 // == Functions
@@ -179,15 +188,16 @@
 	 * Handle slide effect
 	 */
 	function slide_effect(e) {
-		e = e || window.event;
 		e.preventDefault();
-		e.gesture.preventDefault();
-		var target = e.target || e.srcElement;
+		target = $(e.target);
+		if (!target.hasClass('.Article')) {
+			target = target.parents('.Article');
+		}
 
-		if(Math.abs(e.gesture.deltaX) > 10 && Math.abs(e.gesture.deltaX) >= 2*Math.abs(e.gesture.deltaY)) {
-			$(target).css('transform', 'translate('+e.gesture.deltaX+'px,0)');
-			$(target).css('left', e.gesture.deltaX);
-			$(target).css('opacity', 1-Math.abs(e.gesture.deltaX)/$(target).width())
+		if(Math.abs(e.deltaX) >= 2*Math.abs(e.deltaY)) {
+			$(target).css('transform', 'translate('+e.deltaX+'px,0)');
+			$(target).css('left', e.deltaX);
+			$(target).css('opacity', 1-Math.abs(e.deltaX)/$(target).width())
 		}
 		return false;
 	}
@@ -196,21 +206,16 @@
 	 * "Slide to mark read / unread" event handler
 	 */
 	function slide_to_read(e) {
-		e = e || window.event;
-		var target = e.target || e.srcElement;
+		target = $(e.target);
+		if (!target.hasClass('.Article')) {
+			target = target.parents('.Article');
+		}
 
-		if(Math.abs(e.gesture.deltaX) >= 2*Math.abs(e.gesture.deltaY) && Math.abs(e.gesture.deltaX) > $('.articles-button-bar', $(target)).width()) {
-			var id = $('.anchor', $(target)).attr('id');
-			readThis($('.read_button', $(target)), id, true, function() {
-				if(!$('body').hasClass('no-animations')) {
-					$('.feedArticle').css('transform', 'translate(0,0)');
-					$('.feedArticle').css('opacity', '1');
-				}
-			});
+		if(Math.abs(e.deltaX) > $(target).width() / 2) {
+			console.log($('Controls .Controls-button:first-child', target));
+			tag_entry($('Controls .Controls-button:first-child', target), target.attr('id'), '_read');
 		}
-		else {
-			$('').css('transform', 'translate(0,0)');
-			$('').css('opacity', '1');
-		}
+		$(target).css('transform', 'translate(0,0)');
+		$(target).css('opacity', '1');
 		return false;
 	}
