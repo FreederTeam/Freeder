@@ -165,3 +165,52 @@
 		$("#JsModalbox").toggle();
 
 	}
+
+// == Touch movements
+	/**
+	 * Check wether the device has touch capabilities or not
+	 */
+	function is_touch_device() {
+		return !!('ontouchstart' in window) // works on most browsers
+			|| !!('onmsgesturechange' in window); // works on ie10
+	};
+
+	/**
+	 * Handle slide effect
+	 */
+	function slide_effect(e) {
+		e = e || window.event;
+		e.preventDefault();
+		e.gesture.preventDefault();
+		var target = e.target || e.srcElement;
+
+		if(Math.abs(e.gesture.deltaX) > 10 && Math.abs(e.gesture.deltaX) >= 2*Math.abs(e.gesture.deltaY)) {
+			$(target).css('transform', 'translate('+e.gesture.deltaX+'px,0)');
+			$(target).css('left', e.gesture.deltaX);
+			$(target).css('opacity', 1-Math.abs(e.gesture.deltaX)/$(target).width())
+		}
+		return false;
+	}
+
+	/**
+	 * "Slide to mark read / unread" event handler
+	 */
+	function slide_to_read(e) {
+		e = e || window.event;
+		var target = e.target || e.srcElement;
+
+		if(Math.abs(e.gesture.deltaX) >= 2*Math.abs(e.gesture.deltaY) && Math.abs(e.gesture.deltaX) > $('.articles-button-bar', $(target)).width()) {
+			var id = $('.anchor', $(target)).attr('id');
+			readThis($('.read_button', $(target)), id, true, function() {
+				if(!$('body').hasClass('no-animations')) {
+					$('.feedArticle').css('transform', 'translate(0,0)');
+					$('.feedArticle').css('opacity', '1');
+				}
+			});
+		}
+		else {
+			$('').css('transform', 'translate(0,0)');
+			$('').css('opacity', '1');
+		}
+		return false;
+	}

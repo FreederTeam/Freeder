@@ -26,7 +26,7 @@ function get_sharing_options() {
 		$sharing_options[] = array('type'=>'shaarli', 'url'=>$config->shaarli_share.'?post=');
 	}
 	if (!empty($config->diaspora_share) && filter_var($config->shaarli_share, FILTER_VALIDATE_URL) !== false) {
-		$sharing_options[] = array('type'=>'diaspora', 'url'=>$config->diaspora_share'.bookmarklet?url=');
+		$sharing_options[] = array('type'=>'diaspora', 'url'=>$config->diaspora_share.'bookmarklet?url=');
 	}
 
 	return $sharing_options;
