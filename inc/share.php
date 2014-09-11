@@ -23,10 +23,10 @@ function get_sharing_options() {
 		$sharing_options[] = array('type'=>'twitter', 'url'=>'https://twitter.com/share?url=');
 	}
 	if (!empty($config->shaarli_share) && filter_var($config->shaarli_share, FILTER_VALIDATE_URL) !== false) {
-		$sharing_options[] = array('type'=>'shaarli', 'url'=>$config->shaarli_share.'/?post=');
+		$sharing_options[] = array('type'=>'shaarli', 'url'=>$config->shaarli_share.'?post=');
 	}
 	if (!empty($config->diaspora_share) && filter_var($config->shaarli_share, FILTER_VALIDATE_URL) !== false) {
-		$sharing_options[] = array('type'=>'diaspora', 'url'=>$config->diaspora_share);
+		$sharing_options[] = array('type'=>'diaspora', 'url'=>$config->diaspora_share'.bookmarklet?url=');
 	}
 
 	return $sharing_options;
