@@ -44,7 +44,7 @@
 	function tag_form(caller, entry_id, tag_baselink) {
 		var tag_input = $('input[name="newTag"]', caller);
 		var tag_value = tag_input.val();
-		ajax(caller, 'api/tags.php?entry='+entry_id+'&tag='+tag_value, function(c, d) {
+		ajax(caller, '{base_url}api/tags.php?entry='+entry_id+'&tag='+tag_value, function(c, d) {
 			tag_input.val("");
 			var article = c.parentNode.parentNode;
 			$('ul', $(article)).append('<li class="TagList-completeTag CompleteTag"><a class="TagList-tagName TagName" href="'+tag_baselink+tag_value+'">'+tag_value+'</a></li>');
@@ -61,28 +61,42 @@
 	 * @param: entry_id is the id of the entry to tag
 	 * @param: tag_value is the tag to add
 	 */
-	function tag_entry(caller, entry_id, tag_value) {
+	function tag_entry(caller, entry_id, tag_value, overload_callback=undefined) {
 		var callback;
 		switch (tag_value) {
 			case "_read":
 				callback = function(c, d) {
 					c.innerHTML = "Unread";
+					c.onclick = function () { untag_entry(c, entry_id, '_read') };
 					var article = c.parentNode.parentNode;
 					article.parentNode.removeChild(article);
+
+					if (typeof(overload_callback) !== 'undefined') {
+						overload_callback();
+					}
 				}
 				break;
 
 			case "_sticky":
 				callback = function(c, d) {
 					c.innerHTML = "Unstick";
+					c.onclick = function() { untag_entry(c, entry_id, '_sticky') };
+
+					if (typeof(overload_callback) !== 'undefined') {
+						overload_callback();
+					}
 				}
 				break;
 
 			default:
-				callback = function (c, d) { };
+				callback = function (c, d) {
+					if (typeof(overload_callback) !== 'undefined') {
+						overload_callback();
+					}
+				};
 				break;
 		}
-		ajax(caller, 'api/tags.php?entry='+entry_id+'&tag='+tag_value, callback);
+		ajax(caller, '{$base_url}api/tags.php?entry='+entry_id+'&tag='+tag_value, callback);
 	}
 
 
@@ -93,26 +107,40 @@
 	 * @param: entry_id is the id of the entry to tag
 	 * @param: tag_value is the tag to remove
 	 */
-	function untag_entry(caller, entry_id, tag_value) {
+	function untag_entry(caller, entry_id, tag_value, overload_callback=undefined) {
 		var callback;
 		switch (tag_value) {
 			case "_read":
 				callback = function(c, d) {
 					c.innerHTML = "Read";
+					c.onclick = function () { tag_entry(c, entry_id, '_read') };
+
+					if (typeof(overload_callback) !== 'undefined') {
+						overload_callback();
+					}
 				}
 				break;
 
 			case "_sticky":
 				callback = function(c, d) {
 					c.innerHTML = "Stick";
+					c.onclick = function () { tag_entry(c, entry_id, '_sticky') };
+
+					if (typeof(overload_callback) !== 'undefined') {
+						overload_callback();
+					}
 				}
 				break;
 
 			default:
-				callback = function (c, d) { };
+				callback = function (c, d) {
+					if (typeof(overload_callback) !== 'undefined') {
+						overload_callback();
+					}
+				};
 				break;
 		}
-		ajax(caller, 'api/tags.php?entry='+entry_id+'&tag='+tag_value+'&remove=1', callback);
+		ajax(caller, '{$base_url}api/tags.php?entry='+entry_id+'&tag='+tag_value+'&remove=1', callback);
 	}
 
 
@@ -123,7 +151,7 @@
 	 * @param: tag_value is the tag to add
 	 */
 	function tag_all(caller, tag_value) {
-		ajax(caller, 'api/tags.php?all=1&tag='+tag_value, function(c, d) {
+		ajax(caller, '{$base_url}api/tags.php?all=1&tag='+tag_value, function(c, d) {
 			$('main article').remove();
 		});
 	}
