@@ -71,7 +71,7 @@ function xss_clean($data)
 		{
 			// Remove really unwanted tags
 			$old_data = $data;
-			$data = preg_replace('#</*(?:applet|b(?:ase|gsound|link|ody)|doctype|embed|frame(?:set)?|font|form|html|i(?:frame|layer|input)|l(?:ayer|ink)|marquee|meta|noscript|object|param|plaintext|s(?:cript|tyle)|title|xml)[^>]*+>#i', '', $data);
+			$data = preg_replace('#</*(?:applet|b(?:ase|gsound|link|ody)|doctype|frame(?:set)?|font|form|html|i(?:frame|layer|input)|l(?:ayer|ink)|marquee|meta|noscript|object|param|plaintext|s(?:cript|tyle)|title|xml)[^>]*+>#i', '', $data);
 		}
 		while ($old_data !== $data);
 
