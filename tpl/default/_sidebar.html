@@ -27,7 +27,7 @@
 	{/if}
 
 	{if="!empty($user) && isset($nb_entries)"}
-		<button class="Side-button Button red" onclick="tag_all(this, '_read')">Read all</button>
+	<button class="Side-button Button red" onclick="if (window.confirm('Mark all items of the current view as read ?')) { tag_all(this, '_read'); }">Read all</button>
 	{/if}
 
 	<ul class="Side-tagList TagList">
