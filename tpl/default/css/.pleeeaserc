@@ -1,0 +1,6 @@
+{
+  "in": "style.css",
+  "out": "style.processed.css",
+  "autoprefixer": {"browsers": ["last 3 versions", "Android 2.3"]}
+}
+
