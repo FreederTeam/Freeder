@@ -21,7 +21,7 @@ class Config {
 			'timezone'=>'Europe/Paris',
 			'import_tags_from_feeds'=>0,
 			'template'=>DEFAULT_THEME . '/',
-			'base_url'=>dirname($_SERVER['SCRIPT_NAME']) . '/',
+			'base_url'=>rtrim(dirname($_SERVER['SCRIPT_NAME']), '/') . '/',
 			'synchronization_type'=>'cron',
 			'anonymous_access'=>0,
 			'entries_to_keep'=>50,  // Number of entries to keep, set to 0 if you want to keep all of them

@@ -89,6 +89,9 @@ if (log_user_in() === false) {
 	$tpl->assign('error', $error, RainTPL::RAINTPL_IGNORE_SANITIZE);
 }
 $tpl->assign('user', isset($_SESSION['user']) ? $_SESSION['user'] : false, RainTPL::RAINTPL_HTML_SANITIZE);
-check_anonymous_view();
+
+if (!isset($force_public) || !$force_public) {
+	check_anonymous_view();
+}
 
 

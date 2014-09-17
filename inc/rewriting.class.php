@@ -66,7 +66,7 @@ class RewriteEngine {
 		}
 		if ($tag == 'script' && $attr == 'src') {
 			$url = str_replace($path, '', $url);
-			$url = preg_replace('#^(.*)\.js$#', RainTPL::$base_url . 'js.php?script=$1', $url);
+			$url = preg_replace('#^(.*)\.js$#', self::$rewrite_base . 'js.php?script=$1', $url);
 		}
 		return $url;
 	}
