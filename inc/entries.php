@@ -7,6 +7,7 @@
  */
 
 
+require_once(INC_DIR . 'feeds.php');
 require_once(INC_DIR . 'tags.php');
 require_once(INC_DIR . 'views.php');
 
@@ -116,9 +117,13 @@ function get_entries_count($view='', $page=1) {
 
 /**
  * Delete the old entries as specified in the config
- * @todo This function
+ * @todo Optimize ?
  */
 function delete_old_entries() {
+	global $dbh, $config;
+
+	$query = $dbh->prepare('DELETE FROM entries WHERE id NOT IN (SELECT id FROM (SELECT DISTINCT feed_id FROM entries) t1, entries t2 WHERE t2.id IN (SELECT id FROM entries t3 WHERE t3.feed_id=t1.feed_id ORDER BY pubDate DESC LIMIT ?))');
+	$query->execute(array($config->entries_to_keep));
 }
 
 

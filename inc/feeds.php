@@ -198,10 +198,8 @@ function refresh_feeds($feeds, $check_favicons=false, $verbose=true) {
 		}
 	}
 
-	// TODO : Remove old entries
-	delete_old_entries();
-
 	$dbh->commit();
+	delete_old_entries();
 
 	return $errors;
 }
@@ -420,8 +418,6 @@ function edit_feed($old_url, $new_url, $new_title='') {
 
 /**
  * Returns all the available feeds.
- *
- * @todo This function
  */
 function get_feeds() {
 	global $dbh;
