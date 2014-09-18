@@ -32,7 +32,8 @@ class Config {
 			'facebook_share'=>0,
 			'twitter_share'=>0,
 			'shaarli_share'=>"",
-			'diaspora_share'=>"",
+			'wallabag_share'=>"",
+			'diaspora_share'=>""
 		);
 		$this->load();
 	}
