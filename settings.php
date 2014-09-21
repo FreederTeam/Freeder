@@ -114,6 +114,19 @@ if (!empty($_POST['synchronization_type']) && !empty($_POST['template']) && !emp
 			die('Error: Incorrect shaarli URL');
 		}
 	}
+	if (!empty($_POST['share_input_wallabag'])) {
+		if (filter_var($_POST['share_input_wallabag'], FILTER_VALIDATE_URL) !== false) {
+			if (endswith($_POST['share_input_wallabag'], '/')) {
+				$config->wallabag_share = $_POST['share_input_wallabag'];
+			}
+			else {
+				$config->wallabag_share = $_POST['share_input_wallabag'].'/';
+			}
+		}
+		else {
+			die('Error: Incorrect Wallabag URL');
+		}
+	}
 	if (!empty($_POST['share_input_diaspora'])) {
 		if (filter_var($_POST['share_input_diaspora'], FILTER_VALIDATE_URL) !== false) {
 			if (endswith($_POST['share_input_diaspora'], '/')) {

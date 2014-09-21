@@ -57,6 +57,6 @@
 		</article>
 	{/loop}
 
-	<p>{$nb_pages} pages</p>
+	<p>{$nb_pages} {if="$nb_pages > 1"}pages{/if}{else}page{/else}</p>
 
 {include="_end"}

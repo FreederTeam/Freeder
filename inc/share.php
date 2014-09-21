@@ -25,7 +25,10 @@ function get_sharing_options() {
 	if (!empty($config->shaarli_share) && filter_var($config->shaarli_share, FILTER_VALIDATE_URL) !== false) {
 		$sharing_options[] = array('type'=>'shaarli', 'url'=>$config->shaarli_share.'?post=');
 	}
-	if (!empty($config->diaspora_share) && filter_var($config->shaarli_share, FILTER_VALIDATE_URL) !== false) {
+	if (!empty($config->wallabag_share) && filter_var($config->wallabag_share, FILTER_VALIDATE_URL) !== false) {
+		$sharing_options[] = array('type'=>'wallabag', 'url'=>$config->wallabag_share.'?action=add&url=');
+	}
+	if (!empty($config->diaspora_share) && filter_var($config->diaspora_share, FILTER_VALIDATE_URL) !== false) {
 		$sharing_options[] = array('type'=>'diaspora', 'url'=>$config->diaspora_share.'bookmarklet?url=');
 	}
 
