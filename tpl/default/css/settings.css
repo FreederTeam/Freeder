@@ -55,11 +55,11 @@
 		outline: none;
 	}
 
-	.OneTab.current {
+	.OneTab.currentTab {
 		border-top-color: #ED7261;
 		border-bottom: none;
 	}
-	.OneTab.current .OneTab-a {
+	.OneTab.currentTab .OneTab-a {
 		background: #FEFEFE;
 		box-shadow: inset 0 3px 0 #ED7261;
 		color: #ED7261;
@@ -71,7 +71,11 @@
 		border-top: none;
 		background-color: #FEFEFE;
 		padding: 2rem 0;
+        display: none;
 	}
+    .TabContent.currentTabContent {
+        display: block;
+    }
 	.TabContent > .TabContent-h2 {
 		margin-top: 0;
 	}

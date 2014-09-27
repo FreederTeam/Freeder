@@ -130,10 +130,25 @@
 	});
 
 // == Settings tabs
-
+    /**
+     * Change tab on the settings page
+     */
 	$(".OneTab-a").click(function(){
-		$(this).preventDefault;
-		
+        //if current tab is clicked, don't do the hole process
+        if ($(this).parent().hasClass("currentTab") == false) {
+            $(".currentTab").removeClass("currentTab");
+            $(this).parent().addClass("currentTab");
+
+            var toHide = $(".currentTabContent");
+            toHide.toggle();
+            toHide.removeClass("currentTabContent");
+
+            var idToShow = $(this).data("targetid");
+            idToShow = "#"+idToShow; //who said it's ugly ?
+            $(idToShow).toggle();
+            $(idToShow).addClass("currentTabContent");
+        }
+        
 	});
 
 // == Modal Box

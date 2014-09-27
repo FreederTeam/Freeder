@@ -2,18 +2,18 @@
 
 <nav>
 	<ul class="Tabs">
-		<li class="OneTab current"><a class="OneTab-a" href="settings.php#feedManagement">Feeds</a></li>
-		<li class="OneTab"><a class="OneTab-a" href="settings.php#synchronization">Sync</a></li>
-		<li class="OneTab"><a class="OneTab-a" href="settings.php#template">Template</a></li>
-		<li class="OneTab"><a class="OneTab-a" href="settings.php#user">User</a></li>
-		<li class="OneTab"><a class="OneTab-a" href="settings.php#entries">Entries</a></li>
-		<li class="OneTab"><a class="OneTab-a" href="settings.php#sharing">Sharing</a></li>
-		<li class="OneTab"><a class="OneTab-a" href="settings.php#misc">Misc</a></li>
-		<li class="OneTab"><a class="OneTab-a" href="settings.php#importexport">Import Export</a></li>
+		<li class="OneTab currentTab"> <a class="OneTab-a" data-targetid="feedManagement" href="settings.php#feedManagement">Feeds</a></li>
+		<li class="OneTab"> <a class="OneTab-a" data-targetid="synchronization" href="settings.php#synchronization">Sync</a></li>
+		<li class="OneTab"> <a class="OneTab-a" data-targetid="template" href="settings.php#template">Template</a></li>
+		<li class="OneTab"> <a class="OneTab-a" data-targetid="user" href="settings.php#user">User</a></li>
+		<li class="OneTab"> <a class="OneTab-a" data-targetid="entries" href="settings.php#entries">Entries</a></li>
+		<li class="OneTab"> <a class="OneTab-a" data-targetid="sharing" href="settings.php#sharing">Sharing</a></li>
+		<li class="OneTab"> <a class="OneTab-a" data-targetid="misc" href="settings.php#misc">Misc</a></li>
+		<li class="OneTab"> <a class="OneTab-a" data-targetid="importexport" href="settings.php#importexport">Import Export</a></li>
 	</ul>
 </nav>
 
-<article class="TabContent" id="feedManagement">
+<article class="TabContent currentTabContent" id="feedManagement">
 	<section class="SettingsSection">
 		<h2 class="TabContent-h2">Add a feed</h2>
 		<form method="post" action="#">
@@ -48,7 +48,7 @@
 	</section>
 </article>
 
-<article class="TabContent" name="synchronization" id="synchronization">
+<article class="TabContent" id="synchronization">
 	<section class="SettingsSection">
 		<h2 class="TabContent-h2">Sync</h2>
 		<form method="post" action="#">
@@ -61,7 +61,7 @@
 				Use a crontask to update the feeds regularly.
 			</p>
 
-		<input class="Button" type="submit" value="Save"/><input type="hidden" name="token" value="{function="generateI_token('settings_form')"}"/>
+		<input class="Button" type="submit" value="Save"/><input type="hidden" name="token" value="{function="generate_token('settings_form')"}"/>
 		</form>
 	</section>
 </article>
@@ -85,7 +85,7 @@
 				<input type="radio" name="display_entries" id="display_entries_titles" value="title" {if="$config->display_entries == 'title'"}checked="checked"{/if}/><label for="display_entries_titles">Only titles</label>
 			</p>
 
-		<input class="Button" type="submit" value="Save"/><input type="hidden" name="token" value="{function="generateI_token('settings_form')"}"/>
+		<input class="Button" type="submit" value="Save"/><input type="hidden" name="token" value="{function="generate_token('settings_form')"}"/>
 		</form>
 	</section>
 </article>
@@ -98,7 +98,7 @@
 			<p><label for="password">Password: </label><input type="password" name="password" id="password"/></p>
 			<p><label for="password_check">Password (confirmation): </label><input type="password" name="password_check" id="password_check"/></p>
 		
-		<input class="Button" type="submit" value="Save"/><input type="hidden" name="token" value="{function="generateI_token('settings_form')"}"/>
+		<input class="Button" type="submit" value="Save"/><input type="hidden" name="token" value="{function="generate_token('settings_form')"}"/>
 		</form>
 	</section>
 </article>
@@ -120,7 +120,7 @@
 				<input type="number" name="entries_per_page" id="entries_per_page" value="{$config->entries_per_page}"/>
 			</p>
 
-		<input class="Button" type="submit" value="Save"/><input type="hidden" name="token" value="{function="generateI_token('settings_form')"}"/>
+		<input class="Button" type="submit" value="Save"/><input type="hidden" name="token" value="{function="generate_token('settings_form')"}"/>
 		</form>
 	</section>
 </article>
@@ -134,7 +134,7 @@
 			<p><label for="share_input_shaarli">Shaarli: </label><input type="text" name="share_input_shaarli" id="share_input_shaarli" placeholder="URL of your shaarli" {if="!empty($config->shaarli_share)"}value="{$config->shaarli_share}"{/if}/></p>
 			<p><label for="share_input_diaspora">Diaspora: </label><input type="text" name="share_input_diaspora" id="share_input_diaspora" placeholder="URL of your pod" {if="!empty($config->diaspora_share)"}value="{$config->diaspora_share}"{/if}/></p>
 
-		<input class="Button" type="submit" value="Save"/><input type="hidden" name="token" value="{function="generateI_token('settings_form')"}"/>
+		<input class="Button" type="submit" value="Save"/><input type="hidden" name="token" value="{function="generate_token('settings_form')"}"/>
 		</form>
 	</section>
 </article>
@@ -156,7 +156,7 @@
 				<span class="error"><code>mod_rewrite</code> does not seem to be enabled on your system.</span>
 			{/if}
 		</p>
-		<input class="Button" type="submit" value="Save"/><input type="hidden" name="token" value="{function="generateI_token('settings_form')"}"/>
+		<input class="Button" type="submit" value="Save"/><input type="hidden" name="token" value="{function="generate_token('settings_form')"}"/>
 		</form>
 	<h2 class="TabContent-h2">Misc</h2>
 </article>
