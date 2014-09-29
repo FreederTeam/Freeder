@@ -71,6 +71,9 @@
 		max-width: 100% !important;
 		height: auto !important;
 	}
-    .ArticleContent iframe {
-        max-width: 100% !important;
-    }
+	.ArticleContent iframe {
+		max-width: 100% !important;
+	}
+	.ArticleContent pre {
+		overflow-x: auto;
+	}
