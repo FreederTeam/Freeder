@@ -13,7 +13,7 @@
 	</ul>
 </nav>
 
-<article class="TabContent currentTabContent" id="feedManagement">
+<article class="TabContent currentTabContent" id="feedManagement" {if="$current_tab != 'feedManagement'"}style="display: none;"{/if}>
 	<section class="SettingsSection">
 		<h2 class="TabContent-h2">Add a feed</h2>
 		<form method="post" action="#">
@@ -48,7 +48,7 @@
 	</section>
 </article>
 
-<article class="TabContent" id="synchronization">
+<article class="TabContent" id="synchronization" {if="$current_tab == 'synchronization'"}style="display: block;"{/if}>
 	<section class="SettingsSection">
 		<h2 class="TabContent-h2">Sync</h2>
 		<form method="post" action="#">
@@ -61,15 +61,15 @@
 				Use a crontask to update the feeds regularly.
 			</p>
 
-		<input class="Button" type="submit" value="Save"/><input type="hidden" name="token" value="{function="generate_token('settings_form')"}"/>
+		<input class="Button" type="submit" value="Save"/><input type="hidden" name="token" value="{function="generate_token('settings_form_sync')"}"/>
 		</form>
 	</section>
 </article>
 
-<article class="TabContent" id="template">
+<article class="TabContent" id="template" {if="$current_tab == 'template'"}style="display: block;"{/if}>
 	<section class="SettingsSection">
 		<h2 class="TabContent-h2">Template</h2>
-		<form method="post" action="#">	
+		<form method="post" action="#">
 			<p>
 				<label for="template">Template: </label>
 				<select name="template" id="template">
@@ -85,25 +85,25 @@
 				<input type="radio" name="display_entries" id="display_entries_titles" value="title" {if="$config->display_entries == 'title'"}checked="checked"{/if}/><label for="display_entries_titles">Only titles</label>
 			</p>
 
-		<input class="Button" type="submit" value="Save"/><input type="hidden" name="token" value="{function="generate_token('settings_form')"}"/>
+		<input class="Button" type="submit" value="Save"/><input type="hidden" name="token" value="{function="generate_token('settings_form_template')"}"/>
 		</form>
 	</section>
 </article>
 
-<article class="TabContent" id="user">
+<article class="TabContent" id="user" {if="$current_tab == 'user'"}style="display: block;"{/if}>
 	<section class="SettingsSection">
 		<h2 class="TabContent-h2">User</h2>
 		<form method="post" action="#">
 			<p>Leave these fields blank if you don't want to change your password.</p>
 			<p><label for="password">Password: </label><input type="password" name="password" id="password"/></p>
 			<p><label for="password_check">Password (confirmation): </label><input type="password" name="password_check" id="password_check"/></p>
-		
-		<input class="Button" type="submit" value="Save"/><input type="hidden" name="token" value="{function="generate_token('settings_form')"}"/>
+
+		<input class="Button" type="submit" value="Save"/><input type="hidden" name="token" value="{function="generate_token('settings_form_user')"}"/>
 		</form>
 	</section>
 </article>
 
-<article class="TabContent" id="entries">
+<article class="TabContent" id="entries" {if="$current_tab == 'entries'"}style="display: block;"{/if}>
 	<section class="SettingsSection">
 		<h2 class="TabContent-h2">Entries</h2>
 		<form method="post" action="#">
@@ -120,12 +120,12 @@
 				<input type="number" name="entries_per_page" id="entries_per_page" value="{$config->entries_per_page}"/>
 			</p>
 
-		<input class="Button" type="submit" value="Save"/><input type="hidden" name="token" value="{function="generate_token('settings_form')"}"/>
+		<input class="Button" type="submit" value="Save"/><input type="hidden" name="token" value="{function="generate_token('settings_form_entries')"}"/>
 		</form>
 	</section>
 </article>
 
-<article class="TabContent" id="sharing">
+<article class="TabContent" id="sharing" {if="$current_tab == 'sharing'"}style="display: block;"{/if}>
 	<section class="SettingsSection">
 		<h2 class="TabContent-h2">Sharing</h2>
 		<form method="post" action="#">
@@ -135,12 +135,12 @@
 			<p><label for="share_input_wallabag">Wallabag: </label><input type="text" name="share_input_wallabag" id="share_input_wallabag" placeholder="URL of your Wallabag" {if="!empty($config->wallabag_share)"}value="{$config->wallabag_share}"{/if}/></p>
 			<p><label for="share_input_diaspora">Diaspora: </label><input type="text" name="share_input_diaspora" id="share_input_diaspora" placeholder="URL of your pod" {if="!empty($config->diaspora_share)"}value="{$config->diaspora_share}"{/if}/></p>
 
-		<input class="Button" type="submit" value="Save"/><input type="hidden" name="token" value="{function="generate_token('settings_form')"}"/>
+		<input class="Button" type="submit" value="Save"/><input type="hidden" name="token" value="{function="generate_token('settings_form_sharing')"}"/>
 		</form>
 	</section>
 </article>
 
-<article class="TabContent" id="misc">
+<article class="TabContent" id="misc" {if="$current_tab == 'misc'"}style="display: block;"{/if}>
 	<section class="SettingsSection">
 		<h2 class="TabContent-h2">Misc</h2>
 		<form method="post" action="#">
@@ -157,12 +157,11 @@
 				<span class="error"><code>mod_rewrite</code> does not seem to be enabled on your system.</span>
 			{/if}
 		</p>
-		<input class="Button" type="submit" value="Save"/><input type="hidden" name="token" value="{function="generate_token('settings_form')"}"/>
+		<input class="Button" type="submit" value="Save"/><input type="hidden" name="token" value="{function="generate_token('settings_form_misc')"}"/>
 		</form>
-	<h2 class="TabContent-h2">Misc</h2>
 </article>
 
-<article class="TabContent" id="importexport">
+<article class="TabContent" id="importexport" {if="$current_tab == 'importexport'"}style="display: block;"{/if}>
 	<section class="SettingsSection">
 		<h2 class="TabContent-h2">Import an OPML file</h2>
 		<form method="post" action="#" enctype="multipart/form-data">

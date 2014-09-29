@@ -17,9 +17,11 @@ $feeds = get_feeds();
 $tpl->assign('config', $config, RainTPL::RAINTPL_HTML_SANITIZE);
 $tpl->assign('templates', list_templates(), RainTPL::RAINTPL_HTML_SANITIZE);
 $tpl->assign('feeds', $feeds, RainTPL::RAINTPL_XSS_SANITIZE);
+$tpl->assign('current_tab', 'feedManagement');
 
 // Handle posted info for settings
-if (!empty($_POST['synchronization_type']) && !empty($_POST['template']) && !empty($_POST['timezone']) && isset($_POST['import_tags_from_feeds']) && isset($_POST['anonymous_access']) && isset($_POST['entries_to_keep']) && !empty($_POST['display_entries']) && isset($_POST['entries_per_page']) && isset($_POST['share_input_shaarli']) && isset($_POST['share_input_diaspora']) && !empty($_POST['token']) && check_token(600, 'settings_form')) {
+// Sync tab
+if (!empty($_POST['synchronization_type']) && !empty($_POST['token']) && check_token(600, 'settings_form_sync')) {
 	if ($config->synchronization_type != $_POST['synchronization_type']) {
 		$config->synchronization_type = $_POST['synchronization_type'];
 		require_once(INC_DIR.'cron.php');
@@ -31,7 +33,11 @@ if (!empty($_POST['synchronization_type']) && !empty($_POST['template']) && !emp
 		}
 	}
 
-	// Template
+	header('location: settings.php#synchronization');
+	exit();
+}
+// Template tab
+if (!empty($_POST['template']) && !empty($_POST['display_entries']) && !empty($_POST['token']) && check_token(600, 'settings_form_template')) {
 	if (is_dir(TPL_DIR.$_POST['template'])) {
 		$config->template = $_POST['template'];
 		if(!endswith($config->template, '/')) {
@@ -42,53 +48,72 @@ if (!empty($_POST['synchronization_type']) && !empty($_POST['template']) && !emp
 		die('Error: Invalid template name.');
 	}
 
-	// If update password
-	if (!empty($_POST['password']) && !empty($_POST['password_check'])) {
-		if ($_POST['password'] == $_POST['password_check']) {
-			$password = sha1($_SESSION['user']->salt.$_POST['password']);
-			$query = $dbh->prepare('UPDATE users SET password=:password WHERE login=:login');
-			$query->execute(array(
-				':login'=>$_SESSION['user']->login,
-				':password'=>$password
-			));
-		}
-		else {
-			$error = array();
-			$error['type'] = 'error';
-			$error['title'] = 'Password mismatch';
-			$error['content'] = 'Passwords do not match!';
-		}
-	}
-
-	// Timezone
-	$timezone = trim($_POST['timezone']);
-	if (in_array($timezone, timezone_identifiers_list())) {
-		$config->timezone = $timezone;
-	}
-	else {
-		die('Error: Invalid timezone.');
-	}
-
-	$config->import_tags_from_feeds = (int) $_POST['import_tags_from_feeds'];
-	$config->anonymous_access = (int) $_POST['anonymous_access'];
-	$config->entries_to_keep = (int) $_POST['entries_to_keep'];
-	$config->entries_per_page = (int) $_POST['entries_per_page'];
 	if ($_POST['display_entries'] == 'content' || $_POST['display_entries'] == 'description' || $_POST['display_entries'] == 'title') {
 		$config->display_entries = $_POST['display_entries'];
 	}
 	else {
 		die('Error: Invalid `display_entries` configuration option.');
 	}
-	if ($config->use_rewriting != $_POST['use_rewriting']) {
-		$config->use_rewriting = (int) $_POST['use_rewriting'];
-		if ($config->use_rewriting == 1) {
-			if ($err = RainTPL::$rewriteEngine->write_htaccess()) {
-				$current_user = get_current_user();
-				die('Error: Unable to create or write .htaccess file. Check the writing rights of Freeder root directory. The user who executes Freeder — '.sanitize($current_user).' — should be able to write in this directory. You may prefer to create the .htaccess file on your own and allow '.sanitize($current_user).' to write only in .htaccess instead of in the whole Freeder root.');
-			}
-		}
-	}
 
+	$config->save();
+	if (empty($error)) {
+		header('location: settings.php#template');
+		exit();
+	}
+	else {
+		$tpl->assign('error', $error);
+		$tpl->assign('current_tab', 'template');
+		$tpl->draw('settings');
+		exit();
+	}
+}
+// User tab
+if (!empty($_POST['password']) && !empty($_POST['password_check']) && !empty($_POST['token']) && check_token(600, 'settings_form_user')) {
+	if ($_POST['password'] == $_POST['password_check']) {
+		$password = sha1($_SESSION['user']->salt.$_POST['password']);
+		$query = $dbh->prepare('UPDATE users SET password=:password WHERE login=:login');
+		$query->execute(array(
+			':login'=>$_SESSION['user']->login,
+			':password'=>$password
+		));
+	}
+	else {
+		$error = array();
+		$error['type'] = 'error';
+		$error['title'] = 'Password mismatch';
+		$error['content'] = 'Passwords do not match!';
+	}
+	$config->save();
+	if (empty($error)) {
+		header('location: settings.php#user');
+		exit();
+	}
+	else {
+		$tpl->assign('error', $error);
+		$tpl->assign('current_tab', 'user');
+		$tpl->draw('settings');
+		exit();
+	}
+}
+// Entries tab
+if (isset($_POST['import_tags_from_feeds']) && isset($_POST['entries_to_keep']) && isset($_POST['entries_per_page']) && !empty($_POST['token']) && check_token(600, 'settings_form_entries')) {
+	$config->import_tags_from_feeds = (int) $_POST['import_tags_from_feeds'];
+	$config->entries_to_keep = (int) $_POST['entries_to_keep'];
+	$config->entries_per_page = (int) $_POST['entries_per_page'];
+	$config->save();
+	if (empty($error)) {
+		header('location: settings.php#entries');
+		exit();
+	}
+	else {
+		$tpl->assign('error', $error);
+		$tpl->assign('current_tab', 'entries');
+		$tpl->draw('settings');
+		exit();
+	}
+}
+// Sharing tab
+if (isset($_POST['share_input_shaarli']) && isset($_POST['share_input_diaspora']) && !empty($_POST['token']) && check_token(600, 'settings_form_sharing')) {
 	if (!empty($_POST['share_input_facebook'])) {
 		$config->facebook_share = (int) $_POST['share_input_facebook'];
 	}
@@ -143,15 +168,50 @@ if (!empty($_POST['synchronization_type']) && !empty($_POST['template']) && !emp
 
 	$config->save();
 	if (empty($error)) {
-		header('location: settings.php');
+		header('location: settings.php#sharing');
 		exit();
 	}
 	else {
 		$tpl->assign('error', $error);
+		$tpl->assign('current_tab', 'sharing');
 		$tpl->draw('settings');
 		exit();
 	}
 }
+// Misc tab
+if (!empty($_POST['timezone']) && isset($_POST['anonymous_access']) && isset($_POST['use_rewriting']) && !empty($_POST['token']) && check_token(600, 'settings_form_misc')) {
+	$timezone = trim($_POST['timezone']);
+	if (in_array($timezone, timezone_identifiers_list())) {
+		$config->timezone = $timezone;
+	}
+	else {
+		die('Error: Invalid timezone.');
+	}
+
+	$config->anonymous_access = (int) $_POST['anonymous_access'];
+	if ($config->use_rewriting != $_POST['use_rewriting']) {
+		$config->use_rewriting = (int) $_POST['use_rewriting'];
+		if ($config->use_rewriting == 1) {
+			if ($err = RainTPL::$rewriteEngine->write_htaccess()) {
+				$current_user = get_current_user();
+				die('Error: Unable to create or write .htaccess file. Check the writing rights of Freeder root directory. The user who executes Freeder — '.sanitize($current_user).' — should be able to write in this directory. You may prefer to create the .htaccess file on your own and allow '.sanitize($current_user).' to write only in .htaccess instead of in the whole Freeder root.');
+			}
+		}
+	}
+
+	$config->save();
+	if (empty($error)) {
+		header('location: settings.php#misc');
+		exit();
+	}
+	else {
+		$tpl->assign('error', $error);
+		$tpl->assign('current_tab', 'misc');
+		$tpl->draw('settings');
+		exit();
+	}
+}
+
 
 // Handle posted info for new feed
 if (!empty($_POST['feed_url']) && isset($_POST['feed_post']) && isset($_POST['import_tags_add']) && !empty($_POST['token']) && check_token(600, 'add_feed')) {
