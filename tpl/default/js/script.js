@@ -262,7 +262,7 @@
 
 	}
 
-// == Touch movements
+// == Touch moves
 	/**
 	 * Check wether the device has touch capabilities or not
 	 */
@@ -306,3 +306,11 @@
 		$(target).css('opacity', '1');
 		return false;
 	}
+
+
+// == Options
+if ({$config->open_items_new_tab} > 0) {
+	$(".ArticleContent h1:first-child a").click(function () {
+		console.log($('.Controls .Read-button', $(this).parents(".Article")).trigger("click"));
+	});
+}

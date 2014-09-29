@@ -6,16 +6,16 @@
 			<nav class="Controls">
 				{if="!empty($user)"}
 					{if="!is_tag('_read', $value)"}
-						<button class="Controls-button Button red" onclick="tag_entry(this, {$value['id']}, '_read')">Read</button>
+						<button class="Controls-button Button red Read-button" onclick="tag_entry(this, {$value['id']}, '_read')">Read</button>
 					{else}
-						<button class="Controls-button Button red" onclick="untag_entry(this, {$value['id']}, '_read')">Unread</button>
+						<button class="Controls-button Button red Read-button" onclick="untag_entry(this, {$value['id']}, '_read')">Unread</button>
 					{/if}
 					{if="!is_tag('_sticky', $value)"}
-						<button class="Controls-button Button darkgrey" onclick="tag_entry(this, {$value['id']}, '_sticky')">Stick</button>
+						<button class="Controls-button Button darkgrey Stick-button" onclick="tag_entry(this, {$value['id']}, '_sticky')">Stick</button>
 					{else}
-						<button class="Controls-button Button darkgrey" onclick="untag_entry(this, {$value['id']}, '_sticky')">Unstick</button>
+						<button class="Controls-button Button darkgrey Stick-button" onclick="untag_entry(this, {$value['id']}, '_sticky')">Unstick</button>
 					{/if}
-					<button class="Controls-button Button green" onclick="">Share</button>
+					<button class="Controls-button Button green Share-button" onclick="">Share</button>
 				{/if}
 
 				<div class="ArticleTags">
@@ -40,7 +40,7 @@
 			</nav>
 
 			<div class="ArticleContent">
-				<h1><a href="{function="get_entry_link($value)"}#">{$value['title']}</a></h1>
+				<h1><a href="{function="get_entry_link($value)"}#" {if="$config->open_items_new_tab != 0"}target="_blank"{/if}>{$value['title']}</a></h1>
 				<div class="FeedInfo">
 					From <a href="feed/{$entry_feed['id']}">{$entry_feed['title']}</a>{include="_author"}
 				</div>
