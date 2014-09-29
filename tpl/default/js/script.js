@@ -23,11 +23,16 @@
 			toHide.removeClass("currentTabContent");
 
 			var idToShow = window.location.hash;
-			$(idToShow).toggle();
-			$(idToShow).addClass("currentTabContent");
+			$(idToShow).parent().toggle();
+			$(idToShow).parent().addClass("currentTabContent");
 
 			$("a[data-targetid="+idToShow.substring(1)+"]").parent().addClass("currentTab");
 		}
+
+		$(".Toggle").addClass("closed");
+		$(".Toggle-btn").click(function(ev) {
+			$(this).parent().toggleClass("closed");
+		});
 	});
 
 // == Functions
@@ -217,8 +222,8 @@
 
 			var idToShow = $(this).data("targetid");
 			idToShow = "#"+idToShow; //who said it's ugly ?
-			$(idToShow).toggle();
-			$(idToShow).addClass("currentTabContent");
+			$(idToShow).parent().toggle();
+			$(idToShow).parent().addClass("currentTabContent");
 		}
 
 	});

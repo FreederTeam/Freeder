@@ -79,6 +79,9 @@
 	.TabContent > .TabContent-h2 {
 		margin-top: 0;
 	}
+	.TabContent-anchor {
+		position: fixed;
+	}
 
 	.SettingsSection {
 		border-top: 1px dashed #E8E8E8;

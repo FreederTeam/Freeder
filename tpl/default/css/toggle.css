@@ -1,0 +1,25 @@
+/*
+ * Style for toggle show block
+ */
+/* == Main */
+	.Toggle-btn {
+		display: block;
+		color: #15C;
+		margin: 0.5rem;
+		cursor: pointer;
+	}
+		.Toggle-btn:before {
+			content: '-';
+			margin-right: 0.2rem;
+			color: black;
+			font-weight: bold;
+		}
+		.Toggle.closed .Toggle-btn:before {
+			content: '+';
+		}
+	.Toggle-content {
+		margin-left: 0.5rem;
+	}
+		.Toggle.closed .Toggle-content {
+			display: none;
+		}

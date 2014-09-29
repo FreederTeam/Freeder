@@ -87,6 +87,14 @@
 		box-shadow:0 0 3px 0 #FFF;
 	}
 	*/
+	.FormItem {
+		margin: 1.6875rem 0;
+	}
+	.FormItem-hint {
+		font-size: 0.8em;
+		color: #aaa;
+		margin: 0 1rem;
+	}
 /* == Search/add/ main form */
 	.MainForm {
 		margin:5px;
