@@ -19,6 +19,7 @@ RainTPL::$path_replace = false;
 $tpl = new JsTPL();
 $tpl->assign('base_url', RainTPL::$base_url);
 $tpl->assign('config', $config);
+$tpl->assign('token', generate_token('js'));
 $tpl->draw($script);
 
 
