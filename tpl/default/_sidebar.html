@@ -10,7 +10,7 @@
 		<li class="Menu-li"><a href="/%tag%/_sticky" title="Sticky articles"><img src="img/stick.svg" alt="Sticky"></a></li>
 	{if="!empty($user)"}
 	<li class="Menu-li"><a href="refresh.php?token={function="generate_token('refresh')"}" title="Refresh"><img src="img/sync.svg" alt="Refresh"></a></li>
-		<li class="Menu-li"><a href="settings.php" title="Settings"><img src="img/settings.svg" alt="Settings"></a></li>
+		<li class="Menu-li"><a href="settings.php#feedManagement" title="Settings"><img src="img/settings.svg" alt="Settings"></a></li>
 		<li class="Menu-li"><a href="logout.php" title="Logout"><img src="img/off.svg" alt="Logout"></a></li>
 	{else}
 		<li><a href="login.php">Login</a></li>

@@ -18,6 +18,7 @@ RainTPL::$tpl_ext = 'js';
 RainTPL::$path_replace = false;
 $tpl = new JsTPL();
 $tpl->assign('base_url', RainTPL::$base_url);
+$tpl->assign('config', $config);
 $tpl->draw($script);
 
 

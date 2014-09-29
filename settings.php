@@ -37,7 +37,7 @@ if (!empty($_POST['synchronization_type']) && !empty($_POST['token']) && check_t
 	exit();
 }
 // Template tab
-if (!empty($_POST['template']) && !empty($_POST['display_entries']) && !empty($_POST['token']) && check_token(600, 'settings_form_template')) {
+if (!empty($_POST['template']) && !empty($_POST['display_entries']) && isset($_POST['open_items_new_tab']) && isset($_POST['mark_read_click']) && !empty($_POST['token']) && check_token(600, 'settings_form_template')) {
 	if (is_dir(TPL_DIR.$_POST['template'])) {
 		$config->template = $_POST['template'];
 		if(!endswith($config->template, '/')) {
@@ -54,6 +54,8 @@ if (!empty($_POST['template']) && !empty($_POST['display_entries']) && !empty($_
 	else {
 		die('Error: Invalid `display_entries` configuration option.');
 	}
+	$config->open_items_new_tab = (int) $_POST['open_items_new_tab'];
+	$config->mark_read_click = (int) $_POST['mark_read_click'];
 
 	$config->save();
 	if (empty($error)) {
