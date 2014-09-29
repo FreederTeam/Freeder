@@ -157,15 +157,39 @@
 	}
 
 
-// == Display Tags
+// == Display Tags in the articles boxes
+
 	/**
-	 * Display the tag list and form
+	 * Display the tag list and form in the article boxes
 	 */
 	$(".DisplayTagsButton").click(function(){
 		$(this).siblings(".ArticleTagsList").slideToggle(200);
 	});
 
+// == Settings tabs
+    /**
+     * Change tab on the settings page
+     */
+	$(".OneTab-a").click(function(){
+        //if current tab is clicked, don't do the hole process
+        if ($(this).parent().hasClass("currentTab") == false) {
+            $(".currentTab").removeClass("currentTab");
+            $(this).parent().addClass("currentTab");
+
+            var toHide = $(".currentTabContent");
+            toHide.toggle();
+            toHide.removeClass("currentTabContent");
+
+            var idToShow = $(this).data("targetid");
+            idToShow = "#"+idToShow; //who said it's ugly ?
+            $(idToShow).toggle();
+            $(idToShow).addClass("currentTabContent");
+        }
+        
+	});
+
 // == Modal Box
+
 	/**
 	 * Autolaunch of the modalbox at the page load if modalbox is not empty
 	 */

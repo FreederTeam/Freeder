@@ -75,6 +75,9 @@
 		background-color:#fff;
 		color:#333;
 	}
+	input.grey {
+		background-color:#ECECEC;
+	}
 	/*
 	 * box-shadow inset have a huge performance issue, so I prefer desactivate it.
 	 * Note that the perf issue was noticed in 2010, and is still here in 2014
