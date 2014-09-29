@@ -69,7 +69,8 @@ function feed2array($feed, $load=false, $debug=false) {
 					$flux['infos']['copyright'] = (string)$feed_obj->channel->copyright;
 				}
 				if($feed_obj->channel->pubDate) {
-					$flux['infos']['pubDate'] = (string)$feed_obj->channel->pubDate;
+					$tmp_date = new DateTime((string)$feed_obj->channel->pubDate);
+					$flux['infos']['pubDate'] = $tmp_date->format('U');
 				}
 				if($feed_obj->channel->lastBuildDate) {
 					$flux['infos']['lastBuildDate'] = (string)$feed_obj->channel->lastBuildDaye;
@@ -119,7 +120,8 @@ function feed2array($feed, $load=false, $debug=false) {
 
 			if ($type == 'RDF') {  // RDF feed
 				if($feed_obj->channel->children('dc', true)->date) {
-					$flux['infos']['pubDate'] = (string)$feed_obj->channel->children('dc', true)->date;
+					$tmp_date = new DateTime((string)$feed_obj->channel->children('dc', true)->date);
+					$flux['infos']['pubDate'] = $tmp_date->format('U');
 				}
 			}
 
@@ -131,7 +133,8 @@ function feed2array($feed, $load=false, $debug=false) {
 					$flux['infos']['title'] = (string)$feed_obj->title;
 				}
 				if($feed_obj->updated) {
-					$flux['infos']['updated'] = (string)$feed_obj->updated;
+					$tmp_date = new DateTime((string)$feed_obj->updated);
+					$flux['infos']['updated'] = $tmp_date->format('U');
 				}
 				if($feed_obj->author) {
 					foreach($feed_obj->author as $author) {
@@ -224,7 +227,8 @@ function feed2array($feed, $load=false, $debug=false) {
 				}
 				if ($type == 'RDF') {
 					if($item->children('dc', true)->date) {
-						$flux['items'][$c]['pubDate'] = (string)$item->children('dc', true)->date;
+						$tmp_date = new DateTime((string)$item->children('dc', true)->date);
+						$flux['items'][$c]['pubDate'] = $tmp_date->format('U');
 					}
 					if($item->attributes('rdf', true)->about) {
 						$flux['items'][$c]['guid'] = (string) $item->attributes('rdf', true)->about;
@@ -365,11 +369,6 @@ function feed2array($feed, $load=false, $debug=false) {
 					}
 					if($item->rights) {
 						$flux['items'][$c]['copyright'] = (string)$item->rights;
-					}
-
-					if($flux['items'][$c]['pubDate']) {
-						// Only updated is necessary for an ATOM feed
-						$flux['items'][$c]['pubDate'] = $flux['items'][$c]['updated'];
 					}
 
 					// Only updated is mandatory in ATOM spec
