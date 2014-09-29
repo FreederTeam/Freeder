@@ -23,7 +23,7 @@
 	</form>
 
 	{if="!empty($nb_entries)"}
-		<p class="ItemsNumber">{$nb_entries} item{if="$nb_entries> 1"}s{/if}</p>
+	<p class="ItemsNumber {if="$view == '_home'"}UnreadNumber{/if}"><span id="ItemsNumberCounter">{$nb_entries}</span> item{if="$nb_entries> 1"}<span class="ItemsNumberPlural">s</span>{/if}</p>
 	{/if}
 
 	{if="!empty($user) && isset($nb_entries)"}

@@ -82,8 +82,20 @@
 				callback = function(c, d) {
 					c.innerHTML = "Unread";
 					c.onclick = function () { untag_entry(c, entry_id, '_read') };
-					var article = c.parentNode.parentNode;
-					article.parentNode.removeChild(article);
+
+					// If on homepage and not feed view
+					if ($(".UnreadNumber").length > 0) {
+						var article = c.parentNode.parentNode;
+						article.parentNode.removeChild(article);
+
+						var unread_items = parseInt($('#ItemsNumberCounter').html());
+						if (unread_items >= 1) {
+							$('#ItemsNumberCounter').html(unread_items - 1);
+						}
+						if (unread_items <= 2) {
+							$('#ItemsNumberPlural').html('');
+						}
+					}
 
 					if (typeof(overload_callback) !== 'undefined') {
 						overload_callback();
@@ -128,6 +140,15 @@
 				callback = function(c, d) {
 					c.innerHTML = "Read";
 					c.onclick = function () { tag_entry(c, entry_id, '_read') };
+
+					if ($(".UnreadNumber").length > 0) {
+						var unread_items = parseInt($('#ItemsNumberCounter').html());
+						$('#ItemsNumberCounter').html(unread_items + 1);
+
+						if (unread_items <= 1) {
+							$('#ItemsNumberPlural').html('s');
+						}
+					}
 
 					if (typeof(overload_callback) !== 'undefined') {
 						overload_callback();
