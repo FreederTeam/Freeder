@@ -5,29 +5,11 @@
 		// modalbox autolaunch
 		ModalboxAutoLaunch();
 
-		if(is_touch_device() && $('.Article').length > 0) {
-			var mc = new Hammer(document.querySelector('.Article'));
-			mc.on("panleft panright", slide_effect);
-			mc.on('hammer.input', function(ev) {
-				if(ev.isFinal) {
-					slide_to_read(ev);
-				}
-			});
-		}
+		// init touch actions
+		init_touch();
 
-		if($(".TabContent").length > 0) {
-			$(".currentTab").removeClass("currentTab");
-
-			var toHide = $(".currentTabContent");
-			toHide.toggle();
-			toHide.removeClass("currentTabContent");
-
-			var idToShow = window.location.hash;
-			$(idToShow).parent().toggle();
-			$(idToShow).parent().addClass("currentTabContent");
-
-			$("a[data-targetid="+idToShow.substring(1)+"]").parent().addClass("currentTab");
-		}
+		// init tab in settings
+		tabs_init();
 
 		$(".Toggle").addClass("closed");
 		$(".Toggle-btn").click(function(ev) {
@@ -210,7 +192,30 @@
 	/**
 	 * Change tab on the settings page
 	 */
-	$(".OneTab-a").click(function(){
+
+	/**
+	 * Set the view to the current tab
+	 */
+	function tabs_init() {
+		if($(".TabContent").length > 0) {
+			$(".currentTab").removeClass("currentTab");
+
+			var toHide = $(".currentTabContent");
+			toHide.toggle();
+			toHide.removeClass("currentTabContent");
+
+			var idToShow = window.location.hash;
+			$(idToShow).parent().toggle();
+			$(idToShow).parent().addClass("currentTabContent");
+
+			$("a[data-targetid="+idToShow.substring(1)+"]").parent().addClass("currentTab");
+		}
+	}
+
+	/**
+	 * Handle actions on tab click
+	 */
+	function tabs_click() {
 		//if current tab is clicked, don't do the hole process
 		if ($(this).parent().hasClass("currentTab") == false) {
 			$(".currentTab").removeClass("currentTab");
@@ -225,8 +230,8 @@
 			$(idToShow).parent().toggle();
 			$(idToShow).parent().addClass("currentTabContent");
 		}
-
-	});
+	}
+	$(".OneTab-a").click(tabs_click);
 
 // == Modal Box
 
@@ -275,6 +280,21 @@
 		return !!('ontouchstart' in window) // works on most browsers
 			|| !!('onmsgesturechange' in window); // works on ie10
 	};
+
+	/**
+	 * Init touch moves
+	 */
+	function init_touch() {
+		if(is_touch_device() && $('.Article').length > 0) {
+			var mc = new Hammer(document.querySelector('.Article'));
+			mc.on("panleft panright", slide_effect);
+			mc.on('hammer.input', function(ev) {
+				if(ev.isFinal) {
+					slide_to_read(ev);
+				}
+			});
+		}
+	}
 
 	/**
 	 * Handle slide effect
