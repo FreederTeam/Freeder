@@ -290,14 +290,24 @@
 	 */
 	function init_touch() {
 		if(is_touch_device() && $('.Article').length > 0) {
-			var mc = new Hammer(document.querySelector('.Article'));
-			mc.on("panleft panright", slide_effect);
-			mc.on('hammer.input', function(ev) {
-				if(ev.isFinal) {
-					slide_to_read(ev);
-				}
-			});
+			var articles = document.querySelectorAll('.Article');
+			for (var i = 0; i < articles.length; i++) {
+				spawn_hammer(articles[i]);
+			}
 		}
+	}
+
+	/**
+	 * Spawns hammer instances
+	 */
+	function spawn_hammer(el) {
+		var mc = new Hammer(el, { multiUser: true });
+		mc.on("panleft panright", slide_effect);
+		mc.on('hammer.input', function(ev) {
+			if(ev.isFinal) {
+				slide_to_read(ev);
+			}
+		});
 	}
 
 	/**
@@ -328,8 +338,7 @@
 		}
 
 		if(Math.abs(e.deltaX) > $(target).width() / 2) {
-			console.log($('Controls .Controls-button:first-child', target));
-			tag_entry($('Controls .Controls-button:first-child', target), target.attr('id'), '_read');
+			tag_entry($('.Controls .Read-button', target), target.attr('id'), '_read');
 		}
 		$(target).css('transform', 'translate(0,0)');
 		$(target).css('opacity', '1');
