@@ -4,6 +4,10 @@
 {/if}
 {$empty_var=refresh_feeds($feeds_to_refresh)}
 {if="!$command_line"}
+		<span>You will be redirected to <a href="/">homepage</a> in 2s.<br/></span>
 	</p>
+	<script type="text/javascript">
+		window.setTimeout(function () { window.location = 'index.php'; }, 2000);
+	</script>
 	{include="_end"}
 {/if}

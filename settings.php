@@ -230,8 +230,7 @@ if (!empty($_POST['feed_url']) && isset($_POST['feed_post']) && isset($_POST['im
 	$add_errors = add_feeds(array(array('url'=>trim($_POST['feed_url']), 'post'=>$post)), (bool) $_POST['import_tags_add']);
 
 	if(empty($add_errors)) {
-		header('location: settings.php');
-		exit();
+		exit('<script type="text/javascript">window.setTimeout(function() { window.location = "settings.php"; }, 0);</script>');
 	}
 	else {
 		$error = array();
