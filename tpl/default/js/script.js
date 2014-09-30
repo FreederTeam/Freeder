@@ -17,7 +17,7 @@
 		});
 
 		$(".Share-button").click(function(ev) {
-			$(this).parents().filter('.Article').find('.Article-share').toggle();
+			$(this).parents('.Article').find('.Article-share').toggle();
 		});
 	});
 
@@ -31,10 +31,10 @@
 	 */
 	function ajax(caller, target, callback) {
 		$.get(target, function(data) {
-			if (data == 'OK') {
+			if (data.status == 'OK') {
 				callback(caller, data);
 			}
-		});
+		}, "json");
 		return false;
 	}
 
@@ -51,7 +51,7 @@
 		var tag_value = tag_input.val();
 		ajax(caller, '{base_url}api/tags.php?entry='+entry_id+'&tag='+tag_value, function(c, d) {
 			tag_input.val("");
-			var article = c.parentNode.parentNode;
+			var article = $(c).parents('.Article');
 			$('ul', $(article)).append('<li class="TagList-completeTag CompleteTag"><a class="TagList-tagName TagName" href="'+tag_baselink+tag_value+'">'+tag_value+'</a></li>');
 			$('.Side-tagList').append('<li class="TagList-completeTag CompleteTag"><a class="TagList-tagName TagName" href="'+tag_baselink+tag_value+'">'+tag_value+'</a></li>');
 		});
@@ -66,18 +66,17 @@
 	 * @param: entry_id is the id of the entry to tag
 	 * @param: tag_value is the tag to add
 	 */
-	function tag_entry(caller, entry_id, tag_value, overload_callback=undefined) {
+	function tag_entry(caller, entry_id, tag_value, overload_callback) {
 		var callback;
 		switch (tag_value) {
 			case "_read":
 				callback = function(c, d) {
-					c.innerHTML = "Unread";
-					c.onclick = function () { untag_entry(c, entry_id, '_read') };
+					$(c).html("Unread");
+					$(c).click(function () { untag_entry(c, entry_id, '_read') });
 
 					// If on homepage and not feed view
 					if ($(".UnreadNumber").length > 0) {
-						var article = c.parentNode.parentNode;
-						article.parentNode.removeChild(article);
+						$(c).parents('.Article').remove();
 
 						var unread_items = parseInt($('#ItemsNumberCounter').html());
 						if (unread_items >= 1) {
@@ -96,8 +95,8 @@
 
 			case "_sticky":
 				callback = function(c, d) {
-					c.innerHTML = "Unstick";
-					c.onclick = function() { untag_entry(c, entry_id, '_sticky') };
+					$(c).html("Unstick");
+					$(c).click(function() { untag_entry(c, entry_id, '_sticky') });
 
 					if (typeof(overload_callback) !== 'undefined') {
 						overload_callback();
@@ -124,13 +123,13 @@
 	 * @param: entry_id is the id of the entry to tag
 	 * @param: tag_value is the tag to remove
 	 */
-	function untag_entry(caller, entry_id, tag_value, overload_callback=undefined) {
+	function untag_entry(caller, entry_id, tag_value, overload_callback) {
 		var callback;
 		switch (tag_value) {
 			case "_read":
 				callback = function(c, d) {
-					c.innerHTML = "Read";
-					c.onclick = function () { tag_entry(c, entry_id, '_read') };
+					$(c).html("Read");
+					$(c).click(function () { tag_entry(c, entry_id, '_read') });
 
 					if ($(".UnreadNumber").length > 0) {
 						var unread_items = parseInt($('#ItemsNumberCounter').html());
@@ -149,8 +148,8 @@
 
 			case "_sticky":
 				callback = function(c, d) {
-					c.innerHTML = "Stick";
-					c.onclick = function () { tag_entry(c, entry_id, '_sticky') };
+					$(c).html("Stick");
+					$(c).click(function () { tag_entry(c, entry_id, '_sticky') });
 
 					if (typeof(overload_callback) !== 'undefined') {
 						overload_callback();
