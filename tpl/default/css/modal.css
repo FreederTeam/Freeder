@@ -1,18 +1,39 @@
 .Modalbox {
 	display: none;
-	position:fixed;
-	left: 25%;
-	top:1rem;
-	width: 50%;
-	z-index:2;
+}
 
+.Modalbox-wrapper1 {
+	position:fixed;
+	left: 0;
+	right: 0;
+	top: 0;
+	bottom: 0;
+
+	display: -webkit-flex;
+	display: flex;
+
+	-webkit-flex-flow: column wrap;
+	flex-flow: column wrap;
+
+	-webkit-justify-content: center;
+	justify-content: center;
+
+	-webkit-align-items: center;
+	align-items: center;
+	z-index:2;
+}
+.Modalbox-wrapper2 {
+	width: 50%;
 	background-color: #FFF;
 	border-radius: 2px;
+	overflow: scroll;
 }
-.Modalbox.error {
-	box-shadow: 0 0 4px 4px red;
+@media(max-width:700px) {
+	.Modalbox-wrapper2 {
+		width: auto;
+		margin: 0.5rem;
+	}
 }
-
 .Modalbox-title {
 	text-align: center;
 	margin-top: 1rem;
@@ -23,7 +44,7 @@
 .Modalbox .Button {
 	margin: 0;
 	border-radius: 0 0 2px 2px;
-	width: 100%;	
+	width: 100%;
 }
 
 .Overlay {

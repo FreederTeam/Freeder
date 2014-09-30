@@ -1,5 +1,6 @@
 {if="!empty($value['authors'])"}
-	, edited by
+	, by
+	{$remaining=count($value['authors'])}
 	{loop="$value['authors']"}
 		{if="!empty($value1['uri'])"}
 			<a href="{$value1['uri']}">{$value1['name']}</a>
@@ -10,5 +11,7 @@
 		{else}
 			Unknown
 		{/if}
+		{$remaining=$remaining-1}
+		{if="$remaining>1"}, {elseif="$remaining==1"} and {/if}
 	{/loop}
 {/if}

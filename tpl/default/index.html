@@ -1,5 +1,22 @@
 {include="_begin"}
 
+	{if="empty($entries)"}
+	<article class="Article system">
+		{if="empty($feeds)"}
+		<h1>Welcome in Freeder!</h1>
+		<h4>It seems that you don't follow any feed!</h4>
+		<p>
+			You can add a feed through the <a href="/settings.php#feedManagement">Feeds settings</a> page.<br/>
+			You can also import your feed from another reader thanks to <a href="/settings.php#importexport">OPML import</a>.
+		</p>
+		{else}
+		<h1>Nothing new</h1>
+		<p>
+			You have no more unread entry!
+		</p>
+		{/if}
+	</article>
+	{/if}
 	{loop="$entries"}
 		{$entry_feed=get_feed_from_entry($value, $feeds)}
 		<article class="Article{if="is_tag('_read', $value)"} read{/if}" id="{$value['id']}">
@@ -42,7 +59,8 @@
 			<div class="ArticleContent">
 				<h1><a href="{function="get_entry_link($value)"}#" {if="$config->open_items_new_tab != 0"}target="_blank"{/if}>{$value['title']}</a></h1>
 				<div class="FeedInfo">
-					From <a href="feed/{$entry_feed['id']}">{$entry_feed['title']}</a>{include="_author"}
+					In <a href="feed/{$entry_feed['id']}">{$entry_feed['title']}</a>{include="_author"}<br/>
+					<time datetime="{function="date(DATE_ATOM,$value['pubDate'])"}">{function="format_date($value['pubDate'])"}</time>
 				</div>
 				<div>{$value['displayed_content']}</div>
 			</div>

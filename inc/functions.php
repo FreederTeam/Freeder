@@ -287,3 +287,29 @@ function get_url_rewriting() {
 }
 
 
+/**
+ * Format date for pretty printing
+ * @param $timestamp: date in timestamp format.
+ */
+function format_date($timestamp) {
+	$now = time();
+	$diff = $now - $timestamp;
+	if ($diff < 60) {
+		return $diff.'s ago';
+	} else if ($diff < 300) {
+		return round($diff / 60).'min ago';
+	} else if ($diff < 3600) {
+		return (round($diff / 300) * 5).'min ago';
+	} else if (floor($now/86400) == floor($timestamp/86400)) {
+		return 'Today, '.date('H:i', $timestamp);
+	} else if (floor($now/86400) == floor($timestamp/86400) + 1) {
+		return 'Yesterday, '.date('H:i', $timestamp);
+	} else if (date('Y:W', $now) == date('Y:W', $timestamp)) {
+		return date('l, H:i', $timestamp);
+	} else if (date('Y',$now) == date('Y',$timestamp)) {
+		return date('F d, H:i', $timestamp);
+	} else {
+		return date('F d, Y, H:i', $timestamp);
+	}
+}
+
