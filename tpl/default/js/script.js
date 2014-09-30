@@ -215,6 +215,7 @@
 			var idToShow = window.location.hash;
 			if (idToShow === "") {
 				idToShow = '#' + $('.Tabs .OneTab-a:first-child').attr('data-targetid');
+				window.location.hash = idToShow;
 			}
 			$(idToShow).parent().toggle();
 			$(idToShow).parent().addClass("currentTabContent");
