@@ -80,3 +80,9 @@
 	.ArticleContent pre {
 		overflow-x: auto;
 	}
+
+	.FeedInfo {
+		font-size: 0.9em;
+		color: #aaa;
+		font-style: italic;
+	}
