@@ -4,7 +4,11 @@
 		svgeezy.init(false, 'png');
 		// modalbox autolaunch
 		ModalboxAutoLaunch();
-
+        // If click outside the modal box, close it
+        $(document).mouseup(function (e) {
+            ModalboxOutsideClick(e);
+        });
+        
 		// init touch actions
 		init_touch();
 
@@ -267,6 +271,13 @@
 		$("#JsModalbox").toggle();
 
 	}
+
+    function ModalboxOutsideClick(e) {
+                var container = $("#JsOverlay");
+                if (!container.is(e.target) && container.has(e.target).length === 0) {
+                    ModalboxClose();
+                }
+            }
 
 	/**
 	 * Close the modal box

@@ -26,11 +26,11 @@
 	width: 50%;
 	background-color: #FFF;
 	border-radius: 2px;
-	overflow: scroll;
+	overflow-y: scroll;
 }
 @media(max-width:700px) {
 	.Modalbox-wrapper2 {
-		width: auto;
+		width: 90%;
 		margin: 0.5rem;
 	}
 }
