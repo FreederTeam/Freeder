@@ -15,6 +15,10 @@
 		$(".Toggle-btn").click(function(ev) {
 			$(this).parent().toggleClass("closed");
 		});
+
+		$(".Share-button").click(function(ev) {
+			$(this).parents().filter('.Article').find('.Article-share').toggle();
+		});
 	});
 
 // == Functions

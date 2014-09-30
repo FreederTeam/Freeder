@@ -45,3 +45,15 @@
 .Side-tagList {
 	margin-top: 20px;
 }
+/*feedlist*/
+.Side-feedList {
+	margin-top: 20px;
+}
+.FeedList-feed {
+	display: block;
+	padding: 2px;
+}
+.FeedList-feed:hover {
+	background-color: #ddd;
+}
+
