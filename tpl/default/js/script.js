@@ -26,7 +26,7 @@
 	 * @param: callback is a function to call upon successful AJAX call
 	 */
 	function ajax(caller, target, callback) {
-		$.get(target, { "token": "{$token}" }, function(data) {
+		$.get(target, function(data) {
 			if (data == 'OK') {
 				callback(caller, data);
 			}
