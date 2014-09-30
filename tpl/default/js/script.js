@@ -193,6 +193,7 @@
 	function tag_all(caller, tag_value) {
 		ajax(caller, '{$base_url}api/tags.php?all=1&tag='+tag_value, function(c, d) {
 			$('main article').remove();
+			$('.ItemsNumber').hide();
 		});
 	}
 
