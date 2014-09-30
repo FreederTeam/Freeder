@@ -272,11 +272,11 @@
 	}
 
 	function ModalboxOutsideClick(e) {
-				var container = $("#JsOverlay");
-				if (!container.is(e.target) && container.has(e.target).length === 0) {
-					ModalboxClose();
-				}
-			}
+		var container = $("#JsOverlay");
+		if (!container.is(e.target) && container.has(e.target).length === 0) {
+			ModalboxClose();
+		}
+	}
 
 	/**
 	 * Close the modal box

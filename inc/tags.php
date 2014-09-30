@@ -24,10 +24,33 @@ function delete_auto_added_tags() {
 
 /**
  * Delete the tags with no entries nor feeds associated
- * @todo This function
  */
 function delete_useless_tags() {
+	global $dbh;
+
+	$query = $dbh->query('SELECT id FROM tags');
+	$tags = $query->fetchAll();
+	foreach($tags as $tag) {
+		$query = $dbh->prepare('SELECT COUNT(*) AS nb_feeds FROM tags_feeds WHERE tag_id=?');
+		$query->execute(array($tag['id']));
+		$nb_feeds = $query->fetch()['nb_feeds'];
+
+		if ($nb_feeds > 0) {
+			continue;
+		}
+
+		$query = $dbh->prepare('SELECT COUNT(*) AS nb_entries FROM tags_entries WHERE tag_id=?');
+		$query->execute(array($tag['id']));
+		$nb_entries = $query->fetch()['nb_entries'];
+
+		if ($nb_entries + $nb_feeds == 0) {
+			$query = $dbh->prepare('DELETE FROM tags WHERE id=?');
+			var_dump($tag['id']);
+			$query->execute(array($tag['id']));
+		}
+	}
 }
+
 
 
 /**
