@@ -19,7 +19,7 @@ if (isset($_GET['entry']) && !empty($_GET['tag'])) {
 	else {
 		remove_tag_from_entry(intval($_GET['entry']), $_GET['tag']);
 	}
-	exit('OK');
+	exit("{'status', 'OK'}");
 }
 elseif (isset($_GET['all']) && !empty($_GET['tag'])) {
 	$view = (isset($_GET['view'])) ? $_GET['view'] : '';
@@ -29,9 +29,10 @@ elseif (isset($_GET['all']) && !empty($_GET['tag'])) {
 	else {
 		remove_tag_to_all($view, $_GET['tag']);
 	}
-	exit('OK');
+	exit("{'status', 'OK'}");
 }
 else {
-	exit('Fail');
+	http_response_code(400);
+	exit("{'status': 'error', 'error': 'Unknown method.'}");
 }
 
