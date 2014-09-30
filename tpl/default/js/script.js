@@ -13,7 +13,7 @@
 		init_touch();
 
 		// init tab in settings
-		tabs_init();
+		init_tabs();
 
 		$(".Toggle").addClass("closed");
 		$(".Toggle-btn").click(function(ev) {
@@ -204,7 +204,7 @@
 	/**
 	 * Set the view to the current tab
 	 */
-	function tabs_init() {
+	function init_tabs() {
 		if($(".TabContent").length > 0) {
 			$(".currentTab").removeClass("currentTab");
 
@@ -213,6 +213,9 @@
 			toHide.removeClass("currentTabContent");
 
 			var idToShow = window.location.hash;
+			if (idToShow === "") {
+				idToShow = '#' + $('.Tabs .OneTab-a:first-child').attr('data-targetid');
+			}
 			$(idToShow).parent().toggle();
 			$(idToShow).parent().addClass("currentTabContent");
 
