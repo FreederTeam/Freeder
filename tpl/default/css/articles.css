@@ -70,6 +70,7 @@
 	.ArticleContent ul,
 	.ArticleContent ol {
 		padding-left:2em;
+		padding-right:2em;
 	}
 	.ArticleContent > * {
 		padding:0 2rem 1rem 2rem;
@@ -89,4 +90,22 @@
 		font-size: 0.9em;
 		color: #aaa;
 		font-style: italic;
+	}
+
+/* == article sharing*/
+	.Article-share {
+		display: none;
+		padding: 0;
+	}
+	.Share {
+		text-align:center;
+	}
+	.Share-link,
+	.Share-link:link {
+		color: white;
+		display: block;
+		margin: 0.2em 0;
+	}
+	.Share-services {
+		margin: 0;
 	}
