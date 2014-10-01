@@ -1,7 +1,8 @@
+/* == display */
 .Modalbox {
 	display: none;
 }
-
+/* == positionning */
 .Modalbox-wrapper1 {
 	position:fixed;
 	left: 0;
@@ -34,6 +35,7 @@
 		margin: 0.5rem;
 	}
 }
+/* ==content of the modalbox */
 .Modalbox-title {
 	text-align: center;
 	margin-top: 1rem;
@@ -41,12 +43,13 @@
 .Modalbox-content {
 	padding: 0 1rem;
 }
+
 .Modalbox .Button {
 	margin: 0;
 	border-radius: 0 0 2px 2px;
 	width: 100%;
 }
-
+/* ==darkbackground */
 .Overlay {
 	display: none;
 	height:100%;
