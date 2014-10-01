@@ -45,7 +45,6 @@ function delete_useless_tags() {
 
 		if ($nb_entries + $nb_feeds == 0) {
 			$query = $dbh->prepare('DELETE FROM tags WHERE id=?');
-			var_dump($tag['id']);
 			$query->execute(array($tag['id']));
 		}
 	}
