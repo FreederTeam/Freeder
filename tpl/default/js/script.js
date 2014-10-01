@@ -266,8 +266,8 @@
 	 * Display the modal box
 	 */
 	function ModalboxDisplay() {
-		$("#JsOverlay").toggle();
-		$("#JsModalbox").toggle();
+		$("#JsOverlay").show();
+		$("#JsModalbox").show();
 
 	}
 	
@@ -278,8 +278,8 @@
 		ModalboxClose();
 	});
 	function ModalboxClose() {
-		$("#JsOverlay").toggle();
-		$("#JsModalbox").toggle();
+		$("#JsOverlay").hide();
+		$("#JsModalbox").hide();
 
 	}
 
