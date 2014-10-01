@@ -4,10 +4,6 @@
 		svgeezy.init(false, 'png');
 		// modalbox autolaunch
 		ModalboxAutoLaunch();
-		// If click outside the modal box, close it
-		$(document).mouseup(function (e) {
-			ModalboxOutsideClick(e);
-		});
 
 		// init touch actions
 		init_touch();
@@ -251,7 +247,7 @@
 	 * Autolaunch of the modalbox at the page load if modalbox is not empty
 	 */
 	function ModalboxAutoLaunch() {
-		if ($("#JsModalbox-p").html().length > 0) {
+		if ($("#JsModalbox-content").html().length > 0) {
 			ModalboxDisplay();
 		}
 	}
@@ -262,8 +258,8 @@
 	 * @param content The modalbox content
 	 */
 	function ModalboxFill(title, content) {
-		$("#JsModalbox-h1").html(title);
-		$("#JsModalbox-p").html(content);
+		$("#JsModalbox-title").html(title);
+		$("#JsModalbox-content").html(content);
 		}
 
 	/**
@@ -274,17 +270,13 @@
 		$("#JsModalbox").toggle();
 
 	}
-
-	function ModalboxOutsideClick(e) {
-		var container = $("#JsOverlay");
-		if (!container.is(e.target) && container.has(e.target).length === 0) {
-			ModalboxClose();
-		}
-	}
-
+	
 	/**
 	 * Close the modal box
 	 */
+	$("#JsModalbox-close").click(function(){
+		ModalboxClose();
+	});
 	function ModalboxClose() {
 		$("#JsOverlay").toggle();
 		$("#JsModalbox").toggle();
