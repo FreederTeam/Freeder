@@ -2,19 +2,21 @@
 
 	{if="empty($entries)"}
 	<article class="Article system">
-		{if="empty($feeds)"}
-		<h1>Welcome in Freeder!</h1>
-		<h4>It seems that you don't follow any feed!</h4>
-		<p>
-			You can add a feed through the <a href="/settings.php#feedManagement">Feeds settings</a> page.<br/>
-			You can also import your feed from another reader thanks to <a href="/settings.php#importexport">OPML import</a>.
-		</p>
-		{else}
-		<h1>Nothing new</h1>
-		<p>
-			You have no more unread entry!
-		</p>
-		{/if}
+		<div class="ArticleContent">
+			{if="empty($feeds)"}
+			<h1>Welcome in Freeder!</h1>
+			<h4>It seems that you don't follow any feed!</h4>
+			<p>
+				You can add a feed through the <a href="/settings.php#feedManagement">Feeds settings</a> page.<br/>
+				You can also import your feed from another reader thanks to <a href="/settings.php#importexport">OPML import</a>.
+			</p>
+			{else}
+			<h1>Nothing new</h1>
+			<p>
+				You have no more unread entry!
+			</p>
+			{/if}
+		</div>
 	</article>
 	{/if}
 	{loop="$entries"}
