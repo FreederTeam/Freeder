@@ -111,7 +111,7 @@ Related information
 Troubleshooting
 ---------------
 
-### Enable pdo_mysql
+### Enable pdo_sqlite
 
  1. Make sure `php-sqlite` has been installed.
  2. Check whether `/etc/php/php.ini` contains a line `extension=pdo_sqlite.so`
