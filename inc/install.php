@@ -186,18 +186,18 @@ function install() {
 	$tpl->assign('login', $login, RainTPL::RAINTPL_HTML_SANITIZE);
 	$tpl->assign('timezone', $timezone, RainTPL::RAINTPL_HTML_SANITIZE);
 
+	$error = array();
+	$error['type'] = 'error';
+	$error['title'] = '';
+	$error['content'] = '';
+
 	if ($err = RainTPL::$rewriteEngine->write_htaccess()) {
-		$error = array();
-		$error['type'] = 'error';
 		$error['title'] = 'Permissions error';
 		$error['content'] = 'Unable to create or write .htaccess file. Check the writing rights of Freeder root directory. The user who executes Freeder — '.sanitize($current_user).' — should be able to write in this directory. You may prefer to create the .htaccess file on your own and allow '.sanitize($current_user).' to write only in .htaccess instead of in the whole Freeder root.';
-		$tpl->assign('error', $error, RainTPL::RAINTPL_IGNORE_SANITIZE);
 	}
 
 	if (!empty($_POST['login']) && !empty($_POST['password']) && !empty($_POST['confirm_password']) && !empty($_POST['timezone'])) {
 		if ($_POST['confirm_password'] != $_POST['password']) {
-			$error = array();
-			$error['type'] = 'error';
 			$error['title'] = 'Password mismatch';
 			$error['content'] = 'Passwords do not match!';
 		}
@@ -212,24 +212,16 @@ function install() {
 					header('location: index.php');
 					exit();
 				}
-				else {
-					$tpl->assign('error', $error, RainTPL::RAINTPL_IGNORE_SANITIZE);
-				}
-			}
-			else {
-				$tpl->assign('error', $error, RainTPL::RAINTPL_IGNORE_SANITIZE);
 			}
 		}
 	} else {
 		if(isset($_POST['login'])) {
-			$error = array();
-			$error['type'] = 'error';
 			$error['title'] = 'Incomplete installation form';
 			$error['content'] = 'You must fill every field.';
-			$tpl->assign('error', $error, RainTPL::RAINTPL_IGNORE_SANITIZE);
 		}
 	}
 
+	$tpl->assign('error', $error, RainTPL::RAINTPL_IGNORE_SANITIZE);
 	$tpl->draw('install');
 	exit();
 }
