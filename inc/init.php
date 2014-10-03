@@ -22,28 +22,22 @@ if (is_file('path.php')) {
 	define('ROOT_DIR', dirname(dirname(__FILE__)) . '/');
 }
 
+
 // Load constant config
 require_once(ROOT_DIR . 'constants.php');
 
-// Check database installation
-if(!defined('PUBLIC') && !is_file(DATA_DIR.DB_FILE)) {
-	require_once(INC_DIR . 'install.php');
-
-	install();
-}
 
 // Initialize database handler
 $dbh = NULL;
-if (!defined('PUBLIC') && !is_file(DATA_DIR.DB_FILE)) {
+$admins = NULL;
+if (is_file(DATA_DIR.DB_FILE)) {
 	$dbh = new PDO('sqlite:'.DATA_DIR.DB_FILE);
 	$dbh->query('PRAGMA foreign_keys = ON');
 
 	$query = $dbh->query('SELECT COUNT(*) AS nb_admins FROM users WHERE is_admin=1');
 	$admins = $query->fetch();
 	if($admins['nb_admins'] == 0) {
-		require_once(INC_DIR . 'install.php');
-
-		install();
+		$admins = NULL;
 	}
 }
 
@@ -84,6 +78,13 @@ require_once(INC_DIR . 'csrf.php');
 // Sharing options
 require_once(INC_DIR . 'share.php');
 
+// Run installation if needed
+if(!defined('PUBLIC') && (!$dbh || !$admins || !$tpl)) {
+	require_once(INC_DIR . 'install.php');
+
+	install();
+}
+
 // Manage users
 require_once(INC_DIR . 'users.php');
 if ($tpl && log_user_in() === false) {
@@ -95,6 +96,7 @@ if ($tpl && log_user_in() === false) {
 }
 if ($tpl) $tpl->assign('user', isset($_SESSION['user']) ? $_SESSION['user'] : false, RainTPL::RAINTPL_HTML_SANITIZE);
 
-if (defined('PUBLIC')) {
+
+if (!defined('PUBLIC')) {
 	check_anonymous_view();
 }

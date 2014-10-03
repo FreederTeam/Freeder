@@ -6,11 +6,7 @@
  *  @brief Functions to install the script
  */
 
-require_once('constants.php');
 require_once(INC_DIR.'functions.php');
-
-$default_timezone = @date_default_timezone_get();
-
 
 /**
  * Create a directory, checking writeable and the rights.
@@ -164,7 +160,7 @@ function install_db() {
  * Proceed to Freeder installation.
  */
 function install() {
-	global $default_timezone;
+	global $config, $tpl;
 
 	$current_user = get_current_user();
 	$tmp = install_dir(TMP_DIR);
@@ -173,16 +169,8 @@ function install() {
 	}
 
 	$login = isset($_POST['login']) ? $_POST['login'] : '';
-	$timezone = isset($_POST['timezone']) ? $_POST['timezone'] : $default_timezone;
+	$timezone = isset($_POST['timezone']) ? $_POST['timezone'] : $config->get('timezone');
 
-	require_once(INC_DIR . 'rain.tpl.class.php');
-	require_once(INC_DIR . 'rewriting.class.php');
-	RainTPL::$tpl_dir = RELATIVE_TPL_DIR . DEFAULT_THEME . '/';
-	RainTPL::$base_url = dirname($_SERVER['SCRIPT_NAME']) . '/';
-	RewriteEngine::$rewrite_base = RainTPL::$base_url;
-	RainTPL::$rewriteEngine = new RewriteEngine;
-	$tpl = new RainTPL;
-	$tpl->assign('start_generation_time', microtime(true), RainTPL::RAINTPL_IGNORE_SANITIZE);
 	$tpl->assign('login', $login, RainTPL::RAINTPL_HTML_SANITIZE);
 	$tpl->assign('timezone', $timezone, RainTPL::RAINTPL_HTML_SANITIZE);
 
