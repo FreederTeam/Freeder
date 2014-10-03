@@ -4,7 +4,7 @@
  *	See the file LICENSE at the root of this repo for copying permission.
  */
 
-define('PUBLIC'); // Allow JS loading while not logged in
+define('PUBLIC', ''); // Allow JS loading while not logged in
 require_once('inc/init.php');
 require_once('inc/js.tpl.class.php');
 

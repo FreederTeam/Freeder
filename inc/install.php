@@ -167,9 +167,9 @@ function install() {
 	global $default_timezone;
 
 	$current_user = get_current_user();
-	$tmp = install_dir('tmp');
+	$tmp = install_dir(TMP_DIR);
 	if (!empty($tmp)) {
-		exit('Unable to create or write to tmp/ folder. Please check write permissions on this folder.');
+		exit('Unable to create or write to '.TMP_DIR.' folder. Please check write permissions on this folder.');
 	}
 
 	$login = isset($_POST['login']) ? $_POST['login'] : '';

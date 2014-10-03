@@ -25,20 +25,16 @@ if (is_file('path.php')) {
 // Load constant config
 require_once(ROOT_DIR . 'constants.php');
 
-
 // Check database installation
 if(!defined('PUBLIC') && !is_file(DATA_DIR.DB_FILE)) {
-	if ($force_public) return;
-
 	require_once(INC_DIR . 'install.php');
 
 	install();
 }
 
-
 // Initialize database handler
 $dbh = NULL;
-if (!is_file(DATA_DIR.DB_FILE)) {
+if (!defined('PUBLIC') && !is_file(DATA_DIR.DB_FILE)) {
 	$dbh = new PDO('sqlite:'.DATA_DIR.DB_FILE);
 	$dbh->query('PRAGMA foreign_keys = ON');
 
@@ -69,10 +65,11 @@ if($config->version !== Config::$versions[count(Config::$versions) - 1]) {
 
 // Load Rain TPL
 $tpl = NULL;
-if (file_exists($dir) && is_writable($dir)) {
+if (file_exists(TMP_DIR) && is_writable(TMP_DIR)) {
 	require_once(INC_DIR . 'rain.tpl.class.php');
 	require_once(INC_DIR . 'rewriting.class.php');
 	RainTPL::$tpl_dir = RELATIVE_TPL_DIR.$config->template;
+	RainTPL::$cache_dir = TMP_DIR.$config->template;
 	RainTPL::$base_url = $config->base_url;
 	RewriteEngine::$rewrite_base = RainTPL::$base_url;
 	RainTPL::$rewriteEngine = new RewriteEngine;
