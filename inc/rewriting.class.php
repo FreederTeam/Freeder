@@ -119,7 +119,7 @@ class RewriteEngine {
 		$begin_tag = '# BEGIN Freeder generated';
 		$end_tag = '# END Freeder generated';
 
-		$old_file = file_get_contents($htaccess_filename);
+		$old_file = is_readable($htaccess_filename) ? file_get_contents($htaccess_filename) : '';
 
 		// Change freeder content or append at the end of file.
 		if (preg_match("/$begin_tag\n.*?$end_tag/s", $old_file)) {
