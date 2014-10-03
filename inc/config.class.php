@@ -41,7 +41,7 @@ class Config {
 	}
 
 	public function get($option) {  /** You can use either Config->attribute or Config->get(attribute) */
-		return isset($this->$option) ? $this->$option : false;
+		return isset($this->$option) ? $this->$option : FALSE;
 	}
 
 	public function set($option, $value) {  /** You can use either Config->attribute=… or Config->set(attribute, value) */
@@ -50,11 +50,13 @@ class Config {
 
 	public function load() {  /** Load the config from the database into this Config object */
 		global $dbh;
-		$config_from_db = $dbh->query('SELECT option, value FROM config');
-		$config_from_db = $config_from_db !== FALSE ? $config_from_db->fetchall(PDO::FETCH_ASSOC) : array();
 		$config = array();
-		foreach($config_from_db as $config_option) {
-			$config[$config_option['option']] = $config_option['value'];
+		if ($dbh !== NULL) {
+			$config_from_db = $dbh->query('SELECT option, value FROM config');
+			$config_from_db = $config_from_db !== FALSE ? $config_from_db->fetchall(PDO::FETCH_ASSOC) : array();
+			foreach($config_from_db as $config_option) {
+				$config[$config_option['option']] = $config_option['value'];
+			}
 		}
 		$config = array_merge(self::$default_config, $config);
 
@@ -65,6 +67,7 @@ class Config {
 
 	public function save() {  /** Stores the current config in database */
 		global $dbh;
+		assert($dbh !== NULL);
 		$dbh->beginTransaction();
 		$query_insert = $dbh->prepare('INSERT OR IGNORE INTO config(option) VALUES(:option)');
 		$query_insert->bindParam(':option', $option);

@@ -16,6 +16,7 @@
  */
 function check_and_get_user($login, $pass) {
 	global $dbh;
+	if ($dbh === NULL) return FALSE;
 
 	$query = $dbh->prepare('SELECT id, login, password, salt, remember_token, is_admin FROM users WHERE login=:login');
 	$query->execute(array(':login'=>$login));
@@ -41,7 +42,7 @@ function check_and_get_user($login, $pass) {
 function log_user_in() {
 	global $dbh;
 
-	// If user alreadu connected, returns immediately
+	// If user already connected, returns immediately
 	if (!empty($_SESSION['user'])) {
 		return true;
 	}
@@ -120,6 +121,7 @@ function check_anonymous_view() {
 	global $tpl, $config;
 
 	if (empty($_SESSION['user']) && $config->anonymous_access == 0 && !is_command_line()) {
+		if ($tpl === NULL) assert(false);
 		$tpl->draw('login');
 		exit();
 	}
