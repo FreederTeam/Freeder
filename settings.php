@@ -9,6 +9,7 @@
 require_once('inc/init.php');
 require_once('inc/feeds.php');
 require_once('inc/entries.php');
+require_once('inc/users.php');
 
 require_auth();
 
@@ -71,21 +72,28 @@ if (!empty($_POST['template']) && !empty($_POST['display_entries']) && isset($_P
 }
 // User tab
 if (!empty($_POST['password']) && !empty($_POST['password_check']) && !empty($_POST['token']) && check_token(600, 'settings_form_user')) {
-	if ($_POST['password'] == $_POST['password_check']) {
-		$password = sha1($_SESSION['user']->salt.$_POST['password']);
-		$query = $dbh->prepare('UPDATE users SET password=:password WHERE login=:login');
-		$query->execute(array(
-			':login'=>$_SESSION['user']->login,
-			':password'=>$password
-		));
+	if ($_POST['current_password'] == get_password($_SESSION['user']->login)) {
+		if ($_POST['password'] == $_POST['password_check']) {
+			$password = sha1($_SESSION['user']->salt.$_POST['password']);
+			$query = $dbh->prepare('UPDATE users SET password=:password WHERE login=:login');
+			$query->execute(array(
+				':login'=>$_SESSION['user']->login,
+				':password'=>$password
+			));
+		}
+		else {
+			$error = array();
+			$error['type'] = 'error';
+			$error['title'] = 'Password mismatch';
+			$error['content'] = 'Passwords do not match!';
+		}
 	}
 	else {
 		$error = array();
 		$error['type'] = 'error';
-		$error['title'] = 'Password mismatch';
-		$error['content'] = 'Passwords do not match!';
+		$error['title'] = 'Invalid password';
+		$error['content'] = 'Current passord is invalid';
 	}
-	$config->save();
 	if (empty($error)) {
 		header('location: settings.php#user');
 		exit();
@@ -138,7 +146,10 @@ if (isset($_POST['share_input_shaarli']) && isset($_POST['share_input_diaspora']
 			}
 		}
 		else {
-			die('Error: Incorrect shaarli URL');
+			$error = array();
+			$error['type'] = 'error';
+			$error['title'] = 'Invalid URL';
+			$error['content'] = 'Invalid Shaarli URL';
 		}
 	}
 	if (!empty($_POST['share_input_wallabag'])) {
@@ -151,7 +162,10 @@ if (isset($_POST['share_input_shaarli']) && isset($_POST['share_input_diaspora']
 			}
 		}
 		else {
-			die('Error: Incorrect Wallabag URL');
+			$error = array();
+			$error['type'] = 'error';
+			$error['title'] = 'Invalid URL';
+			$error['content'] = 'Invalid Wallabag URL';
 		}
 	}
 	if (!empty($_POST['share_input_diaspora'])) {
@@ -164,7 +178,10 @@ if (isset($_POST['share_input_shaarli']) && isset($_POST['share_input_diaspora']
 			}
 		}
 		else {
-			die('Error: Incorrect diaspora URL');
+			$error = array();
+			$error['type'] = 'error';
+			$error['title'] = 'Invalid URL';
+			$error['content'] = 'Invalid Diaspora URL';
 		}
 	}
 
@@ -326,6 +343,7 @@ if (isset($_FILES['import']) && isset($_POST['import_tags_opml']) && !empty($_PO
 		}
 		$error['content'] .= '</ul>';
 		$tpl->assign('error', $error, RainTPL::RAINTPL_IGNORE_SANITIZE);
+		$tpl->assign('current_tab', 'importexport');
 		$tpl->draw('settings');
 		exit();
 	}

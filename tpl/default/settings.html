@@ -2,18 +2,18 @@
 
 <nav>
 	<ul class="Tabs">
-		<li class="OneTab currentTab"> <a class="OneTab-a" data-targetid="feedManagement" href="settings.php#feedManagement" alt="Add new feeds and modify existing ones">Feeds</a></li>
-		<li class="OneTab"> <a class="OneTab-a" data-targetid="synchronization" href="settings.php#synchronization" alt="Set how feeds are synchronize">Sync</a></li>
-		<li class="OneTab"> <a class="OneTab-a" data-targetid="template" href="settings.php#template" alt="Set global appearance">Template</a></li>
-		<li class="OneTab"> <a class="OneTab-a" data-targetid="user" href="settings.php#user" alt="Modify user info">User</a></li>
-		<li class="OneTab"> <a class="OneTab-a" data-targetid="entries" href="settings.php#entries" alt="Set entry storing options">Entries</a></li>
-		<li class="OneTab"> <a class="OneTab-a" data-targetid="sharing" href="settings.php#sharing" alt="Customize sharing links">Sharing</a></li>
-		<li class="OneTab"> <a class="OneTab-a" data-targetid="misc" href="settings.php#misc" alt="Other settings">Misc</a></li>
-		<li class="OneTab"> <a class="OneTab-a" data-targetid="importexport" href="settings.php#importexport" alt="Import and export feeds">Import Export</a></li>
+		<li class="OneTab {if="$current_tab == 'feedManagement'"}currentTab{/if}"> <a class="OneTab-a" data-targetid="feedManagement" href="settings.php#feedManagement" alt="Add new feeds and modify existing ones">Feeds</a></li>
+		<li class="OneTab {if="$current_tab == 'synchronization'"}currentTab{/if}"> <a class="OneTab-a" data-targetid="synchronization" href="settings.php#synchronization" alt="Set how feeds are synchronize">Sync</a></li>
+		<li class="OneTab {if="$current_tab == 'template'"}currentTab{/if}"> <a class="OneTab-a" data-targetid="template" href="settings.php#template" alt="Set global appearance">Template</a></li>
+		<li class="OneTab {if="$current_tab == 'user'"}currentTab{/if}"> <a class="OneTab-a" data-targetid="user" href="settings.php#user" alt="Modify user info">User</a></li>
+		<li class="OneTab {if="$current_tab == 'entries'"}currentTab{/if}"> <a class="OneTab-a" data-targetid="entries" href="settings.php#entries" alt="Set entry storing options">Entries</a></li>
+		<li class="OneTab {if="$current_tab == 'sharing'"}currentTab{/if}"> <a class="OneTab-a" data-targetid="sharing" href="settings.php#sharing" alt="Customize sharing links">Sharing</a></li>
+		<li class="OneTab {if="$current_tab == 'misc'"}currentTab{/if}"> <a class="OneTab-a" data-targetid="misc" href="settings.php#misc" alt="Other settings">Misc</a></li>
+		<li class="OneTab {if="$current_tab == 'importexport'"}currentTab{/if}"> <a class="OneTab-a" data-targetid="importexport" href="settings.php#importexport" alt="Import and export feeds">Import / Export</a></li>
 	</ul>
 </nav>
 
-<article class="TabContent currentTabContent" {if="$current_tab != 'feedManagement'"}style="display: none;"{/if}>
+<article class="TabContent {if="$current_tab == 'feedManagement'"}currentTabContent{/if}">
 	<div class="TabContent-anchor" id="feedManagement"></div>
 	<section class="SettingsSection">
 		<h2 class="TabContent-h2">Add a feed</h2>
@@ -60,7 +60,7 @@
 	</section>
 </article>
 
-<article class="TabContent" {if="$current_tab == 'synchronization'"}style="display: block;"{/if}>
+<article class="TabContent {if="$current_tab == 'synchronization'"}currentTabContent{/if}">
 	<div class="TabContent-anchor" id="synchronization"></div>
 	<section class="SettingsSection">
 		<h2 class="TabContent-h2">Sync</h2>
@@ -79,7 +79,7 @@
 	</section>
 </article>
 
-<article class="TabContent" {if="$current_tab == 'template'"}style="display: block;"{/if}>
+<article class="TabContent {if="$current_tab == 'template'"}currentTabContent{/if}">
 	<div class="TabContent-anchor" id="template"></div>
 	<section class="SettingsSection">
 		<h2 class="TabContent-h2">Template</h2>
@@ -110,21 +110,22 @@
 	</section>
 </article>
 
-<article class="TabContent" {if="$current_tab == 'user'"}style="display: block;"{/if}>
+<article class="TabContent {if="$current_tab == 'user'"}currentTabContent{/if}">
 	<div class="TabContent-anchor" id="user"></div>
 	<section class="SettingsSection">
 		<h2 class="TabContent-h2">User</h2>
 		<form method="post" action="#">
 			<p>Leave these fields blank if you don't want to change your password.</p>
-			<p><input type="password" class="grey" name="password" id="password" placeholder="Password" /></p>
-			<p><input type="password" class="grey" name="password_check" id="password_check" placeholder="Password (again)" /> </p>
+			<p><input type="password" class="grey" name="current_password" id="current_password" placeholder="Current password" /></p>
+			<p><input type="password" class="grey" name="password" id="password" placeholder="New password" /></p>
+			<p><input type="password" class="grey" name="password_check" id="password_check" placeholder="New password (again)" /> </p>
 
 		<input class="Button" type="submit" value="Save"/><input type="hidden" name="token" value="{function="generate_token('settings_form_user')"}"/>
 		</form>
 	</section>
 </article>
 
-<article class="TabContent" {if="$current_tab == 'entries'"}style="display: block;"{/if}>
+<article class="TabContent {if="$current_tab == 'entries'"}currentTabContent{/if}">
 	<div class="TabContent-anchor" id="entries"></div>
 	<section class="SettingsSection">
 		<h2 class="TabContent-h2">Entries</h2>
@@ -149,7 +150,7 @@
 	</section>
 </article>
 
-<article class="TabContent" {if="$current_tab == 'sharing'"}style="display: block;"{/if}>
+<article class="TabContent {if="$current_tab == 'sharing'"}currentTabContent{/if}">
 	<div class="TabContent-anchor" id="sharing"></div>
 	<section class="SettingsSection">
 		<h2 class="TabContent-h2">Sharing</h2>
@@ -165,7 +166,7 @@
 	</section>
 </article>
 
-<article class="TabContent" {if="$current_tab == 'misc'"}style="display: block;"{/if}>
+<article class="TabContent {if="$current_tab == 'misc'"}currentTabContent{/if}">
 	<div class="TabContent-anchor" id="misc"></div>
 	<section class="SettingsSection">
 		<h2 class="TabContent-h2">Misc</h2>
@@ -191,7 +192,7 @@
 		</form>
 </article>
 
-<article class="TabContent" {if="$current_tab == 'importexport'"}style="display: block;"{/if}>
+<article class="TabContent {if="$current_tab == 'importexport'"}currentTabContent{/if}">
 	<div class="TabContent-anchor" id="importexport"></div>
 	<section class="SettingsSection">
 		<h2 class="TabContent-h2">Import an OPML file</h2>

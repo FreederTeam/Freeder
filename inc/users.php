@@ -144,3 +144,16 @@ function require_auth($redirect=true) {
 	return true;
 }
 
+
+/**
+ * Returns the password associated with a login.
+ */
+function get_password($login) {
+	global $dbh;
+
+	$query = $dbh->prepare('SELECT password FROM users WHERE login=?');
+	$query->execute(array($login));
+
+	return $query->fetch();
+}
+

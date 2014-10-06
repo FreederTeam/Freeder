@@ -243,6 +243,9 @@ function add_feeds($urls, $import_tags=NULL) {
 		else {
 			$tags = array();
 		}
+		if(!startswith($url, 'http://') && !startswith($url, 'https://')) {
+			$url = 'http://' . $url;
+		}
 		if (filter_var($url, FILTER_VALIDATE_URL)) {
 			$query->execute();
 			$id = $dbh->lastInsertId();
