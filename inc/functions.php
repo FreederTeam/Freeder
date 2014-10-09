@@ -288,6 +288,24 @@ function get_url_rewriting() {
 
 
 /**
+ * Check if curl is available
+ * @return true if available, false otherwise
+ */
+function is_curl_available() {
+  $curl_functions = array( 'curl_multi_init', 'curl_init', 'curl_setopt_array',
+			   'curl_setopt', 'curl_multi_add_handle',
+			   'curl_multi_exec', 'curl_multi_select',
+			   'curl_multi_get_content', 'curl_getinfo',
+			   'curl_multi_remove_handle', 'curl_close',
+			   'curl_multi_close' );
+  $curl_ok = true;
+  foreach($curl_functions as $curl_function)
+    $curl_ok = $curl_ok && function_exists($curl_function);
+  return $curl_ok;
+}   
+
+
+/**
  * Format date for pretty printing
  * @param $timestamp: date in timestamp format.
  */
