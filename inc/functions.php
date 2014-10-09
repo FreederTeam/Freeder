@@ -299,10 +299,10 @@ function is_curl_available() {
 		'curl_multi_getcontent', 'curl_getinfo',
 		'curl_multi_remove_handle', 'curl_close',
 		'curl_multi_close' );
-  $curl_ok = true;
-  foreach($curl_functions as $curl_function)
-    $curl_ok = $curl_ok && function_exists($curl_function);
-  return $curl_ok;
+	$curl_ok = true;
+	foreach($curl_functions as $curl_function)
+		$curl_ok = $curl_ok && function_exists($curl_function);
+	return $curl_ok;
 }   
 
 
@@ -311,7 +311,7 @@ function is_curl_available() {
  * @return true if available, false otherwise
  */
 function is_pdo_sqlite_available() {
-  return in_array('pdo_sqlite', get_loaded_extensions());
+	return in_array('pdo_sqlite', get_loaded_extensions());
 }
 
 
