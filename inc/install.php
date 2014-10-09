@@ -37,11 +37,13 @@ function install_db() {
 		$error['content'] = 'Module pdo_sqlite not found.';
 		return $error;
 	}
-	if (!is_curl_available ()) {
+	$curl_disabled_functions = check_curl_availability ();
+	if ($curl_disabled_functions !== null) {
 		$error = array();
 		$error['type'] = 'error';
 		$error['title'] = 'Missing dependency';
-		$error['content'] = 'Curl functions missing.';
+		$error['content'] = 'Curl functions missing : ';
+		$error['content'] .= implode (', ', $curl_disabled_functions) . '.';
 		return $error;
 	}
 

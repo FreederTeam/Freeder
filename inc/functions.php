@@ -289,9 +289,9 @@ function get_url_rewriting() {
 
 /**
  * Check if curl is available
- * @return true if available, false otherwise
+ * @return null or an array of disabled functions.
  */
-function is_curl_available() {
+function check_curl_availability() {
 	$curl_functions = array(
 		'curl_multi_init', 'curl_init', 'curl_setopt_array',
 		'curl_setopt', 'curl_multi_add_handle',
@@ -299,10 +299,13 @@ function is_curl_available() {
 		'curl_multi_getcontent', 'curl_getinfo',
 		'curl_multi_remove_handle', 'curl_close',
 		'curl_multi_close' );
-	$curl_ok = true;
+	$curl_disabled_functions = array();
 	foreach($curl_functions as $curl_function)
-		$curl_ok = $curl_ok && function_exists($curl_function);
-	return $curl_ok;
+		if (function_exists ($curl_function))
+			$curl_disabled_functions[] = $curl_function;
+	if (count ($curl_disabled_functions) > 0)
+		return $curl_disabled_functions;
+	return null;
 }   
 
 
