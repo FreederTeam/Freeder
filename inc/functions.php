@@ -301,7 +301,7 @@ function check_curl_availability() {
 		'curl_multi_close' );
 	$curl_disabled_functions = array();
 	foreach($curl_functions as $curl_function)
-		if (function_exists ($curl_function))
+		if (! function_exists ($curl_function))
 			$curl_disabled_functions[] = $curl_function;
 	if (count ($curl_disabled_functions) > 0)
 		return $curl_disabled_functions;
