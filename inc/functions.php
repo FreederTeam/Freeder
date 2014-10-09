@@ -306,6 +306,15 @@ function is_curl_available() {
 
 
 /**
+ * Check if pdo_sqlite is available
+ * @return true if available, false otherwise
+ */
+function is_pdo_sqlite_available() {
+  return in_array('pdo_sqlite', get_loaded_extensions());
+}
+
+
+/**
  * Format date for pretty printing
  * @param $timestamp: date in timestamp format.
  */
