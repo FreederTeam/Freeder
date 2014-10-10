@@ -47,7 +47,7 @@
 				{loop="$feeds"}
 					<tr>
 						<td>{$value['title']}</td>
-						<td><a href="{$value['url']}">{$value['url']}</a></td>
+						<td><a href="{$value['url']}#">{$value['url']}</a></td>
 						<td>Edit</td>
 						<td><a href="settings.php?delete_feed={$value['id']}&amp;token={$delete_feed_token}">Delete</a></td>
 						<td><a href="settings.php?refresh_feed={$value['id']}&amp;token={$refresh_feed_token}">Refresh</a></td>
