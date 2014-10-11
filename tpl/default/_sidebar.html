@@ -41,7 +41,7 @@
 	<ul class="Side-feedList FeedList">
 		{loop="$feeds"}
 			<li>
-				<a class="FeedList-feed" href="/%feed%/{$value['id']}">{$value['title']}</a>
+				<a class="FeedList-feed" href="/%feed%/{$value['id']}" title="{$value['description']}">{$value['title']}</a>
 			</li>
 		{/loop}
 	</ul>

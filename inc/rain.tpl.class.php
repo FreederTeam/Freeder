@@ -66,7 +66,7 @@ class RainTPL{
 
 		/**
 		 * You can set what the path_replace method will replace.
-		 * Avaible options: a, img, link, script, input
+		 * Avaible options: a, img, link, script, input, form
 		 *
 		 * @var array
 		 */
@@ -127,7 +127,7 @@ class RainTPL{
 	// -------------------------
 
 		/**
-		 * Is the array where RainTPL keep the variables assigned
+		 * Is the array where RainTPL keeps the variables assigned
 		 *
 		 * @var array
 		 */

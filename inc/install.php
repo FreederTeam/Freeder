@@ -30,11 +30,20 @@ function install_dir($dir) {
  * Initialize database.
  */
 function install_db() {
-	if (!in_array('pdo_sqlite', get_loaded_extensions())) {
+	if (!is_pdo_sqlite_available()) {
 		$error = array();
 		$error['type'] = 'error';
 		$error['title'] = 'Missing dependency';
 		$error['content'] = 'Module pdo_sqlite not found.';
+		return $error;
+	}
+	$curl_disabled_functions = check_curl_availability ();
+	if ($curl_disabled_functions !== null) {
+		$error = array();
+		$error['type'] = 'error';
+		$error['title'] = 'Missing dependency';
+		$error['content'] = 'Curl functions missing : ';
+		$error['content'] .= implode (', ', $curl_disabled_functions) . '.';
 		return $error;
 	}
 
