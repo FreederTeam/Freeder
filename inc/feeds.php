@@ -422,10 +422,15 @@ function edit_feed($old_url, $new_url, $new_title='') {
 /**
  * Returns all the available feeds.
  */
-function get_feeds() {
+function get_feeds ($sort_by='') {
 	global $dbh;
 	$query = $dbh->query('SELECT id, title, url, links, description, ttl, image, post, import_tags_from_feed FROM feeds');
-	return $query->fetchAll(PDO::FETCH_ASSOC);
+	$feeds = $query->fetchAll(PDO::FETCH_ASSOC);
+	if ($sort_by != '') {
+		function cmp_feeds ($f1, $f2) { return strcasecmp ($f1[$sort_by], $f2[$sort_by]); }
+		usort ($feeds, 'cmp_feeds');
+	}
+	return $feeds;
 }
 
 
