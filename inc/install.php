@@ -176,6 +176,7 @@ function install() {
 	if (!empty($tmp)) {
 		exit('Unable to create or write to '.TMP_DIR.' folder. Please check write permissions on this folder.');
 	}
+	init_tpl(); // Tpl has not been initialized before TMP_DIR was made.²
 
 	$login = isset($_POST['login']) ? $_POST['login'] : '';
 	$timezone = isset($_POST['timezone']) ? $_POST['timezone'] : $config->get('timezone');
