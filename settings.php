@@ -13,7 +13,7 @@ require_once('inc/users.php');
 
 require_auth();
 
-$feeds = get_feeds();
+$feeds = get_feeds('title');
 
 $tpl->assign('config', $config, RainTPL::RAINTPL_HTML_SANITIZE);
 $tpl->assign('templates', list_templates(), RainTPL::RAINTPL_HTML_SANITIZE);
