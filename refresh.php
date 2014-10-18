@@ -14,7 +14,7 @@ if (!$command_line && (!require_auth(false) || empty($_GET['token']) || !check_t
 }
 
 $refresh_start = microtime(true);
-$feeds = get_feeds();
+$feeds = get_feeds('title');
 
 $feeds_to_refresh = array();
 foreach($feeds as $feed) {
