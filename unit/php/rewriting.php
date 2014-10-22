@@ -17,7 +17,7 @@ if (TESTING == 'raintpl') {
 
 	// Load Rain TPL
 	require_once(INC_DIR . 'rain.tpl.class.php');
-	RainTPL::$tpl_dir = 'tpl_dir/';
+	RainTPL::$tpl_dir = 'tpl/';
 	RainTPL::$base_url = 'base_url/';
 	$tpl = new RainTPL;
 	$tpl->draw('rewriting');
@@ -26,7 +26,7 @@ if (TESTING == 'raintpl') {
 else if (TESTING == 'local') {
 
 	require_once('rewriting.inc.php');
-	$html = file_get_contents('tpl_dir/rewriting.html');
+	$html = file_get_contents('tpl/rewriting.html');
 	echo(path_replace($html));
 
 }

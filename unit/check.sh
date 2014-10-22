@@ -1,13 +1,30 @@
 #!/bin/sh
 
+mkdir -p out diff php expect tpl
 
-which colordiff && DIFF=colordiff || DIFF=diff
+rm -f diff/*
+rm -f out/*
+rm -rf tmp
 
-FILE=rewriting
-php $FILE.php > $FILE.out
-$DIFF $FILE.out $FILE.expect
+status=0
 
-FILE=rewrite-engine
-php $FILE.php > $FILE.out
-$DIFF $FILE.out $FILE.expect
+echo 'Launching tests.'
+for file in php/*
+do
+    file=${file%.*}
+    file=${file##*/}
+    echo -n "Test for $file… "
+    php php/$file.php > out/$file.out
+    if diff out/$file.out expect/$file.expect > diff/$file.diff; then
+	echo 'Pass.'
+    else
+	echo 'Error.'
+	status=$(($status+1))
+    fi
+done
+echo -n 'Tests finished. '
 
+total=$(ls php | wc -l)
+echo "[pass=$(($total-$status)), fail=$status, total=$total]"
+
+exit $status
