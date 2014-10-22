@@ -14,9 +14,9 @@ RUN rm /tmp/init.sh
 RUN apt-get install -y git
 RUN git clone https://github.com/Niols/Freeder /var/www/Freeder
 
-# apache user has UID 1000 and GID 100
+# www-data has UID 1000 and GID 100
 # You may have to change these values to match with your current "host" user
-RUN usermod -u 1000 -g 100 apache
+RUN usermod -u 1000 -g 100 www-data
 
 # Launch unit test
 RUN /var/www/Freeder/unit/check.sh
