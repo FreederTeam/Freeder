@@ -1,6 +1,0 @@
-<IfModule mod_rewrite.c>
-  RewriteEngine On
-  RewriteBase /
-  RewriteRule ^tag/(.+)$ index.php?view=\$tag_$1
-  RewriteRule ^feed/(.+)$ index.php?view=\$feed_$1
-</IfModule>
