@@ -12,7 +12,7 @@ RUN rm /tmp/init.sh
 
 # Get Freeder
 RUN apt-get install -y git
-RUN git clone https://github.com/Niols/Freeder /var/www/Freeder
+RUN git clone https://github.com/FreederTeam/Freeder /var/www/Freeder
 
 # www-data has UID 1000 and GID 100
 # You may have to change these values to match with your current "host" user
