@@ -4,3 +4,5 @@ data/
 *.swp
 unversionned/
 .htaccess
+unit/out/
+unit/diff/
