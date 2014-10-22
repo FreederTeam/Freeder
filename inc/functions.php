@@ -12,10 +12,9 @@
  * @return The sub-array or $default_value.
  */
 function multiarray_search($field, $value, $array, $default_value=false) {
-	foreach($array as $key=>$val) {
-		if($val[$field] == $value) {
+	foreach ($array as $val) {
+		if (in_array ($field, array_keys($val)) && $val[$field] == $value)
 			return $val;
-		}
 	}
 	return $default_value;
 }
