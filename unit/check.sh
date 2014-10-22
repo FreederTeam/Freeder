@@ -1,5 +1,9 @@
 #!/bin/sh
 
+old_dir=$PWD
+dir="$PWD/$(dirname $0)"
+cd $dir
+
 mkdir -p out diff php expect tpl
 
 rm -f diff/*
@@ -26,5 +30,7 @@ echo -n 'Tests finished. '
 
 total=$(ls php | wc -l)
 echo "[pass=$(($total-$status)), fail=$status, total=$total]"
+
+cd $old_dir
 
 exit $status
