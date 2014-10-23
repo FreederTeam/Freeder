@@ -1,19 +1,19 @@
 <img onclick="{}" src="http://example.org/foo/bar.html" alt="https://foo" />
 <img src="https://example.org/fee/baz.html" alt="http://fee" />
 <img src="base_url/foo/bar.html#truc" alt="bla" />
-<img alt="hi!" src="base_url/tpl_dir/bar/bla?ans=42" />
+<img alt="hi!" src="base_url/tpl/bar/bla?ans=42" />
 <img src="/foo/bar" />
 
 <script src="http://example.org/foo/bar.js" type="text/foo"></script>
 <script src="https://example.org/fee/baz.js" type="application/fee+biz"></script>
 <script onclick="{}" src="base_url/foo/bar.js#truc" type="bla"></script>
-<script type="msg/hi!" src="base_url/tpl_dir/bar/bla?ans=42" /></script>
+<script type="msg/hi!" src="base_url/tpl/bar/bla?ans=42" /></script>
 <script src="/foo/bar"></script>
 
 <link rel="icon" href="http://example.org/foo/bar.png" type="image/png" />
 <link href="https://example.org/fee/baz.css" type="application/fee+biz" />
 <link onclick="{}" href="base_url/foo/bar.js#truc" type="bla" />
-<link rel="" type="msg/hi!" href="base_url/tpl_dir/bar/bla?ans=42" />
+<link rel="" type="msg/hi!" href="base_url/tpl/bar/bla?ans=42" />
 <link href="/foo/bar" />
 
 <a href="http://example.org/foo/bar.js" target="blank">a</a>

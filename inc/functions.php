@@ -9,27 +9,48 @@
 
 /**
  * Search for the first item with value $value for field $field in a 2D array.
- * @return The sub-array or $default_value.
+ * Search in an array containing arrays for the first item with key $field bound
+ * with value $value, and return the corresponding subarray.
+ * If nothing is found, return $default_value.
+ *
+ * @param $field
+ * @param $value
+ * @param $array The two-dimensional array
+ * @param $default_value
+ *
+ * @see multiarray_search_key
+ * @see multiarray_filter
+ *
+ * @return The found value or $default_value.
  */
 function multiarray_search($field, $value, $array, $default_value=false) {
-	foreach($array as $key=>$val) {
-		if($val[$field] == $value) {
+	foreach ($array as $val) {
+		if ($val[$field] == $value)
 			return $val;
-		}
 	}
 	return $default_value;
 }
 
 
 /**
- * Search for the key of the first item with value $value for field $field in a 2D array.
- * @return The matching key or -1
+ * Search for the first key $field with value $value in a 2D array.
+ * Search in an array containing arrays for the first item with key $field bound
+ * with value $value, and return the corresponding subarray key.
+ * If nothing is found, return -1.
+ *
+ * @param $field
+ * @param $value
+ * @param $array The two-dimensional array
+ *
+ * @see multiarray_search
+ * @see multiarray_filter
+ *
+ * @return The found key or -1.
  */
 function multiarray_search_key($field, $value, $array) {
 	foreach($array as $key=>$val) {
-		if($val[$field] == $value) {
+		if ($val[$field] == $value)
 			return $key;
-		}
 	}
 	return -1;
 }
@@ -37,14 +58,21 @@ function multiarray_search_key($field, $value, $array) {
 
 /**
  * Filters a 2D array returning all the entries where $field is not equal to $value.
- * @return The filtered array.
+ *
+ * @param $field
+ * @param $value
+ * @param $array The two-dimensional array
+ *
+ * @see multiarray_search
+ * @see multiarray_search_key
+ *
+ * @return The found value or $default_value.
  */
 function multiarray_filter($field, $value, $array) {
 	$return = array();
 	foreach($array as $key=>$val) {
-		if($val[$field] != $value) {
-			$return[] = $val;
-		}
+		if ($val[$field] != $value)
+			$return[$key] = $val;
 	}
 	return $return;
 }
@@ -54,8 +82,7 @@ function multiarray_filter($field, $value, $array) {
  * Check that $haystack starts with $needle.
  */
 function startswith($haystack, $needle) {
-	 $length = strlen($needle);
-	 return (substr($haystack, 0, $length) === $needle);
+	return $needle === '' || strpos($haystack, $needle) === 0;
 }
 
 
@@ -63,12 +90,7 @@ function startswith($haystack, $needle) {
  * Check that $haystack ends with $needle.
  */
 function endswith($haystack, $needle) {
-	$length = strlen($needle);
-	if ($length == 0) {
-		return true;
-	}
-
-	return (substr($haystack, -$length) === $needle);
+	return $needle === '' || substr($haystack, -strlen($needle)) === $needle;
 }
 
 
