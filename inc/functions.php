@@ -82,8 +82,7 @@ function multiarray_filter($field, $value, $array) {
  * Check that $haystack starts with $needle.
  */
 function startswith($haystack, $needle) {
-	 $length = strlen($needle);
-	 return (substr($haystack, 0, $length) === $needle);
+	return $needle === '' || strpos($haystack, $needle) === 0;
 }
 
 
@@ -91,12 +90,7 @@ function startswith($haystack, $needle) {
  * Check that $haystack ends with $needle.
  */
 function endswith($haystack, $needle) {
-	$length = strlen($needle);
-	if ($length == 0) {
-		return true;
-	}
-
-	return (substr($haystack, -$length) === $needle);
+	return $needle === '' || substr($haystack, -strlen($needle)) === $needle;
 }
 
 
