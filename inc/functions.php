@@ -25,8 +25,9 @@
  */
 function multiarray_search($field, $value, $array, $default_value=false) {
 	foreach ($array as $val) {
-		if ($val[$field] == $value)
+		if ($val[$field] == $value) {
 			return $val;
+		}
 	}
 	return $default_value;
 }
@@ -49,8 +50,9 @@ function multiarray_search($field, $value, $array, $default_value=false) {
  */
 function multiarray_search_key($field, $value, $array) {
 	foreach($array as $key=>$val) {
-		if ($val[$field] == $value)
+		if ($val[$field] == $value) {
 			return $key;
+		}
 	}
 	return -1;
 }
@@ -71,8 +73,9 @@ function multiarray_search_key($field, $value, $array) {
 function multiarray_filter($field, $value, $array) {
 	$return = array();
 	foreach($array as $key=>$val) {
-		if ($val[$field] != $value)
+		if ($val[$field] != $value) {
 			$return[$key] = $val;
+		}
 	}
 	return $return;
 }
