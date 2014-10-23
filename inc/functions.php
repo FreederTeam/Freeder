@@ -10,7 +10,8 @@
 /**
  * Search for the first item with value $value for field $field in a 2D array.
  * Search in an array containing arrays for the first item with key $field bound
- * with value $value, and return this value. If nothing is found, return $default_value.
+ * with value $value, and return the corresponding subarray.
+ * If nothing is found, return $default_value.
  *
  * @param $field
  * @param $value
@@ -34,7 +35,8 @@ function multiarray_search($field, $value, $array, $default_value=false) {
 /**
  * Search for the first key $field with value $value in a 2D array.
  * Search in an array containing arrays for the first item with key $field bound
- * with value $value, and return this key. If nothing is found, return -1.
+ * with value $value, and return the corresponding subarray key.
+ * If nothing is found, return -1.
  *
  * @param $field
  * @param $value
@@ -70,7 +72,7 @@ function multiarray_filter($field, $value, $array) {
 	$return = array();
 	foreach($array as $key=>$val) {
 		if ($val[$field] != $value)
-			$return[] = $val;
+			$return[$key] = $val;
 	}
 	return $return;
 }
