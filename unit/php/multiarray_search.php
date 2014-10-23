@@ -9,6 +9,8 @@
 /**
  * Unit test
  * inc/functions.php - multiarray_search
+ * inc/functions.php - multiarray_search_key
+ * inc/functions.php - multiarray_filter
  */
 
 // Defining INC_DIR const.
@@ -26,20 +28,67 @@ require_once(INC_DIR . 'functions.php');
  */
 srand (78655809875);
 
+// Create the array-in-array keys
+$len_j = rand (10, 50);
+$array_keys = array ();
+for ($j = 0; $j < $len_j; $j++) {
+  $array_keys [] = rand_val ($_int_string);
+}
+
 // Create a multiarray
 $multiarray = array ();
-$length = rand (10, 100);
-for ($j = 0; $j < $length; $j++)
-  $multiarray[rand_val($_int_string)] = rand_array ();
+$len_i = rand (10, 50);
+for ($i = 0; $i < $len_i; $i++) {
+  $array = array ();
+  foreach ($array_keys as $key)
+    // We don't want bools, matching with too many things
+    $array[$key] = rand_val (array ('int', 'string', 'array'));
+  $multiarray[rand_val($_int_string)] = $array;
+}
 
-var_dump (multiarray_search (-1, rand_val (), $multiarray));
-var_dump (multiarray_search (-1, rand_val (), $multiarray, rand_val ()));
+$rnd_i = array_rand ($multiarray);
+$rnd_j = $array_keys[array_rand ($array_keys)];
 
-var_dump (multiarray_search (array (), rand_val (), $multiarray));
+echo 'multiarray_search';
+echo "\n";
 
-var_dump (multiarray_search (rand_val($_int_string), rand_val (), array ()));
+// -1 can't be found since we don't have negative numbers nor booleans
+$e = multiarray_search ($rnd_j, -1, $multiarray);
+echo 'If not found, return false:          ';
+var_dump ($e === false);
 
-$mkey = array_rand ($multiarray);
-$key = array_rand ($multiarray[$mkey]);
-var_dump (multiarray_search ($key, rand_val (), $multiarray));
-var_dump (multiarray_search ($key, $multiarray[$mkey][$key], $multiarray));
+$v = rand_val ();
+$e = multiarray_search ($rnd_j, -1, $multiarray, $v);
+echo 'If not found, return default_value:  ';
+var_dump ($e === $v);
+
+$e = multiarray_search ($rnd_j, $multiarray[$rnd_i][$rnd_j], $multiarray);
+echo 'If found, return sub_array:          ';
+var_dump ($e === $multiarray[$rnd_i]);
+
+echo "\n";
+echo 'multiarray_search_key';
+echo "\n";
+
+$e = multiarray_search_key ($rnd_j, -1, $multiarray);
+echo 'If not found, return -1:             ';
+var_dump ($e === -1);
+
+$e = multiarray_search_key ($rnd_j, $multiarray[$rnd_i][$rnd_j], $multiarray);
+echo 'If found, return sub_array key:      ';
+var_dump ($e === $rnd_i);
+
+echo "\n";
+echo 'multiarray_filter';
+echo "\n";
+
+$e = multiarray_filter ($rnd_j, -1, $multiarray);
+echo 'If never found, return multiarray:   ';
+var_dump ($e === $multiarray);
+
+$e = multiarray_filter ($rnd_j, $multiarray[$rnd_i][$rnd_j], $multiarray);
+echo 'If found, doesn\'t return multiarray: ';
+var_dump ($e != $multiarray);
+echo 'But can be completed:                ';
+$e[$rnd_i] = $multiarray[$rnd_i];
+var_dump ($e == $multiarray);
