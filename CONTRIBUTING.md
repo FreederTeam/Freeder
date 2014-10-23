@@ -8,6 +8,8 @@ organised. It is recommanded to everybody to:
  * Complete and modify it such as it is always up to date and coherent with the
    actual code.
 
+**Important note** : Please consider pull-requesting **only** toward the `dev` branch so that master can always be a clean and stable version of Freeder.
+
 
 Keywords
 --------
