@@ -11,8 +11,7 @@ RUN chmod 775 /tmp/init.sh
 RUN rm /tmp/init.sh
 
 # Get Freeder
-RUN yum install -y git
-RUN git clone https://github.com/FreederTeam/Freeder /var/www/Freeder
+ADD * /var/www/Freeder/
 
 # apache user has UID 1000 and GID 100
 # You may have to change these values to match with your current "host" user
