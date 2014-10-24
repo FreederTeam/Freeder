@@ -4,11 +4,11 @@ old_dir=$PWD
 dir="$PWD/$(dirname $0)"
 cd $dir
 
-mkdir -p out diff test expect tpl
+mkdir -p out diff test expect tpl tmp
 
 rm -f diff/*
 rm -f out/*
-rm -rf tmp
+rm -f tmp/*
 
 status=0
 
@@ -19,7 +19,7 @@ do
     file=${file%.*}
     file=${file##*/}
     echo -n "Test for $file… "
-    $ext test/$file.$ext > out/$file.out
+    $ext test/$file.$ext > out/$file.out 2> /dev/null
     if diff out/$file.out expect/$file.expect > diff/$file.diff; then
 	echo 'Pass.'
     else
