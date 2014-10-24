@@ -17,6 +17,7 @@ require_once(INC_DIR . 'functions.php');
  * @return an array {'favicons', 'errors'}. `errors` is an array of URLs for which there could not be any fetched favicon. `favicons` is an array with URLs as keys and an array of favicon urls and sizes ({favicon_url, size}, associative array).
  */
 function get_favicon($urls) {
+	// TODO : Unit test
 	$favicons = array();
 	$errors = array();
 

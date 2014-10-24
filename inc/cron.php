@@ -1,19 +1,17 @@
 <?php
-/*	Copyright (c) 2014 Freeder
- *	Released under a MIT License.
- *	See the file LICENSE at the root of this repo for copying permission.
+/** Freeder
+ *  -------
+ *  @file
+ *  @copyright Copyright (c) 2014 Freeder, MIT License, See the LICENSE file for copying permissions.
+ *  @brief Provides functions to handle crontab and synchronization options.
  */
-
-/**
- * This includes file aims at providing functions to handle crontab and synchronization options.
- */
-
 
 
 /**
  * Function to add the crontask in the crontab.
  */
-function register_crontask($crontask) {
+function register_crontask($crontask, $comment="FREEDER AUTOMATED CRONTASK") {
+	// TODO : Unit test
 	$crontab = shell_exec('crontab -l');
 	$cron_file = 'tmp/crontab.txt';
 	if (!empty($crontab)) {
@@ -25,13 +23,13 @@ function register_crontask($crontask) {
 
 	$already_existed = false;
 	foreach ($crontab as $key=>$line) {
-		if (strstr($line, $comment) !== FALSE) {
+		if (strstr($line, "# ".$comment) !== FALSE) {
 			$already_existed = true;
 			$crontab[$key] = $crontask;
 		}
 	}
 	if (!$already_existed) {
-		$crontab[] = $crontask;
+		$crontab[] = $crontask." # ".$comment;
 	}
 	$crontab = trim(implode(PHP_EOL, $crontab)).PHP_EOL;
 
@@ -45,6 +43,7 @@ function register_crontask($crontask) {
  * Function to remove the crontask from the crontab.
  */
 function unregister_crontask($match) {
+	// TODO : Unit test
 	$crontab = shell_exec('crontab -l');
 	$cron_file = 'tmp/crontab.txt';
 

@@ -13,11 +13,14 @@ require_once(INC_DIR . 'views.php');
 
 /**
  * Clean up 'authors' attribute of entry.
- * @param authors list to clean.
+ * @param $authors is an array of author classes (stdClass) to clean.
  */
 function clean_authors($authors) {
+	// TODO : Unit test
 	if ($authors == NULL) return array();
+
 	$new_authors = array();
+
 	foreach($authors as $author) {
 		$new_authors[] = (array) $author;
 		if (empty($author->name) && !empty($author->email)) {
@@ -117,7 +120,6 @@ function get_entries_count($view='', $page=1) {
 
 /**
  * Delete the old entries as specified in the config
- * @todo Optimize ?
  */
 function delete_old_entries() {
 	global $dbh, $config;

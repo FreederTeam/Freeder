@@ -1,8 +1,11 @@
 <?php
-/*	Copyright (c) 2014 Freeder
- *	Released under a MIT License.
- *	See the file LICENSE at the root of this repo for copying permission.
+/** Freeder
+ *  -------
+ *  @file
+ *  @copyright Copyright (c) 2014 Freeder, MIT License, See the LICENSE file for copying permissions.
+ *  @brief Functions to counter XSS problems.
  */
+
 
 /**
  * This include file aims at providing xss sanitizing functions.
@@ -26,8 +29,8 @@
  * Sanitize content to prevent XSS
  * @param $data, data to sanitize
  */
-function xss_clean($data)
-{
+function xss_clean($data) {
+	// TODO : Unit test, cf docstring above
 	if (is_object($data)) {
 		if (get_class($data) === 'stdClass') {
 			$output = (object)xss_clean((array) $data);
