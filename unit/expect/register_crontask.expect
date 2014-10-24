@@ -1,0 +1,20 @@
+bool(true)
+-
++@reboot  echo Luke, I am your father # FREEDER UNIT TEST
+bool(true)
+-@reboot  echo Luke, I am your father # FREEDER UNIT TEST
++0 */2 * * *  echo Am I dead ? Am I alive ? # FREEDER UNIT TEST
+bool(true)
+ 0 */2 * * *  echo Am I dead ? Am I alive ? # FREEDER UNIT TEST
++
++0 */2 * * *  echo Am I dead ? Am I alive ? # FREEDER UNIT TEST, AGAIN
+bool(false)
+bool(true)
+bool(true)
+ 0 */2 * * *  echo Am I dead ? Am I alive ? # FREEDER UNIT TEST
+-
+-0 */2 * * *  echo Am I dead ? Am I alive ? # FREEDER UNIT TEST, AGAIN
+bool(true)
+bool(true)
+-0 */2 * * *  echo Am I dead ? Am I alive ? # FREEDER UNIT TEST
++
