@@ -10,32 +10,32 @@
 /**
  * Function to add the crontask in the crontab.
  */
-function register_crontask($crontask, $comment="FREEDER AUTOMATED CRONTASK") {
-	// TODO : Unit test
-	$crontab = shell_exec('crontab -l');
+function register_crontask ($crontask, $comment='FREEDER AUTOMATED CRONTASK') {
+	$crontab = shell_exec ('crontab -l');
 	$cron_file = 'tmp/crontab.txt';
-	if (!empty($crontab)) {
-		$crontab = explode($crontab, PHP_EOL);
+	if (!empty ($crontab)) {
+		$crontab = explode (PHP_EOL, $crontab);
 	}
 	else {
-		$crontab = array();
+		$crontab = array ();
 	}
-
 	$already_existed = false;
 	foreach ($crontab as $key=>$line) {
-		if (preg_match('#\s'.$comment.'\s$', $line) === 1) {
+		if (preg_match ('#\#\s*'.$comment.'\s*$#', $line) === 1) {
 			$already_existed = true;
-			$crontab[$key] = $crontask;
+			$crontab[$key] = $crontask . ' # ' . $comment;
 		}
 	}
 	if (!$already_existed) {
-		$crontab[] = $crontask." # ".$comment;
+		$crontab[] = $crontask . ' # ' . $comment;
 	}
-	$crontab = trim(implode(PHP_EOL, $crontab)).PHP_EOL;
+	$crontab = trim (implode (PHP_EOL, $crontab)) . PHP_EOL;
 
-	file_put_contents($cron_file, $crontab);
-	shell_exec("crontab $cron_file");
-	unlink($cron_file);
+	file_put_contents ($cron_file, $crontab);
+	shell_exec ("crontab $cron_file");
+	unlink ($cron_file);
+	
+	return true;
 }
 
 
@@ -44,24 +44,25 @@ function register_crontask($crontask, $comment="FREEDER AUTOMATED CRONTASK") {
  * Function to remove the crontask from the crontab.
  */
 function unregister_crontask($match) {
-	// TODO : Unit test
 	$crontab = shell_exec('crontab -l');
 	$cron_file = 'tmp/crontab.txt';
 
-	if (!empty($crontab)) {
-		$crontab = explode($crontab, PHP_EOL);
+	if (!empty ($crontab)) {
+		$crontab = explode (PHP_EOL, $crontab);
 	}
 	else {
 		$crontab = array();
 	}
 	foreach ($crontab as $key=>$line) {
-		if (strstr($line, $match) !== FALSE) {
-			unset($crontab[$key]);
+		if (strstr ($line, $match) !== false) {
+			unset ($crontab[$key]);
 		}
 	}
-	$crontab = trim(implode(PHP_EOL, $crontab)).PHP_EOL;
+	$crontab = trim (implode (PHP_EOL, $crontab)) . PHP_EOL;
 
-	file_put_contents($cron_file, $crontab);
-	shell_exec("crontab $cron_file");
-	unlink($cron_file);
+	file_put_contents ($cron_file, $crontab);
+	shell_exec ("crontab $cron_file");
+	unlink ($cron_file);
+	
+	return true;
 }
