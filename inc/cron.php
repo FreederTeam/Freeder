@@ -23,7 +23,7 @@ function register_crontask($crontask, $comment="FREEDER AUTOMATED CRONTASK") {
 
 	$already_existed = false;
 	foreach ($crontab as $key=>$line) {
-		if (strstr($line, "# ".$comment) !== FALSE) {
+		if (preg_match('#\s'.$comment.'\s$', $line) === 1) {
 			$already_existed = true;
 			$crontab[$key] = $crontask;
 		}
@@ -37,6 +37,7 @@ function register_crontask($crontask, $comment="FREEDER AUTOMATED CRONTASK") {
 	shell_exec("crontab $cron_file");
 	unlink($cron_file);
 }
+
 
 
 /**
