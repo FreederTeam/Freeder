@@ -1,11 +1,9 @@
 <?php
-/*	Copyright (c) 2014 Freeder
- *	Released under a MIT License.
- *	See the file LICENSE at the root of this repo for copying permission.
- */
-
-/**
- * This include file aims at providing anti-CSRF functions.
+/** Freeder
+ *  -------
+ *  @file
+ *  @copyright Copyright (c) 2014 Freeder, MIT License, See the LICENSE file for copying permissions.
+ *  @brief Provides anti-CSRF functions.
  */
 
 
@@ -14,6 +12,7 @@
  * The token is stored in a session.
  *
  * @param (optionnal) $name is a unique name for the token
+ * @return the generated token
  */
 function generate_token($name = '') {
 	if(session_id() == '')
@@ -28,10 +27,12 @@ function generate_token($name = '') {
 }
 
 /**
- * Checks that the anti-CSRF token is correct
+ * Checks that the anti-CSRF token (provided in $_GET or $_POST) is correct
  *
  * @param $time is the time validity for this token
  * @param (optionnal) $name is the token name
+ *
+ * @return true or false whether the token was correct or not.
  */
 function check_token($time, $name = '') {
 	if(session_id() == '')

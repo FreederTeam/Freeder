@@ -1,11 +1,9 @@
 <?php
-/*	Copyright (c) 2014 Freeder
- *	Released under a MIT License.
- *	See the file LICENSE at the root of this repo for copying permission.
- */
-
-/**
- * This include file aims at providing functions used for entries sharing.
+/** Freeder
+ *  -------
+ *  @file
+ *  @copyright Copyright (c) 2014 Freeder, MIT License, See the LICENSE file for copying permissions.
+ *  @brief Functions related to entry sharing.
  */
 
 

@@ -1,5 +1,13 @@
 <?php
+/** Freeder
+ *  -------
+ *  @file
+ *  @copyright Copyright (c) 2014 Freeder, MIT License, See the LICENSE file for copying permissions.
+ *  @brief Functions to Freeder update.
+ */
+
 function update($old_version, $current_version) {
+	// TODO : Unit test -- never tested
 	if ($old_version == $current_version) {
 		return;
 	}

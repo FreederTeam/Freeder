@@ -48,6 +48,10 @@ class Config {
 		$this->$option = $value;
 	}
 
+	public function remove($option) {
+		unset($this->$option);
+	}
+
 	public function load() {  /** Load the config from the database into this Config object */
 		global $dbh;
 		$config = array();
