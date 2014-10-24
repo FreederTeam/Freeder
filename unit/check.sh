@@ -4,7 +4,7 @@ old_dir=$PWD
 dir="$PWD/$(dirname $0)"
 cd $dir
 
-mkdir -p out diff php expect tpl
+mkdir -p out diff test expect tpl
 
 rm -f diff/*
 rm -f out/*
@@ -13,12 +13,13 @@ rm -rf tmp
 status=0
 
 echo 'Launching tests.'
-for file in php/*
+for file in test/*
 do
+    ext=${file##*.}
     file=${file%.*}
     file=${file##*/}
     echo -n "Test for $file… "
-    php php/$file.php > out/$file.out
+    $ext test/$file.$ext > out/$file.out
     if diff out/$file.out expect/$file.expect > diff/$file.diff; then
 	echo 'Pass.'
     else
@@ -28,7 +29,7 @@ do
 done
 echo -n 'Tests finished. '
 
-total=$(ls php | wc -l)
+total=$(ls -1 test | wc -l)
 echo "[pass=$(($total-$status)), fail=$status, total=$total]"
 
 cd $old_dir
