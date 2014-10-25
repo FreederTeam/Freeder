@@ -7,7 +7,6 @@
  */
 
 function update($old_version, $current_version) {
-	// TODO : Unit test -- never tested
 	if ($old_version == $current_version) {
 		return;
 	}

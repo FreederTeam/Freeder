@@ -30,7 +30,6 @@
  * @param $data, data to sanitize
  */
 function xss_clean($data) {
-	// TODO : Unit test, cf docstring above
 	if (is_object($data)) {
 		if (get_class($data) === 'stdClass') {
 			$output = (object)xss_clean((array) $data);

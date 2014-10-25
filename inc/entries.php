@@ -16,7 +16,6 @@ require_once(INC_DIR . 'views.php');
  * @param $authors is an array of author classes (stdClass) to clean.
  */
 function clean_authors($authors) {
-	// TODO : Unit test
 	if ($authors == NULL) return array();
 
 	$new_authors = array();
@@ -155,5 +154,4 @@ function is_tag($tag, $entry) {
 		return false;
 	}
 }
-
 
