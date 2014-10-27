@@ -123,13 +123,16 @@ See `tpl/README.md` for more information about template conventions.
 
 This is the unit testing directory. Its content is not used for the Freeder application itself but it contains some scripts that automate unit testing.
 
-Always run `unit/check.sh` before pulling a request. It should output nothing.
+Always run `unit/check.sh` before pulling a request. It'll write a little trace. All tests must **pass**.
 
 You are also welcome to add unit tests. Usually, it is composed of:
 
- 1. An input file.
- 2. A processing script, using the unit you want to test.
- 3. An expected output file, to be compared by `check.sh`
+ 1. An input file `test/my_test.language`
+ 2. An expected output file `expect/my_test.expect`
+
+`check.sh` will write the files `out/my_test.out` and `diff/my_test.diff`.
+
+`check.sh` returns the number of tests that failed.
 
 
 Installation
