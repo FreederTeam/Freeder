@@ -3,25 +3,58 @@
  *  -------
  *  @file
  *  @copyright Copyright (c) 2014 Freeder, MIT License, See the LICENSE file for copying permissions.
- *  @brief Provides functions to handle crontab and synchronization options.
+ *  @brief Small crontab management library
  */
 
 
 /**
- * Function to add the crontask in the crontab.
+ * Write the crontab
+ * @param $crontab, array of lines in crontab
+ * @return true on success, false otherwise
  */
-function register_crontask ($crontask, $comment='FREEDER AUTOMATED CRONTASK') {
-	$crontab = shell_exec ('crontab -l');
+function write_crontab($crontab) {
+	$crontab = trim(implode(PHP_EOL, $crontab)) . PHP_EOL;
 	$cron_file = 'tmp/crontab.txt';
+
+	if (file_put_contents($cron_file, $crontab) === false) {
+		return false;
+	}
+	if (shell_exec("crontab $cron_file 2>&1 > /dev/null; echo $?") != 0) {
+		unlink($cron_file);
+		return false;
+	}
+	unlink($cron_file);
+
+	return true;
+}
+
+/**
+ * Get the current crontab
+ * @return Array of lines in crontab
+ */
+function get_crontab() {
+	$crontab = shell_exec('crontab -l');
+
 	if (!empty ($crontab)) {
-		$crontab = explode (PHP_EOL, $crontab);
+		$crontab = explode(PHP_EOL, $crontab);
 	}
 	else {
 		$crontab = array ();
 	}
+
+	return $crontab;
+}
+
+
+/**
+ * Add the crontask in the crontab.
+ */
+function register_crontask ($crontask, $comment='FREEDER AUTOMATED CRONTASK') {
+	$crontab = get_crontab()
 	$already_existed = false;
+
 	foreach ($crontab as $key=>$line) {
-		if (preg_match ('#\#\s*'.$comment.'\s*$#', $line) === 1) {
+		if (preg_match('#\#\s*'.$comment.'\s*$#', $line) === 1) {
 			$already_existed = true;
 			$crontab[$key] = $crontask . ' # ' . $comment;
 		}
@@ -29,40 +62,23 @@ function register_crontask ($crontask, $comment='FREEDER AUTOMATED CRONTASK') {
 	if (!$already_existed) {
 		$crontab[] = $crontask . ' # ' . $comment;
 	}
-	$crontab = trim (implode (PHP_EOL, $crontab)) . PHP_EOL;
 
-	file_put_contents ($cron_file, $crontab);
-	shell_exec ("crontab $cron_file");
-	unlink ($cron_file);
-	
-	return true;
+	return write_crontab($crontab);
 }
 
 
 
 /**
- * Function to remove the crontask from the crontab.
+ * Remove the crontask from the crontab.
  */
 function unregister_crontask($match) {
-	$crontab = shell_exec('crontab -l');
-	$cron_file = 'tmp/crontab.txt';
+	$crontab = get_crontab();
 
-	if (!empty ($crontab)) {
-		$crontab = explode (PHP_EOL, $crontab);
-	}
-	else {
-		$crontab = array();
-	}
 	foreach ($crontab as $key=>$line) {
-		if (strstr ($line, $match) !== false) {
-			unset ($crontab[$key]);
+		if (strstr($line, $match) !== false) {
+			unset($crontab[$key]);
 		}
 	}
-	$crontab = trim (implode (PHP_EOL, $crontab)) . PHP_EOL;
 
-	file_put_contents ($cron_file, $crontab);
-	shell_exec ("crontab $cron_file");
-	unlink ($cron_file);
-	
-	return true;
+	return write_crontab($crontab);
 }
