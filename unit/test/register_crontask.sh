@@ -11,7 +11,7 @@
 # inc/cron.php - unregister_crontask
 
 # Make sure the crontab exists
-touch /tmp/void
+echo > /tmp/void
 crontab -l > /dev/null 2> /dev/null || crontab /tmp/void
 rm -f /tmp/void
 

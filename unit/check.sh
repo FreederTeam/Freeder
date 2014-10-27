@@ -24,6 +24,7 @@ do
 	echo 'Pass.'
     else
 	echo 'Error.'
+	cat diff/$file.diff
 	status=$(($status+1))
     fi
 done

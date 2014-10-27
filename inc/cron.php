@@ -50,6 +50,9 @@ function get_crontab() {
  * Add the crontask in the crontab.
  */
 function register_crontask ($crontask, $comment='FREEDER AUTOMATED CRONTASK') {
+	if (preg_match(build_regex_validate_crontask(), $crontask) != 1) {
+		return false;
+	}
 	$crontab = get_crontab();
 	$already_existed = false;
 
@@ -67,7 +70,6 @@ function register_crontask ($crontask, $comment='FREEDER AUTOMATED CRONTASK') {
 }
 
 
-
 /**
  * Remove the crontask from the crontab.
  */
@@ -81,4 +83,41 @@ function unregister_crontask($match) {
 	}
 
 	return write_crontab($crontab);
+}
+
+
+/**
+ * Regex to validate crontask line
+ * @author Jordi Salvat i Alabart - with thanks to <a href="www.salir.com">Salir.com</a>.
+ */
+
+function build_regex_validate_crontask() {
+	$numbers= array(
+		'min'=>'[0-5]?\d',
+		'hour'=>'[01]?\d|2[0-3]',
+		'day'=>'0?[1-9]|[12]\d|3[01]',
+		'month'=>'[1-9]|1[012]',
+		'dow'=>'[0-7]'
+	);
+
+	foreach($numbers as $field=>$number) {
+		$range= "($number)(-($number)(\/\d+)?)?";
+		$field_re[$field]= "\*(\/\d+)?|$range(,$range)*";
+	}
+
+	$field_re['month'].='|jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec';
+	$field_re['dow'].='|mon|tue|wed|thu|fri|sat|sun';
+
+	$fields_re= '('.join(')\s+(', $field_re).')';
+
+	$replacements= '@reboot|@yearly|@annually|@monthly|@weekly|@daily|@midnight|@hourly';
+
+
+	return '#^\s*('.
+		'$'.
+		'|\#'.
+		'|\w+\s*='.
+		"|$fields_re\s+\S".
+		"|($replacements)\s+\S".
+		')#';
 }
