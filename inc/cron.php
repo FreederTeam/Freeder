@@ -50,7 +50,7 @@ function get_crontab() {
  * Add the crontask in the crontab.
  */
 function register_crontask ($crontask, $comment='FREEDER AUTOMATED CRONTASK') {
-	$crontab = get_crontab()
+	$crontab = get_crontab();
 	$already_existed = false;
 
 	foreach ($crontab as $key=>$line) {
