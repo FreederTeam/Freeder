@@ -112,7 +112,7 @@ function refresh_feeds($feeds, $check_favicons=false, $verbose=true) {
 		}
 
 		// Define feed params
-		$feed_title = isset($parsed['infos']['title']) ? $parsed['infos']['title'] : '';
+		$feed_title = isset($parsed['infos']['title']) ? trim($parsed['infos']['title']) : '';
 		$feed_links = isset($parsed['infos']['links']) ? json_encode(multiarray_filter('rel', 'self', $parsed['infos']['links'])) : '';
 		$feed_description = isset($parsed['infos']['description']) ? $parsed['infos']['description'] : '';
 		$feed_ttl = isset($parsed['infos']['ttl']) ? $parsed['infos']['ttl'] : 0;
