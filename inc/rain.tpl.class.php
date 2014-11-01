@@ -159,7 +159,7 @@ class RainTPL{
 	const RAINTPL_IGNORE_SANITIZE = 0;
 	const RAINTPL_HTML_SANITIZE = 1;
 	const RAINTPL_XSS_SANITIZE = 2;
-	const RAINTPL_FULL_XSS_SANITIZE = 2;
+	const RAINTPL_FULL_XSS_SANITIZE = 3;
 	function assign( $variable, $value = null, $sanitize=self::RAINTPL_IGNORE_SANITIZE){
 		switch($sanitize) {
 			case self::RAINTPL_HTML_SANITIZE:
@@ -173,8 +173,8 @@ class RainTPL{
 				break;
 
 			case self::RAINTPL_FULL_XSS_SANITIZE:
-				$variable = strip_tags($variable);
-				$value = strip_tags($value);
+				$variable = full_xss_clean($variable);
+				$value = full_xss_clean($value);
 				break;
 
 			case self::RAINTPL_IGNORE_SANITIZE:

@@ -107,3 +107,29 @@ function sanitize($data) {
 	}
 	return $output;
 }
+
+
+/**
+ * Remove any tag in $data
+ * @param $data, data to sanitize
+ */
+function full_xss_clean($data) {
+	if (is_object($data)) {
+		if (get_class($data) === 'stdClass') {
+			$output = (object)sanitize((array) $data);
+		}
+		else {
+			$output = $data->sanitize();
+		}
+	}
+	elseif (is_array($data)) {
+		$output = array();
+		foreach($data as $key=>$datum) {
+			$output[$key] = sanitize($datum);
+		}
+	}
+	else {
+		$output = strip_tags($data);
+	}
+	return $output;
+}
