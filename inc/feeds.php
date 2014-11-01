@@ -154,7 +154,9 @@ function refresh_feeds($feeds, $check_favicons=false, $verbose=true) {
 					$comments = '';
 				}
 			}
-			$guid = isset($event['guid']) ? $event['guid'] : '';
+			// We *do* need a guid in Freeder, but some feeds does not provide it…
+			// As a workaround, we use the md5 sum of the title.
+			$guid = isset($event['guid']) ? $event['guid'] : md5($title);
 			$pubDate = isset($event['pubDate']) ? $event['pubDate'] : '';
 			$last_update = isset($event['updated']) ? $event['updated'] : '';
 

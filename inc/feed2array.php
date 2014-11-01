@@ -69,8 +69,12 @@ function feed2array($feed, $load=false, $debug=false) {
 					$flux['infos']['copyright'] = (string)$feed_obj->channel->copyright;
 				}
 				if($feed_obj->channel->pubDate) {
-					$tmp_date = new DateTime((string)$feed_obj->channel->pubDate);
-					$flux['infos']['pubDate'] = $tmp_date->format('U');
+					try {
+						$tmp_date = new DateTime((string)$feed_obj->channel->pubDate);
+						$flux['infos']['pubDate'] = $tmp_date->format('U');
+					}
+					catch (Exception $e) {
+					}
 				}
 				if($feed_obj->channel->lastBuildDate) {
 					$flux['infos']['lastBuildDate'] = (string)$feed_obj->channel->lastBuildDaye;
@@ -120,8 +124,12 @@ function feed2array($feed, $load=false, $debug=false) {
 
 			if ($type == 'RDF') {  // RDF feed
 				if($feed_obj->channel->children('dc', true)->date) {
-					$tmp_date = new DateTime((string)$feed_obj->channel->children('dc', true)->date);
-					$flux['infos']['pubDate'] = $tmp_date->format('U');
+					try {
+						$tmp_date = new DateTime((string)$feed_obj->channel->children('dc', true)->date);
+						$flux['infos']['pubDate'] = $tmp_date->format('U');
+					}
+					catch (Exception $e) {
+					}
 				}
 			}
 
@@ -133,8 +141,12 @@ function feed2array($feed, $load=false, $debug=false) {
 					$flux['infos']['title'] = (string)$feed_obj->title;
 				}
 				if($feed_obj->updated) {
-					$tmp_date = new DateTime((string)$feed_obj->updated);
-					$flux['infos']['updated'] = $tmp_date->format('U');
+					try {
+						$tmp_date = new DateTime((string)$feed_obj->updated);
+						$flux['infos']['updated'] = $tmp_date->format('U');
+					}
+					catch (Exception $e) {
+					}
 				}
 				if($feed_obj->author) {
 					foreach($feed_obj->author as $author) {
@@ -227,8 +239,12 @@ function feed2array($feed, $load=false, $debug=false) {
 				}
 				if ($type == 'RDF') {
 					if($item->children('dc', true)->date) {
-						$tmp_date = new DateTime((string)$item->children('dc', true)->date);
-						$flux['items'][$c]['pubDate'] = $tmp_date->format('U');
+						try {
+							$tmp_date = new DateTime((string)$item->children('dc', true)->date);
+							$flux['items'][$c]['pubDate'] = $tmp_date->format('U');
+						}
+						catch (Exception $e) {
+						}
 					}
 					if($item->attributes('rdf', true)->about) {
 						$flux['items'][$c]['guid'] = (string) $item->attributes('rdf', true)->about;
@@ -270,8 +286,12 @@ function feed2array($feed, $load=false, $debug=false) {
 						}
 					}
 					if($item->pubDate) {
-						$tmp_date = new DateTime((string)$item->pubDate);
-						$flux['items'][$c]['pubDate'] = $tmp_date->format('U');
+						try {
+							$tmp_date = new DateTime((string)$item->pubDate);
+							$flux['items'][$c]['pubDate'] = $tmp_date->format('U');
+						}
+						catch (Exception $e) {
+						}
 					}
 				}
 				if($type == "ATOM") {
@@ -282,8 +302,12 @@ function feed2array($feed, $load=false, $debug=false) {
 						$flux['items'][$c]['title'] = (string)$item->title;
 					}
 					if($item->updated) {
-						$tmp_date = new DateTime((string)$item->updated);
-						$flux['items'][$c]['updated'] = $tmp_date->format('U');
+						try {
+							$tmp_date = new DateTime((string)$item->updated);
+							$flux['items'][$c]['updated'] = $tmp_date->format('U');
+						}
+						catch (Exception $e) {
+						}
 					}
 					if($item->author) {
 						foreach($item->author as $author) {
@@ -364,8 +388,12 @@ function feed2array($feed, $load=false, $debug=false) {
 						}
 					}
 					if($item->published) {
-						$tmp_date = new DateTime((string)$item->published);
-						$flux['items'][$c]['pubDate'] = $tmp_date->format('U');
+						try {
+							$tmp_date = new DateTime((string)$item->published);
+							$flux['items'][$c]['pubDate'] = $tmp_date->format('U');
+						}
+						catch (Exception $e) {
+						}
 					}
 					if($item->rights) {
 						$flux['items'][$c]['copyright'] = (string)$item->rights;
