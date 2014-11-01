@@ -62,12 +62,12 @@
 				<div class="Article-share Share">
 					<ul class="Share-services Services">
 					{loop="get_sharing_options()"}
-						<li><a class="Share-link Button green" href="{$value['url']}{function="get_entry_link($value1)"}#">{$value['type']}</a></li>
+						<li><a class="Share-link Button green" href="{$value['url']}{function="get_entry_link($value1, $feeds[$value1['feed_id']]['url'])"}#">{$value['type']}</a></li>
 					{/loop}
 					</ul>
 				</div>
 
-				<h1><a href="{function="get_entry_link($value)"}#" {if="$config->open_items_new_tab != 0"}target="_blank"{/if}>{$value['title']}</a></h1>
+				<h1><a href="{function="get_entry_link($value, $feeds[$value['feed_id']]['url'])"}#" {if="$config->open_items_new_tab != 0"}target="_blank"{/if}>{$value['title']}</a></h1>
 				<div class="FeedInfo">
 					In <a href="feed/{$entry_feed['id']}">{$entry_feed['title']}</a>{include="_author"}<br/>
 					<time datetime="{function="date(DATE_ATOM,$value['pubDate'])"}">{function="format_date($value['pubDate'])"}</time>

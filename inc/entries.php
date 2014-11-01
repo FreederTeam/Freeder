@@ -131,10 +131,19 @@ function delete_old_entries() {
 /**
  * Returns the link associated with the entry
  */
-function get_entry_link($entry) {
+function get_entry_link($entry, $feed_url) {
 	foreach ($entry['links'] as $link) {
 		if ($link->rel == 'alternate') {
-			return $link->href;
+			if (startswith($link->href, 'http://') || startswith($link->href, 'https://')) {
+				return $link->href;
+			}
+			elseif (startswith($link->href, '/')) {
+				$parsed_feed_url = parse_url($feed_url);
+				return $parsed_feed_url['scheme'].'://'.$parsed_feed_url['host'].$link->href;
+			}
+			else {
+				return substr($feed_url, 0, strrpos($feed_url, '/')).'/'.$link->href;
+			}
 		}
 	}
 	return '#';

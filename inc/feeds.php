@@ -427,9 +427,14 @@ function edit_feed($old_url, $new_url, $new_title='') {
 function get_feeds ($sort_by='') {
 	global $dbh;
 	$query = $dbh->query('SELECT id, title, url, links, description, ttl, image, post, import_tags_from_feed FROM feeds');
-	$feeds = $query->fetchAll(PDO::FETCH_ASSOC);
+	$feeds_db = $query->fetchAll(PDO::FETCH_ASSOC);
+	$feeds = array();
+	foreach ($feeds_db as $feed) {
+		$feeds[$feed['id']] = $feed;
+	}
+
 	if ($sort_by != '')
-		usort ($feeds, function ($f1, $f2) use ($sort_by) { return strcasecmp ($f1[$sort_by], $f2[$sort_by]); });
+		uasort ($feeds, function ($f1, $f2) use ($sort_by) { return strcasecmp ($f1[$sort_by], $f2[$sort_by]); });
 	return $feeds;
 }
 
