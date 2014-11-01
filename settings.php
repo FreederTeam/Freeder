@@ -273,11 +273,11 @@ if (!empty($_GET['delete_feed']) && !empty($_GET['token']) && check_token(600, '
 
 // Handle feed refresh
 if (!empty($_GET['refresh_feed']) && !empty($_GET['token']) && check_token(600, 'refresh_feed')) {
-	$query = $dbh->prepare('SELECT post, import_tags_from_feed, url FROM feeds WHERE id=:id');
+	$query = $dbh->prepare('SELECT id, post, import_tags_from_feed, url FROM feeds WHERE id=:id');
 	$query->execute(array('id'=>intval($_GET['refresh_feed'])));
 	$feed = $query->fetch();
-	if (!empty($url['url'])) {
-		refresh_feeds(array('id'=>$feed['id'], 'url'=>$feed['url'], 'post'=>$feed['post'], 'import_tags_from_feed'=>$feed['import_tags_from_feed']));
+	if (!empty($feed['url'])) {
+		refresh_feeds(array($feed['id'] => array('id'=>$feed['id'], 'url'=>$feed['url'], 'post'=>$feed['post'], 'import_tags_from_feed'=>$feed['import_tags_from_feed'])));
 	}
 	header('location: settings.php');
 	exit();
