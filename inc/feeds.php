@@ -157,7 +157,8 @@ function refresh_feeds($feeds, $check_favicons=false, $verbose=true) {
 			// We *do* need a guid in Freeder, but some feeds does not provide it…
 			// As a workaround, we use the md5 sum of the title.
 			$guid = isset($event['guid']) ? $event['guid'] : md5($title);
-			$pubDate = isset($event['pubDate']) ? $event['pubDate'] : '';
+			// If no pubDate available, assumes it has just been published
+			$pubDate = isset($event['pubDate']) ? $event['pubDate'] : time();
 			$last_update = isset($event['updated']) ? $event['updated'] : '';
 
 			$query_entries->execute();
