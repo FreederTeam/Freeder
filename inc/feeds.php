@@ -34,7 +34,7 @@ function refresh_feeds($feeds, $check_favicons=false, $verbose=true) {
 			$errors[] = array('url'=>$url, 'msg'=>'Feed page not found (http status: ' . $status_code . ')');
 			unset($download['results'][$url]);
 		}
-		elseif(!startswith($download['content_types'][$url], 'application/xml') && !startswith($download['content_types'][$url], 'text/xml') && !startswith($download['content_types'][$url], 'application/rss+xml') && !startswith($download['content_types'][$url], 'application/atom+xml')) {
+		elseif(!startswith($download['content_types'][$url], 'application/xml') && !startswith($download['content_types'][$url], 'text/xml') && !startswith($download['content_types'][$url], 'application/rss+xml') && !startswith($download['content_types'][$url], 'application/atom+xml') && !startswith($download['content_types'][$url], 'application/x-rss')) {
 			$errors[] = array('url'=>$url, 'msg'=>'Unable to find a feed at the address '.$url);
 			unset($download['results'][$url]);
 		}
