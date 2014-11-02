@@ -331,7 +331,7 @@ function check_curl_availability() {
 	if (count ($curl_disabled_functions) > 0)
 		return $curl_disabled_functions;
 	return null;
-}   
+}
 
 
 /**
@@ -369,3 +369,41 @@ function format_date($timestamp) {
 	}
 }
 
+
+/**
+ * Function to check the up to date status of Freeder, based on Git.
+ */
+function check_updates() {
+	$commit = array();
+	exec('git rev-parse HEAD', $commit);
+	$branch = array();
+	exec('git rev-parse --abbrev-ref HEAD', $branch);
+
+	if (!isset($branch[0]) || !isset($commit[0])) {
+		$error = array();
+		$error['type'] = 'warning';
+		$error['title'] = 'Unable to find the latest commit';
+		$error['content'] = 'Unable to find the latest commit, the update notification mechanism may not work as expected. Maybe you did not use Git to install Freeder ?';
+		return($error);
+	}
+
+	$options  = array('http' => array('user_agent'=> $_SERVER['HTTP_USER_AGENT']));
+	$context  = stream_context_create($options);
+	$last_github = json_decode(file_get_contents('https://api.github.com/repos/FreederTeam/Freeder/branches', false, $context), true);
+	$branch_github = multiarray_search('name', $branch[0], $last_github, false);
+
+	if ($branch_github === false) {
+		$error = array();
+		$error['type'] = 'warning';
+		$error['title'] = 'Unable to find the latest commit on Github.';
+		$error['content'] = 'Unable to find the latest commit on Github, the update notification mechanism may not work as expected.';
+		return($error);
+	}
+
+	if ($commit[0] == $branch_github['commit']['sha']) {
+		return false;
+	}
+	else {
+		return true;
+	}
+}
