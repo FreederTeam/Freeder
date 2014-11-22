@@ -1,7 +1,6 @@
 {* Settings tab about sharing *}
 
 <section>
-    <h2>Sharing</h2>
     <form method="post" action="#">
         <div class="form-item">
             <label for="share_input_facebook">Facebook: </label>
@@ -22,7 +21,7 @@
             <label for="share_input_wallabag">Wallabag: </label>
             <input type="text" name="share_input_wallabag" id="share_input_wallabag" placeholder="URL of your Wallabag" {if="!empty($config->wallabag_share)"}value="{$config->wallabag_share}"{/if}/>
         </div>
-        
+
         <div class="form-item">
             <label for="share_input_diaspora">Diaspora: </label>
             <input type="text" name="share_input_diaspora" id="share_input_diaspora" placeholder="URL of your pod" {if="!empty($config->diaspora_share)"}value="{$config->diaspora_share}"{/if}/>

@@ -4,17 +4,15 @@
     <div class="article--wrapper">
         <h1 class="article--title">Settings</h1>
         <h2 class="article--info"></h2>
-        <div class="article--content">
-            <ul>
-                <li><a href="#tab-feeds#">Feeds</a></li>
-                <li><a href="#tab-entries#">Entries</a></li>
-                <li><a href="#tab-opml#">OPML Import/Export</a></li>
-                <li><a href="#tab-sync#">Sync</a></li>
-                <li><a href="#tab-template#">Template</a></li>
-                <li><a href="#tab-users#">Users</a></li>
-                <li><a href="#tab-sharing#">Sharing</a></li>
-                <li><a href="#tab-misc#">Misc</a></li>
-            </ul>
+        <div class="article--content link-list">
+            <a class="link-list--item" href="#tab-feeds#">Feeds</a>
+            <a class="link-list--item" href="#tab-entries#">Entries</a>
+            <a class="link-list--item" href="#tab-import#">Import/Export</a>
+            <a class="link-list--item" href="#tab-sync#">Sync</a>
+            <a class="link-list--item" href="#tab-template#">Template</a>
+            <a class="link-list--item" href="#tab-users#">Users</a>
+            <a class="link-list--item" href="#tab-sharing#">Sharing</a>
+            <a class="link-list--item" href="#tab-misc#">Misc</a>
         </div>
     </div>
 </article>
@@ -49,14 +47,14 @@
 
 {*---------------------------------------------------------------------------*}
 
-<article class="article" id="tab-opml">
+<article class="article" id="tab-import">
     <div class="article--wrapper">
         <nav class="article--nav horizontal-nav">
             <a href="#top#" class="horizontal-nav--item"><img class="icon" alt="Top" src="img/top.svg"/></a>
         </nav>
-        <h2 class="article--info">OPML Import/Export</h2>
+        <h2 class="article--info">Import/Export</h2>
         <div class="article--content">
-            {include="_settings_opml"}
+            {include="_settings_import"}
         </div>
     </div>
 </article>
