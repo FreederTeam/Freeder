@@ -259,32 +259,6 @@ input::-moz-focus-inner {
     text-align: justify;
 }
 
-/* misc */
-
-.icon {
-    width: 100%;
-    height: 100%;
-    margin: 0;
-    padding: 0;
-}
-
-.coutner {
-    color: #f0f2f6;
-    
-    border-radius: 50%;
-    background-color: #b6bed4;
-    display: inline-block;
-    float: right;
-    width: 1.3em;
-    height: 1.3em;
-    line-height: 1.3em;
-    text-align: center;
-}
-
-.coutner:empty {
-    background: none;
-}
-
 /* .link-list */
 
 .link-list {
@@ -305,5 +279,37 @@ input::-moz-focus-inner {
     /*color: #6279b2;
     background-color: #d9dde8;*/
     background-color: #8d99bb;
+}
+
+/* .counter */
+
+.coutner {
+    color: #f0f2f6;
+    
+    border-radius: 50%;
+    background-color: #b6bed4;
+    display: inline-block;
+    float: right;
+    width: 1.3em;
+    height: 1.3em;
+    line-height: 1.3em;
+    text-align: center;
+}
+
+.coutner:empty {
+    background: none;
+}
+
+/* misc */
+
+.icon {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+.hidden {
+    display: none;
 }
 

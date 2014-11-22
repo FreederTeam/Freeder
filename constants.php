@@ -7,7 +7,7 @@ define('RELATIVE_TPL_DIR',  'tpl/');  // Template directory (relative path from 
 
 define('DB_FILE', 'db.sqlite3'); // Database file (relative to DATA_DIR)
 
-define('DEFAULT_THEME', 'default'); // Default template dir (relative to TPL_DIR)
+define('DEFAULT_THEME', 'zen'); // Default template dir (relative to TPL_DIR)
 
 define('DEBUG', true);
 
