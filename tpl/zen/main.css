@@ -103,6 +103,7 @@ input::-moz-focus-inner {
 }
 
 .horizontal-nav--item {
+    display: block;
     background: none;
     border: none;
     cursor: pointer;
@@ -285,4 +286,25 @@ input::-moz-focus-inner {
     background: none;
 }
 
+/* .link-list */
+
+.link-list {
+    display: flex;
+    flex-flow: row wrap;
+}
+
+.link-list--item {
+    display: block;
+    background-color: #b6bed4;
+    color: white;
+    padding: 0.2rem 0.5rem;
+    margin: 0.2rem;
+    text-decoration: none;
+}
+
+.link-list--item:hover {
+    /*color: #6279b2;
+    background-color: #d9dde8;*/
+    background-color: #8d99bb;
+}
 
