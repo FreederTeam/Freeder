@@ -4,6 +4,8 @@
 {*  * list                                      *}
 {*  * settings                                  *}
 {*  * more                                      *}
+{*  * none   (no displayed cursor)              *}
+{*  * hidden (hides the menu)                   *}
 
 <aside class="menu">
     <div class="menu--wrapper">
@@ -11,6 +13,8 @@
             <a href=""><img alt="freeder" src="img/logo.svg" class="icon" /></a>
         </div>
         
+        {if="$active_menu!='hidden'"}
+
         <nav class="menu--nav vertical-nav">
             {if="$active_menu=='home'"}
             <div class="vertical-nav--arrow"><img class="icon" alt="Settings" src="img/arrow.svg"/></div>
@@ -36,5 +40,7 @@
             
             <button class="vertical-nav--item"><img class="icon" alt="More" src="img/plus_big.svg"/></button>
         </nav>
+
+        {/if}
     </div>
 </aside>
