@@ -9,6 +9,23 @@ h1, h2, h3, h4, h5, h6 {
     font-weight: 200;
 }
 
+::selection {
+    color: white;
+    background: #8d99bb;
+}
+::-moz-selection {
+    color: white;
+    background: #8d99bb;
+}
+
+button::-moz-focus-inner,
+input::-moz-focus-inner {
+    margin: 0;
+    padding: 0;
+    border: 0;
+}
+
+
 /* .main */
 
 .main {
@@ -48,15 +65,15 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .vertical-nav--item {
+    display: block;
     background: none;
     border: none;
     cursor: pointer;
     margin: 2em auto;
-    display: block;
     padding: 0;
     
-    width: 3em;
-    height: 3em;
+    width: 2.5rem;
+    height: 2.5rem;
     
     border-radius: 50%;
 }
@@ -66,9 +83,9 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .vertical-nav--arrow {
-    width: 2em;
-    height: 2em;
-    margin: 0.25em 0;
+    width: 2rem;
+    height: 2rem;
+    margin: 0.25rem 0;
     padding: 0;
     position: absolute;
     right: 0;
@@ -92,8 +109,8 @@ h1, h2, h3, h4, h5, h6 {
     margin: 0;
     padding: 0;
     
-    width: 2em;
-    height: 2em;
+    width: 1.5rem;
+    height: 1.5rem;
     
     border-radius: 50%;
 }
@@ -107,6 +124,7 @@ h1, h2, h3, h4, h5, h6 {
 .submenu {
     position: relative;
     width: 5px;
+    height: 100vh;
     float: left;
     background-color: #d9dde8;
 }
@@ -125,6 +143,7 @@ h1, h2, h3, h4, h5, h6 {
     box-shadow: 0 0 1px 1px rgba(0,0,0,0.1);
     
     overflow-y: auto;
+    left: -18em;
 }
 
 .submenu--section-title {
@@ -203,7 +222,6 @@ h1, h2, h3, h4, h5, h6 {
 .article {
     margin: 1em;
     padding-top: 5em;
-    
 }
 
 .article:not(lest-child) {
