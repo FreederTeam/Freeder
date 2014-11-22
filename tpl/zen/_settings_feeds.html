@@ -1,0 +1,51 @@
+{* Settings tab about feeds *}
+
+<section>
+    <h2>Add new feed</h2>
+    <form method="post" action="#">
+        <div>
+            <input type="text" name="feed_url" id="feed_url" placeholder="Feed URL" autofocus />
+        </div>
+        <div class="toggle">
+            <button class="toggle--btn">Options</button>
+            <div class="toggle--content">
+                <div>
+                    Import tags as well?
+                    <input type="radio" name="import_tags_add" value="1" id="import_tags_yes" {$config->import_tags_from_feeds != 0 ? 'checked="checked"' : ''}/>
+                    <label for="import_tags_yes"> Yes</label>
+                    <input type="radio" name="import_tags_add" value="0" id="import_tags_no" {$config->import_tags_from_feeds == 0 ? 'checked="checked"' : ''}/>
+                    <label for="import_tags_no"> No</label>
+                </div>
+                <div>
+                    <label for="feed_post">POST data to send to have access to the feed (JSON formatted)</label><br/>
+                    <textarea name="feed_post" id="feed_post"></textarea>
+                </div>
+            </div>
+        </div>
+        <div>
+            <input type="submit" value="Add feed" />
+            <input type="hidden" name="token" value="{function="generate_token('add_feed')"}" />
+        </div>
+    </form>
+</section>
+
+<section>
+    <h2>List of available feeds</h2>
+    {if="count($feeds) > 0"}
+        <table>
+            {$delete_feed_token=generate_token('delete_feed')}
+            {$refresh_feed_token=generate_token('refresh_feed')}
+            {loop="$feeds"}
+                <tr>
+                    <td>{$value['title']}</td>
+                    <td><a href="{$value['url']}#">{$value['url']}</a></td>
+                    <td>Edit</td>
+                    <td><a href="settings.php?delete_feed={$value['id']}&amp;token={$delete_feed_token}">Delete</a></td>
+                    <td><a href="settings.php?refresh_feed={$value['id']}&amp;token={$refresh_feed_token}">Refresh</a></td>
+                </tr>
+            {/loop}
+        </table>
+    {else}
+        <p>You did not add any feed yet.</p>
+    {/if}
+</section>
