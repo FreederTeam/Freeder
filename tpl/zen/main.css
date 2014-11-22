@@ -25,6 +25,31 @@ input::-moz-focus-inner {
     border: 0;
 }
 
+input[type="text"],
+input[type="password"],
+input[type="search"],
+input[type="submit"] {
+    width: 100%;
+    border: 1px solid #d9dde8;
+    border-width: 1px 0;
+    background-color: white;
+    padding: 0.5em;
+    margin: 0.2em 0;
+    box-sizing: border-box;
+}
+
+input[type="submit"] {
+    border: 0;
+    background-color: #b6bed4;
+    color: white;
+    cursor: pointer;
+}
+
+input[type="submit"]:hover {
+    background-color: #8d99bb;
+}
+
+
 
 /* .main */
 
