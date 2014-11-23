@@ -1,0 +1,16 @@
+{if="!empty($value['authors'])"}
+	{$remaining=count($value['authors'])}
+	{loop="$value['authors']"}
+		{if="!empty($value1['uri'])"}
+			<a href="{$value1['uri']}">{$value1['name']}</a>
+		{elseif="!empty($value1['email'])"}
+			<a href="mailto:{$value1['email']}">{$value1['name']}</a>
+		{elseif="!empty($value1['name'])"}
+			{$value1['name']}
+		{else}
+			Unknown
+		{/if}
+		{$remaining=$remaining-1}
+		{if="$remaining>1"}, {elseif="$remaining==1"} and {/if}
+	{/loop}
+{/if}

@@ -16,6 +16,12 @@
         <h2 class="article--info">
             <a href="feed/{$entry_feed['id']}">{$entry_feed['title']}</a>
         </h2>
+        <p class="article--subinfo">
+            {include="_author"}<br/>
+            <time datetime="{function="date(DATE_ATOM,$value['pubDate'])"}">
+                {function="format_date($value['pubDate'])"}
+            </time>
+        </p>
         <div class="article--content">
             {$value['displayed_content']}
         </div>
