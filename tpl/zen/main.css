@@ -302,6 +302,12 @@ a:hover {
     text-align: justify;
 }
 
+/* .article--content reset */
+
+.article--content img {
+    max-width: 100%;
+}
+
 /* .link-list */
 
 .link-list {
