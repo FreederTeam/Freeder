@@ -68,6 +68,15 @@ a:hover {
     color: #ED0043;
 }
 
+/* Quotes */
+
+blockquote {
+    border-left: 3px solid #d9dde8;
+    font-style: italic;
+    margin-left: 0.5em;
+    margin-right: 0;
+    padding-left: 0.5em;
+}
 
 /* .main */
 
@@ -304,7 +313,8 @@ a:hover {
 
 /* .article--content reset */
 
-.article--content img {
+.article--content img,
+.article--content iframe {
     max-width: 100%;
 }
 
