@@ -18,6 +18,10 @@ h1, h2, h3, h4, h5, h6 {
     background: #8d99bb;
 }
 
+pre {
+    overflow: scroll;
+}
+
 
 /* Inputs */
 
@@ -316,6 +320,11 @@ blockquote {
 .article--content img,
 .article--content iframe {
     max-width: 100%;
+}
+
+/* Content hacks (based on usual practices) */
+.wp_syntax {
+    overflow: scroll;
 }
 
 /* .link-list */
