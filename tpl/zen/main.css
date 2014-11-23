@@ -202,6 +202,10 @@ blockquote {
     left: -18em;
 }
 
+.submenu--wrapper.open {
+    left: 0;
+}
+
 .submenu--section-title {
     color: #6279b2;
     font-size: 1.7em;
@@ -226,6 +230,7 @@ blockquote {
 
 .searchbar {
     position: relative;
+    margin-top: 0.5em;
 }
 
 .searchbar--icon {
@@ -304,10 +309,26 @@ blockquote {
     margin: auto;
 }
 
+.article--title a {
+    color: #181c28;
+}
+
+.article--title a:hover {
+    color: #52586b;
+}
+
 .article--info {
     color: #6279b2;
     font-size: 1.7em;
     margin-top: 0;
+}
+
+.article--info a {
+    color: #6279b2;
+}
+
+.article--info a:hover {
+    color: #2a4077;
 }
 
 .article--content {
