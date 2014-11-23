@@ -17,5 +17,19 @@ $(document).ready(function() {
             article.remove();
         }, 'json');
     });
+
+    // Submenu
+    $('.toggle-submenu').click(function(ev){
+        var id = $(this).attr('id').substr(5); // this.id = 'open-submenu-foo'
+        var section = $('#'+id);
+        var wrapper = $('.submenu--wrapper');
+        if (section.is(":visible") && wrapper.hasClass('open')) {
+            wrapper.removeClass('open');
+        } else {
+            $('.submenu section').hide();
+            section.show();
+            wrapper.addClass('open');
+        }
+    });
 });
 

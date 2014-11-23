@@ -10,8 +10,12 @@
             <button class="horizontal-nav--item"><img class="icon" alt="Share" src="img/share.svg"/></button>
             <button class="horizontal-nav--item close-btn"><img class="icon" alt="Close" src="img/close.svg"/></button>
         </nav>
-        <h1 class="article--title">{$value['title']}</h1>
-        <h2 class="article--info">{$entry_feed['title']}</h2>
+        <h1 class="article--title">
+            <a href="{function="get_entry_link($value)"}#">{$value['title']}</a>
+        </h1>
+        <h2 class="article--info">
+            <a href="feed/{$entry_feed['id']}">{$entry_feed['title']}</a>
+        </h2>
         <div class="article--content">
             {$value['displayed_content']}
         </div>
