@@ -18,6 +18,9 @@ h1, h2, h3, h4, h5, h6 {
     background: #8d99bb;
 }
 
+
+/* Inputs */
+
 button::-moz-focus-inner,
 input::-moz-focus-inner {
     margin: 0;
@@ -28,7 +31,9 @@ input::-moz-focus-inner {
 input[type="text"],
 input[type="password"],
 input[type="search"],
-input[type="submit"] {
+input[type="submit"],
+textarea,
+select {
     width: 100%;
     border: 1px solid #d9dde8;
     border-width: 1px 0;
@@ -49,6 +54,19 @@ input[type="submit"]:hover {
     background-color: #8d99bb;
 }
 
+
+/* Links */
+
+a {
+    //color: #3667e4;
+    color: #e43686;
+    text-decoration: none;
+}
+
+a:hover {
+    //color: #6279b2;
+    color: #ED0043;
+}
 
 
 /* .main */
@@ -301,8 +319,7 @@ input[type="submit"]:hover {
 }
 
 .link-list--item:hover {
-    /*color: #6279b2;
-    background-color: #d9dde8;*/
+    color: white;
     background-color: #8d99bb;
 }
 
@@ -325,7 +342,7 @@ input[type="submit"]:hover {
     background: none;
 }
 
-/* misc */
+/* Misc */
 
 .icon {
     width: 100%;
