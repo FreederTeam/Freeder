@@ -13,7 +13,7 @@ require_once(INC_DIR.'functions.php');
  * Store the configuration retrieved from database.
  */
 class Config {
-	public static $versions = array('0.1');
+	public static $versions = array('0.2');
 	private static $default_config;
 
 	public function __construct() {
@@ -88,22 +88,4 @@ class Config {
 		}
 		$dbh->commit();
 	}
-
-	public function sanitize() {  /** Sanitize the data for html display */
-		$return = new stdClass();
-		foreach(get_object_vars($this) as $option=>$value) {
-			if(!isset(self::$default_config[$option])) {
-				continue;
-			}
-			$option = htmlspecialchars($option);
-			$return->$option = htmlspecialchars($value);
-		}
-		return $return;
-	}
-
-	public function xss_clean() {  /** Sanitize the data to prevent XSS */
-		return $this->sanitize();
-	}
 }
-
-
