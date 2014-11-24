@@ -1,6 +1,8 @@
 var searchData=
 [
-  ['readme',['README',['../md_tpl_default_css_README.html',1,'']]],
-  ['register_5fcrontask',['register_crontask',['../cron_8php.html#a104b6d5d51e93d951972125e96e387f9',1,'cron.php']]],
-  ['rewriting_2ephp',['rewriting.php',['../rewriting_8php.html',1,'']]]
+  ['generate_5ftoken',['generate_token',['../csrf_8php.html#aa2532d155a8f34bccd385672ad364272',1,'csrf.php']]],
+  ['get',['get',['../classConfig.html#a40b49db1d093efba5a2b731e9e4b408a',1,'Config']]],
+  ['get_5fcrontab',['get_crontab',['../cron_8php.html#a3a05c7cff6528de6bf8079382db2eab2',1,'cron.php']]],
+  ['get_5ffavicons',['get_favicons',['../favicons_8php.html#a0e21b2c127958db4d4a35b7c8cc2c523',1,'favicons.php']]],
+  ['get_5furl_5frewriting',['get_url_rewriting',['../rewriting_8php.html#ae6f6a4ec342feca6fa6580a47a78301f',1,'rewriting.php']]]
 ];

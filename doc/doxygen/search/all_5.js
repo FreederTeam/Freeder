@@ -1,4 +1,6 @@
 var searchData=
 [
-  ['load',['load',['../classConfig.html#aa5a606688f0b52ce82198986c3185a2f',1,'Config']]]
+  ['favicons_2ephp',['favicons.php',['../favicons_8php.html',1,'']]],
+  ['freeder_20_2d_20contributing',['Freeder - Contributing',['../md_CONTRIBUTING.html',1,'']]],
+  ['freeder',['Freeder',['../md_README.html',1,'']]]
 ];

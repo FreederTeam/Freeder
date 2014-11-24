@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['rewriting_2ephp',['rewriting.php',['../rewriting_8php.html',1,'']]]
+  ['downloader_2ephp',['downloader.php',['../downloader_8php.html',1,'']]]
 ];
