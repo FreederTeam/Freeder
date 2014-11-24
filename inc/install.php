@@ -7,6 +7,7 @@
  */
 
 require_once(INC_DIR.'functions.php');
+require_once(INC_DIR.'xss.php');
 
 /**
  * Create a directory, checking writeable and the rights.
