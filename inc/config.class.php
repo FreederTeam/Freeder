@@ -6,7 +6,7 @@
  *  @brief Config class used to handle the config stored in database
  */
 
-require_once(INC_DIR.'functions.php');
+require_once(INC_DIR.'rewriting.php');
 
 
 /**
