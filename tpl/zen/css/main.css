@@ -86,7 +86,8 @@ input[type="password"],
 input[type="search"],
 input[type="submit"],
 textarea,
-select {
+select,
+.button {
     width: 100%;
     border: 1px solid #d9dde8;
     border-width: 1px 0;
@@ -96,14 +97,17 @@ select {
     box-sizing: border-box;
 }
 
-input[type="submit"] {
+input[type="submit"],
+.button {
+    margin-top: 2em;
     border: 0;
     background-color: #b6bed4;
     color: white;
     cursor: pointer;
 }
 
-input[type="submit"]:hover {
+input[type="submit"]:hover,
+.button:hover {
     background-color: #8d99bb;
 }
 
@@ -118,7 +122,7 @@ a {
 
 a:hover {
     //color: #6279b2;
-    color: #ED0043;
+    color: #ed0043;
 }
 
 /* Quotes */
@@ -188,9 +192,9 @@ blockquote {
 }
 
 .vertical-nav--arrow {
-    height: 2.1rem;
+    height: 1.9rem;
     margin: 0;
-    padding: 0.2rem 0;
+    padding: 0.3rem 0;
     position: absolute;
     right: 0;
 }
@@ -228,7 +232,7 @@ blockquote {
 
 .submenu {
     position: relative;
-    width: 5px;
+    width: 0.3em;
     height: 100vh;
     float: left;
     background-color: #d9dde8;
@@ -442,6 +446,60 @@ blockquote {
 
 .coutner:empty {
     background: none;
+}
+
+/* .modalbox */
+
+.modalbox {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 5.3em;
+    right: 0;
+
+    display: -webkit-flex;
+    display: flex;
+
+    -webkit-flex-flow: column wrap;
+    flex-flow: column wrap;
+
+    -webkit-justify-content: center;
+    justify-content: center;
+
+    -webkit-align-items: center;
+    align-items: center;
+
+    z-index: 10;
+
+    background-color: rgba(0,0,0,0.3);
+}
+
+.modalbox--wrapper1 {
+    width: 100%;
+    padding: 4em 0 5em 0;
+    background-color: white;
+}
+
+.modalbox--wrapper2 {
+    max-width: 45em;
+    margin: auto;
+}
+
+.modalbox--title {
+    color: #6279b2;
+    margin-top: 0;
+}
+
+.modalbox.error .modalbox--title {
+    color: #ed0043;
+}
+
+.modalbox.error .button {
+    background-color: #ed0043;
+}
+
+.modalbox.error .button:hover {
+    background-color: #f0356a;
 }
 
 /* Misc */
