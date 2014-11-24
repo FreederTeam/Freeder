@@ -219,6 +219,9 @@ function install() {
 		}
 	}
 
+	if ($error['title'] == '') {
+		$error = NULL;
+	}
 	$tpl->assign('error', $error, RainTPL::RAINTPL_IGNORE_SANITIZE);
 	$tpl->draw('install');
 	exit();
