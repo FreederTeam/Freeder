@@ -1,0 +1,20 @@
+{if="empty($error)"}
+	{$type='hidden'}
+	{$title=''}
+	{$content=''}
+{else}
+	{$type=$error['type']}
+	{$title=$error['title']}
+	{$content=$error['content']}
+{/if}
+<div class="modalbox {$type}">
+	<div class="modalbox--wrapper1">
+	<div class="modalbox--wrapper2">
+		<h1 class="modalbox--title">{$title}</h1>
+		<div class="modalbox--content">
+			{$content}
+		</div>
+		<button class="modalbox--close button">Ok</button>
+	</div>
+	</div>
+</div>

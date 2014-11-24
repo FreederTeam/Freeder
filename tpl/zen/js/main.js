@@ -31,5 +31,10 @@ $(document).ready(function() {
             wrapper.addClass('open');
         }
     });
+
+    // Modal box
+    $('.modalbox--close').click(function(ev){
+        $('.modalbox').addClass('hidden');
+    })
 });
 
