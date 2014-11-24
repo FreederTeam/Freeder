@@ -3,16 +3,16 @@
  *  -------
  *  @file
  *  @copyright Copyright (c) 2014 Freeder, MIT License, See the LICENSE file for copying permissions.
- *  @brief Provides anti-CSRF functions.
+ *  @brief Provide anti-CSRF functions.
  */
 
 
 /**
- * Generates a token to protect against CSRF.
+ * Generate a token to protect against CSRF.
  * The token is stored in a session.
  *
- * @param (optionnal) $name is a unique name for the token
- * @return the generated token
+ * @param	$name	(optionnal) A unique name for the token.
+ * @return The generated token.
  */
 function generate_token($name = '') {
 	if(session_id() == '')
@@ -27,12 +27,12 @@ function generate_token($name = '') {
 }
 
 /**
- * Checks that the anti-CSRF token (provided in $_GET or $_POST) is correct
+ * Check that the anti-CSRF token (provided in `$_GET` or `$_POST` superglobal) is correct.
  *
- * @param $time is the time validity for this token
- * @param (optionnal) $name is the token name
+ * @param	$time	Time validity for this token.
+ * @param	$name	(optionnal) Token unique name.
  *
- * @return true or false whether the token was correct or not.
+ * @return `true` or `false` whether the token was correct or not.
  */
 function check_token($time, $name = '') {
 	if(session_id() == '')

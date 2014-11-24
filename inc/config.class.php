@@ -13,7 +13,7 @@ require_once(INC_DIR.'rewriting.php');
  * Store the configuration retrieved from database.
  */
 class Config {
-	public static $versions = array('0.2');
+	public static $versions = array('0.1', '0.2');
 	private static $default_config;
 
 	public function __construct() {
@@ -40,11 +40,11 @@ class Config {
 		$this->load();
 	}
 
-	public function get($option) {  /** You can use either Config->attribute or Config->get(attribute) */
+	public function get($option) {  /** You can use either `Config->attribute` or `Config->get(attribute)`. */
 		return isset($this->$option) ? $this->$option : FALSE;
 	}
 
-	public function set($option, $value) {  /** You can use either Config->attribute=… or Config->set(attribute, value) */
+	public function set($option, $value) {  /** You can use either `Config->attribute=value` or `Config->set(attribute, value)`. */
 		$this->$option = $value;
 	}
 
@@ -52,7 +52,7 @@ class Config {
 		unset($this->$option);
 	}
 
-	public function load() {  /** Load the config from the database into this Config object */
+	public function load() {  /** Load the config from the database into this Config object. */
 		global $dbh;
 		$config = array();
 		if ($dbh !== NULL) {
@@ -69,7 +69,7 @@ class Config {
 		}
 	}
 
-	public function save() {  /** Stores the current config in database */
+	public function save() {  /** Store the current config in database. */
 		global $dbh;
 		assert($dbh !== NULL);
 		$dbh->beginTransaction();
