@@ -1,5 +1,5 @@
 <?php
-/** Favicons Lib
+/** Freeder
  *  ------------
  *  @file
  *  @copyright Copyright (c) 2014 Freeder, MIT License, See the LICENSE file for copying permissions. Written by Phyks, complete code available at https://github.com/Phyks/FaviconsLib.

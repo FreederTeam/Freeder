@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['write_5fcrontab',['write_crontab',['../cron_8php.html#aa4289592571685d3c2e330b9151b2dbc',1,'cron.php']]]
+  ['register_5fcrontask',['register_crontask',['../cron_8php.html#a104b6d5d51e93d951972125e96e387f9',1,'cron.php']]]
 ];

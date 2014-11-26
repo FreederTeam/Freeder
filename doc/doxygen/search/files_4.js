@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['tools_2ephp',['tools.php',['../tools_8php.html',1,'']]]
+  ['rewriting_2ephp',['rewriting.php',['../rewriting_8php.html',1,'']]]
 ];

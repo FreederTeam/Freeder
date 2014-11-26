@@ -11,7 +11,7 @@
  * Generate a token to protect against CSRF.
  * The token is stored in a session.
  *
- * @param	$name	(optionnal) A unique name for the token.
+ * @param	$name	(optionnal) A unique name for the token. Defaults to an empty string (conflicts risks !).
  * @return The generated token.
  */
 function generate_token($name = '') {
@@ -30,7 +30,7 @@ function generate_token($name = '') {
  * Check that the anti-CSRF token (provided in `$_GET` or `$_POST` superglobal) is correct.
  *
  * @param	$time	Time validity for this token.
- * @param	$name	(optionnal) Token unique name.
+ * @param	$name	(optionnal) Token unique name. Defaults to an empty string (conflicts risks !).
  *
  * @return `true` or `false` whether the token was correct or not.
  */
