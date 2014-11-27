@@ -6,7 +6,7 @@
  *  @brief Functions to handle the OPML files
  */
 
-require_once(dirname(__FILE__).'/functions.php');
+require_once(dirname(__FILE__).'/tools.php');
 require_once(dirname(__FILE__).'/tags.php');
 
 
