@@ -33,7 +33,7 @@ function get_favicons($urls) {
 	}
 
 	// Download the pages
-	$contents = curl_downloader($urls_to_fetch);
+	$contents = downloader($urls_to_fetch);
 	foreach ($contents['status_codes'] as $url=>$status) {
 		if ($status != 200) {
 			$errors[] = $url;
@@ -114,7 +114,7 @@ function get_favicons($urls) {
 			'url'=>$second_try_url . '/favicon.ico'
 		);
 	}
-	$second_try_curl = curl_downloader($second_try, false);
+	$second_try_curl = downloader($second_try, false);
 	$errors = array();
 
 	foreach($second_try as $tested_url) {
