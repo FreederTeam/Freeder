@@ -352,8 +352,12 @@ blockquote {
 
 .article--nav {
     position: absolute;
-    top: 1em;
-    right: 2em;
+    top: 0;
+    right: 0;
+}
+
+.article--nav-wrapper {
+    margin: 1em 2em;
 }
 
 .article--title {

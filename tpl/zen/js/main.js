@@ -35,6 +35,22 @@ $(document).ready(function() {
     // Modal box
     $('.modalbox--close').click(function(ev){
         $('.modalbox').addClass('hidden');
-    })
+    });
+
+    // Article navigation following view
+    $('.main').scroll(function(ev){
+        $('.article--nav').each(function(i){
+            var article = $(this).parents('.article');
+
+            // If the article is the first one displayed
+            if (article.offset().top < 0 && article.offset().top + article.outerHeight() - $(this).outerHeight() > 0) {
+                // We fix its navigation menu
+                $(this).css('top', -article.offset().top);
+            }
+            else {
+                //$(this).css('top', '');
+            }
+        });
+    });
 });
 

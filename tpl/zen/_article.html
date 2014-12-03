@@ -6,9 +6,11 @@
 <article class="article" id="entry-{$value['id']}">
     <div class="article--wrapper">
         <nav class="article--nav horizontal-nav">
-            <button class="horizontal-nav--item"><img class="icon" alt="More" src="img/plus.svg"/></button>
-            <button class="horizontal-nav--item"><img class="icon" alt="Share" src="img/share.svg"/></button>
-            <button class="horizontal-nav--item close-btn"><img class="icon" alt="Close" src="img/close.svg"/></button>
+            <div class="article--nav-wrapper">
+                <button class="horizontal-nav--item"><img class="icon" alt="More" src="img/plus.svg"/></button>
+                <button class="horizontal-nav--item"><img class="icon" alt="Share" src="img/share.svg"/></button>
+                <button class="horizontal-nav--item close-btn"><img class="icon" alt="Close" src="img/close.svg"/></button>
+            </div>
         </nav>
         <h1 class="article--title">
             <a href="{function="get_entry_link($value)"}#">{$value['title']}</a>
