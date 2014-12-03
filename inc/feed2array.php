@@ -23,6 +23,10 @@
 function feed2array($feed, $load=false, $debug=false) {
 	$flux = array('infos' => array(), 'items' => array());
 	try {
+		// If we have libxml, disable the incredibly dangerous entity loader. Cf. http://mikeknoop.com/lxml-xxe-exploit/.
+		if (function_exists('libxml_disable_entity_loader')) {
+			libxml_disable_entity_loader(true);
+		}
 		if($feed_obj = new SimpleXMLElement($feed, LIBXML_NOCDATA, $data_is_url=$load)) {
 			switch($feed_obj->getName()) {
 				case 'rss':
