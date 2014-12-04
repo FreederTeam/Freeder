@@ -14,6 +14,12 @@ $(document).ready(function() {
         var entry_id = article.attr('id').substr(6); // article.id = 'entry-345bc6a43b'
         var target = '{$base_url}api/tags.php?entry=' + entry_id + '&tag=_read';
         $.get(target, function(data){
+			// If top of article to mark as read is over current view, scroll to its top
+			if (article.offset().top < 0) {
+				$('.main').animate({
+					scrollTop: $('.main').scrollTop() + article.offset().top
+				}, 500);
+			}
             article.remove();
         }, 'json');
     });
