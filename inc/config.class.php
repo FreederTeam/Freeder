@@ -6,8 +6,6 @@
  *  @brief Config class used to handle the config stored in database
  */
 
-require_once(dirname(__FILE__).'/rewriting.php');
-
 
 /**
  * Store the configuration retrieved from database.
@@ -28,12 +26,6 @@ class Config {
 			'display_entries'=>'description',
 			'version'=>self::$versions[count(self::$versions) - 1],  // Current version
 			'entries_per_page'=>20,
-			'use_rewriting'=>get_url_rewriting(),
-			'facebook_share'=>0,
-			'twitter_share'=>0,
-			'shaarli_share'=>"",
-			'wallabag_share'=>"",
-			'diaspora_share'=>"",
 			'open_items_new_tab'=>0,
 			'mark_read_click'=>0,
 			'debug'=>0
