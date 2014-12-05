@@ -15,13 +15,13 @@ abstract class AbstractSerializer {
 	 * @param $raw_object: object to serialize (usually associative array)
 	 * @return serialized object
 	 */
-	abstract public static serialize($raw_object);
+	abstract public static function serialize($raw_object);
 
 	/**
 	 * Deserialize object serialized by self::serialize
 	 * @param $serialized_object: serialize object
 	 * @return raw PHP object
 	 */
-	abstract public static deserialize($serialized_object);
+	abstract public static function deserialize($serialized_object);
 }
 

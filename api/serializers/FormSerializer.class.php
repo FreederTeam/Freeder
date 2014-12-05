@@ -8,21 +8,21 @@
 require_once('AbstractSerializer.class.php');
 
 /**
- * JSON serializer used by API serialization switch
+ * x-www-form-data serializer used by API serialization switch
  */
-class JSONSerializer extends AbstractSerializer {
+class FormSerializer extends AbstractSerializer {
 	/**
 	 * @override
 	 */
 	public static function serialize($raw_object) {
-		return json_encode($raw_object);
+		return urlencode($raw_object);
 	}
 
 	/**
 	 * @override
 	 */
 	public static function deserialize($json_object) {
-		return json_decode($json_object);
+		return urldecode($json_object);
 	}
 }
 
