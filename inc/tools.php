@@ -30,6 +30,22 @@ function endswith($haystack, $needle) {
 
 
 /**
+ * Replace only the first occurrence of `$search` by `$replace` in `$subject`.
+ * @param	$search		The value being searched for.
+ * @param	$replace	The replacement value that replaces first found `$search` value.
+ * @param	$subject	The string being searched and replaced on.
+ * @return The input strings with replaced values.
+ */
+function str_replace_first($search, $replace, $subject) {
+	$pos = strpos($subject, $search);
+	if ($pos !== false) {
+		return substr_replace($subject, $replace, $pos, strlen($search));
+	}
+	return $subject;
+}
+
+
+/**
  * `array_search` function for bidimensionnal arrays.
  * Search for an item containing `$needle` in `$haystack`.
  *
@@ -184,4 +200,78 @@ function truncate($text, $length = 500, $ending = '…', $exact=false, $consider
 		}
 	}
 	return $truncate;
+}
+
+
+/**
+* Get the time difference between `$start_time` and now, in a human readable way.
+* @param	$start_time		A milliseconds timestamp
+* @return The time difference as a string, with units (seconds or milliseconds).
+*/
+function time_diff($start_time) {
+	$round = round(microtime(true) - (float)$start_time, 2).'s';
+	if($round == '0s') {
+		$round = round((microtime(true) - $start_time)*1000, 3).'ms';
+	}
+	return $round;
+}
+
+
+/**
+* Format date for pretty printing
+* @param	$timestamp		Date in timestamp format.
+* @return Pretty-formatted date as a string.
+*/
+function format_date($timestamp) {
+	$now = time();
+	$diff = $now - $timestamp;
+	if ($diff < 60) {
+		return $diff.'s ago';
+	} else if ($diff < 300) {
+		return round($diff / 60).'min ago';
+	} else if ($diff < 3600) {
+		return (round($diff / 300) * 5).'min ago';
+	} else if (floor($now/86400) == floor($timestamp/86400)) {
+		return 'Today, '.date('H:i', $timestamp);
+	} else if (floor($now/86400) == floor($timestamp/86400) + 1) {
+		return 'Yesterday, '.date('H:i', $timestamp);
+	} else if (date('Y:W', $now) == date('Y:W', $timestamp)) {
+		return date('l, H:i', $timestamp);
+	} else if (date('Y',$now) == date('Y',$timestamp)) {
+		return date('F d, H:i', $timestamp);
+	} else {
+		return date('F d, Y, H:i', $timestamp);
+	}
+}
+
+
+/**
+ * Return the global category of a given MIME-TYPE.
+ * @param	$mime_type		The MIME-TYPE whose category should be determined.
+ * @return The category if a matching category is found, `false` otherwise.
+ */
+function get_category_mime_type($mime_type) {
+	$end = strpos($mime_type, '/');
+	if ($end === false) {
+		return false;
+	}
+	$category = substr($mime_type, 0, $end);
+	$available_categories = array(
+		'application',
+		'audio',
+		'example',
+		'image',
+		'message',
+		'model',
+		'multipart',
+		'text',
+		'video'
+	);
+	$end = in_array($category, $available_categories);
+	if ($end !== false) {
+		return $category;
+	}
+	else {
+		return false;
+	}
 }
