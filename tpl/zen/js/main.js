@@ -47,9 +47,6 @@ $(document).ready(function() {
                 // We fix its navigation menu
                 $(this).css('top', -article.offset().top);
             }
-            else {
-                //$(this).css('top', '');
-            }
         });
     });
 });
