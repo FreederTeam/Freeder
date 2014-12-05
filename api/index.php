@@ -40,10 +40,10 @@ else $path = '/'; // Default to root
 
 
 // Call router
-$entrypoint = $router->handle($path);
+$entrypoint = $router->handle($path, $body);
 
-// Perform requested action
-$response = $entrypoint->run($body);
+// Perform API action
+$response = $entrypoint($body);
 
 
 // Encode response according to request's Accept header
