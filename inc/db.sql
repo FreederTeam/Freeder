@@ -32,12 +32,12 @@ CREATE TABLE IF NOT EXISTS sharing(
 CREATE TABLE IF NOT EXISTS feeds(
 		id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
 		title TEXT,
-		has_user_title INTEGER DEFAULT 0,  -- To specify wether the user edited the title manually or not
+		user_title TEXT,  -- Title as specified by the user
 		url TEXT UNIQUE COLLATE NOCASE,  -- Feed URL
 		links TEXT,  -- JSON array of links associated with the feed
 		description TEXT,
 		ttl INT DEFAULT 0,  -- This is the ttl of the feed, 0 means that it uses the config value
-		has_user_ttl INT DEFAULT 0,  -- To specify wether the user edited the TTL manually or not
+		user_ttl INT DEFAULT 0,  -- TTL as specified by the user
 		image TEXT,
 		post TEXT,
 		import_tags_from_feed INTEGER DEFAULT 0 -- To specify wether to use tags from feed or not
@@ -49,18 +49,18 @@ CREATE INDEX ix_feeds_url ON feeds (url);
 ---
 CREATE TABLE IF NOT EXISTS entries(
 		id INTEGER PRIMARY KEY NOT NULL,
-		feed_id INTEGER NOT NULL,
+		parent_feed INTEGER NOT NULL,
 		authors TEXT,
 		title TEXT,
 		links TEXT,  -- JSON array of enclosed links
-		description TEXT,
-		content TEXT,
+		summary TEXT,
+		body TEXT,
 		enclosures TEXT,  -- JSON array of links to enclosures
 		comments TEXT,  -- Link to comments
 		guid TEXT UNIQUE,
-		pubDate INTEGER,
-		lastUpdate INTEGER,
-		FOREIGN KEY(feed_id) REFERENCES feeds(id) ON DELETE CASCADE
+		publication_date INTEGER,
+		last_update INTEGER,
+		FOREIGN KEY(parent_feed) REFERENCES feeds(id) ON DELETE CASCADE
 	);
 CREATE INDEX ix_entries_guid ON entries (guid);
 

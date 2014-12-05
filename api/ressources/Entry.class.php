@@ -8,7 +8,7 @@
 
 /**
  * Entries represent articles from RSS feeds.
- * This class store entries and handles routing of entry-related API requests.
+ * This class stores entries and handles routing of entry-related API requests.
  */
 class Entry {
 	/**
@@ -65,7 +65,7 @@ class Entry {
 	 * @var string
 	 */
 	protected $comments;
-	
+
 	/**
 	 * Entry guid as specified in original feed
 	 * @var string
@@ -83,6 +83,73 @@ class Entry {
 	 * @var int
 	 */
 	protected $last_update;
+
+	/**
+	 * Tags
+	 * @var array
+	 */
+	protected $tags;
+
+
+	/**
+	 * Clean up `authors` attribute of entry.
+	 */
+	public function clean_authors() {
+		if ($authors == NULL) return array();
+
+		$new_authors = array();
+		foreach($this->authors as $author) {
+			if (empty($author['name']) && !empty($author['email'])) {
+				$explode = explode(' ', $author->email);
+				if (count($explode) == 2 && filter_var(trim($explode[0], ' ()<>'), FILTER_VALIDATE_EMAIL)) {
+					$name = trim($explode[1], ' ()');
+					$new_authors[] = array('name'=>$name, 'email'=>$author->email);
+				}
+				elseif (count($explode) == 2 && filter_var(trim($explode[1], ' ()<>'), FILTER_VALIDATE_EMAIL)) {
+					$name = trim($explode[0], ' ()');
+					$new_authors[] = array('name'=>$name, 'email'=>$author->email);
+				}
+				else {
+					$new_authors[] = array('name'=>$author->email, 'email'=>$author->email);
+				}
+			}
+			else {
+				$new_authors[] = $author;
+			}
+		}
+		return $new_authors;
+	}
+
+
+	/**
+	 * Get the link to the article associated with the entry.
+	 * @return The link or `"#"` if none found.
+	 */
+	public function get_link() {
+		foreach ($this->links as $link) {
+			if ($link['rel'] == 'alternate') {
+				return $link['href'];
+			}
+		}
+		return '#';
+	}
+
+
+	/**
+	 * Check wether an entry has the tag `$tag` or not.
+	 * @return `true` if the entry has the tag `$tag`, `false` otherwise.
+	 */
+	public function has_tag($tag) {
+		return multiarray_search(array('name'=>$tag), $this->tags) !== false;
+	}
+
+
+	/**
+	 * Get the full feed associated with an entry.
+	 */
+	function get_feed() {
+		return Feed($this->parent_id);
+	}
 }
 
 
