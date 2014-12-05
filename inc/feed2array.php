@@ -19,13 +19,21 @@ require_once(dirname(__FILE__).'/tools.php');
  * @copyright [Original version by bronco](https://github.com/broncowdd/feed2array) (released under "free and opensource license")
  *
  * @param	$feed	Either a feed content or a feed URI.
- * @param	$debug	Whether or not error messages should be displayed.
  * @return Returns an array representing the feed, or `false` if an error occurred.
  */
-function feed2array($feed, $debug=false) {
+function feed2array($feed) {
+	global $config;
 	$flux = array('infos' => array(), 'items' => array());
 	try {
-		if (false !== $feed_obj = new SimpleXMLElement($feed, LIBXML_NOCDATA, NULL, (filter_var($feed, FILTER_VALIDATE_URL) === false ? false : true))) {
+		// If we have libxml, disable the incredibly dangerous entity loader. Cf. http://mikeknoop.com/lxml-xxe-exploit/.
+		if (function_exists('libxml_disable_entity_loader')) {
+			libxml_disable_entity_loader(true);
+		}
+		$load = filter_var($feed, FILTER_VALIDATE_URL) === false ? false : true;
+		if ($load) {
+			$feed = file_get_contents($feed);
+		}
+		if (false !== $feed_obj = new SimpleXMLElement($feed, LIBXML_NOCDATA, false)) {
 			switch($feed_obj->getName()) {
 				case 'rss':
 					$type = 'RSS';
@@ -92,8 +100,8 @@ function feed2array($feed, $debug=false) {
 						$flux['infos']['pubDate'] = $tmp_date->format('U');
 					}
 					catch (Exception $e) {
-						if ($debug) {
-							echo "Error while parsing feed pubDate: $e->getMessage().";
+						if ($config->debug) {
+							echo "Error while parsing feed pubDate: ".$e->getMessage().".<br/>";
 						}
 					}
 				}
@@ -103,8 +111,8 @@ function feed2array($feed, $debug=false) {
 						$flux['infos']['lastBuildDate'] = $tmp_date->format('U');
 					}
 					catch (Exception $e) {
-						if ($debug) {
-							echo "Error while parsing feed lastBuildDate: $e->getMessage().";
+						if ($config->debug) {
+							echo "Error while parsing feed lastBuildDate: ".$e->getMessage().".<br/>";
 						}
 					}
 				}
@@ -141,8 +149,8 @@ function feed2array($feed, $debug=false) {
 						$flux['infos']['pubDate'] = $tmp_date->format('U');
 					}
 					catch (Exception $e) {
-						if ($debug) {
-							echo "Error while parsing feed pubDate: $e->getMessage().";
+						if ($config->debug) {
+							echo "Error while parsing feed pubDate: ".$e->getMessage().".<br/>";
 						}
 					}
 				}
@@ -160,8 +168,8 @@ function feed2array($feed, $debug=false) {
 						$flux['infos']['updated'] = $tmp_date->format('U');
 					}
 					catch (Exception $e) {
-						if ($debug) {
-							echo "Error while parsing feed updated date: $e->getMessage().";
+						if ($config->debug) {
+							echo "Error while parsing feed updated date: ".$e->getMessage().".<br/>";
 						}
 					}
 				}
@@ -262,8 +270,8 @@ function feed2array($feed, $debug=false) {
 							$flux['items'][$c]['pubDate'] = $tmp_date->format('U');
 						}
 						catch (Exception $e) {
-							if ($debug) {
-								echo "Error while parsing feed entry pubDate: $e->getMessage().";
+							if ($config->debug) {
+								echo "Error while parsing feed entry pubDate: ".$e->getMessage().".<br/>";
 							}
 						}
 					}
@@ -312,8 +320,8 @@ function feed2array($feed, $debug=false) {
 							$flux['items'][$c]['pubDate'] = $tmp_date->format('U');
 						}
 						catch (Exception $e) {
-							if ($debug) {
-								echo "Error while parsing feed entry pubDate: $e->getMessage().";
+							if ($config->debug) {
+								echo "Error while parsing feed entry pubDate: ".$e->getMessage().".<br/>";
 							}
 						}
 					}
@@ -331,8 +339,8 @@ function feed2array($feed, $debug=false) {
 							$flux['items'][$c]['updated'] = $tmp_date->format('U');
 						}
 						catch (Exception $e) {
-							if ($debug) {
-								echo "Error while parsing feed entry updated date: $e->getMessage().";
+							if ($config->debug) {
+								echo "Error while parsing feed entry updated date: ".$e->getMessage().".<br/>";
 							}
 						}
 					}
@@ -420,8 +428,8 @@ function feed2array($feed, $debug=false) {
 							$flux['items'][$c]['pubDate'] = $tmp_date->format('U');
 						}
 						catch (Exception $e) {
-							if ($debug) {
-								echo "Error while parsing feed entry pubDate: $e->getMessage().";
+							if ($config->debug) {
+								echo "Error while parsing feed entry pubDate: ".$e->getMessage().".<br/>";
 							}
 						}
 					}
@@ -469,8 +477,8 @@ function feed2array($feed, $debug=false) {
 			throw new Exception("Unable to parse feed.");
 		}
 	} catch (Exception $e) {
-		if($debug) {
-			echo "[Feed2Array] Parse error: $e->getMessage().<br/>Provided feed was:<br/>$feed";
+		if($config->debug) {
+			echo "[Feed2Array] Parse error: ".$e->getMessage().".<br/>Provided feed was:<br/>$feed<br/>";
 		}
 		return false;
 	}

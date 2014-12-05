@@ -35,7 +35,8 @@ class Config {
 			'wallabag_share'=>"",
 			'diaspora_share'=>"",
 			'open_items_new_tab'=>0,
-			'mark_read_click'=>0
+			'mark_read_click'=>0,
+			'debug'=>0
 		);
 		$this->load();
 	}
