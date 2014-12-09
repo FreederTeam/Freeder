@@ -1,5 +1,24 @@
 
 
+/**
+ * Place current article navigation items on top right hand corner of the current view
+ */
+function place_article_nav() {
+	$('.article--nav').each(function(i){
+		var article = $(this).parents('.article');
+
+		// If the article is the first one displayed
+		if (article.offset().top < 0 && article.offset().top + article.outerHeight() - $(this).outerHeight() > 0) {
+			// We fix its navigation menu
+			$(this).css('top', -article.offset().top);
+		}
+		else {
+			//$(this).css('top', '');
+		}
+	});
+}
+
+
 $(document).ready(function() {
     // Toggle sections
     $('.toggle').addClass('closed');
@@ -21,6 +40,7 @@ $(document).ready(function() {
 				}, 500);
 			}
             article.remove();
+			place_article_nav();
         }, 'json');
     });
 
@@ -44,19 +64,6 @@ $(document).ready(function() {
     });
 
     // Article navigation following view
-    $('.main').scroll(function(ev){
-        $('.article--nav').each(function(i){
-            var article = $(this).parents('.article');
-
-            // If the article is the first one displayed
-            if (article.offset().top < 0 && article.offset().top + article.outerHeight() - $(this).outerHeight() > 0) {
-                // We fix its navigation menu
-                $(this).css('top', -article.offset().top);
-            }
-            else {
-                //$(this).css('top', '');
-            }
-        });
-    });
+    $('.main').scroll(place_article_nav);
 });
 
