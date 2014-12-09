@@ -25,7 +25,7 @@ class Config {
 			'synchronization_type'=>'cron',
 			'anonymous_access'=>0,
 			'entries_to_keep'=>50,  // Number of entries to keep, set to 0 if you want to keep all of them
-			'display_entries'=>'description',
+			'display_entries'=>'content',
 			'version'=>self::$versions[count(self::$versions) - 1],  // Current version
 			'entries_per_page'=>20,
 			'use_rewriting'=>get_url_rewriting(),
