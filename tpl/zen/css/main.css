@@ -68,7 +68,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 pre {
-    overflow: scroll;
+    overflow: auto;
 }
 
 
@@ -409,7 +409,7 @@ blockquote {
 
 /* Content hacks (based on usual practices) */
 .wp_syntax {
-    overflow: scroll;
+    overflow: auto;
 }
 
 /* .link-list */
