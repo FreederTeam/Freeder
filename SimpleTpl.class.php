@@ -85,6 +85,22 @@ class SimpleTpl {
 
 
 	/**
+	 * Check whether the given path does not contain dangerous patterns
+	 * such as .. that would allow the user to explore server filesystem
+	 * Reset $error
+	 * @param $view: view content to process
+	 * @return rewriten view
+	 *
+	 * @todo
+	 */
+	public function rewrite_urls($view) {
+		$this->error = NULL;
+
+		return $view;
+	}
+
+
+	/**
 	 * Render a given template page
 	 * Reset $error
 	 * @param $view_path: view to render (path relative to tpl/)
@@ -105,9 +121,17 @@ class SimpleTpl {
 			return FALSE;
 		}
 
+		// Load included templates (todo)
+		//$view = $this->load_included($view);
+		//if (!is_null($this->error)) return FALSE;
+
 		// Rewrite URLs
 		$view = $this->rewrite_urls($view);
 		if (!is_null($this->error)) return FALSE;
+
+		// Evaluate variables (todo)
+		//$view = $this->eval_variables($view);
+		//if (!is_null($this->error)) return FALSE;
 
 		// Render view
 		echo($view);
