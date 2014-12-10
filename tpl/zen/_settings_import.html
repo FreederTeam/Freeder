@@ -1,0 +1,47 @@
+{* Settings tab for import/export *}
+
+<section>
+    <h2>Import an OPML file</h2>
+    <form method="post" action="#" enctype="multipart/form-data">
+        <input type="hidden" name="MAX_FILE_SIZE" value="1048576" />
+
+        <div class="form-item">
+            <label for="import">OPML file: </label>
+            <input type="file" name="import" id="import"/>
+        </div>
+
+        <div class="form-item">
+            Import article tags as well ?
+            
+            <input type="radio" name="import_tags_opml" value="1" id="import_tags_yes" {$config->import_tags_from_feeds != 0 ? 'checked="checked"' : ''}/>
+            <label for="import_tags_yes">Yes</label>
+
+            <input type="radio" name="import_tags_opml" value="0" id="import_tags_no" {$config->import_tags_from_feeds == 0 ? 'checked="checked"' : ''}/>
+            <label for="import_tags_no">No</label>
+            
+            <p class="form-item--hint">It may import a lot of tags on some feed.</p>
+        </div>
+
+        <input class="Button" type="submit" value="Import" />
+        <input type="hidden" name="token" value="{function="generate_token('import_form')"}" />
+    </form>
+</section>
+
+<section>
+    <h2>Export as OPML</h2>
+    <form method="post" action="#">
+        <div class="form-item">
+            <label for="export">Export selected feeds:</label><br/>
+            <select name="export[]" id="export" multiple>
+                {loop="$feeds"}
+                    <option value="{$value['id']}">{$value['title']}</option>
+                {/loop}
+            </select>
+
+            <p class="form-item--hint">Ctrl+Click to select multiple feeds.</p>
+        </div>
+
+        <input type="submit" value="Export" />
+        <input type="hidden" name="token" value="{function="generate_token('export_form')"}" />
+    </form>
+</section>

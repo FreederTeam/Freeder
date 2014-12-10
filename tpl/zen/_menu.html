@@ -1,0 +1,46 @@
+{* Main menu (side bar)                         *}
+{* Requires $active_menu which can be equal to: *}
+{*  * home                                      *}
+{*  * list                                      *}
+{*  * settings                                  *}
+{*  * more                                      *}
+{*  * none   (no displayed cursor)              *}
+{*  * hidden (hides the menu)                   *}
+
+<aside class="menu">
+    <div class="menu--wrapper">
+        <div class="menu--logo">
+            <a href=""><img alt="freeder" src="img/logo.svg" class="icon" /></a>
+        </div>
+        
+        {if="$active_menu!='hidden'"}
+
+        <nav class="menu--nav vertical-nav">
+            {if="$active_menu=='home'"}
+            <div class="vertical-nav--arrow"><img class="icon" alt="Settings" src="img/arrow.svg"/></div>
+            {/if}
+
+            <a href="/" class="vertical-nav--item"><img class="icon" alt="Home" src="img/home.svg"/></a>
+
+            {if="$active_menu=='list'"}
+            <div class="vertical-nav--arrow"><img class="icon" alt="Settings" src="img/arrow.svg"/></div>
+            {/if}
+            
+            <button class="vertical-nav--item toggle-submenu" id="open-submenu-list"><img class="icon" alt="Feeds" src="img/list.svg"/></button>
+
+            {if="$active_menu=='settings'"}
+            <div class="vertical-nav--arrow"><img class="icon" alt="Settings" src="img/arrow.svg"/></div>
+            {/if}
+            
+            <a href="settings.php" class="vertical-nav--item"><img class="icon" alt="Settings" src="img/settings.svg"/></a>
+
+            {if="$active_menu=='more'"}
+            <div class="vertical-nav--arrow"><img class="icon" alt="Settings" src="img/arrow.svg"/></div>
+            {/if}
+            
+            <button class="vertical-nav--item toggle-submenu" id="open-submenu-more"><img class="icon" alt="More" src="img/plus_big.svg"/></button>
+        </nav>
+
+        {/if}
+    </div>
+</aside>

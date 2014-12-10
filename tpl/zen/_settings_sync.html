@@ -1,0 +1,22 @@
+{* Settings tab about synchronization *}
+
+<section>
+    <form method="post" action="#">
+        <div class="form-item">
+            <input type="radio" name="synchronization_type" id="synchronization_type_ajax" value="ajax" {if="$config->synchronization_type == 'ajax'"} checked="checked"{/if} />
+            <label for="synchronization_type_ajax"> Ajax</label>
+
+            <p class="form-item--hint">Update the feeds in the background at each page call.</p>
+        </div>
+
+        <div class="form-item">
+            <input type="radio" name="synchronization_type" id="synchronization_type_cron" value="cron" {if="$config->synchronization_type == 'cron'"} checked="checked"{/if} />
+            <label for="synchronization_type_cron"> Cron</label>
+
+            <p class="form-item--hint">Use a crontask to update the feeds regularly.</p>
+        </div>
+
+        <input type="submit" value="Save" />
+        <input type="hidden" name="token" value="{function="generate_token('settings_form_sync')"}" />
+    </form>
+</section>

@@ -1,0 +1,43 @@
+{* Installation page *}
+
+{$active_menu='hidden'}
+{include="_begin"}
+
+<article class="article" id="top">
+    <div class="article--wrapper">
+        <h1 class="article--title">Welcome to Freeder!</h1>
+        <h2 class="article--info">Installation</h2>
+        <div class="article--content">
+
+
+            <form method="post" action="#">
+                <div class="form-item">
+                    <label for="login" class="hidden">Login:</label>
+                    <input class="LoginForm-input" type="text" name="login" id="login" value="{$login}" placeholder="Login" />
+                </div>
+
+                <div class="form-item">
+                    <label for="password" class="hidden">Password:</label>
+                    <input class="LoginForm-input" type="password" name="password" id="password" placeholder="Password" />
+                </div>
+
+                <div class="form-item">
+                    <label for="confirm_password" class="hidden">Password:</label>
+                    <input class="LoginForm-input" type="password" name="confirm_password" id="confirm_password" placeholder="Password (again)" />
+                </div>
+
+                <div class="form-item">
+                    <label for="timezone" class="hidden">Timezone:</label>
+                    <input class="LoginForm-input" type="text" name="timezone" id="timezone" value="{$timezone}" placeholder="Timezone" />
+                </div>
+
+                <input type="submit" value="Install !" />
+            </form>
+
+            
+        </div>
+    </div>
+</article>
+
+
+{include="_end"}

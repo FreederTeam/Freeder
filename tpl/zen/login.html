@@ -1,0 +1,37 @@
+{* When the user is not logged, this page is loaded instead of index.html. *}
+
+{$active_menu='hidden'}
+{include="_begin"}
+
+<article class="article" id="top">
+    <div class="article--wrapper">
+        <h1 class="article--title">Login</h1>
+        <h2 class="article--info">This page requires authentification</h2>
+        <div class="article--content">
+
+
+            <form method="post" action="#">
+                <div class="form-item">
+                    <label for="login" class="hidden">Login</label>
+                    <input class="LoginForm-input" type="text" name="login" id="login" placeholder="Login" autofocus />
+                </div>
+
+                <div class="form-item">
+                    <label for="password" class="hidden">Password</label>
+                    <input class="LoginForm-input" type="password" name="password" id="password" placeholder="Password" />
+                </div>
+
+                <div class="form-item">
+                    <input type="checkbox" name="remember" id="remember" />
+                    <label for="remember">Remember me</label>
+                </div>
+
+                <input value="Login" type="submit" />
+            </form>
+
+            
+        </div>
+    </div>
+</article>
+
+{include="_end"}
