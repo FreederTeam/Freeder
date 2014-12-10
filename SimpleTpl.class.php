@@ -11,6 +11,12 @@
  */
 class SimpleTpl {
 	/**
+	 * View file extension
+	 * @var string
+	 */
+	public $view_extension = '.html';
+
+	/**
 	 * Last error that occured. Reset to null when methods use it (see doc)
 	 * @var NULL | string
 	 */
@@ -58,18 +64,44 @@ class SimpleTpl {
 
 
 	/**
+	 * Check whether the given path does not contain dangerous patterns
+	 * such as .. that would allow the user to explore server filesystem
+	 * Reset $error
+	 * @param $view_path: view to render (path relative to tpl/)
+	 * @return bool (whether rendering worked)
+	 */
+	public function check_view_path($view_path) {
+		$this->error = NULL;
+
+		// We forbid the use of '..' inside path. It is a little bit restrictive but
+		// should never be a problem (a regular path with .. in it would be weired)
+		if (preg_match('/\\.\\./', $view_path)) {
+			$this->error = 'Invalid view path: '.$view_path.' (contains `..`)';
+			return FALSE;
+		}
+
+		return TRUE;
+	}
+
+
+	/**
 	 * Render a given template page
 	 * Reset $error
 	 * @param $view_path: view to render (path relative to tpl/)
 	 * @return bool (whether rendering worked)
 	 */
-	public function render($theme, $view) {
+	public function render($view_path) {
 		$this->error = NULL;
 
+		// Check view path integrity
+		$this->check_view_path($view_path);
+		if (!is_null($this->error)) return FALSE;
+
 		// Load raw view from file
-		$view = @file_get_contents('tpl/'.$view_path);
+		$filename = 'tpl/'.$view_path.$this->view_extension;
+		$view = @file_get_contents($filename);
 		if ($view === FALSE) {
-			$this->error = 'File not found: tpl/'.$view_path;
+			$this->error = 'File not found: '.$filename;
 			return FALSE;
 		}
 

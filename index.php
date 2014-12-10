@@ -26,5 +26,5 @@ if (!is_null($tpl->error)) die($tpl->error);
 
 // Render webapp
 $theme = $config->get('theme');
-$tpl->render($theme.'index.html');
+$tpl->render($theme.'index');
 if (!is_null($tpl->error)) die($tpl->error);
