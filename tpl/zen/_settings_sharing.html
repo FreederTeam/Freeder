@@ -1,0 +1,33 @@
+{* Settings tab about sharing *}
+
+<section>
+    <form method="post" action="#">
+        <div class="form-item">
+            <label for="share_input_facebook">Facebook: </label>
+            <input type="checkbox" name="share_input_facebook" id="share_input_facebook" {if="$config->facebook_share > 0"}checked="checked"{/if} value="1"/>
+        </div>
+
+        <div class="form-item">
+            <label for="share_input_twitter">Twitter: </label>
+            <input type="checkbox" name="share_input_twitter" id="share_input_twitter" {if="$config->twitter_share > 0"}checked="checked"{/if} value="1"/>
+        </div>
+
+        <div class="form-item">
+            <label for="share_input_shaarli">Shaarli: </label>
+            <input type="text" name="share_input_shaarli" id="share_input_shaarli" placeholder="URL of your shaarli" {if="!empty($config->shaarli_share)"}value="{$config->shaarli_share}"{/if}/>
+        </div>
+
+        <div class="form-item">
+            <label for="share_input_wallabag">Wallabag: </label>
+            <input type="text" name="share_input_wallabag" id="share_input_wallabag" placeholder="URL of your Wallabag" {if="!empty($config->wallabag_share)"}value="{$config->wallabag_share}"{/if}/>
+        </div>
+
+        <div class="form-item">
+            <label for="share_input_diaspora">Diaspora: </label>
+            <input type="text" name="share_input_diaspora" id="share_input_diaspora" placeholder="URL of your pod" {if="!empty($config->diaspora_share)"}value="{$config->diaspora_share}"{/if}/>
+        </div>
+
+        <input type="submit" value="Save" />
+        <input type="hidden" name="token" value="{function="generate_token('settings_form_sharing')"}" />
+    </form>
+</section>

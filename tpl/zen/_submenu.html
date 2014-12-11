@@ -1,0 +1,33 @@
+{* Submenu (togglable side panel) *}
+<aside class="submenu feed-submenu">
+    <div class="submenu--wrapper">
+        <div class="submenu--search searchbar">
+            <input class="searchbar--input" type="search" placeholder="Search…"/>
+            <img class="searchbar--icon" alt="" src="img/search.svg"/>
+        </div>
+
+        <section id="submenu-list">
+
+            <div class="submenu--section">
+                <h4 class="submenu--section-title">Feeds</h4>
+                <ul class="submenu--link-list">
+                    {loop="$feeds"}
+                        <li>
+                            <a href="/%feed%/{$value['id']}" title="{$value['description']}">{$value['title']}</a>
+                            <span class="coutner">?</span>
+                        </li>
+                    {/loop}
+                </ul>
+            </div>
+
+        </section>
+
+        <section id="submenu-more">
+            <div class="submenu--section">
+                <h4 class="submenu--section-title">Foo</h4>
+                <a href="refresh.php?token={function="generate_token('refresh')"}">Synchronize</a>
+            </div>
+        </section>
+
+    </div>
+</aside>

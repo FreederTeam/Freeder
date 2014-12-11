@@ -1,0 +1,151 @@
+{$active_menu='settings'}
+{include="_begin"}
+
+<article class="article" id="top">
+    <div class="article--wrapper">
+        <h1 class="article--title">Settings</h1>
+        <h2 class="article--info"></h2>
+        <div class="article--content link-list">
+            <a class="link-list--item" href="#tab-feeds#">Feeds</a>
+            <a class="link-list--item" href="#tab-entries#">Entries</a>
+            <a class="link-list--item" href="#tab-import#">Import/Export</a>
+            <a class="link-list--item" href="#tab-sync#">Sync</a>
+            <a class="link-list--item" href="#tab-template#">Template</a>
+            <a class="link-list--item" href="#tab-users#">Users</a>
+            <a class="link-list--item" href="#tab-sharing#">Sharing</a>
+            <a class="link-list--item" href="#tab-misc#">Misc</a>
+        </div>
+    </div>
+</article>
+
+{*---------------------------------------------------------------------------*}
+
+<article class="article" id="tab-feeds">
+    <div class="article--wrapper">
+        <nav class="article--nav horizontal-nav">
+            <div class="article--nav-wrapper">
+                <a href="#top#" class="horizontal-nav--item"><img class="icon" alt="Top" src="img/top.svg"/></a>
+            </div>
+        </nav>
+        <h2 class="article--info">Feeds</h2>
+        <div class="article--content">
+            {include="_settings_feeds"}
+        </div>
+    </div>
+</article>
+
+{*---------------------------------------------------------------------------*}
+
+<article class="article" id="tab-entries">
+    <div class="article--wrapper">
+        <nav class="article--nav horizontal-nav">
+            <div class="article--nav-wrapper">
+                <a href="#top#" class="horizontal-nav--item"><img class="icon" alt="Top" src="img/top.svg"/></a>
+            </div>
+        </nav>
+        <h2 class="article--info">Entries</h2>
+        <div class="article--content">
+            {include="_settings_entries"}
+        </div>
+    </div>
+</article>
+
+{*---------------------------------------------------------------------------*}
+
+<article class="article" id="tab-import">
+    <div class="article--wrapper">
+        <nav class="article--nav horizontal-nav">
+            <div class="article--nav-wrapper">
+                <a href="#top#" class="horizontal-nav--item"><img class="icon" alt="Top" src="img/top.svg"/></a>
+            </div>
+        </nav>
+        <h2 class="article--info">Import/Export</h2>
+        <div class="article--content">
+            {include="_settings_import"}
+        </div>
+    </div>
+</article>
+
+{*---------------------------------------------------------------------------*}
+
+<article class="article" id="tab-sync">
+    <div class="article--wrapper">
+        <nav class="article--nav horizontal-nav">
+            <div class="article--nav-wrapper">
+                <a href="#top#" class="horizontal-nav--item"><img class="icon" alt="Top" src="img/top.svg"/></a>
+            </div>
+        </nav>
+        <h2 class="article--info">Sync</h2>
+        <div class="article--content">
+            {include="_settings_sync"}
+        </div>
+    </div>
+</article>
+
+{*---------------------------------------------------------------------------*}
+
+<article class="article" id="tab-template">
+    <div class="article--wrapper">
+        <nav class="article--nav horizontal-nav">
+            <div class="article--nav-wrapper">
+                <a href="#top#" class="horizontal-nav--item"><img class="icon" alt="Top" src="img/top.svg"/></a>
+            </div>
+        </nav>
+        <h2 class="article--info">Template</h2>
+        <div class="article--content">
+            {include="_settings_template"}
+        </div>
+    </div>
+</article>
+
+{*---------------------------------------------------------------------------*}
+
+<article class="article" id="tab-users">
+    <div class="article--wrapper">
+        <nav class="article--nav horizontal-nav">
+            <div class="article--nav-wrapper">
+                <a href="#top#" class="horizontal-nav--item"><img class="icon" alt="Top" src="img/top.svg"/></a>
+            </div>
+        </nav>
+        <h2 class="article--info">Users</h2>
+        <div class="article--content">
+            {include="_settings_users"}
+        </div>
+    </div>
+</article>
+
+{*---------------------------------------------------------------------------*}
+
+<article class="article" id="tab-sharing">
+    <div class="article--wrapper">
+        <nav class="article--nav horizontal-nav">
+            <div class="article--nav-wrapper">
+                <a href="#top#" class="horizontal-nav--item"><img class="icon" alt="Top" src="img/top.svg"/></a>
+            </div>
+        </nav>
+        <h2 class="article--info">Sharing</h2>
+        <div class="article--content">
+            {include="_settings_sharing"}
+        </div>
+    </div>
+</article>
+
+{*---------------------------------------------------------------------------*}
+
+<article class="article" id="tab-misc">
+    <div class="article--wrapper">
+        <nav class="article--nav horizontal-nav">
+            <div class="article--nav-wrapper">
+                <a href="#top#" class="horizontal-nav--item"><img class="icon" alt="Top" src="img/top.svg"/></a>
+            </div>
+        </nav>
+        <h2 class="article--info">Misc</h2>
+        <div class="article--content">
+            {include="_settings_misc"}
+        </div>
+    </div>
+</article>
+
+
+
+{include="_end"}

@@ -90,7 +90,7 @@ class SerializationSwitch {
 		// divide it into parts in the place of a ","
 		$accept = explode(',', $accept);
 
-		$accepted_types = Array();
+		$accepted_types = array();
 		foreach ($accept as $a) {
 			$q = 1; // default quality is 1
 			if (strpos($a, ';q=')) { // check if there is a different quality

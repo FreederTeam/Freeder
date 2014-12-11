@@ -1,0 +1,22 @@
+{$active_menu=''}
+{include="_begin"}
+
+{$empty_var=refresh_feeds($feeds_to_refresh)}
+
+<article class="article">
+    <div class="article--wrapper">
+        <h1 class="article--title">Synchronizing…</h1>
+        <h2 class="article--info">Please wait while your feeds are being refreshed</h2>
+        <div class="article--content">
+            <p>
+                {$empty_var=refresh_feeds($feeds_to_refresh)}
+                You will be redirected to <a href="/">homepage</a> in 2s.
+            </p>
+            <script type="text/javascript">
+                window.setTimeout(function () { window.location = 'index.php'; }, 2000);
+            </script>
+        </div>
+    </div>
+</article>
+
+{include="_end"}

@@ -1,0 +1,24 @@
+{* Settings tab about users *}
+
+<section>
+	<form method="post" action="#">
+		<div class="form-item">
+			Leave these fields blank if you don't want to change your password.
+		</div>
+
+		<div class="form-item">
+			<input type="password" name="current_password" id="current_password" placeholder="Current password" />
+		</div>
+
+		<div class="form-item">
+			<input type="password" name="password" id="password" placeholder="New password" />
+		</div>
+
+		<div class="form-item">
+			<input type="password" name="password_check" id="password_check" placeholder="New password (again)" />
+		</div>
+
+		<input type="submit" value="Save" />
+		<input type="hidden" name="token" value="{function="generate_token('settings_form_user')"}" />
+	</form>
+</section>

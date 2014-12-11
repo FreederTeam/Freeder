@@ -11,13 +11,9 @@ require_once('SerializationSwitch.class.php');
 require_once('Router.class.php');
 
 // Create serialization switch
-$switch = new SerializationSwitch;
-
-$json_serializer = new JSONSerializer;
-$switch->register('application/json', $json_serializer);
-
-$form_serializer = new FormSerializer;
-$switch->register('application/x-www-form-urlencoded', $form_serializer);
+$serializer = new SerializationSwitch;
+$serializer->register('application/json', new JSONSerializer);
+$serializer->register('application/x-www-form-urlencoded', new FormSerializer);
 
 // Create router
 $router = new Router;
@@ -25,36 +21,33 @@ $router = new Router;
 
 
 // Decode request
-$raw_body = file_get_contents('php://input');
+$body = file_get_contents('php://input');
 if (!empty($raw_body)) {
 	$body_type = $_SERVER['CONTENT_TYPE'];
-	$body = $switch->deserialize($raw_body, $body_type);
-} else {
-	$body = $raw_body;
+	$body = $serializer->deserialize($body, $body_type);
 }
 
-// Get API request path
+// Get API request path (`path` or `p` variable from querystring)
 if (isset($_GET['path'])) $path = $_GET['path']; // path parameter is prioritary
 else if (isset($_GET['p'])) $path = $_GET['p'];
 else $path = '/'; // Default to root
 
 
 // Call router
-$entrypoint = $router->handle($path);
+$entrypoint = $router->handle($path, $body);
 
-// Perform requested action
-$response = $entrypoint->run($body);
+// Perform API action
+$response = $entrypoint($body);
 
 
 // Encode response according to request's Accept header
 $accepted_types = SerializationSwitch::parse_accept_header($_SERVER['HTTP_ACCEPT']);
-$response_type = $switch->best_registered_type($accepted_types);
+$response_type = $serializer->best_registered_type($accepted_types);
 
-$encoded_response = $switch->serialize($response, $response_type);
+$encoded_response = $serializer->serialize($response, $response_type);
 
 // Write response
 header("Content-Type: $response_type");
 echo($encoded_response);
-
 
 

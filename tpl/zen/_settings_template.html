@@ -1,0 +1,47 @@
+{* Settings tab about template *}
+
+<section>
+    <form method="post" action="#">
+        <div class="form-item">
+            <label for="template">Template: </label>
+            <select name="template" id="template">
+                {loop="$templates"}
+                    <option value="{$value['path']}" {if="$value['current']"}selected="selected"{/if}>{$value['name']}</option>
+                {/loop}
+            </select>
+        </div>
+
+        <div class="form-item">
+            Display entries: <br/>
+            <input type="radio" name="display_entries" id="display_entries_full" value="content" {if="$config->display_entries == 'content'"}checked="checked"{/if}/>
+            <label for="display_entries_full">Full entry</label><br/>
+
+            <input type="radio" name="display_entries" id="display_entries_desc" value="description" {if="$config->display_entries == 'description'"}checked="checked"{/if}/>
+            <label for="display_entries_desc">Only the description</label><br/>
+
+            <input type="radio" name="display_entries" id="display_entries_titles" value="title" {if="$config->display_entries == 'title'"}checked="checked"{/if}/>
+            <label for="display_entries_titles">Only titles</label>
+        </div>
+
+        <div class="form-item">
+            Open items in a new tab?
+            <input type="radio" name="open_items_new_tab" value="0" id="open_items_new_tab_no" {if="$config->open_items_new_tab == 0"}checked="checked"{/if}/>
+            <label for="open_items_new_tab_no">No</label>
+
+            <input type="radio" name="open_items_new_tab" value="1" id="open_items_new_tab_yes" {if="$config->open_items_new_tab != 0"}checked="checked"{/if}/>
+            <label for="open_items_new_tab_yes">Yes</label>
+        </div>
+
+        <div class="form-item">
+            Mark as read on click on title?
+            <input type="radio" name="mark_read_click" value="0" id="mark_read_click_no" {if="$config->mark_read_click == 0"}checked="checked"{/if}/>
+            <label for="mark_read_click_no">No</label>
+
+            <input type="radio" name="mark_read_click" value="1" id="mark_read_click_yes" {if="$config->mark_read_click != 0"}checked="checked"{/if}/>
+            <label for="mark_read_click_yes">Yes</label>
+        </div>
+
+        <input type="submit" value="Save" />
+        <input type="hidden" name="token" value="{function="generate_token('settings_form_template')"}" />
+    </form>
+</section>

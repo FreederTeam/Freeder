@@ -1,0 +1,27 @@
+{* Settings tab about entries *}
+
+<section>
+    <form method="post" action="#">
+        <div class="form-item">
+            Tag entries from the tags in the feeds?
+            <input type="radio" name="import_tags_from_feeds" id="import_tags_from_feeds_yes" value="1" {if="$config->import_tags_from_feeds != 0"}checked="checked"{/if} />
+            <label for="import_tags_from_feeds_yes">Yes</label>
+            <input type="radio" name="import_tags_from_feeds" id="import_tags_from_feeds_no" value="0" {if="$config->import_tags_from_feeds == 0"}checked="checked"{/if} />
+            <label for="import_tags_from_feeds_no">No</label>
+        </div>
+
+        <div class="form-item">
+            <label for="entries_to_keep">Number of entries to store per feed:</label>
+            <input type="number" name="entries_to_keep" id="entries_to_keep" value="{$config->entries_to_keep}" />
+
+            <p class="form-item--hint">Set it to 0 to store all entries.</p>
+        </div>
+        <div class="form-item">
+            <label for="entries_per_page">Entries per page:</label>
+            <input type="number" name="entries_per_page" id="entries_per_page" value="{$config->entries_per_page}"/>
+        </div>
+
+        <input type="submit" value="Save" />
+        <input type="hidden" name="token" value="{function="generate_token('settings_form_entries')"}" />
+    </form>
+</section>
