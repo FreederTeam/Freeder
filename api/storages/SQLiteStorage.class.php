@@ -7,7 +7,7 @@
  */
 
 class SQLiteStorage extends AbstractStorage {
-	private $connection = null;
+	private $dbh = null;
 	private static $instance = null;
 
 
@@ -19,8 +19,8 @@ class SQLiteStorage extends AbstractStorage {
 	public function connect() {
 		try {
 			if (is_file(DATA_DIR.DB_FILE)) {
-				$dbh = new PDO('sqlite:'.DATA_DIR.DB_FILE);
-				$dbh->query('PRAGMA foreign_keys = ON');
+				$this->dbh = new PDO('sqlite:'.DATA_DIR.DB_FILE);
+				$this->dbh->query('PRAGMA foreign_keys = ON');
 			}
 		} catch (Exception $e) {
 			exit ('Unable to access to database: '.$e->getMessage().'.');
@@ -29,12 +29,12 @@ class SQLiteStorage extends AbstractStorage {
 
 
 	public function disconnect() {
-		$this->connection = null;
+		$this->dbh = null;
 	}
 
 
-	public function get_connection() {
-		return $this->connection;
+	public function get_dbh() {
+		return $this->dbh;
 	}
 
 
@@ -56,7 +56,7 @@ class SQLiteStorage extends AbstractStorage {
 	 *
 	 * TODO: Refactor me!!!
 	 */
-	function rule2sql($rule, $selection='*', $limit=-1, $offset=-1) {
+	public static function rule2sql($rule, $selection='*', $limit=-1, $offset=-1) {
 		$limit = (int)$limit;
 		$ast = parse_rule($rule);
 		$ast[] = array('by', 'by', ''); // Hacky
@@ -123,7 +123,7 @@ class SQLiteStorage extends AbstractStorage {
 					$status = 'done';
 					break;
 				default:
-					throw new ParseError("Unknown prefix `$word[1]`");
+					throw new Exception("Unknown prefix `$word[1]`");
 				}
 				break;
 			}

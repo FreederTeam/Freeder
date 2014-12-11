@@ -90,6 +90,16 @@ class Entry {
 	 */
 	protected $tags;
 
+	/**
+	 * Storage object
+	 * @var Storage
+	 */
+	protected $storage;
+
+	public function __construct($storage) {
+		$this->storage = $storage;
+	}
+
 
 	/**
 	 * Clean up `authors` attribute of entry.
@@ -148,7 +158,7 @@ class Entry {
 	 * Get the full feed associated with an entry.
 	 */
 	function get_feed() {
-		return Feed($this->parent_id);
+		return new Feed($storage, 'id', $this->parent_id);
 	}
 }
 
