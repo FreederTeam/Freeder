@@ -37,10 +37,14 @@ $(document).ready(function() {
 			if (article.offset().top < 0) {
 				$('.main').animate({
 					scrollTop: $('.main').scrollTop() + article.offset().top
-				}, 500);
+				}, 500, function() {
+					article.remove();
+					place_article_nav();
+				});
+			} else {
+				article.remove();
+				place_article_nav();
 			}
-            article.remove();
-			place_article_nav();
         }, 'json');
     });
 
