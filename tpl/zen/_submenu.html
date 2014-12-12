@@ -24,8 +24,19 @@
 
         <section id="submenu-more">
             <div class="submenu--section">
-                <h4 class="submenu--section-title">Foo</h4>
-                <a href="refresh.php?token={function="generate_token('refresh')"}">Synchronize</a>
+                <h4 class="submenu--section-title">Synchronization</h4>
+				<p>
+					<a href="refresh.php?token={function="generate_token('refresh')"}">Synchronize</a>
+				</p>
+            </div>
+            <div class="submenu--section">
+                <h4 class="submenu--section-title">New feed</h4>
+				<form method="post" action="/settings.php">
+					<input type="text" name="feed_url" id="feed_url" placeholder="Feed URL" />
+					<input type="hidden" name="import_tags_add" value="{$config->import_tags_from_feeds}" />
+					<input type="hidden" name="feed_post" id="feed_post" value="" />
+					<input type="submit" value="Add" />
+				</form>
             </div>
         </section>
 
