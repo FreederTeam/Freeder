@@ -40,7 +40,7 @@ $(document).ready(function() {
 				}, 500, function() {
 					article.remove();
 					place_article_nav();
-					if ($('.article').length == 0 && $('.page-nav--older').length == 0 && $('.page-nav--newer').length == 0)) {
+					if ($('.article').length == 0 && $('.page-nav--older').length == 0 && $('.page-nav--newer').length == 0) {
 						$('.nothing-new').removeClass('hidden');
 					}
 				});
