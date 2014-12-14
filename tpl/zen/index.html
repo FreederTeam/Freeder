@@ -25,4 +25,16 @@
 {include="_article"}
 {/loop}
 
+<article class="article">
+    <div class="article--wrapper">
+		<div class="article--content">
+			<p class="page-nav">
+				{if="$page > 0"}<a href="?p={$page-1}" class="page-nav--newer">Newer entries</a>{/if}
+				{if="$page < $nb_pages - 1"}<a href="?p={$page+1}" class="page-nav--older">Older entries</a>{/if}
+				Page {$page} of {$nb_pages}
+			</p>
+		</div>
+    </div>
+</article>
+
 {include="_end"}

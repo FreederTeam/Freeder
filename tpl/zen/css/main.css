@@ -506,6 +506,25 @@ blockquote {
     background-color: #f0356a;
 }
 
+/* .page-nav */
+
+.page-nav {
+	font-size: 0.8em;
+	color: #555;
+	text-align: center;
+}
+
+.page-nav--older {
+	float: right;
+	color: #8D99BB;
+}
+
+.page-nav--newer {
+	float: left;
+	color: #8D99BB;
+}
+
+
 /* Misc */
 
 .icon {
