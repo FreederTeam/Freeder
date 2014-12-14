@@ -40,6 +40,9 @@ $(document).ready(function() {
 				}, 500, function() {
 					article.remove();
 					place_article_nav();
+					if ($('.article').length == 0 && $('.page-nav--older').length == 0 && $('.page-nav--newer').length == 0)) {
+						$('.nothing-new').removeClass('hidden');
+					}
 				});
 			} else {
 				article.remove();
@@ -54,6 +57,7 @@ $(document).ready(function() {
         var target = '{$base_url}api/tags.php?all=1&tag=_read';
         $.get(target, function(data){
 			$('.article').remove();
+			$('.nothing-new').removeClass('hidden');
         });
     });
 

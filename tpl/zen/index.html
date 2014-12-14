@@ -1,8 +1,7 @@
 {$active_menu='home'}
 {include="_begin"}
 
-{if="empty($entries)"}
-<article class="article">
+<article class="article{if="!empty($entries)"} hidden{/if} nothing-new">
     <div class="article--wrapper">
         {if="empty($feeds)"}
             <h1 class="article--title">Welcome to Freeder!</h1>
@@ -19,7 +18,6 @@
         {/if}
     </div>
 </article>
-{/if}
 
 {loop="$entries"}
 {include="_article"}
