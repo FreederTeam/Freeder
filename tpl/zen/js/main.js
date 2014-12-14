@@ -48,6 +48,15 @@ $(document).ready(function() {
         }, 'json');
     });
 
+    // Mark all as read
+    $('.read-all').click(function(ev){
+		ev.preventDefault();
+        var target = '{$base_url}api/tags.php?all=1&tag=_read';
+        $.get(target, function(data){
+			$('.article').remove();
+        });
+    });
+
     // Submenu
     $('.toggle-submenu').click(function(ev){
         var id = $(this).attr('id').substr(5); // this.id = 'open-submenu-foo'

@@ -114,12 +114,14 @@ input[type="submit"]:hover,
 
 /* Links */
 
+.link-btn,
 a {
     //color: #3667e4;
     color: #e43686;
     text-decoration: none;
 }
 
+.link-btn:hover,
 a:hover {
     //color: #6279b2;
     color: #ed0043;
@@ -538,3 +540,10 @@ blockquote {
     display: none;
 }
 
+.link-btn {
+	border: none;
+	background: none;
+	display: inline;
+	cursor: pointer;
+	font-size: inherit;
+}
