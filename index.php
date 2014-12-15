@@ -21,6 +21,7 @@ if (isset($_SESSION['user'])) {
 
 // Initialize template engine
 $tpl = new SimpleTpl;
+$tpl->base_url = $config->get('base_url');
 if (!is_null($tpl->error)) die($tpl->error);
 
 
