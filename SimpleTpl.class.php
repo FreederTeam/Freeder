@@ -159,6 +159,8 @@ class SimpleTpl {
 		if (!is_null($this->error)) return FALSE;
 
 		// Load included templates
+		chdir(dirname(__FILE__));
+		chdir(dirname($view));
 		$view = $this->load_included($view);
 		if (!is_null($this->error)) return FALSE;
 
@@ -176,33 +178,6 @@ class SimpleTpl {
 		return TRUE;
 	}
 
-
-	/**
-	 * Clean path by removing useless .. and .
-	 * @param $path: Path to clean
-	 * @return clean path
-	 */
-	public static function clean_path($path) {
-		return preg_replace_callback(
-			'#^((?:\\.\\./)*)(.*)#', 
-			function($matches){
-				$prefix = $matches[1]; // Leading ../
-				$path = $matches[2];   // Remaining path
-
-				// Remove ./
-				$path = preg_replace('#/\\./#', '/', $path);
-				$path = preg_replace('#(^\\./)|(/\\.$)#', '', $path);
-
-				// Remove ../
-				while (preg_match('#(^|/)\\.\\.(/|$)#', $path)) {
-					$path = preg_replace('#(^|/)[^/]*/\\.\\.(?:/|$)#', '$1', $path);
-				}
-
-				return $prefix.$path;
-			},
-			$path
-		);
-	}
 
 }
 
