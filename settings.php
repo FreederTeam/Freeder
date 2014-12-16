@@ -28,10 +28,10 @@ if (!empty($_POST['synchronization_type']) && !empty($_POST['token']) && check_t
 		$config->save();
 		require_once(INC_DIR.'cron.php');
 		if ($config->synchronization_type == 'cron') {
-			register_crontask('0 * * * * cd '.dirname(__FILE__).' && php refresh.php > logs/cron.log 2>&1', 'FREEDER AUTOADDED CRONTASK ('.$config->base_url.')');
+			register_crontask('0 * * * * cd '.dirname(__FILE__).' && php refresh.php > logs/cron.log 2>&1 # FREEDER AUTOADDED CRONTASK');
 		}
 		else {
-			unregister_crontask('FREEDER AUTOADDED CRONTASK ('.$config->base_url.')');
+			unregister_crontask('0 * * * * cd '.dirname(__FILE__).' && php refresh.php > logs/cron.log 2>&1 # FREEDER AUTOADDED CRONTASK');
 		}
 	}
 
