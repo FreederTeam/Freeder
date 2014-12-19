@@ -49,7 +49,7 @@ function get_crontab() {
 /**
  * Add the crontask in the crontab.
  */
-function register_crontask ($crontask) {
+function register_crontask ($crontask, $comment='FREEDER AUTOMATED CRONTASK') {
 	if (preg_match(build_regex_validate_crontask(), $crontask) != 1) {
 		return false;
 	}
@@ -57,13 +57,13 @@ function register_crontask ($crontask) {
 	$already_existed = false;
 
 	foreach ($crontab as $key=>$line) {
-		if ($line == $crontask) {
+		if (preg_match('#\#\s*'.$comment.'\s*$#', $line) === 1) {
 			$already_existed = true;
-			$crontab[$key] = $crontask;
+			$crontab[$key] = $crontask . ' # ' . $comment;
 		}
 	}
 	if (!$already_existed) {
-		$crontab[] = $crontask;
+		$crontab[] = $crontask . ' # ' . $comment;
 	}
 
 	return write_crontab($crontab);
@@ -73,11 +73,11 @@ function register_crontask ($crontask) {
 /**
  * Remove the crontask from the crontab.
  */
-function unregister_crontask($crontask) {
+function unregister_crontask($match) {
 	$crontab = get_crontab();
 
 	foreach ($crontab as $key=>$line) {
-		if ($line == $crontask) {
+		if (strstr($line, $match) !== false) {
 			unset($crontab[$key]);
 		}
 	}
