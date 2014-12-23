@@ -1,5 +1,24 @@
 
 
+/**
+ * Place current article navigation items on top right hand corner of the current view
+ */
+function place_article_nav() {
+	$('.article--nav').each(function(i){
+		var article = $(this).parents('.article');
+
+		// If the article is the first one displayed
+		if (article.offset().top < 0 && article.offset().top + article.outerHeight() - $(this).outerHeight() > 0) {
+			// We fix its navigation menu
+			$(this).css('top', -article.offset().top);
+		}
+		else {
+			//$(this).css('top', '');
+		}
+	});
+}
+
+
 $(document).ready(function() {
     // Toggle sections
     $('.toggle').addClass('closed');
@@ -14,8 +33,32 @@ $(document).ready(function() {
         var entry_id = article.attr('id').substr(6); // article.id = 'entry-345bc6a43b'
         var target = '{$base_url}api/tags.php?entry=' + entry_id + '&tag=_read';
         $.get(target, function(data){
-            article.remove();
+			// If top of article to mark as read is over current view, scroll to its top
+			if (article.offset().top < 0) {
+				$('.main').animate({
+					scrollTop: $('.main').scrollTop() + article.offset().top
+				}, 500, function() {
+					article.remove();
+					place_article_nav();
+					if ($('.article').length <= 1 && $('.page-nav--older').length == 0 && $('.page-nav--newer').length == 0) {
+						$('.nothing-new').removeClass('hidden');
+					}
+				});
+			} else {
+				article.remove();
+				place_article_nav();
+			}
         }, 'json');
+    });
+
+    // Mark all as read
+    $('.read-all').click(function(ev){
+		ev.preventDefault();
+        var target = '{$base_url}api/tags.php?all=1&tag=_read';
+        $.get(target, function(data){
+			$('.article').remove();
+			$('.nothing-new').removeClass('hidden');
+        });
     });
 
     // Submenu
@@ -38,16 +81,6 @@ $(document).ready(function() {
     });
 
     // Article navigation following view
-    $('.main').scroll(function(ev){
-        $('.article--nav').each(function(i){
-            var article = $(this).parents('.article');
-
-            // If the article is the first one displayed
-            if (article.offset().top < 0 && article.offset().top + article.outerHeight() - $(this).outerHeight() > 0) {
-                // We fix its navigation menu
-                $(this).css('top', -article.offset().top);
-            }
-        });
-    });
+    $('.main').scroll(place_article_nav);
 });
 

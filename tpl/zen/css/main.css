@@ -68,7 +68,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 pre {
-    overflow: scroll;
+    overflow: auto;
 }
 
 
@@ -114,12 +114,14 @@ input[type="submit"]:hover,
 
 /* Links */
 
+.link-btn,
 a {
     //color: #3667e4;
     color: #e43686;
     text-decoration: none;
 }
 
+.link-btn:hover,
 a:hover {
     //color: #6279b2;
     color: #ed0043;
@@ -409,7 +411,7 @@ blockquote {
 
 /* Content hacks (based on usual practices) */
 .wp_syntax {
-    overflow: scroll;
+    overflow: auto;
 }
 
 /* .link-list */
@@ -506,6 +508,25 @@ blockquote {
     background-color: #f0356a;
 }
 
+/* .page-nav */
+
+.page-nav {
+	font-size: 0.8em;
+	color: #555;
+	text-align: center;
+}
+
+.page-nav--older {
+	float: right;
+	color: #8D99BB;
+}
+
+.page-nav--newer {
+	float: left;
+	color: #8D99BB;
+}
+
+
 /* Misc */
 
 .icon {
@@ -519,3 +540,10 @@ blockquote {
     display: none;
 }
 
+.link-btn {
+	border: none;
+	background: none;
+	display: inline;
+	cursor: pointer;
+	font-size: inherit;
+}

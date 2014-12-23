@@ -130,6 +130,9 @@ function install() {
 			if(empty($error)) {
 				$error = install_db();
 				if(empty($error)) {
+					// Add the crontask
+					register_crontask('0 * * * * cd '.dirname(__FILE__).'../ && php refresh.php > logs/cron.log 2>&1', 'FREEDER AUTOADDED CRONTASK ('.$config->base_url.')');
+
 					$_SESSION['user'] = new stdClass;
 					$_SESSION['user']->login = $_POST['login'];
 					$_SESSION['is_admin'] = 1;
