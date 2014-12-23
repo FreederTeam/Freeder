@@ -246,8 +246,8 @@ function feed2array($feed) {
 
 
 			// Parse each items
+			$c = 0;
 			foreach ($items as $item) {
-				$c = key($flux['items']) + 1;
 				if ($type == "RSS" || $type == 'RDF') {
 					if ($item->title) {
 						$flux['items'][$c]['title'] = (string)$item->title;
@@ -470,6 +470,7 @@ function feed2array($feed) {
 				if(empty($flux['items'][$c]['authors']) && !empty($flux['infos']['authors'])) {
 					$flux['items'][$c]['authors'] = $flux['infos']['authors'];
 				}
+				$c++;
 			}
 			return $flux;
 		}
