@@ -220,7 +220,7 @@ function feed2array($feed) {
 					}
 				}
 				if ($feed_obj->category) {
-					foreach ($feed->obj->category as $tag) {
+					foreach ($feed_obj->category as $tag) {
 						if (!empty($tag['label'])) {
 							$flux['infos']['categories'][] = (string)$tag['label'];
 						}
