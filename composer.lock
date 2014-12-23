@@ -1,0 +1,65 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "This file is @generated automatically"
+    ],
+    "hash": "2ee5db4bf0438de799d0b67e81928134",
+    "packages": [
+        {
+            "name": "stefangabos/zebra_curl",
+            "version": "1.2.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/stefangabos/Zebra_cURL.git",
+                "reference": "f435008bab7398951df821957ee56fc8f69a8ccc"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/stefangabos/Zebra_cURL/zipball/f435008bab7398951df821957ee56fc8f69a8ccc",
+                "reference": "f435008bab7398951df821957ee56fc8f69a8ccc",
+                "shasum": ""
+            },
+            "require": {
+                "lib-curl": "*",
+                "php": ">=5.0.2"
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "Zebra_cURL.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "LGPL-3.0"
+            ],
+            "authors": [
+                {
+                    "name": "Stefan Gabos",
+                    "email": "contact@stefangabos.ro",
+                    "homepage": "http://stefangabos.ro/",
+                    "role": "Developer"
+                }
+            ],
+            "description": "A high performance PHP library acting as a wrapper to PHP's libcurl library allowing multiple requests at once asynchronously, in parallel",
+            "homepage": "http://stefangabos.ro/php-libraries/zebra-curl/",
+            "keywords": [
+                "asynchronous",
+                "curl",
+                "libcurl",
+                "php",
+                "request",
+                "wrapper"
+            ],
+            "time": "2014-11-12 06:48:36"
+        }
+    ],
+    "packages-dev": [],
+    "aliases": [],
+    "minimum-stability": "stable",
+    "stability-flags": [],
+    "prefer-stable": false,
+    "platform": [],
+    "platform-dev": []
+}
