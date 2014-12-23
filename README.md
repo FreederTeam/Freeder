@@ -1,22 +1,28 @@
 Freeder
 =======
 
-Freeder is a new open-source RSS feeds reader, as announced [here](http://phyks.me/2014/07/lecteur_rss_ideal.html).
+Freeder is an open-source RSS feeds reader.
 
+Screenshots
+-----------
 
-Disclaimer
-----------
+*Zen theme*
 
-It is currently a WIP, more information will come soon. In the mean time, it may be only interesting for devs.
+![Freeder installation page](https://raw.githubusercontent.com/FreederTeam/Freeder/master/doc/screenshots/zen_install.png)
 
-_Note:_ There are some TODOs in the files. If you are a developper and want to give a hand, this is what you should look for :)
+![Freeder welcome page](https://raw.githubusercontent.com/FreederTeam/Freeder/master/doc/screenshots/zen_welcome.png)
 
-**Important**: From time to time, when you `git pull` the repo, your Freeder install might not work anymore (blank screen in most cases, or database related errors). As we are currently in heavy WIP, we might change the database structure from time to time, and not implement backward compatibility. In such cases, please refer to the commit log for more infos, or reinstall Freeder if you don't want to bother.
+![Freeder index page](https://raw.githubusercontent.com/FreederTeam/Freeder/master/doc/screenshots/zen_index.png)
+
+![Freeder settings page](https://raw.githubusercontent.com/FreederTeam/Freeder/master/doc/screenshots/zen_settings.png)
+
+*tmos theme*
+
+![Freeder installation page](https://raw.githubusercontent.com/FreederTeam/Freeder/master/doc/screenshots/install.png)
+
 
 Installation
 ------------
-
-![Freeder installation page](https://raw.githubusercontent.com/FreederTeam/Freeder/master/doc/screenshots/install.png)
 
 ### Cloning this repository
 
@@ -44,6 +50,16 @@ Then just load the index page and it will automatically install Freeder if it's 
 ### Reinstallation
 
 If you want to reinit your Freeder installation, you just have to clean up the `data/` directory.
+
+
+Development branch
+------------------
+
+The `dev` branch is more likely to be up to date and includes last improvments.
+
+But from time to time, when you `git pull` the `dev` branch, your Freeder install might not work anymore (blank screen in most cases, or database related errors).
+
+As we are currently in heavy WIP, we might change the database structure from time to time, and not insure backward compatibility. In such cases, please refer to the commit log for more infos, or reinstall Freeder if you don't want to bother.
 
 
 Getting help
