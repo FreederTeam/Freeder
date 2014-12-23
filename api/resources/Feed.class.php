@@ -60,10 +60,10 @@ class Feed {
 	protected $user_ttl;
 
 	/**
-	 * Image of the feed, e.g. favicon
+	 * Images of the feed, e.g. favicon
 	 * @var array
 	 */
-	protected $image;
+	protected $images;
 
 	/**
 	 * Post parameters to send to refresh the feed
@@ -89,11 +89,19 @@ class Feed {
 	protected $updated_feeds = array();
 
 
-	public function __construct($storage, $field="", $value="") {
+	public function __construct($storage, $filters=array()) {
+		if (! $storage instanceof AbstractStorage) {
+			throw Exception("Storage argument is not a valid Storage instance.");
+		}
 		$this->storage = $storage;
 
-		if (!empty($field) && !empty($value)) {
-			$this->load_by($field, $value);
+		if (!empty($filters)) {
+			foreach($filters as $key=>$value) {
+				if (!property_exists($this, $key)) {
+					throw Exception("Invalid field specified in filters.");
+				}
+			}
+			$this->load_by($filters);
 		}
 	}
 
@@ -161,12 +169,12 @@ class Feed {
 		$this->$user_ttl = $user_ttl;
 	}
 
-	public function get_image() {
-		return $this->$image;
+	public function get_images() {
+		return $this->$images;
 	}
 
-	public function set_image($image) {
-		$this->$image = $image;
+	public function set_images($images) {
+		$this->$images = $images;
 	}
 
 	public function get_post() {
@@ -268,10 +276,24 @@ class Feed {
 	 * @param	$field	Filtering field.
 	 * @parma	$value	Expected value for the field.
 	 */
-	function load_by($field, $value) {
-		$dbh = $this->storage->get_dbh;
-		$dbh->prepare('SELECT id, title, user_title, url, links, description, ttl, user_ttl, image, post, import_tag_from_feed FROM feeds WHERE '.$field.'=:'.$field);
-		$query->bindValue(':'.$field, $value);
+	function load_by($fields) {
+		$dbh = $this->storage->get_dbh();
+		$query = 'SELECT id, title, user_title, url, links, description, ttl, user_ttl, image, post, import_tag_from_feed FROM feeds';
+		$i = true;
+		foreach($fields as $field=>$value) {
+			if ($i) {
+				$query .= " WHERE ";
+			}
+			else {
+				$query .= " AND ";
+			}
+			$query .= $field."=:".$field;
+			$i = false;
+		}
+		$query = $dbh->prepare($query);
+		foreach($fields as $field=>$value) {
+			$query->bindValue(':'.$field, $value);
+		}
 		$query->execute();
 		$feed = $query->fetch(PDO::FETCH_ASSOC);
 
@@ -297,3 +319,7 @@ class Feed {
 }
 
 
+require_once('../storages/SQLiteStorage.class.php');
+$storage = SQLiteStorage::get_instance();
+$f = new Feed($storage, array('id'=>8));
+var_dump($f);

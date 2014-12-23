@@ -6,6 +6,9 @@
  *  @brief Storage class using SQLite backend, as a singleton pattern.
  */
 
+require_once("../../constants.php");
+require_once("../Storage.class.php");
+
 class SQLiteStorage extends AbstractStorage {
 	private $dbh = null;
 	private static $instance = null;
@@ -18,10 +21,8 @@ class SQLiteStorage extends AbstractStorage {
 
 	public function connect() {
 		try {
-			if (is_file(DATA_DIR.DB_FILE)) {
-				$this->dbh = new PDO('sqlite:'.DATA_DIR.DB_FILE);
-				$this->dbh->query('PRAGMA foreign_keys = ON');
-			}
+			$this->dbh = new PDO('sqlite:'.dirname(__FILE__).'/../../'.DATA_DIR.DB_FILE);
+			$this->dbh->query('PRAGMA foreign_keys = ON');
 		} catch (Exception $e) {
 			exit ('Unable to access to database: '.$e->getMessage().'.');
 		}
