@@ -5,27 +5,15 @@
  *  @license   MIT (See the LICENSE file for copying permissions)
  */
 
+require_once('constants.php');
 
+require_once(COMPOSER_AUTOLOAD);
+require_once(LIB_DIR.'Redbean/rb.php');
 
-require_once('Config.class.php');
-require_once('SimpleTpl.class.php');
+/* DEBUG CODE */
+$config = new stdClass;
+$config->debug = true;
+date_default_timezone_set("Europe/Paris");
+/* END OF DEBUG CODE */
 
-
-// Initialize config
-$config = new Config;
-if (!is_null($config->error)) die($config->error);
-if (isset($_SESSION['user'])) {
-	$config->load($_SESSION['user']);
-}
-
-
-// Initialize template engine
-$tpl = new SimpleTpl;
-$tpl->base_url = $config->get('base_url');
-if (!is_null($tpl->error)) die($tpl->error);
-
-
-// Render webapp
-$theme = $config->get('theme');
-$tpl->render($theme.'index');
-if (!is_null($tpl->error)) die($tpl->error);
+require_once('app/start.php');

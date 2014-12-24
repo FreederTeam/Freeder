@@ -1,5 +1,6 @@
 {
     "require": {
-        "stefangabos/zebra_curl": "~1.2"
+        "stefangabos/zebra_curl": "~1.2",
+		"slim/slim": "2.*"
     }
 }

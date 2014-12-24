@@ -55,6 +55,12 @@ define('CURRENT_VERSION', 'B0.1');
 // Data directory (relative path from Freeder root)
 define('DATA_DIR', 'data/');
 
+// Lib directory (relative path from Freeder root)
+define('LIB_DIR', 'lib/');
+
+// Relative path from Freeder root to Composer autoloader
+define('COMPOSER_AUTOLOAD', 'vendor/autoload.php');
+
 // Database file (relative to DATA_DIR)
 define('DB_FILE', 'db.sqlite3');
 
