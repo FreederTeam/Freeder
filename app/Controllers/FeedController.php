@@ -46,17 +46,20 @@ function import_downloaded_feed($result) {
 		return false;
 	}
 
+	if (null !== R::findOne('feed', 'url = ?', [$result->info['url']])) {
+		// Already exists
+		exit('Feed already exists.'); // TODO
+	}
+
 	// Populate a feed from the parsed body
 	$feed = R::dispense('feed');
-	var_dump($feed->update);
-	$feed->populate_from_array($parsed_feed);
+	$feed->populate_from_array($parsed_feed, false);  // TODO : import tags
 
 	// Complete with extra params
 	$feed->has_user_title = 0;
 	$feed->url = $result->info['url'];  // TODO: Compare to original_url to find redirections
 	$feed->has_user_ttl = 0;  // TODO
 	$feed->post = array();  // TODO
-	$feed->import_tag_from_feed = 0;  // TODO
 
 	// TODO: Handle output of multiple import as JSON
 	echo R::store($feed);

@@ -5,6 +5,7 @@
  *  @license   MIT (See the LICENSE file for copying permissions)
  */
 
+namespace Model;
 
 require_once dirname(__FILE__)."/../core/tools.php";
 
@@ -12,7 +13,7 @@ require_once dirname(__FILE__)."/../core/tools.php";
  * Entries represent articles from RSS feeds.
  * This class handles entries retrieval and management.
  */
-class Model_Entry extends Redbean_SimpleModel {
+class Entry extends \RedbeanPHP\SimpleModel {
 	/**
 	 *  Handle JSON serialization and verifications before storage
 	 */
@@ -35,8 +36,10 @@ class Model_Entry extends Redbean_SimpleModel {
 
 	/**
 	 * Populate this bean from an array description (as returned by feed2array)
+	 * @param	$array			The parsed entry array.
+	 * @param	$import_tags	Whether tags should be imported or not.
 	 */
-	public function populate_from_array($array) {
+	public function populate_from_array($array, $import_tags=false) {
 		$this->bean->authors = isset($array['authors']) ? $array['authors'] : array();
 		$this->bean->title = isset($array['title']) ? $array['title'] : '';
 		$this->bean->links = isset($array['links']) ? $array['links'] : array();
@@ -59,8 +62,12 @@ class Model_Entry extends Redbean_SimpleModel {
 			$this->bean->comments = '';
 		}
 		$this->bean->guid = isset($array['guid']) ? $array['guid'] : '';
-		$this->bean->pub_date = isset($array['pubDate']) ? $array['pubDate'] : new DateTime("now");
-		$this->bean->last_update = isset($array['updated']) ? $array['updated'] : new DateTime("@0");
+		$this->bean->pub_date = isset($array['pubDate']) ? $array['pubDate'] : new \DateTime("now");
+		$this->bean->last_update = isset($array['updated']) ? $array['updated'] : new \DateTime("@0");
+
+		if ($import_tags && !empty($array['categories'])) {
+			\R::tag($this->bean, $array['categories']);
+		}
 	}
 
 
@@ -110,15 +117,13 @@ class Model_Entry extends Redbean_SimpleModel {
 
 
 	/**
-	 * Check wether an entry has the tag `$tag` or not.
+	 * Check wether an entry has the tags `$tags` (provided as a list) or not.
+	 * @param	$tags	A list of tags.
+	 * @param	$all	Whether all tags should be there or not.
 	 * @return `true` if the entry has the tag `$tag`, `false` otherwise.
 	 */
-	public function has_tag($tag) {
-		// Load the full tag list
-		reset($this->bean->sharedTagList);
-		end($this->bean->sharedTagList);
-		// Search for the specific tag
-		return empty(array_filter($this->bean->sharedTagList, function ($v) use ($tag) { $v->name = $tag; }));
+	public function has_tag($tags, $all=false) {
+		return \R::hasTag($this->bean, $tags, $all);
 	}
 }
 

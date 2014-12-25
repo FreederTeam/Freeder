@@ -5,10 +5,11 @@
  *  @license   MIT (See the LICENSE file for copying permissions)
  */
 
+namespace Model;
 
 /**
  * Feed represent a RSS feed.
  * This class handles tags retrieval and management.
  */
-class Model_Tag extends Redbean_SimpleModel {
+class Tag extends \RedbeanPHP\SimpleModel {
 }

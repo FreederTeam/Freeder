@@ -5,10 +5,10 @@
  *  @license   MIT (See the LICENSE file for copying permissions)
  */
 
-
+namespace Model;
 /**
  * Feed represent a RSS feed.
  * This class handles config retrieval and management.
  */
-class Model_Config extends Redbean_SimpleModel {
+class Config extends \RedbeanPHP\SimpleModel {
 }

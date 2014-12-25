@@ -5,10 +5,11 @@
  *  @license   MIT (See the LICENSE file for copying permissions)
  */
 
+namespace Model;
 
 /**
  * Feed represent a RSS feed.
  * This class handles users retrieval and management.
  */
-class Model_User extends Redbean_SimpleModel {
+class User extends \RedbeanPHP\SimpleModel {
 }
