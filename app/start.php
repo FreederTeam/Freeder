@@ -1,5 +1,5 @@
 <?php
-R::setup("sqlite:/tmp/db.sqlite3");
+R::setup("sqlite:".dirname(__FILE__)."/../data/db.sqlite3");
 R::freeze(!$config->debug);
 R::debug($config->debug);
 

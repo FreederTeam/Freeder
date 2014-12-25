@@ -6,3 +6,4 @@ unversionned/
 .htaccess
 unit/out/
 unit/diff/
+cache/*

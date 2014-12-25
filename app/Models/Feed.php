@@ -46,11 +46,12 @@ class Model_Feed extends Redbean_SimpleModel {
 		$this->bean->description = isset($infos['description']) ? $infos['description'] : '';
 		$this->bean->ttl = isset($infos['ttl']) ? $infos['ttl'] : 0;
 		$this->bean->image = isset($infos['image']) ? $infos['image'] : array();
+		$this->xownEntryList = array();
 
 		foreach ($array['items'] as $parsed_entry) {
 			$entry = R::dispense('entry');
 			$entry->populate_from_array($parsed_entry);
-			$this->bean->ownEntryList[] = $entry;
+			$this->bean->xownEntryList[] = $entry;
 		}
 
 		// TODO: Tags
