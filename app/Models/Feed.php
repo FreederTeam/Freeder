@@ -15,10 +15,9 @@ require_once dirname(__FILE__)."/Entry.php";
 
 
 /**
- * Feed represent a RSS feed.
- * This class handles feed retrieval and management.
+ * BaseFeed represents a base feed, common to multiple users.
  */
-class Feed extends \RedbeanPHP\SimpleModel {
+class BaseFeed extends \RedbeanPHP\SimpleModel {
 	/**
 	 *  Handle JSON serialization and verifications before storage
 	 */
@@ -29,7 +28,6 @@ class Feed extends \RedbeanPHP\SimpleModel {
 
 		$this->bean->links = json_encode($this->bean->links);
 		$this->bean->image = json_encode($this->bean->image);
-		$this->bean->post = json_encode($this->bean->post);
 	}
 
 	/**
@@ -38,7 +36,6 @@ class Feed extends \RedbeanPHP\SimpleModel {
 	public function open() {
 		$this->bean->links = json_decode($this->bean->links, true);
 		$this->bean->image = json_decode($this->bean->image, true);
-		$this->bean->post = json_decode($this->bean->post, true);
 	}
 
 	/**
@@ -48,12 +45,12 @@ class Feed extends \RedbeanPHP\SimpleModel {
 	 */
 	public function populate_from_array($array, $import_tags=false) {
 		$infos = $array['infos'];
+		$this->bean->last_refresh = time();
 		$this->bean->title = isset($infos['title']) ? $infos['title'] : '';
 		$this->bean->links = isset($infos['links']) ? $infos['links'] : array();
 		$this->bean->description = isset($infos['description']) ? $infos['description'] : '';
 		$this->bean->ttl = isset($infos['ttl']) ? $infos['ttl'] : 0;
 		$this->bean->image = isset($infos['image']) ? $infos['image'] : array();
-		$this->bean->import_tags_from_feed = intval($import_tags);
 		$this->xownEntryList = array();
 
 		foreach ($array['items'] as $parsed_entry) {
@@ -66,10 +63,30 @@ class Feed extends \RedbeanPHP\SimpleModel {
 			\R::tag($this->bean, $infos['categories']);
 		}
 	}
+}
+
+
+/**
+ * UserFeed represents a user feed, linked to a user and a specific BaseFeed.
+ */
+class UserFeed extends \RedbeanPHP\SimpleModel {
+	/**
+	 *  Handle JSON serialization and verifications before storage
+	 */
+	public function update() {
+		$this->bean->post = json_encode($this->bean->post);
+	}
+
+	/**
+	 *  Handle JSON deserialization at loading
+	 */
+	public function open() {
+		$this->bean->post = json_decode($this->bean->post, true);
+	}
 
 	/**
 	 * Check wether a feed has the tags `$tags` (provided as a list) or not.
-	 * @param	$tags	A list of tags.
+	 * @param	$tags	A list of tags=array(.
 	 * @param	$all	Whether all tags should be there or not.
 	 * @return `true` if the entry has the tag `$tag`, `false` otherwise.
 	 */

@@ -18,19 +18,7 @@ class Downloader {
 	 * @return `true` if the `curl` module is available, `false` otherwise.
 	 */
 	static function has_curl() {
-		$curl_functions = array(
-			'curl_multi_init', 'curl_init', 'curl_setopt_array',
-			'curl_setopt', 'curl_multi_add_handle',
-			'curl_multi_exec', 'curl_multi_select',
-			'curl_multi_getcontent', 'curl_getinfo',
-			'curl_multi_remove_handle', 'curl_close',
-			'curl_multi_close' );
-		foreach ($curl_functions as $curl_function) {
-			if (! function_exists ($curl_function)) {
-				return false;
-			}
-		}
-		return true;
+		return extension_loaded('curl');
 	}
 
 	/**

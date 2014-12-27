@@ -1,6 +1,7 @@
 {
     "require": {
         "stefangabos/zebra_curl": "~1.2",
-		"slim/slim": "2.*"
+		"slim/slim": "2.*",
+        "mf2/mf2": "~0.2"
     }
 }

@@ -62,8 +62,8 @@ class Entry extends \RedbeanPHP\SimpleModel {
 			$this->bean->comments = '';
 		}
 		$this->bean->guid = isset($array['guid']) ? $array['guid'] : '';
-		$this->bean->pub_date = isset($array['pubDate']) ? $array['pubDate'] : new \DateTime("now");
-		$this->bean->last_update = isset($array['updated']) ? $array['updated'] : new \DateTime("@0");
+		$this->bean->pub_date = isset($array['pubDate']) ? $array['pubDate'] : time();
+		$this->bean->last_update = isset($array['updated']) ? $array['updated'] : 0;
 
 		if ($import_tags && !empty($array['categories'])) {
 			\R::tag($this->bean, $array['categories']);

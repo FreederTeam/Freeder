@@ -7,7 +7,7 @@ R::debug($config->debug);
 
 $app = new \Slim\Slim();
 
-require_once('Controllers/FeedController.php');
+require_once('Controllers/FeedsController.php');
 
 $app->run();
 R::close();

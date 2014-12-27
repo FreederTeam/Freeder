@@ -6,6 +6,8 @@
  *  @brief Various functions, not specific and widely used.
  */
 
+class BreakLoop extends Exception { }
+
 
 /**
  * Check that `$haystack` starts with `$needle`.
