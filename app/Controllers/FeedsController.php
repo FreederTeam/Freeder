@@ -164,21 +164,21 @@ function import_downloaded_feed($result, $feeds) {
 /**
  * Get a list of all the available feeds.
  */
-$app->get('/feeds', function () {
+$app->get('/feeds', 'anonymousOrAuthenticationNeeded', function () use ($app) {
 	$feeds = R::findAll('feed');
-	if (!empty($_GET['updated'])) {
+	if (!empty($app->request->get('updated'))) {
 		update_feeds($feeds);
 	}
-	var_dump($feeds); // TODO
+	echo json_encode(R::exportAll($feeds));  // TODO
 });
 
 
 /**
  * Get all the infos about the specific feed.
  */
-$app->get('/feeds/:id', function ($id) {
+$app->get('/feeds/:id', 'anonymousOrAuthenticationNeeded', function ($id) use ($app) {
 	$feed = R::load('feed', $id);
-	if (!empty($_GET['updated'])) {
+	if (!empty($app->request->get('updated'))) {
 		update_feeds($feed);
 	}
 	$feed = $feed->export();
@@ -195,7 +195,7 @@ $app->get('/feeds/:id', function ($id) {
  *	* ?filter
  *	* ?slice
  */
-$app->get('/feeds/:id/entries', function ($id) {
+$app->get('/feeds/:id/entries', 'anonymousOrAuthenticationNeeded', function ($id) {
 	$entries = R::findAll('entry', 'feed_id = ? ORDER BY pub_date', [$id]);  // TODO; Sort with last update
 	var_dump($entries);  // TODO
 });
@@ -204,7 +204,7 @@ $app->get('/feeds/:id/entries', function ($id) {
 /**
  * Get all the tags associated to specified feed.
  */
-$app->get('/feeds/:id/tags', function ($id) {
+$app->get('/feeds/:id/tags', 'anonymousOrAuthenticationNeeded', function ($id) {
 	$feed = R::load('feed', $id);
 	$tags = R::tag($feed);
 	echo json_encode($tags);
@@ -214,7 +214,7 @@ $app->get('/feeds/:id/tags', function ($id) {
 /**
  * Delete the specified feed and associated data.
  */
-$app->delete('/feeds/:id', function ($id) {
+$app->delete('/feeds/:id', 'authenticationNeeded', function ($id) {
 	$feed = R::trash(R::load('feed', $id));
 });
 
@@ -222,7 +222,7 @@ $app->delete('/feeds/:id', function ($id) {
 /**
  * Update the specified feed with the newly provided infos
  */
-$app->patch('/feeds/:id', function ($id) {
+$app->patch('/feeds/:id', 'authenticationNeeded', function ($id) {
 	// TODO
 });
 
@@ -230,13 +230,12 @@ $app->patch('/feeds/:id', function ($id) {
 /**
  * Add new feeds
  */
-$app->post('/feeds/', function() use ($app) {
+$app->post('/feeds/', 'authenticationNeeded', function() use ($app) {
 	$feed_errors = 0;
 
-	$feeds_in = json_decode($_POST['feeds'], true);
+	$feeds_in = json_decode($app->request->post('feeds'), true);
 	if ($feeds_in === NULL) {
-		$app->response->setStatus(400);
-		return;
+		$app->halt(400);
 	}
 	if (count(array_filter($feeds_in, 'is_array')) != count($feeds_in)) {
 		// If not an array of feed objects, create an array
@@ -251,8 +250,7 @@ $app->post('/feeds/', function() use ($app) {
 	// Check for invalid URLs provided
 	$invalid_urls = array_filter($feeds, function ($f) { return false === filter_var($f['url'], FILTER_VALIDATE_URL); });
 	if (count($invalid_urls) > 0) {
-		$app->response->setStatus(404);
-		return;
+		$app->halt(404);
 	}
 
 	// Retrieve all the provided URLs
