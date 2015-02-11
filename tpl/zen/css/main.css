@@ -350,6 +350,10 @@ blockquote {
     margin: auto;
 }
 
+.article.read {
+    border-left: 2px solid #b6bed4;
+}
+
 .article--nav {
     position: absolute;
     top: 0;
