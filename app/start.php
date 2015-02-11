@@ -10,7 +10,8 @@ $app = new \Slim\Slim();
 require_once('Controllers/AuthController.php');
 require_once('Controllers/FeedsController.php');
 
-$app->get("/.*?", function () use ($app, $config) {
+$app->get("/.*?", function () use ($config) {
+	$app = \Slim\Slim::getInstance();
 	try {
 		$filename = $app->request->getResourceUri();
 		if ($filename == "/") {
