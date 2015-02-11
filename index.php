@@ -13,7 +13,9 @@ require_once(LIB_DIR.'Redbean/rb.php');
 /* DEBUG CODE */
 $config = new stdClass;
 $config->debug = true;
-date_default_timezone_set("Europe/Paris");
+$config->tpl_path = "tpl/zen/";
+$config->timezone = "Europe/Paris";
+date_default_timezone_set($config->timezone);
 /* END OF DEBUG CODE */
 
 require_once('app/start.php');
