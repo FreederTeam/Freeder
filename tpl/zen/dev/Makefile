@@ -1,0 +1,2 @@
+all:
+	jsx --watch . ../js
