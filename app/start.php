@@ -13,10 +13,21 @@ $app->config(array(
 require_once('Controllers/AuthController.php');
 require_once('Controllers/FeedsController.php');
 
-$app->get('/', function () use ($app) {
-	// href\s*=\s*['"]\{%\s*assets_url\s*%\}
-	$app->render('index.html');
+$app->get("/.*?", function () use ($config) {
+	$app = \Slim\Slim::getInstance();
+	try {
+		$filename = $app->request->getResourceUri();
+		if ($filename == "/") {
+			$filename = "index.html";
+		}
+		$content = file_get_contents(dirname(__FILE__)."/../".$config->tpl_path.$filename);
+		echo $content;
+	}
+	catch (Exception $e) {
+		$app->notFound();
+	}
 });
 
 $app->run();
+
 R::close();

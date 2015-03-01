@@ -164,19 +164,23 @@ function import_downloaded_feed($result, $feeds) {
 /**
  * Get a list of all the available feeds.
  */
-$app->get('/feeds', 'anonymousOrAuthenticationNeeded', function () use ($app) {
+$app->get('/feeds', 'anonymousOrAuthenticationNeeded', function () {
+	$app = \Slim\Slim::getInstance();
+
 	$feeds = R::findAll('feed');
 	if (!empty($app->request->get('updated'))) {
 		update_feeds($feeds);
 	}
-	var_dump($feeds); // TODO
+	echo json_encode(R::exportAll($feeds));  // TODO
 });
 
 
 /**
  * Get all the infos about the specific feed.
  */
-$app->get('/feeds/:id', 'anonymousOrAuthenticationNeeded', function ($id) use ($app) {
+$app->get('/feeds/:id', 'anonymousOrAuthenticationNeeded', function ($id) {
+	$app = \Slim\Slim::getInstance();
+
 	$feed = R::load('feed', $id);
 	if (!empty($app->request->get('updated'))) {
 		update_feeds($feed);
@@ -230,7 +234,9 @@ $app->patch('/feeds/:id', 'authenticationNeeded', function ($id) {
 /**
  * Add new feeds
  */
-$app->post('/feeds/', 'authenticationNeeded', function() use ($app) {
+$app->post('/feeds/', 'authenticationNeeded', function() {
+	$app = \Slim\Slim::getInstance();
+
 	$feed_errors = 0;
 
 	$feeds_in = json_decode($app->request->post('feeds'), true);

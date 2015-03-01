@@ -1,141 +1,17 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="utf-8">
-        <title>Freeder</title>
-        <link rel="stylesheet" href="css/main.css">
-    </head>
-    <body>
+	<head>
+		<meta charset="utf-8">
+		<title>Freeder</title>
+		<link rel="stylesheet" href="css/main.css">
+	</head>
+	<body>
+		<div id="content">
+		</div>
 
-<!-- Modal box -->
-<div class="modalbox {$type} hidden">
-    <div class="modalbox--wrapper1">
-    <div class="modalbox--wrapper2">
-        <h1 class="modalbox--title">{$title}</h1>
-        <div class="modalbox--content">
-            {$content}
-        </div>
-        <button class="modalbox--close button">Ok</button>
-    </div>
-    </div>
-</div>
-<!-- End Modal box -->
-
-<!-- Menu -->
-<aside class="menu">
-    <div class="menu--wrapper">
-        <div class="menu--logo">
-            <a href=""><img alt="freeder" src="img/logo.svg" class="icon" /></a>
-        </div>
-        
-        <nav class="menu--nav vertical-nav">
-            <div class="vertical-nav--arrow"><img class="icon" alt="Settings" src="img/arrow.svg"/></div>
-            <a href="/" class="vertical-nav--item"><img class="icon" alt="Home" src="img/home.svg"/></a>
-
-            <div class="vertical-nav--arrow"><img class="icon" alt="Settings" src="img/arrow.svg"/></div>
-            <button class="vertical-nav--item toggle-submenu" id="open-submenu-list"><img class="icon" alt="Feeds" src="img/list.svg"/></button>
-
-            <div class="vertical-nav--arrow"><img class="icon" alt="Settings" src="img/arrow.svg"/></div>
-            <a href="settings.php" class="vertical-nav--item"><img class="icon" alt="Settings" src="img/settings.svg"/></a>
-
-            <div class="vertical-nav--arrow"><img class="icon" alt="Settings" src="img/arrow.svg"/></div>
-            <button class="vertical-nav--item toggle-submenu" id="open-submenu-more"><img class="icon" alt="More" src="img/plus_big.svg"/></button>
-        </nav>
-    </div>
-</aside>
-<!-- End Menu -->
-
-<!-- Submenu -->
-<aside class="submenu feed-submenu">
-    <div class="submenu--wrapper">
-        <div class="submenu--search searchbar">
-            <input class="searchbar--input" type="search" placeholder="Search…"/>
-            <img class="searchbar--icon" alt="" src="img/search.svg"/>
-        </div>
-
-        <section id="submenu-list">
-
-            <div class="submenu--section">
-                <h4 class="submenu--section-title">Feeds</h4>
-                <ul class="submenu--link-list">
-                    {loop="$feeds"}
-                        <li>
-                            <a href="/%feed%/{$value['id']}" title="{$value['description']}">{$value['title']}</a>
-                            <span class="coutner">?</span>
-                        </li>
-                    {/loop}
-                </ul>
-            </div>
-
-        </section>
-
-        <section id="submenu-more">
-            <div class="submenu--section">
-                <h4 class="submenu--section-title">Foo</h4>
-                <a href="refresh.php?token={function="generate_token('refresh')"}">Synchronize</a>
-            </div>
-        </section>
-
-    </div>
-</aside>
-<!-- End Submenu -->
-
-        <main class="main">
-
-<!-- Dialog article -->
-<article class="article">
-    <div class="article--wrapper">
-        {if="empty($feeds)"}
-            <h1 class="article--title">Welcome to Freeder!</h1>
-            <h2 class="article--info">It seems that you don't follow any feed</h2>
-            <div class="article--content">
-                <p>
-                    You can add a new feed through the <a href="/settings.php#tab-feeds">Feeds settings</a> page.<br/>
-                    You can also import your feed from another reader thanks to <a href="/settings.php#tab-import">OPML import</a>.
-                </p>
-            </div>
-        {else}
-            <h1 class="article--title">Nothing new!</h1>
-            <h2 class="article--info">You have no more unread entry</h2>
-        {/if}
-    </div>
-</article>
-<!-- End Dialog article -->
-
-<!-- Sample article -->
-<article class="article" id="entry-{$value['id']}">
-    <div class="article--wrapper">
-        <nav class="article--nav horizontal-nav">
-            <div class="article--nav-wrapper">
-                <button class="horizontal-nav--item"><img class="icon" alt="More" src="img/plus.svg"/></button>
-                <button class="horizontal-nav--item"><img class="icon" alt="Share" src="img/share.svg"/></button>
-                <button class="horizontal-nav--item close-btn"><img class="icon" alt="Close" src="img/close.svg"/></button>
-            </div>
-        </nav>
-        <h1 class="article--title">
-            <a href="{function="get_entry_link($value)"}#">{$value['title']}</a>
-        </h1>
-        <h2 class="article--info">
-            <a href="feed/{$entry_feed['id']}">{$entry_feed['title']}</a>
-        </h2>
-        <p class="article--subinfo">
-            {include="_author"}<br/>
-            <time datetime="{function="date(DATE_ATOM,$value['pubDate'])"}">
-                {function="format_date($value['pubDate'])"}
-            </time>
-        </p>
-        <div class="article--content">
-            {$value['displayed_content']}
-        </div>
-    </div>
-</article>
-<!-- End Sample article -->
-
-<!-- Tail includes -->
-<script src="js/lib/jquery-2.1.1.min.js"></script>
-<script src="js/main.js"></script>
-<!-- End Tail includes -->
-
-        </main>
-    </body>
+		<script src="js/lib/react.js"></script>
+		<script src="js/lib/Showdown.min.js"></script>
+		<script src="js/lib/jquery-2.1.3.min.js"></script>
+		<script src="js/app.js"></script>
+	</body>
 </html>

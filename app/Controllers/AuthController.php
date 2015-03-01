@@ -41,7 +41,7 @@ function authenticationNeeded(\Slim\Route $route) {
 
 		$user_validation = validateUserKey($uid, $key);
 		if ($user_validation === false) {
-			$app->halt(401);
+			$app->halt(401, "Invalid user.");
 		}
 	}
 	$app->user = $user_validation;

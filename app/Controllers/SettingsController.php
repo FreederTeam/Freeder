@@ -43,7 +43,9 @@ $app->patch('/settings/:setting', 'authenticationNeeded', function ($setting) {
 /**
  * Set settings
  */
-$app->patch('/settings', 'authenticationNeeded', function () use ($app) {
+$app->patch('/settings', 'authenticationNeeded', function () {
+	$app = \Slim\Slim::getInstance();
+
 	$user = "";
 	$settings = new Settings($user);
 	$settings_post = json_decode($app->request->post('settings'), true);
