@@ -108,7 +108,7 @@ function get_favicons($urls) {
 		if(isset($parsed_url['pass'])) {
 			$second_try_url .= $parsed_url['pass'];
 		}
-		$second_try_url .= '/favicon.ico'
+		$second_try_url .= '/favicon.ico';
 		$second_try[$second_try_url] = array(
 			'input_url'=>$url,
 			'url'=>$second_try_url
