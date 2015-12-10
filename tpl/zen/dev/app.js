@@ -206,51 +206,62 @@ var Main = React.createClass({
 			<main className="main">
 
 				<article className="article">
-				    <div className="article--wrapper">
-			            <h1 className="article--title">Welcome to Freeder!</h1>
-			            <h2 className="article--info">It seems that you do not follow any feed</h2>
-			            <div className="article--content">
-			                <p>
-			                    You can add a new feed through the <a href="/settings.php#tab-feeds">Feeds settings</a> page.<br/>
-			                    You can also import your feed from another reader thanks to <a href="/settings.php#tab-import">OPML import</a>.
-			                </p>
-			            </div>
-			            <h1 className="article--title">Nothing new!</h1>
-			            <h2 className="article--info">You have no more unread entry</h2>
-				        
-				    </div>
+					<div className="article--wrapper">
+						<h1 className="article--title">Welcome to Freeder!</h1>
+						<h2 className="article--info">It seems that you do not follow any feed</h2>
+						<div className="article--content">
+							<p>
+								You can add a new feed through the <a href="/settings.php#tab-feeds">Feeds settings</a> page.<br/>
+								You can also import your feed from another reader thanks to <a href="/settings.php#tab-import">OPML import</a>.
+							</p>
+						</div>
+						<h1 className="article--title">Nothing new!</h1>
+						<h2 className="article--info">You have no more unread entry</h2>
+						
+					</div>
 				</article>
 
-				<article className="article" id="entry-{$value['id']}">
-				    <div className="article--wrapper">
-				        <nav className="article--nav horizontal-nav">
-				            <div className="article--nav-wrapper">
-				                <button className="horizontal-nav--item"><img className="icon" alt="More" src="img/plus.svg"/></button>
-				                <button className="horizontal-nav--item"><img className="icon" alt="Share" src="img/share.svg"/></button>
-				                <button className="horizontal-nav--item close-btn"><img className="icon" alt="Close" src="img/close.svg"/></button>
-				            </div>
-				        </nav>
-				        <h1 className="article--title">
-				            <a href="#">Titre</a>
-				        </h1>
-				        <h2 className="article--info">
-				            <a href="feed/feed_id">Feed title</a>
-				        </h2>
-				        <p className="article--subinfo">
-				            Author<br/>
-				            <time datetime="">
-				                Publication date
-				            </time>
-				        </p>
-				        <div className="article--content">
-				            Content
-				        </div>
-				    </div>
-				</article>
+				<Article id={42} title="Lorem ipsum" url="http://foo.bar" feed={{title: "Dolor sit amet", url: "http://foo.bar"}} author="Author" datetime="Publication date">
+					Test
+				</Article>
 			</main>
 		);
 	}
 });
+
+
+var Article = React.createClass({
+	render: function() {
+		var entryId = 'entry-' + this.props.id;
+		return (
+			<article className="article" id={entryId}>
+				<div className="article--wrapper">
+					<nav className="article--nav horizontal-nav">
+						<div className="article--nav-wrapper">
+							<button className="horizontal-nav--item"><img className="icon" alt="More" src="img/plus.svg"/></button>
+							<button className="horizontal-nav--item"><img className="icon" alt="Share" src="img/share.svg"/></button>
+							<button className="horizontal-nav--item close-btn"><img className="icon" alt="Close" src="img/close.svg"/></button>
+						</div>
+					</nav>
+					<h1 className="article--title">
+						<a href={this.props.url}>{this.props.title}</a>
+					</h1>
+					<h2 className="article--info">
+						<a href={this.props.feed.url}>{this.props.feed.title}</a>
+					</h2>
+					<p className="article--subinfo">
+						{this.props.author}<br/>
+						{this.props.datetime}
+					</p>
+					<div className="article--content">
+						{this.props.children}
+					</div>
+				</div>
+			</article>
+		);
+	}
+});
+
 
 
 React.render(

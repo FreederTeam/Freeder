@@ -206,51 +206,62 @@ var Main = React.createClass({displayName: "Main",
 			React.createElement("main", {className: "main"}, 
 
 				React.createElement("article", {className: "article"}, 
-				    React.createElement("div", {className: "article--wrapper"}, 
-			            React.createElement("h1", {className: "article--title"}, "Welcome to Freeder!"), 
-			            React.createElement("h2", {className: "article--info"}, "It seems that you do not follow any feed"), 
-			            React.createElement("div", {className: "article--content"}, 
-			                React.createElement("p", null, 
-			                    "You can add a new feed through the ", React.createElement("a", {href: "/settings.php#tab-feeds"}, "Feeds settings"), " page.", React.createElement("br", null), 
-			                    "You can also import your feed from another reader thanks to ", React.createElement("a", {href: "/settings.php#tab-import"}, "OPML import"), "."
-			                )
-			            ), 
-			            React.createElement("h1", {className: "article--title"}, "Nothing new!"), 
-			            React.createElement("h2", {className: "article--info"}, "You have no more unread entry")
-				        
-				    )
+					React.createElement("div", {className: "article--wrapper"}, 
+						React.createElement("h1", {className: "article--title"}, "Welcome to Freeder!"), 
+						React.createElement("h2", {className: "article--info"}, "It seems that you do not follow any feed"), 
+						React.createElement("div", {className: "article--content"}, 
+							React.createElement("p", null, 
+								"You can add a new feed through the ", React.createElement("a", {href: "/settings.php#tab-feeds"}, "Feeds settings"), " page.", React.createElement("br", null), 
+								"You can also import your feed from another reader thanks to ", React.createElement("a", {href: "/settings.php#tab-import"}, "OPML import"), "."
+							)
+						), 
+						React.createElement("h1", {className: "article--title"}, "Nothing new!"), 
+						React.createElement("h2", {className: "article--info"}, "You have no more unread entry")
+						
+					)
 				), 
 
-				React.createElement("article", {className: "article", id: "entry-{$value['id']}"}, 
-				    React.createElement("div", {className: "article--wrapper"}, 
-				        React.createElement("nav", {className: "article--nav horizontal-nav"}, 
-				            React.createElement("div", {className: "article--nav-wrapper"}, 
-				                React.createElement("button", {className: "horizontal-nav--item"}, React.createElement("img", {className: "icon", alt: "More", src: "img/plus.svg"})), 
-				                React.createElement("button", {className: "horizontal-nav--item"}, React.createElement("img", {className: "icon", alt: "Share", src: "img/share.svg"})), 
-				                React.createElement("button", {className: "horizontal-nav--item close-btn"}, React.createElement("img", {className: "icon", alt: "Close", src: "img/close.svg"}))
-				            )
-				        ), 
-				        React.createElement("h1", {className: "article--title"}, 
-				            React.createElement("a", {href: "#"}, "Titre")
-				        ), 
-				        React.createElement("h2", {className: "article--info"}, 
-				            React.createElement("a", {href: "feed/feed_id"}, "Feed title")
-				        ), 
-				        React.createElement("p", {className: "article--subinfo"}, 
-				            "Author", React.createElement("br", null), 
-				            React.createElement("time", {datetime: ""}, 
-				                "Publication date"
-				            )
-				        ), 
-				        React.createElement("div", {className: "article--content"}, 
-				            "Content"
-				        )
-				    )
+				React.createElement(Article, {id: 42, title: "Lorem ipsum", url: "http://foo.bar", feed: {title: "Dolor sit amet", url: "http://foo.bar"}, author: "Author", datetime: "Publication date"}, 
+					"Test"
 				)
 			)
 		);
 	}
 });
+
+
+var Article = React.createClass({displayName: "Article",
+	render: function() {
+		var entryId = 'entry-' + this.props.id;
+		return (
+			React.createElement("article", {className: "article", id: entryId}, 
+				React.createElement("div", {className: "article--wrapper"}, 
+					React.createElement("nav", {className: "article--nav horizontal-nav"}, 
+						React.createElement("div", {className: "article--nav-wrapper"}, 
+							React.createElement("button", {className: "horizontal-nav--item"}, React.createElement("img", {className: "icon", alt: "More", src: "img/plus.svg"})), 
+							React.createElement("button", {className: "horizontal-nav--item"}, React.createElement("img", {className: "icon", alt: "Share", src: "img/share.svg"})), 
+							React.createElement("button", {className: "horizontal-nav--item close-btn"}, React.createElement("img", {className: "icon", alt: "Close", src: "img/close.svg"}))
+						)
+					), 
+					React.createElement("h1", {className: "article--title"}, 
+						React.createElement("a", {href: this.props.url}, this.props.title)
+					), 
+					React.createElement("h2", {className: "article--info"}, 
+						React.createElement("a", {href: this.props.feed.url}, this.props.feed.title)
+					), 
+					React.createElement("p", {className: "article--subinfo"}, 
+						this.props.author, React.createElement("br", null), 
+						this.props.datetime
+					), 
+					React.createElement("div", {className: "article--content"}, 
+						this.props.children
+					)
+				)
+			)
+		);
+	}
+});
+
 
 
 React.render(
