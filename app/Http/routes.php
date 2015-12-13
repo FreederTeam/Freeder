@@ -16,5 +16,6 @@ $app->get('/', function () use ($app) {
 });
 
 $app->get('/api/v1/feeds', 'FeedController@index');
-$app->post('/api/v1/feeds', 'FeedController@store');
+$app->post('/api/v1/feeds', 'FeedController@create');
+$app->put('/api/v1/feeds/{id}', 'FeedController@update');
 $app->delete('/api/v1/feeds/{id}', 'FeedController@delete');
