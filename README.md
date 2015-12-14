@@ -3,6 +3,7 @@
 ## Installation
 
 * `git clone …`
+* `composer install`
 * `touch database/database.sqlite`
 * `php artisan migrate`
 

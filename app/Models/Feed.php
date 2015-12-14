@@ -5,5 +5,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class Feed extends Model
 {
-    // Empty on purpose
+    /**
+     * Get the entries for the feed.
+     */
+    public function entries()
+    {
+        return $this->hasMany('App\Models\Entry');
+    }
 }
