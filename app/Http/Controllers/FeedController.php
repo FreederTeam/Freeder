@@ -2,19 +2,28 @@
 namespace App\Http\Controllers;
 
 use App\Models\Feed;
+use App\Transformers\FeedTransformer;
 use Illuminate\Http\Request;
+use League\Fractal\Manager;
+use League\Fractal\Resource\Collection;
+use League\Fractal\Resource\Item;
 
-class FeedController extends Controller
+use League\Fractal\Serializer\JsonApiSerializer;
+
+class FeedController extends ApiController
 {
     /**
      * List all the available feeds.
      *
      * @return Response
      */
-    public function index()
+    public function index(Manager $fractal, FeedTransformer $feedTransformer)
     {
         $feeds = Feed::all();
-        return response()->json($feeds);
+
+		$collection = new Collection($feeds, $feedTransformer, \App\Models\Feed::$jsonApiType);
+		$data = $fractal->createData($collection)->toArray();
+		return $this->respond($data);
     }
 
 
@@ -58,7 +67,11 @@ class FeedController extends Controller
     public function read($id)
     {
         $feed = Feed::find($id);
-        return response()->json($feed);
+		if ($feed) {
+			return response()->json($feed);
+		} else {
+			abort(404, "Resource does not exist.");
+		}
     }
 
 
@@ -85,6 +98,13 @@ class FeedController extends Controller
         // Store in database
         $feed = Feed::find($id);
 
+		// Check that resource exist
+		if ($feed) {
+			return response()->json($feed);
+		} else {
+			abort(404, "Resource does not exist.");
+		}
+
         $feed->name = $request->name;
         $feed->url = $request->url;
         $feed->description = $request->description;
@@ -103,6 +123,14 @@ class FeedController extends Controller
     public function delete($id)
     {
         $Feed = Feed::find($id);
+
+		// Check that resource exist
+		if ($feed) {
+			return response()->json($feed);
+		} else {
+			abort(404, "Resource does not exist.");
+		}
+
         $Feed->delete();
     }
 }

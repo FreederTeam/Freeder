@@ -5,6 +5,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Feed extends Model
 {
+	public static $jsonApiType = 'feeds';
+
     /**
      * Get the entries for the feed.
      */

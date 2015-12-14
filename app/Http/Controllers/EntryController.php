@@ -1,20 +1,29 @@
 <?php
 namespace App\Http\Controllers;
 
-use App\Models\Feed;
+use App\Models\Entry;
+use App\Transformers\EntryTransformer;
 use Illuminate\Http\Request;
+use League\Fractal\Manager;
+use League\Fractal\Resource\Collection;
+use League\Fractal\Resource\Item;
 
-class EntryController extends Controller
+use League\Fractal\Serializer\JsonApiSerializer;
+
+class EntryController extends ApiController
 {
     /**
      * List all the available entries.
      *
      * @return Response
      */
-    public function index()
+    public function index(Manager $fractal, EntryTransformer $entryTransformer)
     {
         $entries = Entry::all();
-        return response()->json($entries);
+
+		$collection = new Collection($entries, $entryTransformer, \App\Models\Entry::$jsonApiType);
+		$data = $fractal->createData($collection)->toArray();
+		return $this->respond($data);
     }
 
 
@@ -27,6 +36,10 @@ class EntryController extends Controller
     public function read($id)
     {
         $entry = Entry::find($id);
-        return response()->json($entry);
+		if ($entry) {
+			return response()->json($entry);
+		} else {
+			abort(404, "Resource does not exist.");
+		}
     }
 }
