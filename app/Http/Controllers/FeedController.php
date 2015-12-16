@@ -21,9 +21,11 @@ class FeedController extends ApiController
     {
         $feeds = Feed::all();
 
-		$collection = new Collection($feeds, $feedTransformer, \App\Models\Feed::$jsonApiType);
-		$data = $fractal->createData($collection)->toArray();
-		return $this->respond($data);
+        $collection = new Collection($feeds, $feedTransformer, \App\Models\Feed::$jsonApiType);
+        $data = $fractal->createData($collection)->toArray();
+
+        $this->setStatusCode(200);
+        return $this->respond($data);
     }
 
 
@@ -42,8 +44,9 @@ class FeedController extends ApiController
             !$request->has("ttl") ||
             !filter_var($request->url, FILTER_VALIDATE_URL) ||
             !is_numeric($request->ttl)) {
-            // Request not valid, return 400
-            abort(400, "Invalid data.");
+            // Abort with 400
+            $this->setStatusCode(400);
+            return;
         }
 
         // Store in database
@@ -55,6 +58,10 @@ class FeedController extends ApiController
         $feed->ttl = intval($request->ttl);
 
         $feed->save();
+
+        // Respond an empty body with Location header to the resource
+        $this->setStatusCode(201);
+        return $this->respond(null, array("Location"=>"/api/v1/feeds/" + $feed->id));
     }
 
 
@@ -64,14 +71,20 @@ class FeedController extends ApiController
      * @param  Id       $id
      * @return Response
      */
-    public function read($id)
+    public function read(Manager $fractal, FeedTransformer $feedTransformer, $id)
     {
         $feed = Feed::find($id);
-		if ($feed) {
-			return response()->json($feed);
-		} else {
-			abort(404, "Resource does not exist.");
-		}
+        if (!$feed) {
+            // Abort with 404
+            $this->setStatusCode(404);
+            return;
+        }
+
+        $item = new Item($feed, $feedTransformer, \App\Models\Feed::$jsonApiType);
+        $data = $fractal->createData($item)->toArray();
+
+        $this->setStatusCode(200);
+        return $this->respond($data);
     }
 
 
@@ -91,19 +104,20 @@ class FeedController extends ApiController
             !$request->has("ttl") ||
             !filter_var($request->url, FILTER_VALIDATE_URL) ||
             !is_numeric($request->ttl)) {
-            // Request not valid, return 400
-            abort(400, "Invalid data.");
+            // Abort with 400
+            $this->setStatusCode(400);
+            return;
         }
 
         // Store in database
         $feed = Feed::find($id);
 
-		// Check that resource exist
-		if ($feed) {
-			return response()->json($feed);
-		} else {
-			abort(404, "Resource does not exist.");
-		}
+        // Check that resource exist
+        if (!$feed) {
+            // Abort with 404
+            $this->setStatusCode(404);
+            return;
+        }
 
         $feed->name = $request->name;
         $feed->url = $request->url;
@@ -111,6 +125,10 @@ class FeedController extends ApiController
         $feed->ttl = intval($request->ttl);
 
         $feed->save();
+
+        // Respond an empty body
+        $this->setStatusCode(200);
+        return $this->respond(null);
     }
 
 
@@ -124,13 +142,17 @@ class FeedController extends ApiController
     {
         $Feed = Feed::find($id);
 
-		// Check that resource exist
-		if ($feed) {
-			return response()->json($feed);
-		} else {
-			abort(404, "Resource does not exist.");
-		}
+        // Check that resource exist
+        if (!$feed) {
+            // Abort with 404
+            $this->setStatusCode(404);
+            return;
+        }
 
         $Feed->delete();
+
+        // Respond an empty body
+        $this->setStatusCode(200);
+        return $this->respond(null);
     }
 }

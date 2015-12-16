@@ -5,10 +5,11 @@ namespace App\Transformers;
 use App\Models\Feed;
 use League\Fractal\TransformerAbstract;
 
-class FeedTransformer extends TransformerAbstract {
-    protected $defaultIncludes = [
-		'entries'
-    ];
+class FeedTransformer extends TransformerAbstract
+{
+    protected $availableIncludes = [
+        "entries"];
+    protected $defaultIncludes = [];
 
     public function transform(Feed $feed)
     {
@@ -21,14 +22,14 @@ class FeedTransformer extends TransformerAbstract {
         ];
     }
 
-	/**
-	 * Include entries.
-	 *
-	 * @return League\Fractal\ItemResource
-	 */
-	public function includeEntries(Feed $feed)
-	{
-		$entries = $feed->entries;
-		return $this->collection($entries, new EntryTransformer, \App\Models\Entry::$jsonApiType);
-	}
+    /**
+     * Include entries.
+     *
+     * @return League\Fractal\ItemResource
+     */
+    public function includeEntries(Feed $feed)
+    {
+        $entries = $feed->entries;
+        return $this->collection($entries, new EntryTransformer, \App\Models\Entry::$jsonApiType);
+    }
 }
