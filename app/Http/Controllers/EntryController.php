@@ -5,9 +5,12 @@ use App\Models\Entry;
 use App\Transformers\EntryTransformer;
 use Illuminate\Http\Request;
 use League\Fractal\Manager;
+use League\Fractal\Resource\Collection;
 use League\Fractal\Resource\Item;
 
 use League\Fractal\Serializer\JsonApiSerializer;
+
+use Illuminate\Http\Response as IlluminateResponse;
 
 class EntryController extends ApiController
 {
@@ -23,7 +26,7 @@ class EntryController extends ApiController
         $collection = new Collection($entries, $entryTransformer, \App\Models\Entry::$jsonApiType);
         $data = $fractal->createData($collection)->toArray();
 
-        $this->setStatusCode(200);
+        $this->setStatusCode(IlluminateResponse::HTTP_OK);
         return $this->respond($data);
     }
 
@@ -38,15 +41,15 @@ class EntryController extends ApiController
     {
         $entry = Entry::find($id);
         if (!$entry) {
-            // Abort with 404
-            $this->setStatusCode(404);
+            // Abort with IlluminateResponse::HTTP_NOT_FOUND
+            $this->setStatusCode(IlluminateResponse::HTTP_NOT_FOUND);
             return $this->respond(null);
         }
 
         $item = new Item($entry, $entryTransformer, \App\Models\Entry::$jsonApiType);
         $data = $fractal->createData($item)->toArray();
 
-        $this->setStatusCode(200);
+        $this->setStatusCode(IlluminateResponse::HTTP_OK);
         return $this->respond($data);
     }
 }

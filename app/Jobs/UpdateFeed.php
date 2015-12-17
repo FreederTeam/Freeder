@@ -58,21 +58,18 @@ class UpdateFeed extends Job implements SelfHandling, ShouldQueue
             // Return a PicoFeed::Feed object
             $parsed_feed = $parser->execute();
 
-            // Update feed
-            $feed->name = $parsed_feed->getTitle();
-            $feed->url = $parsed_feed->getFeedUrl();
-            $feed->description = $parsed_feed->getDescription();
-            // TODO: ttl see https://github.com/fguillot/picoFeed/issues/103
+            // Update feed fields
+            $this->feed->name = $parsed_feed->getTitle() ?: $this->feed->name;
+            $this->feed->url = $parsed_feed->getFeedUrl();
+            $this->feed->description = $parsed_feed->getDescription();
 
             // Store the Etag and the LastModified headers in your database for
             // the next requests
-            $feed->etag = $resource->getEtag();
-            $feed->last_modified = $resource->getLastModified();
+            $this->feed->etag = $resource->getEtag();
+            $this->feed->last_modified = $resource->getLastModified();
 
-            // TODO: Store entries
-
-            $feed->save();
-            var_dump($feed);
+            // Update feed
+            $this->feed->save();
         } catch (PicoFeedException $e) {
             // TODO: Error handling
         }

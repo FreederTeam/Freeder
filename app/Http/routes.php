@@ -27,22 +27,39 @@ class FractalManager extends \League\Fractal\Manager
 
 $app->bind('League\Fractal\Manager', 'FractalManager');
 
+/*****************
+ * Root endpoint *
+ *****************/
 $app->get('/', function () use ($app) {
     return $app->welcome();
 });
 
-
+/*****************
+ * /api endpoint *
+ *****************/
 $app->get('/api', function () {
     return redirect("/api/v1/");
 });
 
+/********************
+ * /api/v1 endpoint *
+ ********************/
 $app->get('/api/v1/', 'ApiController@root');
 
+/**************************
+ * /api/v1/feeds endpoint *
+ **************************/
 $app->get('/api/v1/feeds', 'FeedController@index');
 $app->post('/api/v1/feeds', 'FeedController@create');
 $app->get('/api/v1/feeds/{id}', 'FeedController@read');
 $app->patch('/api/v1/feeds/{id}', 'FeedController@update');
 $app->delete('/api/v1/feeds/{id}', 'FeedController@delete');
+// Feed entries relationship
+$app->get('/api/v1/feeds/{id}/entries', 'FeedController@getEntries');
+$app->get('/api/v1/feeds/{id}/relationships/entries', 'FeedController@getEntries');
 
+/****************************
+ * /api/v1/entries endpoint *
+ ****************************/
 $app->get('/api/v1/entries', 'EntryController@index');
 $app->get('/api/v1/entries/{id}', 'EntryController@read');

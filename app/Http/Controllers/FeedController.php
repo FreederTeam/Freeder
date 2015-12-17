@@ -2,6 +2,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Feed;
+use App\Transformers\EntryTransformer;
 use App\Transformers\FeedTransformer;
 use App\Jobs\UpdateFeed;
 use Illuminate\Http\Request;
@@ -157,5 +158,30 @@ class FeedController extends ApiController
         // Respond an empty body (then, with IlluminateResponse::HTTP_NO_CONTENT No Content status code)
         $this->setStatusCode(IlluminateResponse::HTTP_NO_CONTENT);
         return $this->respond(null);
+    }
+
+
+    /**
+     * Fetch entries relationship.
+     *
+     * @param  Id       $id
+     * @return Response
+     */
+    public function getEntries(Manager $fractal, EntryTransformer $entryTransformer, $id)
+    {
+        $feed = Feed::find($id);
+
+        // Check that resource exist
+        if (!$feed) {
+            // Abort with IlluminateResponse::HTTP_NOT_FOUND
+            $this->setStatusCode(IlluminateResponse::HTTP_NOT_FOUND);
+            return $this->respond(null);
+        }
+
+        $entries = $feed->entries;
+        $collection = new Collection($entries, $entryTransformer, \App\Models\Entry::$jsonApiType);
+        $data = $fractal->createData($collection)->toArray();
+        $this->setStatusCode(IlluminateResponse::HTTP_OK);
+        return $this->respond($data);
     }
 }
