@@ -6,6 +6,8 @@ use Exception;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Laravel\Lumen\Exceptions\Handler as ExceptionHandler;
 
+use Illuminate\Http\Response as IlluminateResponse;
+
 class Handler extends ExceptionHandler
 {
     /**
@@ -41,8 +43,9 @@ class Handler extends ExceptionHandler
     {
         if ($e instanceof \Illuminate\Database\QueryException) {
             // Render unique constraints violation as 400
-            if (23000 == $e->errorInfo[0]) {
-                abort(500, "Database constraint violation.");
+            $SQLSTATE_CONSTRAINT_VIOLATION = 23000;
+            if ($SQLSTATE_CONSTRAINT_VIOLATION == $e->errorInfo[0]) {
+                abort(IlluminateResponse::HTTP_CONFLICT);
             }
         }
 

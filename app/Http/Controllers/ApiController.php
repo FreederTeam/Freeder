@@ -32,6 +32,14 @@ class ApiController extends Controller
         if (!array_key_exists("Content-Type", $headers)) {
             $headers['Content-Type'] = 'application/vnd.api+json';
         }
-        return response()->json($data, $this->getStatusCode(), $headers, $options = JSON_PRETTY_PRINT);
+        if ($data) {
+            return response()->json($data, $this->getStatusCode(), $headers, $options = JSON_PRETTY_PRINT);
+        } else {
+            $response = response("", $this->getStatusCode());
+            foreach ($headers as $k => $v) {
+                $response->header($k, $v);
+            }
+            return $response;
+        }
     }
 }

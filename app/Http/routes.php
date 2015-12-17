@@ -41,7 +41,7 @@ $app->get('/api/v1/', 'ApiController@root');
 $app->get('/api/v1/feeds', 'FeedController@index');
 $app->post('/api/v1/feeds', 'FeedController@create');
 $app->get('/api/v1/feeds/{id}', 'FeedController@read');
-$app->put('/api/v1/feeds/{id}', 'FeedController@update');
+$app->patch('/api/v1/feeds/{id}', 'FeedController@update');
 $app->delete('/api/v1/feeds/{id}', 'FeedController@delete');
 
 $app->get('/api/v1/entries', 'EntryController@index');

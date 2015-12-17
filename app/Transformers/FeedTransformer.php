@@ -17,8 +17,7 @@ class FeedTransformer extends TransformerAbstract
             'id'          => (int) $feed->id,
             'name'        => $feed->name,
             'url'         => $feed->url,
-            'description' => $feed->description,
-            'ttl'         => (int) $feed->ttl
+            'description' => (string) $feed->description
         ];
     }
 

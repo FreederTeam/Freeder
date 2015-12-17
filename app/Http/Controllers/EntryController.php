@@ -40,7 +40,7 @@ class EntryController extends ApiController
         if (!$entry) {
             // Abort with 404
             $this->setStatusCode(404);
-            return;
+            return $this->respond(null);
         }
 
         $item = new Item($entry, $entryTransformer, \App\Models\Entry::$jsonApiType);

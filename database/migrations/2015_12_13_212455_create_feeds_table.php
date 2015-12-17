@@ -16,8 +16,9 @@ class CreateFeedsTable extends Migration
             $table->increments('id');
             $table->string("name");
             $table->string("url");
-            $table->text("description");
-            $table->integer("ttl");
+            $table->text("description")->default('');
+            $table->string('etag')->default('');
+            $table->string('last_modified')->default('');  // TODO: Use a datetime field
             $table->timestamps();
 
             $table->unique("name");
