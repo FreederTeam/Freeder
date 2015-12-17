@@ -42,11 +42,11 @@ class UpdateFeed extends Job implements SelfHandling, ShouldQueue
 
             // Return a resource
             $etag = $this->feed->etag;
-            $last_modified = $this->feed->last_modified;
+            $lastModified = $this->feed->last_modified;
             $resource = $reader->download(
                 $this->feed->url,
                 $etag,
-                $last_modified
+                $lastModified
             );
 
             // Return the right parser instance according to the feed format
@@ -57,19 +57,19 @@ class UpdateFeed extends Job implements SelfHandling, ShouldQueue
             );
 
             // Return a PicoFeed::Feed object
-            $parsed_feed = $parser->execute();
+            $parsedFeed = $parser->execute();
 
             // Update feed fields
-            $this->feed->name = $parsed_feed->getTitle() ?: $this->feed->name;
-            $this->feed->url = $parsed_feed->getFeedUrl();
-            $this->feed->description = $parsed_feed->getDescription();
+            $this->feed->name = $parsedFeed->getTitle() ?: $this->feed->name;
+            $this->feed->url = $parsedFeed->getFeedUrl();
+            $this->feed->description = $parsedFeed->getDescription();
 
             // Store the Etag and the LastModified headers in your database for
             // the next requests
             $this->feed->etag = $resource->getEtag();
             $this->feed->last_modified = $resource->getLastModified();
 
-            foreach ($parsed_feed->getItems() as $item) {
+            foreach ($parsedFeed->getItems() as $item) {
                 $entry = new Entry;
                 $entry->title = $item->getTitle();
                 $entry->description = "test";  // TODO

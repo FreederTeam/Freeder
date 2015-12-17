@@ -13,7 +13,7 @@ class ApiController extends Controller
         return $this->respond([
             "feeds" => "/api/v1/feeds?include={entries}",
             "entries" => "/api/v1/entries"
-        ], $headers = array("Content-Type"=>"application/json"));
+        ], array("Content-Type"=>"application/json"));
     }
 
     public function getStatusCode()
@@ -33,7 +33,7 @@ class ApiController extends Controller
             $headers['Content-Type'] = 'application/vnd.api+json';
         }
         if ($data) {
-            return response()->json($data, $this->getStatusCode(), $headers, $options = JSON_PRETTY_PRINT);
+            return response()->json($data, $this->getStatusCode(), $headers, JSON_PRETTY_PRINT);
         } else {
             $response = response("", $this->getStatusCode());
             foreach ($headers as $k => $v) {

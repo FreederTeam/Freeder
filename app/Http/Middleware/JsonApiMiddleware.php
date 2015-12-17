@@ -23,7 +23,7 @@ class JsonApiMiddleware
             abort(
                 IlluminateResponse::HTTP_UNSUPPORTED_MEDIA_TYPE
             );
-        } else if (!empty($request->header('Accept')) &&
+        } elseif (!empty($request->header('Accept')) &&
             false === strpos($request->header('Accept'), '*/*') &&
             false === strpos($request->header('Accept'), 'application/vnd.api+json')) {
             // Abort with IlluminateResponse::HTTP_NOT_ACCEPTABLE

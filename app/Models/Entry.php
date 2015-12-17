@@ -5,7 +5,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Entry extends Model
 {
-	public static $jsonApiType = 'entries';
+    public static $jsonApiType = 'entries';
 
     /**
      * Get the feed that owns the entry.
