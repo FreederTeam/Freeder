@@ -3,6 +3,7 @@
 namespace App\Jobs;
 
 use App\Jobs\Job;
+use App\Models\Entry;
 use App\Models\Feed;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
@@ -68,7 +69,16 @@ class UpdateFeed extends Job implements SelfHandling, ShouldQueue
             $this->feed->etag = $resource->getEtag();
             $this->feed->last_modified = $resource->getLastModified();
 
-            // Update feed
+            foreach ($parsed_feed->getItems() as $item) {
+                $entry = new Entry;
+                $entry->title = $item->getTitle();
+                $entry->description = "test";  // TODO
+                $entry->content = $item->getContent();
+                $entry->feed()->associate($this->feed);
+                $entry->save();
+            }
+
+            // Save feed
             $this->feed->save();
         } catch (PicoFeedException $e) {
             // TODO: Error handling
