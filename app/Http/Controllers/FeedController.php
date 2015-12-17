@@ -144,20 +144,19 @@ class FeedController extends ApiController
      */
     public function delete($id)
     {
-        $feed = Feed::find($id);
+        $deleted = Feed::destroy($id);
 
-        // Check that resource exist
-        if (!$feed) {
+        // Check that resource existed
+        if (!$deleted) {
             // Abort with IlluminateResponse::HTTP_NOT_FOUND
             $this->setStatusCode(IlluminateResponse::HTTP_NOT_FOUND);
             return $this->respond(null);
+        } else {
+            // Else respond an empty body (then, with
+            // IlluminateResponse::HTTP_NO_CONTENT No Content status code)
+            $this->setStatusCode(IlluminateResponse::HTTP_NO_CONTENT);
+            return $this->respond(null);
         }
-
-        $feed->delete();
-
-        // Respond an empty body (then, with IlluminateResponse::HTTP_NO_CONTENT No Content status code)
-        $this->setStatusCode(IlluminateResponse::HTTP_NO_CONTENT);
-        return $this->respond(null);
     }
 
 
