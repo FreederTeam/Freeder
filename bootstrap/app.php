@@ -56,7 +56,7 @@ $app->singleton(
 */
 
 $app->middleware([
-	'jsonApi' => 'App\Http\Middleware\JsonApiMiddleware'
+    'jsonApi' => 'App\Http\Middleware\JsonApiMiddleware'
 //     // Illuminate\Cookie\Middleware\EncryptCookies::class,
 //     // Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
 //     // Illuminate\Session\Middleware\StartSession::class,
@@ -79,7 +79,7 @@ $app->middleware([
 |
 */
 
-// $app->register(App\Providers\AppServiceProvider::class);
+$app->register(App\Providers\AppServiceProvider::class);
 // $app->register(App\Providers\EventServiceProvider::class);
 
 /*

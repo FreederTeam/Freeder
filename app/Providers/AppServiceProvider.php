@@ -15,4 +15,11 @@ class AppServiceProvider extends ServiceProvider
     {
         //
     }
+
+    public function boot()
+    {
+        if (app('db')->connection() instanceof \Illuminate\Database\SQLiteConnection) {
+            app('db')->statement(app('db')->raw('PRAGMA foreign_keys=1'));
+        }
+    }
 }
