@@ -1,3 +1,5 @@
+**Note**: Freeder is mostly abandoned at the moment. You can have a look at [miniflux](http://miniflux.net/) or [FreshRSS](https://github.com/FreshRSS/FreshRSS) which do a great job at handling your feeds, even though the UI is not exactly what it was in Freeder.
+
 Freeder
 =======
 
